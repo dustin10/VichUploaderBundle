@@ -90,7 +90,9 @@ class UploaderListener implements EventSubscriber
     {
         $obj = $this->adapter->getObjectFromArgs($args);
         
-        // todo: delete file if configured
+        if ($this->isUploadable($obj)) {
+            $this->uploader->remove($obj);
+        }
     }
     
     /**

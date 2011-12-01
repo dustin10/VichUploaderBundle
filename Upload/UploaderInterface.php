@@ -17,4 +17,12 @@ interface UploaderInterface
      * @param UploadableInterface $uploadable The uploadable object.
      */
     function upload(UploadableInterface $uploadable);
+    
+    /**
+     * Removes the file associated with the uploadable if configured to
+     * do so.
+     * 
+     * @param UploadableInterface $uploadable The uploadable object.
+     */
+    function remove(UploadableInterface $uploadable);
 }

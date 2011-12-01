@@ -57,6 +57,22 @@ class Uploader implements UploaderInterface
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public function remove(UploadableInterface $uploadable)
+    {
+        // todo: deal with Proxy
+        $class = get_class($uploadable);
+        
+        if ($this->shouldDeleteFileOnRemove($class)) {
+            $dir = $this->getUploadDirForClass($class);
+            $name = $uploadable->getFileName();
+            
+            unlink(sprintf('%s/%s', $dir, $name));
+        }
+    }
+    
+    /**
      * Gets the configured upload directory for the specified class name.
      * 
      * @param string $class The class name.
@@ -72,5 +88,24 @@ class Uploader implements UploaderInterface
         }
         
         return $this->mappings[$class]['upload_dir'];
+    }
+    
+    /**
+     * Determines if the class is configured to have its file deleted upon 
+     * removal.
+     * 
+     * @param string $class The class name.
+     * @return string True if the file should be deleted, false otherwise.
+     */
+    protected function shouldDeleteFileOnRemove($class)
+    {
+        if (!isset($this->mappings[$class])) {
+            throw new \InvalidArgumentException(sprintf(
+                'No delete on remove mapping found for class: "%s"',
+                $class
+            ));
+        }
+        
+        return $this->mappings[$class]['delete_on_remove'];
     }
 }

@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('upload_dir')->isRequired()->end()
+                            ->scalarNode('delete_on_remove')->defaultTrue()->end()
                         ->end()
                     ->end()
                 ->end()
