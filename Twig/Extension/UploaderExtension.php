@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Twig\Extension;
 
-use Vich\UploaderBundle\Upload\UploaderInterface;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Vich\UploaderBundle\Model\UploadableInterface;
 
 /**
@@ -13,18 +13,18 @@ use Vich\UploaderBundle\Model\UploadableInterface;
 class UploaderExtension extends \Twig_Extension
 {
     /**
-     * @var UploaderInterface $uploader
+     * @var UploaderHelper $helper
      */
-    private $uploader;
+    private $helper;
     
     /**
-     * Constructs a new instance of GeographicalExtension.
+     * Constructs a new instance of UploaderExtension.
      * 
-     * @param UploaderInterface $uploader
+     * @param UploaderHelper $helper
      */
-    public function __construct(UploaderInterface $uploader)
+    public function __construct(UploaderHelper $helper)
     {
-        $this->uploader = $uploader;
+        $this->helper = $helper;
     }
     
     /**
@@ -45,7 +45,7 @@ class UploaderExtension extends \Twig_Extension
     public function getFunctions()
     {
         $names = array(
-            'vich_uploader_path'  => 'path'
+            'vich_uploader_asset'  => 'asset'
         );
         
         $funcs = array();
@@ -63,8 +63,8 @@ class UploaderExtension extends \Twig_Extension
      * @param UploadableInterface $uploadable The uploadable object.
      * @return string The public path.
      */
-    public function path(UploadableInterface $uploadable)
+    public function asset(UploadableInterface $uploadable)
     {
-        return $this->uploader->getPublicPath($uploadable);
+        return $this->helper->asset($uploadable);
     }
 }

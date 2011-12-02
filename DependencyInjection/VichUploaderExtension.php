@@ -55,9 +55,13 @@ class VichUploaderExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-        $toLoad = array('namer.xml', 'adapter.xml', 'listener.xml', 'uploader.xml', 'twig.xml');
+        $toLoad = array('namer.xml', 'adapter.xml', 'listener.xml', 'uploader.xml', 'templating.xml');
         foreach ($toLoad as $file) {
             $loader->load($file);
+        }
+        
+        if ($config['twig']) {
+            $loader->load('twig.xml');
         }
         
         $mappings = isset($config['mappings']) ? $config['mappings'] : array();
