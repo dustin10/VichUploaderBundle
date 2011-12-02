@@ -8,6 +8,8 @@
         
         <service id="vich_uploader.namer.default" class="Vich\UploaderBundle\Naming\FileNamer" public="false" />
         
+        <service id="vich_uploader.namer.md5" class="Vich\UploaderBundle\Naming\MD5Namer" public="false" />
+        
     </services>
         
 </container>
