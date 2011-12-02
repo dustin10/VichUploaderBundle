@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('db_driver')->isRequired()->end()
                 ->scalarNode('namer')->defaultValue('vich_uploader.namer.default')->end()
+                ->scalarNode('web_dir_name')->defaultValue('web')->end()
                 ->arrayNode('mappings')
                     ->useAttributeAsKey('id')
                     ->prototype('array')

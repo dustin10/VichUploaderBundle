@@ -25,4 +25,12 @@ interface UploaderInterface
      * @param UploadableInterface $uploadable The uploadable object.
      */
     function remove(UploadableInterface $uploadable);
+    
+    /**
+     * Gets the path relative to the web root directory  for the 
+     * uploadable object.
+     * 
+     * @param UploadableInterface $uploadable The uploadable object.
+     */
+    function getPublicPath(UploadableInterface $uploadable);
 }

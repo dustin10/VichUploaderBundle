@@ -6,10 +6,9 @@
     
     <services>
         
-        <service id="vich_uploader.uploader" class="Vich\UploaderBundle\Upload\Uploader">
-            <argument type="service" id="vich_uploader.namer" />
-            <argument>%vich_uploader.mappings%</argument>
-            <argument>%vich_uploader.web_dir_name%</argument>
+        <service id="vich_uploader.twig.extension.uploader" class="Vich\UploaderBundle\Twig\Extension\UploaderExtension" public="false">
+            <argument type="service" id="vich_uploader.uploader" />
+            <tag name="twig.extension" />
         </service>
         
     </services>

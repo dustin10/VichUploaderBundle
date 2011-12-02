@@ -24,15 +24,22 @@ class Uploader implements UploaderInterface
     protected $mappings;
     
     /**
+     * @var string $webDirName
+     */
+    protected $webDirName;
+    
+    /**
      * Constructs a new instance of Uploader.
      * 
      * @param NamerInterface $namer The namer.
      * @param array $mappings The mappings.
+     * @param string $webDirName The name of the application's web root directory.
      */
-    public function __construct(NamerInterface $namer, array $mappings)
+    public function __construct(NamerInterface $namer, array $mappings, $webDirName)
     {
         $this->namer = $namer;
         $this->mappings = $mappings;
+        $this->webDirName = $webDirName;
     }
     
     /**
@@ -70,6 +77,18 @@ class Uploader implements UploaderInterface
             
             unlink(sprintf('%s/%s', $dir, $name));
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getPublicPath(UploadableInterface $uploadable)
+    {
+        $uploadDir = $this->getUploadDirForClass(get_class($uploadable));
+        $index = strpos($uploadDir, $this->webDirName);
+        $relDir = substr($uploadDir, $index + strlen($this->webDirName));
+        
+        return sprintf('%s/%s', $relDir, $uploadable->getFileName());
     }
     
     /**
