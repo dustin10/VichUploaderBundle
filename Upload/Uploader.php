@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Upload;
 
 use Vich\UploaderBundle\Upload\UploaderInterface;
 use Vich\UploaderBundle\Model\UploadableInterface;
-use Vich\UploaderBundle\Naming\NamerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Uploader.
@@ -14,9 +14,9 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 class Uploader implements UploaderInterface
 {
     /**
-     * @var NamerInterface $namer
+     * @var ContainerInterface $namer
      */
-    protected $namer;
+    protected $container;
     
     /**
      * @var array $mappings
@@ -31,13 +31,13 @@ class Uploader implements UploaderInterface
     /**
      * Constructs a new instance of Uploader.
      * 
-     * @param NamerInterface $namer The namer.
+     * @param ContainerInterface $container The container.
      * @param array $mappings The mappings.
      * @param string $webDirName The name of the application's web root directory.
      */
-    public function __construct(NamerInterface $namer, array $mappings, $webDirName)
+    public function __construct(ContainerInterface $container, array $mappings, $webDirName)
     {
-        $this->namer = $namer;
+        $this->container = $container;
         $this->mappings = $mappings;
         $this->webDirName = $webDirName;
     }
@@ -56,7 +56,8 @@ class Uploader implements UploaderInterface
         $class = get_class($uploadable);
         
         $uploadDir = $this->getUploadDirForClass($class);
-        $name = $this->namer->name($uploadable);
+        $namer = $this->getNamerForClass($class);
+        $name = $namer->name($uploadable);
         
         $file->move($uploadDir, $name);
         
@@ -107,6 +108,28 @@ class Uploader implements UploaderInterface
         }
         
         return $this->mappings[$class]['upload_dir'];
+    }
+    
+    /**
+     * Gets the configured namer for the class.
+     * 
+     * @param string $class The class.
+     * @return NamerInterface The configured namer.
+     */
+    protected function getNamerForClass($class)
+    {
+        if (!isset($this->mappings[$class])) {
+            throw new \InvalidArgumentException(sprintf(
+                'No namer mapping found for class: "%s"',
+                $class
+            ));
+        }
+        
+        if (isset($this->mappings[$class]['namer'])) {
+            return $this->container->get($this->mappings[$class]['namer']);
+        }
+        
+        return $this->container->get('vich_uploader.namer');
     }
     
     /**
