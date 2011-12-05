@@ -70,16 +70,17 @@ vich_uploader:
     db_driver: orm # or mongodb
 ```
 
-In order to map options to you use the fully qualified class name of the entity 
-under the `mappings` key. So, if your entity was `Acme\DemoBundle\Entity\Product`, 
-the configuration for this entity would be as follows:
+In order to map configuration options to your entity you use the fully qualified 
+class name under the `mappings` key. So, if your entity was 
+`Acme\DemoBundle\Entity\Product`, the configuration for this entity would be 
+as follows:
 
 ``` yaml
 vich_uploader:
     # ...
     mappings:
         Acme\DemoBundle\Entity\Product:
-            upload_dir: %kernel.base_dir%/../web/images/products
+            upload_dir: %kernel.root_dir%/../web/images/products
 ```
 
 The `upload_dir` is the only required configuration option for an entity mapping. 
@@ -92,10 +93,8 @@ filesystem when the entity is removed.
 
 **Note:**
 
-```
-A verbose configuration reference including all configuration options and their 
-default values is included at the bottom of this document.
-```
+> A verbose configuration reference including all configuration options and their 
+> default values is included at the bottom of this document.
 
 ## Implement the UploadableInterface
 
@@ -166,7 +165,7 @@ vich_uploader:
     mappings:
         Acme\DemoBundle\Entity\Product:
             upload_dir: ~ # required
-            namer: ~ # specify a namer service id for this entity
-            delete_on_remove: true
+            namer: ~ # specify a namer service id for this entity, null default
+            delete_on_remove: true # determines whether to delete file upon removal of entity
         # ...
 ```
