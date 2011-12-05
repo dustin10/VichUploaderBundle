@@ -6,11 +6,11 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Model\UploadableInterface;
 
 /**
- * FileNamer.
+ * OriginalFilenameNamer.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class FileNamer implements NamerInterface
+class OriginalFilenameNamer implements NamerInterface
 {
     /**
      * {@inheritDoc}
