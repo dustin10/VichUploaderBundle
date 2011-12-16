@@ -114,7 +114,7 @@ two namers included with the bundle:
 
 - `vich_uploader.namer.default`: The default namer, it simply uses the same name 
 as the uploaded file
-- `vich_uploader.namer.md5`: This namer uses `md5(time())` as the name of the file
+- `vich_uploader.namer.md5`: This namer uses `md5($file->getClientOriginalName() . time())` as the name of the file
 
 To create a custom namer, simply implement the `NamerInterface` and return a string 
 in the `name` method. Since your entity is passed to the `name` method you are free 
