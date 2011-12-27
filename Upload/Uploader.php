@@ -52,11 +52,8 @@ class Uploader implements UploaderInterface
             return;
         }
         
-        // todo: deal with Proxy
-        $class = get_class($uploadable);
-        
-        $uploadDir = $this->getUploadDirForClass($class);
-        $namer = $this->getNamerForClass($class);
+        $uploadDir = $this->getUploadDirForUploadable($uploadable);
+        $namer = $this->getNamerForUploadable($uploadable);
         $name = $namer->name($uploadable);
         
         $file->move($uploadDir, $name);
@@ -69,11 +66,8 @@ class Uploader implements UploaderInterface
      */
     public function remove(UploadableInterface $uploadable)
     {
-        // todo: deal with Proxy
-        $class = get_class($uploadable);
-        
-        if ($this->shouldDeleteFileOnRemove($class)) {
-            $dir = $this->getUploadDirForClass($class);
+        if ($this->shouldDeleteFileOnRemove($uploadable)) {
+            $dir = $this->getUploadDirForUploadable($uploadable);
             $name = $uploadable->getFileName();
             
             unlink(sprintf('%s/%s', $dir, $name));
@@ -85,7 +79,7 @@ class Uploader implements UploaderInterface
      */
     public function getPublicPath(UploadableInterface $uploadable)
     {
-        $uploadDir = $this->getUploadDirForClass(get_class($uploadable));
+        $uploadDir = $this->getUploadDirForUploadable($uploadable);
         $index = strpos($uploadDir, $this->webDirName);
         $relDir = substr($uploadDir, $index + strlen($this->webDirName));
         
@@ -95,38 +89,28 @@ class Uploader implements UploaderInterface
     /**
      * Gets the configured upload directory for the specified class name.
      * 
-     * @param string $class The class name.
+     * @param UploadableInterface $obj The object.
      * @return string The upload directory.
      */
-    protected function getUploadDirForClass($class)
+    protected function getUploadDirForUploadable(UploadableInterface $obj)
     {
-        if (!isset($this->mappings[$class])) {
-            throw new \InvalidArgumentException(sprintf(
-                'No upload directory mapping found for class: "%s"',
-                $class
-            ));
-        }
+        $mapping = $this->getMappingForUploadable($obj);
         
-        return $this->mappings[$class]['upload_dir'];
+        return $mapping['upload_dir'];
     }
     
     /**
-     * Gets the configured namer for the class.
+     * Gets the configured namer for the object.
      * 
-     * @param string $class The class.
+     * @param UploadableInterface $obj The object.
      * @return NamerInterface The configured namer.
      */
-    protected function getNamerForClass($class)
+    protected function getNamerForUploadable(UploadableInterface $obj)
     {
-        if (!isset($this->mappings[$class])) {
-            throw new \InvalidArgumentException(sprintf(
-                'No namer mapping found for class: "%s"',
-                $class
-            ));
-        }
+        $mapping = $this->getMappingForUploadable($obj);
         
-        if (isset($this->mappings[$class]['namer'])) {
-            return $this->container->get($this->mappings[$class]['namer']);
+        if ($mapping['namer']) {
+            return $this->container->get($mapping['namer']);
         }
         
         return $this->container->get('vich_uploader.namer');
@@ -136,18 +120,33 @@ class Uploader implements UploaderInterface
      * Determines if the class is configured to have its file deleted upon 
      * removal.
      * 
-     * @param string $class The class name.
+     * @param UploadableInterface $obj The object.
      * @return string True if the file should be deleted, false otherwise.
      */
-    protected function shouldDeleteFileOnRemove($class)
+    protected function shouldDeleteFileOnRemove(UploadableInterface $obj)
     {
-        if (!isset($this->mappings[$class])) {
-            throw new \InvalidArgumentException(sprintf(
-                'No delete on remove mapping found for class: "%s"',
-                $class
-            ));
+        $mapping = $this->getMappingForUploadable($obj);
+        
+        return $mapping['delete_on_remove'];
+    }
+    
+    /**
+     * Gets the configured mappings for the specified object.
+     * 
+     * @param UploadableInterface $obj The object.
+     * @return array The mappings for the specified object.
+     */
+    protected function getMappingForUploadable(UploadableInterface $obj)
+    {
+        foreach (array_keys($this->mappings) as $class) {
+            if (get_class($obj) === $class || is_subclass_of($obj, $class)) {
+                return $this->mappings[$class];
+            }
         }
         
-        return $this->mappings[$class]['delete_on_remove'];
+        throw new \InvalidArgumentException(sprintf(
+            'No mapping found for class: "%s"',
+            $class
+        ));
     }
 }
