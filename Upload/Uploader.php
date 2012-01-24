@@ -3,8 +3,9 @@
 namespace Vich\UploaderBundle\Upload;
 
 use Vich\UploaderBundle\Upload\UploaderInterface;
-use Vich\UploaderBundle\Model\UploadableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Vich\UploaderBundle\Driver\AnnotationDriver;
+use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
  * Uploader.
@@ -14,9 +15,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Uploader implements UploaderInterface
 {
     /**
-     * @var ContainerInterface $namer
+     * @var ContainerInterface $container
      */
     protected $container;
+
+    /**
+     * @var AnnotationDriver $driver
+     */
+    protected $driver;
+
+    /**
+     * @var AdapterInterface $adapter
+     */
+    protected $adapter;
     
     /**
      * @var array $mappings
@@ -27,17 +38,21 @@ class Uploader implements UploaderInterface
      * @var string $webDirName
      */
     protected $webDirName;
-    
+
     /**
      * Constructs a new instance of Uploader.
-     * 
-     * @param ContainerInterface $container The container.
-     * @param array $mappings The mappings.
-     * @param string $webDirName The name of the application's web root directory.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
+     * @param \Vich\UploaderBundle\Driver\AnnotationDriver $driver The driver.
+     * @param \Vich\UploaderBundle\Adapter\AdapterInterface $adapter The adapter.
+     * @param array $mappings The configured mappings.
+     * @param $webDirName The name of the application's public directory.
      */
-    public function __construct(ContainerInterface $container, array $mappings, $webDirName)
+    public function __construct(ContainerInterface $container, AnnotationDriver $driver, AdapterInterface $adapter, array $mappings, $webDirName)
     {
         $this->container = $container;
+        $this->driver = $driver;
+        $this->adapter = $adapter;
         $this->mappings = $mappings;
         $this->webDirName = $webDirName;
     }
@@ -45,108 +60,106 @@ class Uploader implements UploaderInterface
     /**
      * {@inheritDoc}
      */
-    public function upload(UploadableInterface $uploadable)
+    public function upload($obj)
     {
-        $file = $uploadable->getFile();
-        if (null === $file) {
-            return;
+        $class = $this->adapter->getReflectionClass($obj);
+        $uploadableFields = $this->driver->readUploadableFields($class);
+
+        foreach($uploadableFields as $uploadableField) {
+            $mapping = $this->getMapping($uploadableField->getMapping());
+
+            $prop = $class->getProperty($uploadableField->getPropertyName());
+            $prop->setAccessible(true);
+
+            $file = $prop->getValue($obj);
+            if (is_null($file)) {
+                continue;
+            }
+
+            $uploadDir = $mapping['upload_dir'];
+
+            if (!isset($mapping['namer'])) {
+                $name = $file->getClientOriginalName();
+            } else {
+                $namer = $this->container->get($mapping['namer']);
+                $name = $namer->name($obj);
+            }
+
+            $file->move($uploadDir, $name);
+
+            $nameProp = $class->getProperty($uploadableField->getFileNameProperty());
+            $nameProp->setAccessible(true);
+            $nameProp->setValue($obj, $name);
         }
-        
-        $uploadDir = $this->getUploadDirForUploadable($uploadable);
-        $namer = $this->getNamerForUploadable($uploadable);
-        $name = $namer->name($uploadable);
-        
-        $file->move($uploadDir, $name);
-        
-        $uploadable->setFileName($name);
     }
     
     /**
      * {@inheritDoc}
      */
-    public function remove(UploadableInterface $uploadable)
+    public function remove($obj)
     {
-        if ($this->shouldDeleteFileOnRemove($uploadable)) {
-            $dir = $this->getUploadDirForUploadable($uploadable);
-            $name = $uploadable->getFileName();
-            
-            unlink(sprintf('%s/%s', $dir, $name));
+        $class = $this->adapter->getReflectionClass($obj);
+        $uploadableFields = $this->driver->readUploadableFields($class);
+
+        foreach ($uploadableFields as $uploadableField) {
+            $mapping = $this->getMapping($uploadableField->getMapping());
+
+            if ($mapping['delete_on_remove']) {
+                $dir = $mapping['upload_dir'];
+
+                $prop = $class->getProperty($uploadableField->getFileNameProperty());
+                $prop->setAccessible(true);
+                $name = $prop->getValue($obj);
+
+                unlink(sprintf('%s/%s', $dir, $name));
+            }
         }
     }
     
     /**
      * {@inheritDoc}
      */
-    public function getPublicPath(UploadableInterface $uploadable)
+    public function getPublicPath($obj, $field)
     {
-        $uploadDir = $this->getUploadDirForUploadable($uploadable);
-        $index = strpos($uploadDir, $this->webDirName);
-        $relDir = substr($uploadDir, $index + strlen($this->webDirName));
-        
-        return sprintf('%s/%s', $relDir, $uploadable->getFileName());
-    }
-    
-    /**
-     * Gets the configured upload directory for the specified class name.
-     * 
-     * @param UploadableInterface $obj The object.
-     * @return string The upload directory.
-     */
-    protected function getUploadDirForUploadable(UploadableInterface $obj)
-    {
-        $mapping = $this->getMappingForUploadable($obj);
-        
-        return $mapping['upload_dir'];
-    }
-    
-    /**
-     * Gets the configured namer for the object.
-     * 
-     * @param UploadableInterface $obj The object.
-     * @return NamerInterface The configured namer.
-     */
-    protected function getNamerForUploadable(UploadableInterface $obj)
-    {
-        $mapping = $this->getMappingForUploadable($obj);
-        
-        if ($mapping['namer']) {
-            return $this->container->get($mapping['namer']);
+        $class = $this->adapter->getReflectionClass($obj);
+        $uploadableFields = $this->driver->readUploadableFields($class);
+
+        foreach ($uploadableFields as $uploadableField) {
+            if ($uploadableField->getPropertyName() === $field) {
+                $mapping = $this->getMapping($uploadableField->getMapping());
+
+                $uploadDir = $mapping['upload_dir'];
+                $index = strpos($uploadDir, $this->webDirName);
+                $relDir = substr($uploadDir, $index + strlen($this->webDirName));
+
+                $prop = $class->getProperty($uploadableField->getFileNameProperty());
+                $prop->setAccessible(true);
+                $name = $prop->getValue($obj);
+
+                return sprintf('%s/%s', $relDir, $name);
+            }
         }
-        
-        return $this->container->get('vich_uploader.namer');
-    }
-    
-    /**
-     * Determines if the class is configured to have its file deleted upon 
-     * removal.
-     * 
-     * @param UploadableInterface $obj The object.
-     * @return string True if the file should be deleted, false otherwise.
-     */
-    protected function shouldDeleteFileOnRemove(UploadableInterface $obj)
-    {
-        $mapping = $this->getMappingForUploadable($obj);
-        
-        return $mapping['delete_on_remove'];
+
+        throw new \InvalidArgumentException(
+            sprintf('Unable to fine uploadable field named: "%s"', $field)
+        );
     }
     
     /**
      * Gets the configured mappings for the specified object.
      * 
-     * @param UploadableInterface $obj The object.
+     * @param string $name The mapping name.
      * @return array The mappings for the specified object.
      */
-    protected function getMappingForUploadable(UploadableInterface $obj)
+    protected function getMapping($name)
     {
-        foreach (array_keys($this->mappings) as $class) {
-            if (get_class($obj) === $class || is_subclass_of($obj, $class)) {
-                return $this->mappings[$class];
-            }
+        if (!array_key_exists($name, $this->mappings)) {
+            throw new \InvalidArgumentException(sprintf(
+                'No mapping found named: "%s"',
+                $name
+            ));
         }
-        
-        throw new \InvalidArgumentException(sprintf(
-            'No mapping found for class: "%s"',
-            $class
-        ));
+
+        return $this->mappings[$name];
     }
 }

@@ -6,7 +6,7 @@ use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
 use Vich\UploaderBundle\Upload\UploaderInterface;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\Model\UploadableInterface;
+use Vich\UploaderBundle\Driver\AnnotationDriver;
 
 /**
  * UploaderListener.
@@ -19,6 +19,11 @@ class UploaderListener implements EventSubscriber
      * @var AdapterInterface $adapter
      */
     protected $adapter;
+
+    /**
+     * @var AnnotationDriver $driver
+     */
+    protected $driver;
     
     /**
      * @var UploaderInterface $namer
@@ -27,13 +32,15 @@ class UploaderListener implements EventSubscriber
     
     /**
      * Constructs a new instance of UploaderListener.
-     * 
-     * @param AdapterInterface $adapter The adapter.
-     * @param UploaderInterface $uploader The uploader.
+     *
+     * @param \Vich\UploaderBundle\Adapter\AdapterInterface $adapter The adapter.
+     * @param \Vich\UploaderBundle\Driver\AnnotationDriver $driver The driver.
+     * @param \Vich\UploaderBundle\Upload\UploaderInterface $uploader The uploader.
      */
-    public function __construct(AdapterInterface $adapter, UploaderInterface $uploader)
+    public function __construct(AdapterInterface $adapter, AnnotationDriver $driver, UploaderInterface $uploader)
     {
         $this->adapter = $adapter;
+        $this->driver = $driver;
         $this->uploader = $uploader;
     }
     
@@ -54,7 +61,7 @@ class UploaderListener implements EventSubscriber
     /**
      * Checks for for file to upload.
      *
-     * @param EventArgs $args The event arguments.
+     * @param \Doctrine\Common\EventArgs $args The event arguments.
      */
     public function prePersist(EventArgs $args)
     {
@@ -96,13 +103,15 @@ class UploaderListener implements EventSubscriber
     }
     
     /**
-     * Tests if the object implements the UploadableInterface.
+     * Tests if the object is Uploadable.
      * 
      * @param object $obj The object.
      * @return boolean True if uploadable, false otherwise.
      */
     protected function isUploadable($obj)
     {
-        return $obj instanceof UploadableInterface;
+        $class = $this->adapter->getReflectionClass($obj);
+
+        return null !== $this->driver->readUploadable($class);
     }
 }

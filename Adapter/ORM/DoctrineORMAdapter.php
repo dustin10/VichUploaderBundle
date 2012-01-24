@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Adapter\ORM;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Proxy\Proxy;
 
 /**
  * DoctrineORMAdapter.
@@ -31,5 +32,17 @@ class DoctrineORMAdapter implements AdapterInterface
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata(get_class($obj));
         $uow->recomputeSingleEntityChangeSet($metadata, $obj);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getReflectionClass($obj)
+    {
+        if ($obj instanceof Proxy) {
+            return new \ReflectionClass(get_parent_class($obj));
+        }
+
+        return new \ReflectionClass($obj);
     }
 }

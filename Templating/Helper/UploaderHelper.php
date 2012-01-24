@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Templating\Helper;
 
 use Symfony\Component\Templating\Helper\Helper;
 use Vich\UploaderBundle\Upload\UploaderInterface;
-use Vich\UploaderBundle\Model\UploadableInterface;
 
 /**
  * UploaderHelper.
@@ -39,14 +38,15 @@ class UploaderHelper extends Helper
     }
     
     /**
-     * Gets the public path for the file associated with the uploadable 
+     * Gets the public path for the file associated with the
      * object.
      * 
-     * @param UploadableInterface $uploadable The uploadable object.
+     * @param object $obj The object.
+     * @param string $field The field.
      * @return string The public path.
      */
-    public function asset(UploadableInterface $uploadable)
+    public function asset($obj, $field)
     {
-        return $this->uploader->getPublicPath($uploadable);
+        return $this->uploader->getPublicPath($obj, $field);
     }
 }

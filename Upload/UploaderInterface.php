@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\Upload;
 
-use Vich\UploaderBundle\Model\UploadableInterface;
-
 /**
  * UploaderInterface.
  * 
@@ -14,23 +12,25 @@ interface UploaderInterface
     /**
      * Uploads the uploadable.
      * 
-     * @param UploadableInterface $uploadable The uploadable object.
+     * @param object $obj The object.
      */
-    function upload(UploadableInterface $uploadable);
+    function upload($obj);
     
     /**
-     * Removes the file associated with the uploadable if configured to
+     * Removes the file associated with the object if configured to
      * do so.
      * 
-     * @param UploadableInterface $uploadable The uploadable object.
+     * @param object $obj The object.
      */
-    function remove(UploadableInterface $uploadable);
+    function remove($obj);
     
     /**
      * Gets the path relative to the web root directory  for the 
-     * uploadable object.
+     * object.
      * 
-     * @param UploadableInterface $uploadable The uploadable object.
+     * @param object $obj The object.
+     * @param string $field The field.
+     * @return string The path.
      */
-    function getPublicPath(UploadableInterface $uploadable);
+    function getPublicPath($obj, $field);
 }

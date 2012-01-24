@@ -25,4 +25,13 @@ interface AdapterInterface
      * @param EventArgs $e The event arguments.
      */
     function recomputeChangeSet(EventArgs $e);
+
+    /**
+     * Gets the reflection class for the object taking
+     * proxies into account.
+     *
+     * @param object $obj The object.
+     * @return \ReflectionClass The reflection class.
+     */
+    function getReflectionClass($obj);
 }

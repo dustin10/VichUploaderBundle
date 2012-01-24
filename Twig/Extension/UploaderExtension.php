@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Twig\Extension;
 
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
-use Vich\UploaderBundle\Model\UploadableInterface;
 
 /**
  * UploaderExtension.
@@ -57,14 +56,15 @@ class UploaderExtension extends \Twig_Extension
     }
     
     /**
-     * Gets the public path for the file associated with the uploadable 
+     * Gets the public path for the file associated with the uploadable
      * object.
      * 
-     * @param UploadableInterface $uploadable The uploadable object.
+     * @param object $obj The object.
+     * @param string $field The field.
      * @return string The public path.
      */
-    public function asset(UploadableInterface $uploadable)
+    public function asset($obj, $field)
     {
-        return $this->helper->asset($uploadable);
+        return $this->helper->asset($obj, $field);
     }
 }

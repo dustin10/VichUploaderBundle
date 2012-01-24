@@ -8,6 +8,7 @@
         
         <service id="vich_uploader.listener.uploader" class="Vich\UploaderBundle\EventListener\UploaderListener" public="false">
             <argument type="service" id="vich_uploader.adapter" />
+            <argument type="service" id="vich_uploader.annotation_driver" />
             <argument type="service" id="vich_uploader.uploader" />
         </service>
         

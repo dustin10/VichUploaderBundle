@@ -3,13 +3,13 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    
+
     <services>
-        
-        <service id="vich_uploader.namer.default" class="Vich\UploaderBundle\Naming\OriginalFilenameNamer" public="false" />
-        
-        <service id="vich_uploader.namer.md5" class="Vich\UploaderBundle\Naming\MD5Namer" public="false" />
-        
+
+        <service id="vich_uploader.annotation_driver" class="Vich\UploaderBundle\Driver\AnnotationDriver" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
     </services>
-        
+
 </container>

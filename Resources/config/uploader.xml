@@ -8,6 +8,8 @@
         
         <service id="vich_uploader.uploader" class="Vich\UploaderBundle\Upload\Uploader">
             <argument type="service" id="service_container" />
+            <argument type="service" id="vich_uploader.annotation_driver" />
+            <argument type="service" id="vich_uploader.adapter" />
             <argument>%vich_uploader.mappings%</argument>
             <argument>%vich_uploader.web_dir_name%</argument>
         </service>

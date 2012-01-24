@@ -55,7 +55,7 @@ class VichUploaderExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-        $toLoad = array('namer.xml', 'adapter.xml', 'listener.xml', 'uploader.xml', 'templating.xml');
+        $toLoad = array('adapter.xml', 'listener.xml', 'uploader.xml', 'templating.xml', 'driver.xml');
         foreach ($toLoad as $file) {
             $loader->load($file);
         }
@@ -71,7 +71,5 @@ class VichUploaderExtension extends Extension
         
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
-        
-        $container->setAlias('vich_uploader.namer', $config['namer']);
     }
 }
