@@ -183,13 +183,16 @@ follows:
 ``` php
 $entity = // get the entity..
 $uploader = $this->container->get('vich_uploader.uploader');
-$path = $uploader->getPublicPath($entity);
+$path = $uploader->getPublicPath($entity, 'image');
 ```
 or in a Twig template you can use the `vich_uploader_asset` function:
 
 ``` twig
-<img src="{{ vich_uploader_asset(product) }}" alt="{{ product.name }}" />
+<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
 ```
+
+You must specify the annotated property you wish to get the file path for.
+
 ## Limitations
 
 - Currently the bundle only supports generating a relative url for the file.
