@@ -8,7 +8,11 @@ basis. The bundle also provides templating helpers for generating URLs to the
 file as well. The file can also be configured to be removed from the file system 
 upon removal of the entity.
 
-Currently the bundle supports Doctrine ORM and MongoDB.
+Current limitations:
+
+- Doctrine ORM and MongoDB
+- Saving/deleting files to the local filesystem only
+- Generating a relative url for the file only
 
 ## Documentation
 
