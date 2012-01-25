@@ -126,6 +126,7 @@ use Vich\UploaderBundle\Annotation as Vich;
 /**
  * @ORM\Entity
  * @Vich\Uploadable
+ */
 class Product
 {
     /**
