@@ -54,7 +54,8 @@ class UploaderListener implements EventSubscriber
         return array(
             'prePersist',
             'preUpdate',
-            'postRemove'
+            'postRemove',
+            'postLoad'
         );
     }
     
@@ -99,6 +100,20 @@ class UploaderListener implements EventSubscriber
         
         if ($this->isUploadable($obj)) {
             $this->uploader->remove($obj);
+        }
+    }
+
+    /**
+     * Populates uploadable fields from filename properties
+     * if necessary.
+     *
+     * @param \Doctrine\Common\EventArgs $args
+     */
+    public function postLoad(EventArgs $args)
+    {
+        $obj = $this->adapter->getObjectFromArgs($args);
+        if ($this->isUploadable($obj)) {
+            $this->uploader->populateUploadableFields($obj);
         }
     }
     

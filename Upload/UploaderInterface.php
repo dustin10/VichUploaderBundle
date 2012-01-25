@@ -15,7 +15,17 @@ interface UploaderInterface
      * @param object $obj The object.
      */
     function upload($obj);
-    
+
+    /**
+     * Populates all UploadableField-properties in the object with
+     * a Symfony\Component\HttpFoundation\File\File object representing
+     * their file. The paths of these files are derived from the
+     * corresponding filename properties.
+     *
+     * @param object $obj The object.
+     */
+    function populateUploadableFields($obj);
+
     /**
      * Removes the file associated with the object if configured to
      * do so.

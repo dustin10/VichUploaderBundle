@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\Upload;
 
 use Vich\UploaderBundle\Upload\UploaderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
@@ -72,7 +74,7 @@ class Uploader implements UploaderInterface
             $prop->setAccessible(true);
 
             $file = $prop->getValue($obj);
-            if (is_null($file)) {
+            if (is_null($file) || !$file instanceof UploadedFile) {
                 continue;
             }
 
@@ -90,6 +92,31 @@ class Uploader implements UploaderInterface
             $nameProp = $class->getProperty($uploadableField->getFileNameProperty());
             $nameProp->setAccessible(true);
             $nameProp->setValue($obj, $name);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function populateUploadableFields($obj) {
+        $class = $this->adapter->getReflectionClass($obj);
+        $uploadableFields = $this->driver->readUploadableFields($class);
+
+        foreach ($uploadableFields as $uploadableField) {
+            $mapping = $this->getMapping($uploadableField->getMapping());
+            $dir = $mapping['upload_dir'];
+
+            $nameProp = $class->getProperty($uploadableField->getFileNameProperty());
+            $nameProp->setAccessible(true);
+            $name = $nameProp->getValue($obj);
+
+            if (is_null($name)) {
+                continue;
+            }
+
+            $prop = $class->getProperty($uploadableField->getPropertyName());
+            $prop->setAccessible(true);
+            $prop->setValue($obj, new File(sprintf('%s/%s', $dir, $name), false));
         }
     }
     
