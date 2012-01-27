@@ -57,4 +57,30 @@ class AnnotationDriver
 
         return $fields;
     }
+
+    /**
+     * Attempts to read the uploadable field annotation of the
+     * specified property.
+     *
+     * @param \ReflectionClass $class The class.
+     * @param string $field The field
+     * @return null|\Vich\UploaderBundle\Annotation\UploadableField The uploadable field.
+     */
+    public function readUploadableField(\ReflectionClass $class, $field)
+    {
+        try {
+            $prop = $class->getProperty($field);
+
+            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Annotation\UploadableField');
+            if (null === $field) {
+                return null;
+            }
+
+            $field->setPropertyName($prop->getName());
+
+            return $field;
+        } catch (\ReflectionException $e) {
+            return null;
+        }
+    }
 }
