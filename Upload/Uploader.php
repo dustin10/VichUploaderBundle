@@ -82,7 +82,7 @@ class Uploader implements UploaderInterface
                 $name = $file->getClientOriginalName();
             } else {
                 $namer = $this->container->get($mapping['namer']);
-                $name = $namer->name($obj);
+                $name = $namer->name($obj, $prop);
             }
 
             $file->move($uploadDir, $name);
