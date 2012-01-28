@@ -1,6 +1,8 @@
 VichUploaderBundle
 ==================
 
+[![Build Status](https://secure.travis-ci.org/dustin10/VichUploaderBundle.png?branch=master)](http://travis-ci.org/dustin10/VichUploaderBundle)
+
 The VichUploaderBundle is a simple Symfony2 bundle that attempts to ease file 
 uploads that are attached to an entity. The bundle will automatically name and 
 save the uploaded file according to the configuration specified on a per property

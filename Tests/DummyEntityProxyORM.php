@@ -11,5 +11,7 @@ use Doctrine\ORM\Proxy\Proxy;
  */
 class DummyEntityProxyORM extends DummyEntity implements Proxy
 {
+    public function __load() { }
 
+    public function __isInitialized() { }
 }

@@ -11,5 +11,7 @@ use Doctrine\ODM\MongoDB\Proxy\Proxy;
  */
 class DummyEntityProxyMongo extends DummyEntity implements Proxy
 {
+    public function __load() { }
 
+    public function __isInitialized() { }
 }
