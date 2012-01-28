@@ -1,6 +1,6 @@
 <?php
 
-namespace Vich\UploaderBundle\Annotation;
+namespace Vich\UploaderBundle\Mapping\Annotation;
 
 /**
  * Uploadable.

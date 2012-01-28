@@ -34,7 +34,7 @@ class AnnotationDriver
      */
     public function readUploadable(\ReflectionClass $class)
     {
-        return $this->reader->getClassAnnotation($class, 'Vich\UploaderBundle\Annotation\Uploadable');
+        return $this->reader->getClassAnnotation($class, 'Vich\UploaderBundle\Mapping\Annotation\Uploadable');
     }
 
     /**
@@ -48,7 +48,7 @@ class AnnotationDriver
         $fields = array();
 
         foreach ($class->getProperties() as $prop) {
-            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Annotation\UploadableField');
+            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
             if (null !== $field) {
                 $field->setPropertyName($prop->getName());
                 $fields[] = $field;
@@ -56,5 +56,31 @@ class AnnotationDriver
         }
 
         return $fields;
+    }
+
+    /**
+     * Attempts to read the uploadable field annotation of the
+     * specified property.
+     *
+     * @param \ReflectionClass $class The class.
+     * @param string $field The field
+     * @return null|\Vich\UploaderBundle\Annotation\UploadableField The uploadable field.
+     */
+    public function readUploadableField(\ReflectionClass $class, $field)
+    {
+        try {
+            $prop = $class->getProperty($field);
+
+            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
+            if (null === $field) {
+                return null;
+            }
+
+            $field->setPropertyName($prop->getName());
+
+            return $field;
+        } catch (\ReflectionException $e) {
+            return null;
+        }
     }
 }

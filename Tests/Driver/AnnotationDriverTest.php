@@ -21,7 +21,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadUploadableAnnotation()
     {
-        $uploadable = $this->getMockBuilder('Vich\UploaderBundle\Annotation\Uploadable')
+        $uploadable = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\Uploadable')
                       ->disableOriginalConstructor()
                       ->getMock();
 
@@ -63,7 +63,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadOneUploadableField()
     {
-        $uploadableField = $this->getMockBuilder('Vich\UploaderBundle\Annotation\UploadableField')
+        $uploadableField = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\UploadableField')
                            ->disableOriginalConstructor()
                            ->getMock();
         $uploadableField
@@ -98,14 +98,14 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadTwoUploadableFields()
     {
-        $fileField = $this->getMockBuilder('Vich\UploaderBundle\Annotation\UploadableField')
+        $fileField = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\UploadableField')
                      ->disableOriginalConstructor()
                      ->getMock();
         $fileField
            ->expects($this->once())
            ->method('setPropertyName');
 
-        $imageField = $this->getMockBuilder('Vich\UploaderBundle\Annotation\UploadableField')
+        $imageField = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\UploadableField')
                      ->disableOriginalConstructor()
                      ->getMock();
         $imageField
