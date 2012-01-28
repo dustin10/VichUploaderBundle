@@ -81,7 +81,7 @@ class FileSystemStorage implements StorageInterface
 
         return sprintf('%s/%s',
             $mapping->getUploadDir(),
-            $mapping->getFileNameProperty()->getValue()
+            $mapping->getFileNameProperty()->getValue($obj)
         );
     }
 }

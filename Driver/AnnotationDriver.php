@@ -34,7 +34,7 @@ class AnnotationDriver
      */
     public function readUploadable(\ReflectionClass $class)
     {
-        return $this->reader->getClassAnnotation($class, 'Vich\UploaderBundle\Annotation\Uploadable');
+        return $this->reader->getClassAnnotation($class, 'Vich\UploaderBundle\Mapping\Annotation\Uploadable');
     }
 
     /**
@@ -48,7 +48,7 @@ class AnnotationDriver
         $fields = array();
 
         foreach ($class->getProperties() as $prop) {
-            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Annotation\UploadableField');
+            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
             if (null !== $field) {
                 $field->setPropertyName($prop->getName());
                 $fields[] = $field;
@@ -71,7 +71,7 @@ class AnnotationDriver
         try {
             $prop = $class->getProperty($field);
 
-            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Annotation\UploadableField');
+            $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
             if (null === $field) {
                 return null;
             }

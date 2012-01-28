@@ -55,7 +55,10 @@ class VichUploaderExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-        $toLoad = array('adapter.xml', 'listener.xml', 'uploader.xml', 'templating.xml', 'driver.xml', 'factory.xml');
+        $toLoad = array(
+            'adapter.xml', 'listener.xml', 'storage.xml', 'injector.xml',
+            'templating.xml', 'driver.xml', 'factory.xml'
+        );
         foreach ($toLoad as $file) {
             $loader->load($file);
         }

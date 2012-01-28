@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Injector;
 
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * FileInjector.
@@ -35,7 +36,7 @@ class FileInjector implements FileInjectorInterface
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
             if ($mapping->getInjectOnLoad()) {
-                $name = $mapping->getFileNamePropety()->getValue();
+                $name = $mapping->getFileNameProperty()->getValue($obj);
                 if (is_null($name)) {
                     continue;
                 }
@@ -44,7 +45,7 @@ class FileInjector implements FileInjectorInterface
 
                 $mapping->getProperty()->setValue(
                     $obj,
-                    new \Symfony\Component\HttpFoundation\File\File($path, false)
+                    new File($path, false)
                 );
             }
         }
