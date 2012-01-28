@@ -193,4 +193,16 @@ class PropertyMapping
     {
         return $this->mapping['delete_on_remove'];
     }
+
+    /**
+     * Determines if the uploadable field should be injected with a
+     * Symfony\Component\HttpFoundation\File\File instance when
+     * the object is loaded from the datastore.
+     *
+     * @return bool True if the field should be injected, false otherwise.
+     */
+    public function getInjectOnLoad()
+    {
+        return $this->mapping['inject_on_load'];
+    }
 }

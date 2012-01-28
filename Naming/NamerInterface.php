@@ -10,10 +10,11 @@ namespace Vich\UploaderBundle\Naming;
 interface NamerInterface
 {
     /**
-     * Creates a name for the file upload.
-     * 
+     * Creates a name for the file being uploaded.
+     *
      * @param object $obj The object the upload is attached to.
+     * @param string $field The name of the uploadable field to generate a name for.
      * @return string The file name.
      */
-    function name($obj);
+    function name($obj, $field);
 }

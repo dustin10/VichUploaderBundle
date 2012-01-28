@@ -6,7 +6,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Vich\UploaderBundle\Annotation\UploadableField;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 /**
  * PropertyMappingFactory.

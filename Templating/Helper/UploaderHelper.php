@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Templating\Helper;
 
 use Symfony\Component\Templating\Helper\Helper;
-use Vich\UploaderBundle\Upload\UploaderInterface;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * UploaderHelper.
@@ -13,18 +13,25 @@ use Vich\UploaderBundle\Upload\UploaderInterface;
 class UploaderHelper extends Helper
 {
     /**
-     * @var UploaderInterface $uploader
+     * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
      */
-    private $uploader;
+    protected $storage;
+
+    /**
+     * @var string $webDirName
+     */
+    protected $webDirName;
     
     /**
-     * Constructs a new instance of GeographicalExtension.
-     * 
-     * @param UploaderInterface $uploader
+     * Constructs a new instance of UploaderHelper.
+     *
+     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage The storage.
+     * @param string $webDirName The name of the application's web directory.
      */
-    public function __construct(UploaderInterface $uploader)
+    public function __construct(StorageInterface $storage, $webDirName)
     {
-        $this->uploader = $uploader;
+        $this->storage = $storage;
+        $this->webDirName = $webDirName;
     }
     
     /**
@@ -43,10 +50,14 @@ class UploaderHelper extends Helper
      * 
      * @param object $obj The object.
      * @param string $field The field.
-     * @return string The public path.
+     * @return string The public asset path.
      */
     public function asset($obj, $field)
     {
-        return $this->uploader->getPublicPath($obj, $field);
+        $path = $this->storage->resolvePath($obj, $field);
+
+        $index = strpos($path, $this->webDirName);
+
+        return substr($path, $index + strlen($this->webDirName));
     }
 }

@@ -1,53 +1,47 @@
 <?php
 
-namespace Vich\UploaderBundle\Upload;
+namespace Vich\UploaderBundle\Storage;
 
-use Vich\UploaderBundle\Upload\UploaderInterface;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Uploader.
- * 
+ * FileSystemStorage.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class Uploader implements UploaderInterface
+class FileSystemStorage implements StorageInterface
 {
     /**
-     * @var PropertyMappingFactory $container
+     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
      */
     protected $factory;
-    
-    /**
-     * @var string $webDirName
-     */
-    protected $webDirName;
 
     /**
-     * Constructs a new instance of Uploader.
+     * Constructs a new instance of FileSystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory The mapping factory.
-     * @param $webDirName The name of the application's public directory.
+     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory The factory.
      */
-    public function __construct(PropertyMappingFactory $factory, $webDirName)
+    public function __construct(PropertyMappingFactory $factory)
     {
         $this->factory = $factory;
-        $this->webDirName = $webDirName;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function upload($obj)
     {
         $mappings = $this->factory->fromObject($obj);
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $file = $mapping->getPropertyValue($obj);
-            if (is_null($file)) {
+            if (is_null($file) || !($file instanceof UploadedFile)) {
                 continue;
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj);
+                $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
             } else {
                 $name = $file->getClientOriginalName();
             }
@@ -57,14 +51,14 @@ class Uploader implements UploaderInterface
             $mapping->getFileNameProperty()->setValue($obj, $name);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function remove($obj)
     {
         $mappings = $this->factory->fromObject($obj);
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             if ($mapping->getDeleteOnRemove()) {
                 $name = $mapping->getFileNameProperty()->getValue($obj);
 
@@ -72,11 +66,11 @@ class Uploader implements UploaderInterface
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function getPublicPath($obj, $field)
+    public function resolvePath($obj, $field)
     {
         $mapping = $this->factory->fromField($obj, $field);
         if (null === $mapping) {
@@ -85,10 +79,9 @@ class Uploader implements UploaderInterface
             ));
         }
 
-        $uploadDir = $mapping->getUploadDir();
-        $index = strpos($uploadDir, $this->webDirName);
-        $relDir = substr($uploadDir, $index + strlen($this->webDirName));
-
-        return sprintf('%s/%s', $relDir, $mapping->getFilenameProperty()->getValue($obj));
+        return sprintf('%s/%s',
+            $mapping->getUploadDir(),
+            $mapping->getFileNameProperty()->getValue()
+        );
     }
 }
