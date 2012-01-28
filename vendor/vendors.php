@@ -10,6 +10,10 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Modified from FOSUserBundle. License included above.
+ */
+
 set_time_limit(0);
 
 if (isset($argv[1])) {
