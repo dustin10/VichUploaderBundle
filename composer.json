@@ -1,0 +1,26 @@
+{
+    "name": "vich/uploader-bundle",
+    "type": "symfony-bundle",
+    "description": "Ease file uploads attached to entities",
+    "keywords": ["file uploads", "upload"],
+    "homepage": "https://github.com/dustin10/VichUploaderBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dustin Dobervich",
+            "email": "ddobervich@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.*"
+    },
+    "suggest": {
+        "symfony/doctrine-bundle": "*",
+        "symfony/mongodb-odm-bundle": "*"
+    },
+    "autoload": {
+        "psr-0": { "Vich\\UploaderBundle": "" }
+    },
+    "target-dir": "Vich/UploaderBundle"
+}
