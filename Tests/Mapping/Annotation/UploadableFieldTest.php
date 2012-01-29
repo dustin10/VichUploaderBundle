@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 class UploadableFieldTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Exception
+     * @expectedException \InvalidArgumentException
      */
     public function testExceptionThrownWhenNoMappingAttribute()
     {
@@ -22,7 +22,7 @@ class UploadableFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException \InvalidArgumentException
      */
     public function testExceptionThrownWhenNoFileNamePropertyAttribute()
     {
