@@ -3,18 +3,20 @@ VichUploaderBundle
 
 [![Build Status](https://secure.travis-ci.org/dustin10/VichUploaderBundle.png?branch=master)](http://travis-ci.org/dustin10/VichUploaderBundle)
 
-The VichUploaderBundle is a simple Symfony2 bundle that attempts to ease file 
-uploads that are attached to an entity. The bundle will automatically name and 
-save the uploaded file according to the configuration specified on a per property
-basis. The bundle also provides templating helpers for generating URLs to the 
-file as well. The file can also be configured to be removed from the file system 
-upon removal of the entity.
+The VichUploaderBundle is a Symfony2 bundle that attempts to ease file
+uploads that are attached to an entities or documents.
+
+- Automatically name and save a file to a configured directory
+- Inject the file back into the entity or document when it is loaded from the datastore as an
+instance of `Symfony\Component\HttpFoundation\File\File`
+- Delete the file from the file system upon removal of the entity or document from the datastore
+- Templating helpers to generate public URLS to the file
+
+All of this functionality is fully configurable to allow for customization.
 
 Current limitations:
 
-- Doctrine ORM and MongoDB
 - Saving/deleting files to the local filesystem only
-- Generating a relative url for the file only
 
 ## Documentation
 
