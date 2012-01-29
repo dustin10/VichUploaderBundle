@@ -1,0 +1,8 @@
+phpunit.xml
+Tests/autoload.php
+nbproject
+catalog.xml
+.idea
+
+vendor/*
+!vendor/vendors.php
