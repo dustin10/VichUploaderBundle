@@ -61,6 +61,9 @@ class FileSystemStorage implements StorageInterface
         foreach ($mappings as $mapping) {
             if ($mapping->getDeleteOnRemove()) {
                 $name = $mapping->getFileNameProperty()->getValue($obj);
+                if (null === $name) {
+                    continue;
+                }
 
                 unlink(sprintf('%s/%s', $mapping->getUploadDir(), $name));
             }
