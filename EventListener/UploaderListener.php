@@ -75,7 +75,6 @@ class UploaderListener implements EventSubscriber
     public function prePersist(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        
         if ($this->isUploadable($obj)) {
             $this->storage->upload($obj);
         }
@@ -89,7 +88,6 @@ class UploaderListener implements EventSubscriber
     public function preUpdate(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        
         if ($this->isUploadable($obj)) {
             $this->storage->upload($obj);
             
@@ -119,7 +117,6 @@ class UploaderListener implements EventSubscriber
     public function postRemove(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        
         if ($this->isUploadable($obj)) {
             $this->storage->remove($obj);
         }
