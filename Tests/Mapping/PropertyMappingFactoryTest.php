@@ -186,6 +186,42 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that the fromField method returns null when an invalid
+     * field name is specified.
+     */
+    public function testFromFieldReturnsNullOnInvalidFieldName()
+    {
+        $obj = new DummyEntity();
+        $class = new \ReflectionClass($obj);
+
+        $uploadable = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\Uploadable')
+                      ->disableOriginalConstructor()
+                      ->getMock();
+
+        $this->adapter
+            ->expects($this->any())
+            ->method('getReflectionClass')
+            ->will($this->returnValue($class));
+
+        $this->driver
+            ->expects($this->once())
+            ->method('readUploadable')
+            ->with($class)
+            ->will($this->returnValue($uploadable));
+
+        $this->driver
+            ->expects($this->once())
+            ->method('readUploadableField')
+            ->with($class)
+            ->will($this->returnValue(null));
+
+        $factory = new PropertyMappingFactory($this->container, $this->driver, $this->adapter, array());
+        $mapping = $factory->fromField($obj, 'oops');
+
+        $this->assertNull($mapping);
+    }
+
+    /**
      * Creates a mock container.
      *
      * @return \Symfony\Component\DependencyInjection\ContainerInterface The container.
