@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests;
 
-use Vich\UploaderBundle\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable
