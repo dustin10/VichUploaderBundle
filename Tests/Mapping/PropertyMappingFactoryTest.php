@@ -221,6 +221,81 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($mapping);
     }
 
+    public function testConfiguredNamerRetrievedFromContainer()
+    {
+        $obj = new DummyEntity();
+        $class = new \ReflectionClass($obj);
+
+        $mappings = array(
+            'dummy_file' => array(
+                'upload_dir' => '/tmp',
+                'delete_on_remove' => true,
+                'namer' => 'my.custom.namer',
+                'inject_on_load' => true,
+            )
+        );
+
+        $uploadable = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\Uploadable')
+                      ->disableOriginalConstructor()
+                      ->getMock();
+
+        $fileField = $this->getMockBuilder('Vich\UploaderBundle\Mapping\Annotation\UploadableField')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $fileField
+            ->expects($this->any())
+            ->method('getMapping')
+            ->will($this->returnValue('dummy_file'));
+
+        $fileField
+            ->expects($this->once())
+            ->method('getPropertyName')
+            ->will($this->returnValue('file'));
+
+        $fileField
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue('fileName'));
+
+        $namer = $this->getMock('Vich\UploaderBundle\Naming\NamerInterface');
+
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->with('my.custom.namer')
+            ->will($this->returnValue($namer));
+
+        $this->adapter
+            ->expects($this->any())
+            ->method('getReflectionClass')
+            ->will($this->returnValue($class));
+
+        $this->driver
+            ->expects($this->once())
+            ->method('readUploadable')
+            ->with($class)
+            ->will($this->returnValue($uploadable));
+
+        $this->driver
+            ->expects($this->once())
+            ->method('readUploadableFields')
+            ->with($class)
+            ->will($this->returnValue(array($fileField)));
+
+        $factory = new PropertyMappingFactory($this->container, $this->driver, $this->adapter, $mappings);
+        $mappings = $factory->fromObject($obj);
+
+        $this->assertEquals(1, count($mappings));
+
+        if (count($mappings) > 0) {
+            $mapping = $mappings[0];
+
+            $this->assertEquals($namer, $mapping->getNamer());
+            $this->assertTrue($mapping->hasNamer());
+        }
+    }
+
     /**
      * Creates a mock container.
      *
