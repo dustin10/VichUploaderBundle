@@ -138,6 +138,10 @@ class PropertyMappingFactory
             $mapping->setNamer($this->container->get($config['namer']));
         }
 
+        if ($config['directory_namer']) {
+            $mapping->setDirectoryNamer($this->container->get($config['directory_namer']));
+        }
+
         return $mapping;
     }
 }

@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Mapping;
 
 use Vich\UploaderBundle\Naming\NamerInterface;
+use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 
 /**
  * PropertyMapping.
@@ -25,6 +26,11 @@ class PropertyMapping
      * @var NamerInterface $namer
      */
     protected $namer;
+
+    /**
+     * @var DirectoryNamerInterface $directoryNamer
+     */
+    protected $directoryNamer;
 
     /**
      * @var array $mapping
@@ -113,6 +119,36 @@ class PropertyMapping
     }
 
     /**
+     * Gets the configured directory namer.
+     *
+     * @return null|DirectoryNamerInterface The directory namer.
+     */
+    public function getDirectoryNamer()
+    {
+        return $this->directoryNamer;
+    }
+
+    /**
+     * Sets the directory namer.
+     *
+     * @param DirectoryNamerInterface $directoryNamer The directory namer.
+     */
+    public function setDirectoryNamer(DirectoryNamerInterface $directoryNamer)
+    {
+        $this->directoryNamer = $directoryNamer;
+    }
+
+    /**
+     * Determines if the mapping has a custom directory namer configured.
+     *
+     * @return bool True if has directory namer, false otherwise.
+     */
+    public function hasDirectoryNamer()
+    {
+        return null !== $this->directoryNamer;
+    }
+
+    /**
      * Sets the configured configuration mapping.
      *
      * @param array $mapping The mapping;
@@ -178,8 +214,12 @@ class PropertyMapping
      *
      * @return string The configured upload directory.
      */
-    public function getUploadDir()
+    public function getUploadDir($obj = null, $field = null)
     {
+        if ($this->hasDirectoryNamer()) {
+            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_dir']);
+        }
+
         return $this->mapping['upload_dir'];
     }
 
