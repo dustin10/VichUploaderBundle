@@ -15,8 +15,8 @@ file system upon removal of the entity.
 
 ### Get the bundle
 
-To install the bundle, place it in the `vendor/bundles/Vich/UploaderBundle` 
-directory of your project. You can do this by adding the bundle to your deps file, 
+To install the bundle, place it in the `vendor/bundles/Vich/UploaderBundle`
+directory of your project. You can do this by adding the bundle to your deps file,
 as a submodule, cloning it, or simply downloading the source.
 
 Add to `deps` file:
@@ -64,7 +64,7 @@ public function registerBundles()
 
 ### Configuration
 
-First configure the `db_driver` option. You must specify either `orm` or 
+First configure the `db_driver` option. You must specify either `orm` or
 `mongodb`.
 
 ``` yaml
@@ -87,12 +87,12 @@ vich_uploader:
             upload_dir: %kernel.root_dir%/../web/images/products
 ```
 
-The `upload_dir` is the only required configuration option for an entity mapping. 
+The `upload_dir` is the only required configuration option for an entity mapping.
 All options are listed below:
 
 - `upload_dir`: The directory to upload the file to
 - `namer`: The id of the namer service for this entity (See Namers section below)
-- `delete_on_remove`: Set to true if the file should be deleted from the 
+- `delete_on_remove`: Set to true if the file should be deleted from the
 filesystem when the entity is removed
 - `inject_on_load`: Set to true if the file should be injected into the uploadable
 field property when it is loaded from the data store. The object will be an instance
@@ -100,7 +100,7 @@ of `Symfony\Component\HttpFoundation\File\File`
 
 **Note:**
 
-> A verbose configuration reference including all configuration options and their 
+> A verbose configuration reference including all configuration options and their
 > default values is included at the bottom of this document.
 
 ## Annotate Entities
@@ -180,7 +180,7 @@ from it to create the name, or inject any other services that you require.
 > be retrieved from the `UploadedFile` instance using the `getExtension` or `guessExtension`
 > depending on what version of PHP you are running.
 
-After you have created your namer and configured it as a service, you simply specify 
+After you have created your namer and configured it as a service, you simply specify
 the service id for the `namer` configuration option of your mapping. An example:
 
 ``` yaml
@@ -201,7 +201,7 @@ service as follows:
 
 ``` php
 $entity = // get the entity..
-$helper = $this->container->get('vich_uploader.templating.helper');
+$helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
 $path = $helper->asset($entity, 'image');
 ```
 or in a Twig template you can use the `vich_uploader_asset` function:

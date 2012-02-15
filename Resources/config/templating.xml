@@ -3,15 +3,15 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    
+
     <services>
-        
-        <service id="vich_uploader.templating.helper.uploader_helper" class="Vich\UploaderBundle\Templating\Helper\UploaderHelper" public="false">
+
+        <service id="vich_uploader.templating.helper.uploader_helper" class="Vich\UploaderBundle\Templating\Helper\UploaderHelper">
             <tag name="templating.helper" alias="vich_uploader" />
             <argument type="service" id="vich_uploader.storage.file_system" />
             <argument>%vich_uploader.web_dir_name%</argument>
         </service>
-        
+
     </services>
 
 </container>
