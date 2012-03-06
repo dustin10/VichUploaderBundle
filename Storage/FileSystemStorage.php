@@ -65,7 +65,7 @@ class FileSystemStorage implements StorageInterface
                     continue;
                 }
 
-                unlink(sprintf('%s/%s', $mapping->getUploadDir(), $name));
+                @unlink(sprintf('%s/%s', $mapping->getUploadDir(), $name));
             }
         }
     }
