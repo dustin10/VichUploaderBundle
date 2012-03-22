@@ -20,7 +20,7 @@ class VichUploaderExtension extends Extension
      */
     protected $tagMap = array(
         'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine.common.event_subscriber'
+        'mongodb' => 'doctrine.odm.mongodb.event_subscriber'
     );
     
     /**
