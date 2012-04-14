@@ -5,11 +5,19 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-
+        <service id="vich_uploader.storage.adapter.rackspace_cloud_files" class="Vich\UploaderBundle\Storage\Adapter\RackspaceCloudFilesAdapter">
+            <argument type="service" id="rackspacecloudfiles_authentication" />
+            <argument type="service" id="rackspacecloudfiles_connection" />
+        </service>
+        
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
 
+        <service id="vich_uploader.storage.cdn" class="Vich\UploaderBundle\Storage\CDNStorage">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage.adapter.rackspace" />
+        </service>
     </services>
 
 </container>
