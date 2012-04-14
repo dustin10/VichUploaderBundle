@@ -105,6 +105,45 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals('http://cdn.com/file.jpg', $response);
     }
+    
+    public function testRemove()
+    {
+        
+        $CDNAuth = $this->getMockBuilder('\CF_Authentication')
+                ->setMethods(array('authenticate'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNConnection = $this->getMockBuilder('\CF_Connection')
+                ->setMethods(array('get_container'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNContainer = $this->getMockBuilder('\CF_Container')
+                ->setMethods(array('delete_object'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        
+        $CDNAuth->expects($this->once())
+                ->method('authenticate');
+        
+        $CDNConnection->expects($this->once())
+                ->method('get_container')
+                ->with('remote_media_container')
+                ->will($this->returnValue($CDNContainer));
+        
+        $CDNContainer->expects($this->once())
+                ->method('delete_object')
+                ->with('file.jpg')
+                ->will($this->returnValue(true));
+        
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter->setContainer('remote_media_container');
+        $response  = $adapter->remove('file.jpg');
+        
+        $this->assertTrue($response);
+    }
 }
 
 ?>

@@ -13,6 +13,8 @@ interface CDNAdapterInterface
     function put($filePath, $fileName);
     
     function getAbsoluteUri($filename);
+    
+    function remove($filename);
 }
 
 ?>

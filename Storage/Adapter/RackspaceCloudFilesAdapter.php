@@ -79,6 +79,18 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
         $object = $mediaContainer->create_object($fileName);
         return $object->load_from_filename($filePath);        
     }
+    
+    /**
+     *
+     * @param string $fileName
+     * @return boolean
+     */
+    public function remove($fileName)
+    {
+        $this->rackspaceAuthentication->authenticate();
+        $mediaContainer = $this->rackspaceConnection->get_container($this->container);
+        return $mediaContainer->delete_object($fileName);
+    }
 
 }
 

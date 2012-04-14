@@ -92,6 +92,43 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new CDNStorage($this->factory, $this->cdnAdapter);
         $storage->upload($obj);
     }
+    
+    public function testRemove()
+    {
+        
+        $obj = new DummyEntity();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $prop
+                ->expects($this->once())
+                ->method('getValue')
+                ->with($obj)
+                ->will($this->returnValue('fooOriginalName'));
+        
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $mapping
+                ->expects($this->once())
+                ->method('getDeleteOnRemove')
+                ->will($this->returnValue(true));
+
+        $mapping
+                ->expects($this->once())
+                ->method('getFileNameProperty')
+                ->will($this->returnValue($prop));
+
+        $this->factory
+                ->expects($this->once())
+                ->method('fromObject')
+                ->with($obj)
+                ->will($this->returnValue(array($mapping)));
+        
+        $storage = new CDNStorage($this->factory, $this->cdnAdapter);
+        $storage->remove($obj);
+    }
 
     /**
      * Tests the upload method skips a mapping which has a null

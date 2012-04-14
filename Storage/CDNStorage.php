@@ -73,7 +73,7 @@ class CDNStorage implements StorageInterface
                     continue;
                 }
 
-                @unlink(sprintf('%s/%s', $mapping->getUploadDir(), $name));
+                $this->cdnAdapter->remove($name);
             }
         }
     }
