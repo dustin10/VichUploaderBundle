@@ -1,0 +1,110 @@
+<?php
+
+namespace Vich\UploaderBundle\Tests\Storage\Adapter;
+
+use Vich\UploaderBundle\Storage\Adapter\RackspaceCloudFilesAdapter;
+
+/**
+ * Description of RackspaceCloudFilesAdapter
+ *
+ * @author ftassi
+ */
+class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
+{
+    public function testPut()
+    {
+        $CDNAuth = $this->getMockBuilder('\CF_Authentication')
+                ->setMethods(array('authenticate'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNConnection = $this->getMockBuilder('\CF_Connection')
+                ->setMethods(array('get_container'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNContainer = $this->getMockBuilder('\CF_Container')
+                ->setMethods(array('create_object'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNObject = $this->getMockBuilder('\CF_Object')
+                ->setMethods(array('load_from_filename'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        
+        $CDNObject->expects($this->once())
+                ->method('load_from_filename')
+                ->with('/tmp/file.jpg')
+                ->will($this->returnValue(true));
+        
+        $CDNContainer->expects($this->once())
+                ->method('create_object')
+                ->with('file.jpg')
+                ->will($this->returnValue($CDNObject));
+        
+        $CDNAuth->expects($this->once())
+                ->method('authenticate');
+        
+        $CDNConnection->expects($this->once())
+                ->method('get_container')
+                ->with('remote_media_container')
+                ->will($this->returnValue($CDNContainer));
+        
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter->setContainer('remote_media_container');
+        $response  = $adapter->put('/tmp/file.jpg', 'file.jpg');
+        
+        $this->assertTrue($response);
+    }
+    
+    public function testGetAbsoluteUri()
+    {
+        $CDNAuth = $this->getMockBuilder('\CF_Authentication')
+                ->setMethods(array('authenticate'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNConnection = $this->getMockBuilder('\CF_Connection')
+                ->setMethods(array('get_container'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNContainer = $this->getMockBuilder('\CF_Container')
+                ->setMethods(array('get_object'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        $CDNObject = $this->getMockBuilder('\CF_Object')
+                ->setMethods(array('public_uri'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        
+        
+        $CDNAuth->expects($this->once())
+                ->method('authenticate');
+        
+        $CDNConnection->expects($this->once())
+                ->method('get_container')
+                ->with('remote_media_container')
+                ->will($this->returnValue($CDNContainer));
+        
+        $CDNContainer->expects($this->once())
+                ->method('get_object')
+                ->with('file.jpg')
+                ->will($this->returnValue($CDNObject));
+        
+        $CDNObject->expects($this->once())
+                ->method('public_uri')
+                ->will($this->returnValue('http://cdn.com/file.jpg'));
+        
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter->setContainer('remote_media_container');
+        $response  = $adapter->getAbsoluteUri('file.jpg');
+        
+        $this->assertEquals('http://cdn.com/file.jpg', $response);
+    }
+}
+
+?>
