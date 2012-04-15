@@ -18,6 +18,14 @@
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="vich_uploader.storage.adapter.rackspace_cloud_files" />
         </service>
+        
+        <service 
+            id="vich_uploader.storage" 
+            class="Vich\UploaderBundle\Storage\StorageInterface" 
+            factory-service="vich_uploader.storage_factory" 
+            factory-method ="createStorage">
+                
+        </service>
     </services>
 
 </container>
