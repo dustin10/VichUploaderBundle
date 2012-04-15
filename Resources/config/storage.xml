@@ -16,7 +16,7 @@
 
         <service id="vich_uploader.storage.cdn" class="Vich\UploaderBundle\Storage\CDNStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
-            <argument type="service" id="vich_uploader.storage.adapter.rackspace" />
+            <argument type="service" id="vich_uploader.storage.adapter.rackspace_cloud_files" />
         </service>
     </services>
 
