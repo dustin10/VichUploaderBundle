@@ -71,7 +71,7 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.mappings', $mappings);
         
         $container->setParameter('vich_uploader.web_dir_name', $config['web_dir_name']);
-        $container->setParameter('vich_uploader.storage', $config['storage']);
+        $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
     }
