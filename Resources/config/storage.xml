@@ -7,7 +7,9 @@
     <services>
         <service id="vich_uploader.storage.adapter.rackspace_cloud_files" class="Vich\UploaderBundle\Storage\Adapter\RackspaceCloudFilesAdapter">
             <argument type="service" id="rackspacecloudfiles_authentication" />
-            <argument type="service" id="rackspacecloudfiles_connection" />
+            <call method="setRackspaceConnection">
+                <argument type="service" id="rackspacecloudfiles_connection" />
+            </call>
         </service>
         
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">

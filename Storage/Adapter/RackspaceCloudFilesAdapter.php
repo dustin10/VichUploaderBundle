@@ -30,10 +30,10 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     protected $container;
     
-    function __construct(\CF_Authentication $rackspaceAuthentication, \CF_Connection $rackspaceConnection)
+    function __construct(\CF_Authentication $rackspaceAuthentication)
     {
         $this->rackspaceAuthentication = $rackspaceAuthentication;
-        $this->rackspaceConnection = $rackspaceConnection;
+        $this->rackspaceAuthentication->authenticate();
     }
 
     /**
@@ -52,7 +52,24 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
     {
         $this->container = $container;
     }
+    
+    /**
+     *
+     * @return \CF_Connection
+     */
+    public function getRackspaceConnection()
+    {
+        return $this->rackspaceConnection;
+    }
 
+    /**
+     *
+     * @param \CF_Connection $rackspaceConnection 
+     */
+    public function setRackspaceConnection(\CF_Connection $rackspaceConnection)
+    {
+        $this->rackspaceConnection = $rackspaceConnection;
+    }
     
     /**
      *
@@ -61,7 +78,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function getAbsoluteUri($filename)
     {
-        $this->rackspaceAuthentication->authenticate();
+        
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         $object = $mediaContainer->get_object($filename);
         return $object->public_uri();
@@ -74,7 +91,6 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function put($filePath, $fileName)
     {
-        $this->rackspaceAuthentication->authenticate();
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         $object = $mediaContainer->create_object($fileName);
         return $object->load_from_filename($filePath);        
@@ -87,7 +103,6 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function remove($fileName)
     {
-        $this->rackspaceAuthentication->authenticate();
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         return $mediaContainer->delete_object($fileName);
     }
