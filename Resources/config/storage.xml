@@ -10,6 +10,9 @@
             <call method="setRackspaceConnection">
                 <argument type="service" id="rackspacecloudfiles_connection" />
             </call>
+            <call method="setContainer">
+                <argument type="string">%vich_uploader.storage.adapter.rackspace.media_container%</argument>
+            </call>
         </service>
         
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">
