@@ -108,5 +108,3 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
     }
 
 }
-
-?>

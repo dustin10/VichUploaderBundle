@@ -16,5 +16,3 @@ interface CDNAdapterInterface
     
     function remove($filename);
 }
-
-?>
