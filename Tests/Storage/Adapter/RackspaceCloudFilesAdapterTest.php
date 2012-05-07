@@ -52,7 +52,8 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->with('remote_media_container')
                 ->will($this->returnValue($CDNContainer));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        $adapter->setRackspaceConnection($CDNConnection);
         $adapter->setContainer('remote_media_container');
         $response  = $adapter->put('/tmp/file.jpg', 'file.jpg');
         
@@ -99,7 +100,8 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->method('public_uri')
                 ->will($this->returnValue('http://cdn.com/file.jpg'));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        $adapter->setRackspaceConnection($CDNConnection);
         $adapter->setContainer('remote_media_container');
         $response  = $adapter->getAbsoluteUri('file.jpg');
         
@@ -138,7 +140,8 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->with('file.jpg')
                 ->will($this->returnValue(true));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth, $CDNConnection);
+        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        $adapter->setRackspaceConnection($CDNConnection);
         $adapter->setContainer('remote_media_container');
         $response  = $adapter->remove('file.jpg');
         
