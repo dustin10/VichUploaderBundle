@@ -11,29 +11,33 @@ use Vich\UploaderBundle\Storage\Adapter\CDNAdapterInterface;
  */
 class RackspaceCloudFilesAdapter implements CDNAdapterInterface
 {
-
     /**
      * 
      * @var \CF_Authentication 
      */
     protected $rackspaceAuthentication;
-    
+
     /**
      *
      * @var \CF_Connection
      */
     protected $rackspaceConnection;
-    
+
     /**
      *
      * @var string
      */
     protected $container;
-    
+
+    /**
+     *
+     * @var boolean
+     */
+    protected $authenticated = false;
+
     function __construct(\CF_Authentication $rackspaceAuthentication)
     {
         $this->rackspaceAuthentication = $rackspaceAuthentication;
-        $this->rackspaceAuthentication->authenticate();
     }
 
     /**
@@ -52,7 +56,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
     {
         $this->container = $container;
     }
-    
+
     /**
      *
      * @return \CF_Connection
@@ -70,7 +74,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
     {
         $this->rackspaceConnection = $rackspaceConnection;
     }
-    
+
     /**
      *
      * @param string $filename 
@@ -78,7 +82,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function getAbsoluteUri($filename)
     {
-        
+        $this->authenticate();
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         $object = $mediaContainer->get_object($filename);
         return $object->public_uri();
@@ -91,11 +95,12 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function put($filePath, $fileName)
     {
+        $this->authenticate();
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         $object = $mediaContainer->create_object($fileName);
-        return $object->load_from_filename($filePath);        
+        return $object->load_from_filename($filePath);
     }
-    
+
     /**
      *
      * @param string $fileName
@@ -103,8 +108,20 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface
      */
     public function remove($fileName)
     {
+        $this->authenticate();
         $mediaContainer = $this->rackspaceConnection->get_container($this->container);
         return $mediaContainer->delete_object($fileName);
+    }
+
+    /**
+     * Authenticave over Rackspace 
+     */
+    protected function authenticate()
+    {
+        if (!$this->authenticated) {
+            $this->rackspaceAuthentication->authenticate();
+            $this->authenticated = true;
+        }
     }
 
 }
