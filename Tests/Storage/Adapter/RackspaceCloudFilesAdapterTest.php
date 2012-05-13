@@ -52,9 +52,20 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->with('remote_media_container')
                 ->will($this->returnValue($CDNContainer));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->at(0))
+                ->method('get')
+                ->with('rackspacecloudfiles_authentication')
+                ->will($this->returnValue($CDNAuth));
+        $container->expects($this->at(1))
+                ->method('get')
+                ->with('rackspacecloudfiles_connection')
+                ->will($this->returnValue($CDNConnection));
+        
+        $adapter = new RackspaceCloudFilesAdapter();
+        $adapter->setContainer($container);
         $adapter->setRackspaceConnection($CDNConnection);
-        $adapter->setContainer('remote_media_container');
+        $adapter->setMediaContainer('remote_media_container');
         $response  = $adapter->put('/tmp/file.jpg', 'file.jpg');
         
         $this->assertTrue($response);
@@ -100,9 +111,21 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->method('public_uri')
                 ->will($this->returnValue('http://cdn.com/file.jpg'));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->at(0))
+                ->method('get')
+                ->with('rackspacecloudfiles_authentication')
+                ->will($this->returnValue($CDNAuth));
+        $container->expects($this->at(1))
+                ->method('get')
+                ->with('rackspacecloudfiles_connection')
+                ->will($this->returnValue($CDNConnection));
+        
+        $adapter = new RackspaceCloudFilesAdapter();
+        $adapter->setContainer($container);
         $adapter->setRackspaceConnection($CDNConnection);
-        $adapter->setContainer('remote_media_container');
+        $adapter->setMediaContainer('remote_media_container');
         $response  = $adapter->getAbsoluteUri('file.jpg');
         
         $this->assertEquals('http://cdn.com/file.jpg', $response);
@@ -140,9 +163,21 @@ class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
                 ->with('file.jpg')
                 ->will($this->returnValue(true));
         
-        $adapter = new RackspaceCloudFilesAdapter($CDNAuth);
+        
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->at(0))
+                ->method('get')
+                ->with('rackspacecloudfiles_authentication')
+                ->will($this->returnValue($CDNAuth));
+        $container->expects($this->at(1))
+                ->method('get')
+                ->with('rackspacecloudfiles_connection')
+                ->will($this->returnValue($CDNConnection));
+        
+        $adapter = new RackspaceCloudFilesAdapter();
+        $adapter->setContainer($container);
         $adapter->setRackspaceConnection($CDNConnection);
-        $adapter->setContainer('remote_media_container');
+        $adapter->setMediaContainer('remote_media_container');
         $response  = $adapter->remove('file.jpg');
         
         $this->assertTrue($response);
