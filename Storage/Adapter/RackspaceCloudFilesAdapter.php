@@ -92,8 +92,15 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
     public function getAbsoluteUri($filename)
     {
         $mediaContainer = $this->getAuthenticatedConnection()->get_container($this->mediaContainer);
-        $object = $mediaContainer->get_object($filename);
+        
+        try {
+            $object = $mediaContainer->get_object($filename);
+        } catch (\NoSuchObjectException $exc) {
+            return '';
+        }
+        
         return $object->public_uri();
+            
     }
 
     /**
