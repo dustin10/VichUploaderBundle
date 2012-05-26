@@ -40,7 +40,7 @@ class MongoDBAdapter implements AdapterInterface
     public function update(EventArgs $args)
     {
         $obj = $this->getObjectFromArgs($args);
-        $dm = $e->getDocumentManager();
+        $dm = $args->getDocumentManager();
         $dm->persist($obj);
         $dm->flush();
     }

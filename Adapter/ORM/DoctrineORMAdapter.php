@@ -40,7 +40,7 @@ class DoctrineORMAdapter implements AdapterInterface
     public function update(EventArgs $args)
     {
         $obj = $this->getObjectFromArgs($args);
-        $om = $e->getEntityManager();
+        $om = $args->getEntityManager();
         $em->persist($obj);
         $em->flush();
     }
