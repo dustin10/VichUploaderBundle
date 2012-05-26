@@ -41,7 +41,7 @@ class FileSystemStorage implements StorageInterface
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
+                $name = $mapping->getNamer()->name($obj, $mapping->getProperty());
             } else {
                 $name = $file->getClientOriginalName();
             }

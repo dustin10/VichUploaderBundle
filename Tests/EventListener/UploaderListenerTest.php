@@ -51,16 +51,16 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
         $events = $listener->getSubscribedEvents();
 
-        $this->assertTrue(in_array('prePersist', $events));
         $this->assertTrue(in_array('preUpdate', $events));
         $this->assertTrue(in_array('postLoad', $events));
+        $this->assertTrue(in_array('postPersist', $events));
         $this->assertTrue(in_array('postRemove', $events));
     }
 
     /**
      * Tests the prePersist method.
      */
-    public function testPrePersist()
+    public function testPostPersist()
     {
         $obj = new DummyEntity();
         $class = new \ReflectionClass($obj);
@@ -95,13 +95,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->with($obj);
 
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
-        $listener->prePersist($args);
+        $listener->postPersist($args);
     }
 
     /**
      * Tests that prePersist skips non-uploadable entity.
      */
-    public function testPrePersistSkipsNonUploadable()
+    public function testPostPersistSkipsNonUploadable()
     {
         $obj = new DummyEntity();
         $class = new \ReflectionClass($obj);
@@ -131,7 +131,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('upload');
 
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
-        $listener->prePersist($args);
+        $listener->postPersist($args);
     }
 
     /**
