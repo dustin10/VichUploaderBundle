@@ -8,7 +8,7 @@ use Doctrine\ORM\Proxy\Proxy;
 
 /**
  * DoctrineORMAdapter.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class DoctrineORMAdapter implements AdapterInterface
@@ -20,18 +20,29 @@ class DoctrineORMAdapter implements AdapterInterface
     {
         return $e->getEntity();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function recomputeChangeSet(EventArgs $e)
     {
         $obj = $this->getObjectFromArgs($e);
-        
+
         $em = $e->getEntityManager();
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata(get_class($obj));
         $uow->recomputeSingleEntityChangeSet($metadata, $obj);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function update(EventArgs $args)
+    {
+        $obj = $this->getObjectFromArgs($args);
+        $om = $e->getEntityManager();
+        $em->persist($obj);
+        $em->flush();
     }
 
     /**

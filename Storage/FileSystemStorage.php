@@ -49,6 +49,10 @@ class FileSystemStorage implements StorageInterface
             $file->move($mapping->getUploadDir(), $name);
 
             $mapping->getFileNameProperty()->setValue($obj, $name);
+
+            // Set file property to null, so Doctrine postUpdate won't be
+            // triggered after postPersist.
+            $mapping->getProperty()->setValue($obj, null);
         }
     }
 

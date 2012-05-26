@@ -60,26 +60,11 @@ class UploaderListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'preUpdate',
             'postLoad',
             'postPersist',
-            'postRemove',
+            'postUpdate',
+            'postRemove'
         );
-    }
-
-    /**
-     * Update the file and file name if necessary.
-     *
-     * @param EventArgs $args The event arguments.
-     */
-    public function preUpdate(EventArgs $args)
-    {
-        $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
-            $this->storage->upload($obj);
-
-            $this->adapter->recomputeChangeSet($args);
-        }
     }
 
     /**
@@ -106,6 +91,21 @@ class UploaderListener implements EventSubscriber
         $obj = $this->adapter->getObjectFromArgs($args);
         if ($this->isUploadable($obj)) {
             $this->storage->upload($obj);
+            $this->adapter->update($args);
+        }
+    }
+
+    /**
+     * Update the file and file name if necessary.
+     *
+     * @param EventArgs $args The event arguments.
+     */
+    public function postUpdate(EventArgs $args)
+    {
+        $obj = $this->adapter->getObjectFromArgs($args);
+        if ($this->isUploadable($obj)) {
+            $this->storage->upload($obj);
+            $this->adapter->update($args);
         }
     }
 
