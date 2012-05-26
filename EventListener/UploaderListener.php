@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Driver\AnnotationDriver;
 
 /**
  * UploaderListener.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class UploaderListener implements EventSubscriber
@@ -25,7 +25,7 @@ class UploaderListener implements EventSubscriber
      * @var \Vich\UploaderBundle\Driver\AnnotationDriver $driver
      */
     protected $driver;
-    
+
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
      */
@@ -35,7 +35,7 @@ class UploaderListener implements EventSubscriber
      * @var \Vich\UploaderBundle\Injector\FileInjectorInterface $injector
      */
     protected $injector;
-    
+
     /**
      * Constructs a new instance of UploaderListener.
      *
@@ -51,48 +51,20 @@ class UploaderListener implements EventSubscriber
         $this->storage = $storage;
         $this->injector = $injector;
     }
-    
+
     /**
      * The events the listener is subscribed to.
-     * 
+     *
      * @return array The array of events.
      */
     public function getSubscribedEvents()
     {
         return array(
-            'prePersist',
-            'preUpdate',
             'postLoad',
-            'postRemove',
+            'postPersist',
+            'postUpdate',
+            'postRemove'
         );
-    }
-    
-    /**
-     * Checks for for file to upload.
-     *
-     * @param \Doctrine\Common\EventArgs $args The event arguments.
-     */
-    public function prePersist(EventArgs $args)
-    {
-        $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
-            $this->storage->upload($obj);
-        }
-    }
-
-    /**
-     * Update the file and file name if necessary.
-     *
-     * @param EventArgs $args The event arguments.
-     */
-    public function preUpdate(EventArgs $args)
-    {
-        $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
-            $this->storage->upload($obj);
-            
-            $this->adapter->recomputeChangeSet($args);
-        }
     }
 
     /**
@@ -108,10 +80,38 @@ class UploaderListener implements EventSubscriber
             $this->injector->injectFiles($obj);
         }
     }
-    
+
+     /**
+     * Checks for for file to upload.
+     *
+     * @param \Doctrine\Common\EventArgs $args The event arguments.
+     */
+    public function postPersist(EventArgs $args)
+    {
+        $obj = $this->adapter->getObjectFromArgs($args);
+        if ($this->isUploadable($obj)) {
+            $this->storage->upload($obj);
+            $this->adapter->update($args);
+        }
+    }
+
+    /**
+     * Update the file and file name if necessary.
+     *
+     * @param EventArgs $args The event arguments.
+     */
+    public function postUpdate(EventArgs $args)
+    {
+        $obj = $this->adapter->getObjectFromArgs($args);
+        if ($this->isUploadable($obj)) {
+            $this->storage->upload($obj);
+            $this->adapter->update($args);
+        }
+    }
+
     /**
      * Removes the file if necessary.
-     * 
+     *
      * @param EventArgs $args The event arguments.
      */
     public function postRemove(EventArgs $args)
@@ -121,10 +121,10 @@ class UploaderListener implements EventSubscriber
             $this->storage->remove($obj);
         }
     }
-    
+
     /**
      * Tests if the object is Uploadable.
-     * 
+     *
      * @param object $obj The object.
      * @return boolean True if uploadable, false otherwise.
      */
