@@ -10,7 +10,7 @@ use Vich\UploaderBundle\DependencyInjection\Configuration;
 
 /**
  * VichUploaderExtension.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class VichUploaderExtension extends Extension
@@ -33,8 +33,8 @@ class VichUploaderExtension extends Extension
 
     /**
      * Loads the extension.
-     * 
-     * @param array $configs The configuration
+     *
+     * @param array            $configs   The configuration
      * @param ContainerBuilder $container The container builder
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -46,10 +46,10 @@ class VichUploaderExtension extends Extension
         $driver = strtolower($config['db_driver']);
         if (!in_array($driver, array_keys($this->tagMap))) {
             throw new \InvalidArgumentException(
-                    sprintf(
+                sprintf(
                     'Invalid "db_driver" configuration option specified: "%s"',
                     $driver
-                    )
+                )
             );
         }
 
@@ -78,7 +78,5 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
-
     }
-
 }

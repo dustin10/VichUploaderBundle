@@ -7,21 +7,21 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Configuration.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
     /**
      * Gets the configuration tree builder for the extension.
-     * 
+     *
      * @return Tree The configuration tree builder
      */
     public function getConfigTreeBuilder()
     {
         $tb = new TreeBuilder();
         $root = $tb->root('vich_uploader');
-        
+
         $root
             ->children()
                 ->scalarNode('db_driver')->isRequired()->end()
@@ -49,7 +49,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
-        
+
         return $tb;
     }
 }

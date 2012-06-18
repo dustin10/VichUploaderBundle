@@ -3,16 +3,16 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    
+
     <services>
-        
+
         <service id="vich_uploader.listener.uploader" class="Vich\UploaderBundle\EventListener\UploaderListener" public="false">
             <argument type="service" id="vich_uploader.adapter" />
             <argument type="service" id="vich_uploader.annotation_driver" />
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.file_injector" />
         </service>
-        
+
     </services>
-        
+
 </container>
