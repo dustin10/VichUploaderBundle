@@ -16,5 +16,5 @@ interface FileInjectorInterface
      *
      * @param object $obj The object.
      */
-    function injectFiles($obj);
+    public function injectFiles($obj);
 }

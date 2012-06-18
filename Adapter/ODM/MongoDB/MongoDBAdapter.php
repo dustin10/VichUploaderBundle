@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\Proxy\Proxy;
 
 /**
  * MongoDBAdapter.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class MongoDBAdapter implements AdapterInterface
@@ -20,14 +20,14 @@ class MongoDBAdapter implements AdapterInterface
     {
         return $e->getDocument();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function recomputeChangeSet(EventArgs $e)
     {
         $obj = $this->getObjectFromArgs($e);
-        
+
         $dm = $e->getDocumentManager();
         $uow = $dm->getUnitOfWork();
         $metadata = $dm->getClassMetadata(get_class($obj));
