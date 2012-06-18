@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * StorageFactory
  *
- * @author ftassi
+ ** @author Francesco Tassi <tassi.francesco@gmail.com>
  */
 class StorageFactory
 {

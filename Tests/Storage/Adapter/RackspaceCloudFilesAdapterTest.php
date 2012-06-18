@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Storage\Adapter\RackspaceCloudFilesAdapter;
 /**
  * Description of RackspaceCloudFilesAdapter
  *
- * @author ftassi
+ ** @author Francesco Tassi <tassi.francesco@gmail.com>
  */
 class RackspaceCloudFilesAdapterTest extends \PHPUnit_Framework_TestCase
 {

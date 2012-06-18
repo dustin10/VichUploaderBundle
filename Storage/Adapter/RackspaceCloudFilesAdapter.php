@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Description of RackspaceCloudFilesAdapter
  *
- * @author ftassi
+ ** @author Francesco Tassi <tassi.francesco@gmail.com>
  */
 class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareInterface
 {

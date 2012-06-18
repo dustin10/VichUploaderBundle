@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Storage\Adapter;
 /**
  * CDNAdapterInterface
  *
- * @author ftassi
+ ** @author Francesco Tassi <tassi.francesco@gmail.com>
  */
 interface CDNAdapterInterface
 {
