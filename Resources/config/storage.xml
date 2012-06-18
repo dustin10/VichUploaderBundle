@@ -13,7 +13,7 @@
                 <argument type="string">%vich_uploader.storage.adapter.rackspace.media_container%</argument>
             </call>
         </service>
-        
+
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
@@ -22,13 +22,13 @@
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="vich_uploader.storage.adapter.rackspace_cloud_files" />
         </service>
-        
-        <service 
-            id="vich_uploader.storage" 
-            class="Vich\UploaderBundle\Storage\StorageInterface" 
-            factory-service="vich_uploader.storage_factory" 
+
+        <service
+            id="vich_uploader.storage"
+            class="Vich\UploaderBundle\Storage\StorageInterface"
+            factory-service="vich_uploader.storage_factory"
             factory-method ="createStorage">
-                
+
         </service>
     </services>
 

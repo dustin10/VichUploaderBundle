@@ -10,9 +10,9 @@ namespace Vich\UploaderBundle\Storage\Adapter;
 interface CDNAdapterInterface
 {
 
-    function put($filePath, $fileName);
-    
-    function getAbsoluteUri($filename);
-    
-    function remove($filename);
+    public function put($filePath, $fileName);
+
+    public function getAbsoluteUri($filename);
+
+    public function remove($filename);
 }

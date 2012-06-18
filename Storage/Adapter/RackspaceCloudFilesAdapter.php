@@ -15,8 +15,8 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
 {
 
     /**
-     * 
-     * @var \CF_Authentication 
+     *
+     * @var \CF_Authentication
      */
     protected $rackspaceAuthentication;
 
@@ -59,7 +59,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
 
     /**
      *
-     * @param string $container 
+     * @param string $container
      */
     public function setMediaContainer($container)
     {
@@ -77,7 +77,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
 
     /**
      *
-     * @param \CF_Connection $rackspaceConnection 
+     * @param \CF_Connection $rackspaceConnection
      */
     public function setRackspaceConnection(\CF_Connection $rackspaceConnection)
     {
@@ -86,45 +86,47 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
 
     /**
      *
-     * @param string $filename 
-     * @return string 
+     * @param  string $filename
+     * @return string
      */
     public function getAbsoluteUri($filename)
     {
         $mediaContainer = $this->getAuthenticatedConnection()->get_container($this->mediaContainer);
-        
+
         try {
             $object = $mediaContainer->get_object($filename);
         } catch (\NoSuchObjectException $exc) {
             return '';
         }
-        
+
         return $object->public_uri();
-            
+
     }
 
     /**
      *
      * @param string $filePath
-     * @param string $fileName 
+     * @param string $fileName
      */
     public function put($filePath, $fileName)
     {
         $this->getAuthenticatedConnection();
         $mediaContainer = $this->getAuthenticatedConnection()->get_container($this->mediaContainer);
         $object = $mediaContainer->create_object($fileName);
+
         return $object->load_from_filename($filePath);
     }
 
     /**
      *
-     * @param string $fileName
+     * @param  string  $fileName
      * @return boolean
      */
     public function remove($fileName)
     {
         $this->getAuthenticatedConnection();
         $mediaContainer = $this->getAuthenticatedConnection()->get_container($this->mediaContainer);
+
         return $mediaContainer->delete_object($fileName);
     }
 
@@ -140,7 +142,7 @@ class RackspaceCloudFilesAdapter implements CDNAdapterInterface, ContainerAwareI
             $this->rackspaceConnection = $this->container->get('rackspacecloudfiles_connection');
             $this->authenticated = true;
         }
-        
+
         return $this->rackspaceConnection;
     }
 

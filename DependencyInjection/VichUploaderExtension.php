@@ -70,7 +70,7 @@ class VichUploaderExtension extends Extension
         if (isset($config['adapters']['rackspace'])) {
             $container->setParameter('vich_uploader.storage.adapter.rackspace.media_container', $config['adapters']['rackspace']['media_container']);
         }
-        
+
         $mappings = isset($config['mappings']) ? $config['mappings'] : array();
         $container->setParameter('vich_uploader.mappings', $mappings);
 

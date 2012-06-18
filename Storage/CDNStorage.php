@@ -18,7 +18,7 @@ class CDNStorage implements StorageInterface
      * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
      */
     protected $factory;
-    
+
     /**
      *
      * @var \VichUploaderBundle\Storage\Adapter\CDNAdapterInterface

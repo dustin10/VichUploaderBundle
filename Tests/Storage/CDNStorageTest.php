@@ -21,7 +21,7 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @var \VichUploaderBundle\Storage\Adapter\CDNAdapterInterface 
+     * @var \VichUploaderBundle\Storage\Adapter\CDNAdapterInterface
      */
     protected $cdnAdapter;
 
@@ -35,7 +35,7 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests the interaction with CDNAdapterInterface in real upload 
+     * Tests the interaction with CDNAdapterInterface in real upload
      */
     public function testUploadToCdn()
     {
@@ -92,22 +92,22 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new CDNStorage($this->factory, $this->cdnAdapter);
         $storage->upload($obj);
     }
-    
+
     public function testRemove()
     {
-        
+
         $obj = new DummyEntity();
 
         $prop = $this->getMockBuilder('\ReflectionProperty')
                 ->disableOriginalConstructor()
                 ->getMock();
-        
+
         $prop
                 ->expects($this->once())
                 ->method('getValue')
                 ->with($obj)
                 ->will($this->returnValue('fooOriginalName'));
-        
+
         $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
 
         $mapping
@@ -125,7 +125,7 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
                 ->method('fromObject')
                 ->with($obj)
                 ->will($this->returnValue(array($mapping)));
-        
+
         $storage = new CDNStorage($this->factory, $this->cdnAdapter);
         $storage->remove($obj);
     }
@@ -317,7 +317,7 @@ class CDNStorageTest extends \PHPUnit_Framework_TestCase
                 ->method('getAbsoluteUri')
                 ->with('file.txt')
                 ->will($this->returnValue('http://testcdn.com/file.txt'));
-        
+
         $storage = new CDNStorage($this->factory, $this->cdnAdapter);
         $path = $storage->resolvePath($obj, 'file');
 
