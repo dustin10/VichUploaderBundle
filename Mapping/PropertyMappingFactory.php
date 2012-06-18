@@ -39,9 +39,9 @@ class PropertyMappingFactory
      * Constructs a new instance of PropertyMappingFactory.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Driver\AnnotationDriver $driver The driver.
-     * @param \Vich\UploaderBundle\Adapter\AdapterInterface $adapter The adapter.
-     * @param array $mappings The configured mappings.
+     * @param \Vich\UploaderBundle\Driver\AnnotationDriver              $driver    The driver.
+     * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
+     * @param array                                                     $mappings  The configured mappings.
      */
     public function __construct(ContainerInterface $container, AnnotationDriver $driver, AdapterInterface $adapter, array $mappings)
     {
@@ -56,8 +56,8 @@ class PropertyMappingFactory
      * configuration for the uploadable fields in the specified
      * object.
      *
-     * @param object $obj The object.
-     * @return array An array up PropertyMapping objects.
+     * @param  object $obj The object.
+     * @return array  An array up PropertyMapping objects.
      */
     public function fromObject($obj)
     {
@@ -76,8 +76,8 @@ class PropertyMappingFactory
      * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
-     * @param object $obj The object.
-     * @param string $field The field.
+     * @param  object               $obj   The object.
+     * @param  string               $field The field.
      * @return null|PropertyMapping The property mapping.
      */
     public function fromField($obj, $field)
@@ -96,7 +96,7 @@ class PropertyMappingFactory
     /**
      * Checks to see if the class is uploadable.
      *
-     * @param \ReflectionClass $class The class.
+     * @param  \ReflectionClass          $class The class.
      * @throws \InvalidArgumentException
      */
     protected function checkUploadable(\ReflectionClass $class)
@@ -111,9 +111,9 @@ class PropertyMappingFactory
     /**
      * Creates the property mapping from the read annotation and configured mapping.
      *
-     * @param object $obj The object.
-     * @param \Vich\UploaderBundle\Annotation\UploadableField $field The read annotation.
-     * @return PropertyMapping The property mapping.
+     * @param  object                                          $obj   The object.
+     * @param  \Vich\UploaderBundle\Annotation\UploadableField $field The read annotation.
+     * @return PropertyMapping                                 The property mapping.
      * @throws \InvalidArgumentException
      */
     protected function createMapping($obj, UploadableField $field)

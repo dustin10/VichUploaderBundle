@@ -155,7 +155,7 @@ class PropertyMapping
     /**
      * Gets the value of the annotated property.
      *
-     * @param object $obj The object.
+     * @param  object       $obj The object.
      * @return UploadedFile The file.
      */
     public function getPropertyValue($obj)

@@ -6,32 +6,32 @@ use Doctrine\Common\EventArgs;
 
 /**
  * AdapterInterface.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 interface AdapterInterface
 {
     /**
      * Gets the mapped object from the event arguments.
-     * 
-     * @param EventArgs $e The event arguments.
-     * @return object The mapped object.
+     *
+     * @param  EventArgs $e The event arguments.
+     * @return object    The mapped object.
      */
-    function getObjectFromArgs(EventArgs $e);
-    
+    public function getObjectFromArgs(EventArgs $e);
+
     /**
      * Recomputes the change set for the object.
-     * 
+     *
      * @param EventArgs $e The event arguments.
      */
-    function recomputeChangeSet(EventArgs $e);
+    public function recomputeChangeSet(EventArgs $e);
 
     /**
      * Gets the reflection class for the object taking
      * proxies into account.
      *
-     * @param object $obj The object.
+     * @param  object           $obj The object.
      * @return \ReflectionClass The reflection class.
      */
-    function getReflectionClass($obj);
+    public function getReflectionClass($obj);
 }

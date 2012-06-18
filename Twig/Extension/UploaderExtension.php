@@ -6,7 +6,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * UploaderExtension.
- * 
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class UploaderExtension extends \Twig_Extension
@@ -15,17 +15,17 @@ class UploaderExtension extends \Twig_Extension
      * @var UploaderHelper $helper
      */
     private $helper;
-    
+
     /**
      * Constructs a new instance of UploaderExtension.
-     * 
+     *
      * @param UploaderHelper $helper
      */
     public function __construct(UploaderHelper $helper)
     {
         $this->helper = $helper;
     }
-    
+
     /**
      * Returns the canonical name of this helper.
      *
@@ -35,7 +35,7 @@ class UploaderExtension extends \Twig_Extension
     {
         return 'vich_uploader';
     }
-    
+
     /**
      * Returns a list of twig functions.
      *
@@ -46,21 +46,21 @@ class UploaderExtension extends \Twig_Extension
         $names = array(
             'vich_uploader_asset'  => 'asset'
         );
-        
+
         $funcs = array();
         foreach ($names as $twig => $local) {
             $funcs[$twig] = new \Twig_Function_Method($this, $local);
         }
-        
+
         return $funcs;
     }
-    
+
     /**
      * Gets the public path for the file associated with the uploadable
      * object.
-     * 
-     * @param object $obj The object.
-     * @param string $field The field.
+     *
+     * @param  object $obj   The object.
+     * @param  string $field The field.
      * @return string The public path.
      */
     public function asset($obj, $field)
