@@ -123,7 +123,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
                 $args = func_get_args();
                 if ('file' === $args[0]->getName()) {
                     return $fileField;
-                } else if ('image' === $args[0]->getName()) {
+                } elseif ('image' === $args[0]->getName()) {
                     return $imageField;
                 }
 
