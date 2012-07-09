@@ -76,6 +76,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
                 'delete_on_remove' => true,
                 'namer' => null,
                 'inject_on_load' => true,
+                'directory_namer' => null
             )
         );
 
@@ -232,6 +233,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
                 'delete_on_remove' => true,
                 'namer' => 'my.custom.namer',
                 'inject_on_load' => true,
+                'directory_namer' => null
             )
         );
 
