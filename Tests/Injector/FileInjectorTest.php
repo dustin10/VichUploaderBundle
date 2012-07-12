@@ -65,7 +65,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $fileMapping
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getProperty')
             ->will($this->returnValue($prop));
 
@@ -151,7 +151,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $fileMapping
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getProperty')
             ->will($this->returnValue($fileProp));
 
@@ -175,7 +175,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $imageMapping
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getProperty')
             ->will($this->returnValue($imageProp));
 

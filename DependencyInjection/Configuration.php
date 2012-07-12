@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('upload_dir')->isRequired()->end()
                             ->scalarNode('namer')->defaultNull()->end()
+                            ->scalarNode('directory_namer')->defaultNull()->end()
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
                             ->scalarNode('inject_on_load')->defaultTrue()->end()
                         ->end()

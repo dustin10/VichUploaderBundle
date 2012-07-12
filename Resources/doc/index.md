@@ -91,7 +91,8 @@ The `upload_dir` is the only required configuration option for an entity mapping
 All options are listed below:
 
 - `upload_dir`: The directory to upload the file to
-- `namer`: The id of the namer service for this entity (See Namers section below)
+- `namer`: The id of the file namer service for this entity (See Namers section below)
+- `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
 - `delete_on_remove`: Set to true if the file should be deleted from the
 filesystem when the entity is removed
 - `inject_on_load`: Set to true if the file should be injected into the uploadable
@@ -166,12 +167,14 @@ class Product
 
 ## Namers
 
-The bundle uses namers to name the files it saves to the filesystem. A namer
+The bundle uses namers to name the files and directories it saves to the filesystem. A namer
 implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
 configured for a mapping, the bundle will simply use the name of the file that
 was uploaded. if you would like to change this then you must implement a custom namer.
 
-To create a custom namer, simply implement the `Vich\UploaderBundle\Naming\NamerInterface`
+### File Namer
+
+To create a custom file namer, simply implement the `Vich\UploaderBundle\Naming\NamerInterface`
 and in the `name` method of your class return the desired file name. Since your entity
 is passed to the `name` method, as well as the field name, you are free to get any information
 from it to create the name, or inject any other services that you require.
@@ -193,6 +196,30 @@ vich_uploader:
 ```
 
 Here `my.namer.product` is the configured id of the service.
+
+If no namer is configured for a mapping, the bundle will simply use the name of the file that
+was uploaded.
+
+### Directory Namer
+
+To create a custom directory namer, simply implement the `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
+and in the `directoryName` method of your class return the absolute directory. Since your entity, field name
+and default `upload_dir` are all passed to the `directoryName` method you are free to get any information
+from it to create the name, or inject any other services that you require.
+
+After you have created your directory namer and configured it as a service, you simply specify
+the service id for the `directory_namer` configuration option of your mapping. An example:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_dir: %kernel.root_dir%/../web/images/products
+            directory_namer: my.directory_namer.product
+```
+
+If no directory namer is configured for a mapping, the bundle will simply use the `upload_dir` configuration option.
 
 ## Generating URLs
 
@@ -233,7 +260,8 @@ vich_uploader:
     mappings:
         product_image:
             upload_dir: ~ # required
-            namer: ~ # specify a namer service id for this entity, null default
+            namer: ~ # specify a file namer service id for this entity, null default
+            directory_namer: ~ # specify a directory namer service id for this entity, null default
             delete_on_remove: true # determines whether to delete file upon removal of entity
             inject_on_load: true # determines whether to inject a File instance upon load
         # ... more mappings
