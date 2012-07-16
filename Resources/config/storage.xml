@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="vich_uploader.storage.adapter.rackspace_cloud_files" class="Vich\UploaderBundle\Storage\Adapter\RackspaceCloudFilesAdapter">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+            <call method="setMediaContainer">
+                <argument type="string">%vich_uploader.storage.adapter.rackspace.media_container%</argument>
+            </call>
+        </service>
 
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
 
+        <service id="vich_uploader.storage.cdn" class="Vich\UploaderBundle\Storage\CDNStorage">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage.adapter.rackspace_cloud_files" />
+        </service>
+
+        <service
+            id="vich_uploader.storage"
+            class="Vich\UploaderBundle\Storage\StorageInterface"
+            factory-service="vich_uploader.storage_factory"
+            factory-method ="createStorage">
+
+        </service>
     </services>
 
 </container>

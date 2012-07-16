@@ -67,10 +67,15 @@ class VichUploaderExtension extends Extension
             $loader->load('twig.xml');
         }
 
+        if (isset($config['adapters']['rackspace'])) {
+            $container->setParameter('vich_uploader.storage.adapter.rackspace.media_container', $config['adapters']['rackspace']['media_container']);
+        }
+
         $mappings = isset($config['mappings']) ? $config['mappings'] : array();
         $container->setParameter('vich_uploader.mappings', $mappings);
 
         $container->setParameter('vich_uploader.web_dir_name', $config['web_dir_name']);
+        $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
     }
