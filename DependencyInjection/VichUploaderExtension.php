@@ -70,7 +70,6 @@ class VichUploaderExtension extends Extension
         $mappings = isset($config['mappings']) ? $config['mappings'] : array();
         $container->setParameter('vich_uploader.mappings', $mappings);
 
-        $container->setParameter('vich_uploader.web_dir_name', $config['web_dir_name']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
     }

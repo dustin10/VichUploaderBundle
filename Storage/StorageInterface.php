@@ -34,4 +34,14 @@ interface StorageInterface
      * @return string The path.
      */
     public function resolvePath($obj, $field);
+
+    /**
+     * Resolves the uri for any based on the specified object
+     * and field name.
+     *
+     * @param  object $obj   The object.
+     * @param  string $field The field.
+     * @return string The uri.
+     */
+    public function resolveUri($obj, $field);
 }
