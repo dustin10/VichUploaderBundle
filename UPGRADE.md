@@ -13,7 +13,7 @@ default value of `true`.
 
 - The old `vich_uploader.uploader` service has been split into two new
 services for a more modular, separation of concerns approach. The new services are
-`vich_uploader.storage.file_system` and `vich_uploader.file_injector`. The storage
+`vich_uploader.storage.gaufrette` and `vich_uploader.file_injector`. The storage
 service is responsible for saving and removing files as well as resolving their path.
 The injector service is responsible for injecting `File` instances back into the
 object upon retrieval from the datastore.

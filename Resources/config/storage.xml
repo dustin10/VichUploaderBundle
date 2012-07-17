@@ -10,6 +10,11 @@
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
 
+        <service id="vich_uploader.storage.gaufrette" class="Vich\UploaderBundle\Storage\GaufretteStorage">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="knp_gaufrette.filesystem_map" />
+        </service>
+
     </services>
 
 </container>

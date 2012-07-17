@@ -217,10 +217,10 @@ class PropertyMapping
     public function getUploadDir($obj = null, $field = null)
     {
         if ($this->hasDirectoryNamer()) {
-            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_dir']);
+            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_id']);
         }
 
-        return $this->mapping['upload_dir'];
+        return $this->mapping['upload_id'];
     }
 
     /**
@@ -244,5 +244,15 @@ class PropertyMapping
     public function getInjectOnLoad()
     {
         return $this->mapping['inject_on_load'];
+    }
+
+    /**
+     * Get uri prefix
+     *
+     * @return string
+     */
+    public function getUriPrefix()
+    {
+        return $this->mapping['uri_prefix'];
     }
 }

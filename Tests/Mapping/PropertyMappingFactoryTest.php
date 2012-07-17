@@ -72,7 +72,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mappings = array(
             'dummy_file' => array(
-                'upload_dir' => '/tmp',
+                'upload_id' => 'images',
                 'delete_on_remove' => true,
                 'namer' => null,
                 'inject_on_load' => true,
@@ -129,7 +129,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             $mapping = $mappings[0];
 
             $this->assertEquals('dummy_file', $mapping->getMappingName());
-            $this->assertEquals('/tmp', $mapping->getUploadDir());
+            $this->assertEquals('images', $mapping->getUploadDir());
             $this->assertNull($mapping->getNamer());
             $this->assertFalse($mapping->hasNamer());
             $this->assertTrue($mapping->getDeleteOnRemove());
@@ -229,7 +229,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mappings = array(
             'dummy_file' => array(
-                'upload_dir' => '/tmp',
+                'upload_id' => 'images',
                 'delete_on_remove' => true,
                 'namer' => 'my.custom.namer',
                 'inject_on_load' => true,

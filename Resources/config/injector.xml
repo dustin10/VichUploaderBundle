@@ -8,6 +8,7 @@
 
         <service id="vich_uploader.file_injector" class="Vich\UploaderBundle\Injector\FileInjector">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage.gaufrette" />
         </service>
 
     </services>

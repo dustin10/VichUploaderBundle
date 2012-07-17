@@ -18,20 +18,13 @@ class UploaderHelper extends Helper
     protected $storage;
 
     /**
-     * @var string $webDirName
-     */
-    protected $webDirName;
-
-    /**
      * Constructs a new instance of UploaderHelper.
      *
      * @param \Vich\UploaderBundle\Storage\StorageInterface $storage    The storage.
-     * @param string                                        $webDirName The name of the application's web directory.
      */
-    public function __construct(StorageInterface $storage, $webDirName)
+    public function __construct(StorageInterface $storage)
     {
         $this->storage = $storage;
-        $this->webDirName = $webDirName;
     }
 
     /**
@@ -54,10 +47,6 @@ class UploaderHelper extends Helper
      */
     public function asset($obj, $field)
     {
-        $path = $this->storage->resolvePath($obj, $field);
-
-        $index = strpos($path, $this->webDirName);
-
-        return substr($path, $index + strlen($this->webDirName));
+        return $this->storage->resolveUri($obj, $field);
     }
 }
