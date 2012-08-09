@@ -46,7 +46,7 @@ class FileSystemStorage implements StorageInterface
                 $name = $file->getClientOriginalName();
             }
 
-            $file->move($mapping->getUploadDir(), $name);
+            $file->move($mapping->getUploadDir($obj, $mapping->getProperty()->getName()), $name);
 
             $mapping->getFileNameProperty()->setValue($obj, $name);
         }
@@ -65,7 +65,7 @@ class FileSystemStorage implements StorageInterface
                     continue;
                 }
 
-                @unlink(sprintf('%s/%s', $mapping->getUploadDir(), $name));
+                @unlink(sprintf('%s/%s', $mapping->getUploadDir($obj, $mapping->getProperty()->getName()), $name));
             }
         }
     }
@@ -83,7 +83,7 @@ class FileSystemStorage implements StorageInterface
         }
 
         return sprintf('%s/%s',
-            $mapping->getUploadDir(),
+            $mapping->getUploadDir($obj, $field),
             $mapping->getFileNameProperty()->getValue($obj)
         );
     }
