@@ -55,9 +55,8 @@ class UploaderHelper extends Helper
     public function asset($obj, $field)
     {
         $path = $this->storage->resolvePath($obj, $field);
+        $parts = explode($this->webDirName, $path);
 
-        $index = strpos($path, $this->webDirName);
-
-        return substr($path, $index + strlen($this->webDirName));
+        return array_pop($parts);
     }
 }
