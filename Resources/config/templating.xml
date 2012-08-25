@@ -8,7 +8,7 @@
 
         <service id="vich_uploader.templating.helper.uploader_helper" class="Vich\UploaderBundle\Templating\Helper\UploaderHelper">
             <tag name="templating.helper" alias="vich_uploader" />
-            <argument type="service" id="vich_uploader.storage.gaufrette" />
+            <argument type="service" id="vich_uploader.storage" />
         </service>
 
     </services>
