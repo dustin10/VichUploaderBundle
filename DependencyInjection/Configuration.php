@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('db_driver')->isRequired()->end()
                 ->scalarNode('web_dir_name')->defaultValue('web')->end()
+                ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
                 ->scalarNode('twig')->defaultTrue()->end()
                 ->arrayNode('mappings')
                     ->useAttributeAsKey('id')
