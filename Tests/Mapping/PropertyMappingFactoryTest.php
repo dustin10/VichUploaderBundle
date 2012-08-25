@@ -72,7 +72,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mappings = array(
             'dummy_file' => array(
-                'upload_id' => 'images',
+                'upload_destination' => 'images',
                 'delete_on_remove' => true,
                 'namer' => null,
                 'inject_on_load' => true,
@@ -229,7 +229,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $mappings = array(
             'dummy_file' => array(
-                'upload_id' => 'images',
+                'upload_destination' => 'images',
                 'delete_on_remove' => true,
                 'namer' => 'my.custom.namer',
                 'inject_on_load' => true,

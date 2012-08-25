@@ -217,10 +217,10 @@ class PropertyMapping
     public function getUploadDir($obj = null, $field = null)
     {
         if ($this->hasDirectoryNamer()) {
-            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_id']);
+            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_destination']);
         }
 
-        return $this->mapping['upload_id'];
+        return $this->mapping['upload_destination'];
     }
 
     /**

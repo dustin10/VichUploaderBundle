@@ -105,13 +105,13 @@ vich_uploader:
     mappings:
         product_image:
             uri_prefix: /images/products
-            upload_id: product_image_fs
+            upload_destination: product_image_fs
 ```
 
-The `upload_id` is the only required configuration option for an entity mapping.
+The `upload_destination` is the only required configuration option for an entity mapping.
 All options are listed below:
 
-- `upload_id`: The gaufrette fs id to upload the file to
+- `upload_destination`: The gaufrette fs id to upload the file to
 - `namer`: The id of the file namer service for this entity (See Namers section below)
 - `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
 - `delete_on_remove`: Set to true if the file should be deleted from the
@@ -212,7 +212,7 @@ vich_uploader:
     # ...
     mappings:
         product_image:
-            upload_id: product_image
+            upload_destination: product_image
             namer: my.namer.product
 ```
 
@@ -225,7 +225,7 @@ was uploaded.
 
 To create a custom directory namer, simply implement the `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
 and in the `directoryName` method of your class return the absolute directory. Since your entity, field name
-and default `upload_id` are all passed to the `directoryName` method you are free to get any information
+and default `upload_destination` are all passed to the `directoryName` method you are free to get any information
 from it to create the name, or inject any other services that you require.
 
 After you have created your directory namer and configured it as a service, you simply specify
@@ -236,11 +236,11 @@ vich_uploader:
     # ...
     mappings:
         product_image:
-            upload_id: product_image
+            upload_destination: product_image
             directory_namer: my.directory_namer.product
 ```
 
-If no directory namer is configured for a mapping, the bundle will simply use the `upload_id` configuration option.
+If no directory namer is configured for a mapping, the bundle will simply use the `upload_destination` configuration option.
 
 ## Generating URLs
 
@@ -275,7 +275,7 @@ vich_uploader:
     mappings:
         product_image:
             uri_prefix: /images # uri prefix to resource
-            upload_id: ~ # gaufrette storage fs id, required
+            upload_destination: ~ # gaufrette storage fs id, required
             namer: ~ # specify a file namer service id for this entity, null default
             directory_namer: ~ # specify a directory namer service id for this entity, null default
             delete_on_remove: true # determines whether to delete file upon removal of entity

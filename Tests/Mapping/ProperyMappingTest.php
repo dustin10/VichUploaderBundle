@@ -20,7 +20,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $prop = new PropertyMapping();
         $prop->setMapping(array(
             'delete_on_remove' => true,
-            'upload_id' => '/tmp',
+            'upload_destination' => '/tmp',
             'inject_on_load' => true
         ));
 

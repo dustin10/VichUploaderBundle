@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('uri_prefix')->defaultValue('web')->end()
-                            ->scalarNode('upload_id')->isRequired()->end()
+                            ->scalarNode('upload_destination')->isRequired()->end()
                             ->scalarNode('namer')->defaultNull()->end()
                             ->scalarNode('directory_namer')->defaultNull()->end()
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
