@@ -13,7 +13,8 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "2.*"
+        "symfony/framework-bundle": "2.*",
+        "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",

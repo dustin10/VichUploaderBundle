@@ -4,8 +4,8 @@ namespace Vich\UploaderBundle\Injector;
 
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\File\File;
-
 /**
  * FileInjector.
  *
@@ -19,13 +19,20 @@ class FileInjector implements FileInjectorInterface
     protected $factory;
 
     /**
+     * @var \Vich\UploaderBundle\Storage\StorageInterface
+     */
+    protected $storage;
+
+    /**
      * Constructs a new instance of FileInjector.
      *
      * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory The factory.
+     * @param \Vich\UploaderBundle\Storage\StorageInterface       $storage Storage.
      */
-    public function __construct(PropertyMappingFactory $factory)
+    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
     {
         $this->factory = $factory;
+        $this->storage = $storage;
     }
 
     /**
@@ -36,12 +43,12 @@ class FileInjector implements FileInjectorInterface
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
             if ($mapping->getInjectOnLoad()) {
-                $name = $mapping->getFileNameProperty()->getValue($obj);
-                if (is_null($name)) {
+                $field = $mapping->getProperty()->getName();
+                try {
+                    $path = $this->storage->resolvePath($obj, $field);
+                } catch (\InvalidArgumentException $e) {
                     continue;
                 }
-
-                $path = sprintf('%s/%s', $mapping->getUploadDir($obj, $mapping->getProperty()->getName()), $name);
 
                 $mapping->getProperty()->setValue(
                     $obj,

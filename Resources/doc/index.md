@@ -22,6 +22,13 @@ as a submodule, cloning it, or simply downloading the source.
 Add to `deps` file:
 
 ```
+[gaufrette]
+    git=http://github.com/KnpLabs/Gaufrette.git
+
+[KnpGaufretteBundle]
+    git=http://github.com/KnpLabs/KnpGaufretteBundle.git
+    target=/bundles/Knp/Bundle/GaufretteBundle
+
 [VichUploaderBundle]
     git=git://github.com/dustin10/VichUploaderBundle.git
     target=/bundles/Vich/UploaderBundle
@@ -43,6 +50,8 @@ Next you should add the `Vich` namespace to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
+    'Knp\Bundle'                => __DIR__.'/../vendor/bundles',
+    'Gaufrette'                 => __DIR__.'/../vendor/gaufrette/src',
     'Vich' => __DIR__.'/../vendor/bundles'
 ));
 ```
@@ -57,6 +66,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
         new Vich\UploaderBundle\VichUploaderBundle(),
     );
 )
@@ -80,17 +90,28 @@ to name your mapping `product_image`, the configuration for this mapping would b
 similar to:
 
 ``` yaml
+knp_gaufrette:
+    adapters:
+        product_adapter:
+            local:
+                directory: %kernel.root_dir%/../web/images/products
+
+    filesystems:
+        product_image_fs:
+            adapter:    product_adapter
+
 vich_uploader:
-    # ...
+    db_driver: orm
     mappings:
         product_image:
-            upload_dir: %kernel.root_dir%/../web/images/products
+            uri_prefix: /images/products
+            upload_id: product_image_fs
 ```
 
-The `upload_dir` is the only required configuration option for an entity mapping.
+The `upload_id` is the only required configuration option for an entity mapping.
 All options are listed below:
 
-- `upload_dir`: The directory to upload the file to
+- `upload_id`: The gaufrette fs id to upload the file to
 - `namer`: The id of the file namer service for this entity (See Namers section below)
 - `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
 - `delete_on_remove`: Set to true if the file should be deleted from the
@@ -191,7 +212,7 @@ vich_uploader:
     # ...
     mappings:
         product_image:
-            upload_dir: %kernel.root_dir%/../web/images/products
+            upload_id: product_image
             namer: my.namer.product
 ```
 
@@ -204,7 +225,7 @@ was uploaded.
 
 To create a custom directory namer, simply implement the `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
 and in the `directoryName` method of your class return the absolute directory. Since your entity, field name
-and default `upload_dir` are all passed to the `directoryName` method you are free to get any information
+and default `upload_id` are all passed to the `directoryName` method you are free to get any information
 from it to create the name, or inject any other services that you require.
 
 After you have created your directory namer and configured it as a service, you simply specify
@@ -215,11 +236,11 @@ vich_uploader:
     # ...
     mappings:
         product_image:
-            upload_dir: %kernel.root_dir%/../web/images/products
+            upload_id: product_image
             directory_namer: my.directory_namer.product
 ```
 
-If no directory namer is configured for a mapping, the bundle will simply use the `upload_dir` configuration option.
+If no directory namer is configured for a mapping, the bundle will simply use the `upload_id` configuration option.
 
 ## Generating URLs
 
@@ -240,12 +261,7 @@ or in a Twig template you can use the `vich_uploader_asset` function:
 You must specify the annotated property you wish to get the file path for.
 
 > **Note:** The path returned is relative to the web directory which is specified
-> using the `web_dir_name` configuration parameter.
-
-## Limitations
-
-- Currently the bundle only supports generating a relative url for the file.
-- Currently the bundle only supports saving/deleting files to the local filesystem.
+> using the `uri_prefix` configuration parameter.
 
 ## Configuration Reference
 
@@ -255,11 +271,11 @@ Below is the full default coniguration for the bundle:
 # app/config/config.yml
 vich_uploader:
     db_driver: orm # or mongodb
-    web_dir_name: web
     twig: true
     mappings:
         product_image:
-            upload_dir: ~ # required
+            uri_prefix: /images # uri prefix to resource
+            upload_id: ~ # gaufrette storage fs id, required
             namer: ~ # specify a file namer service id for this entity, null default
             directory_namer: ~ # specify a directory namer service id for this entity, null default
             delete_on_remove: true # determines whether to delete file upon removal of entity
