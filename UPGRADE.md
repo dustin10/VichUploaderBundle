@@ -17,3 +17,6 @@ services for a more modular, separation of concerns approach. The new services a
 service is responsible for saving and removing files as well as resolving their path.
 The injector service is responsible for injecting `File` instances back into the
 object upon retrieval from the datastore.
+
+- You must rename the uploadDir option to uploadDestination. Also note that 
+the DirectoryMapperInterface does not work with gaufrette.
