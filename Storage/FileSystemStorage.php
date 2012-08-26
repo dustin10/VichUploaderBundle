@@ -42,4 +42,28 @@ class FileSystemStorage extends AbstractStorage
     {
         return $dir . DIRECTORY_SEPARATOR . $name;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function resolveUri($obj, $field)
+    {
+        $mapping = $this->factory->fromField($obj, $field);
+        if (null === $mapping) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to find uploadable field named: "%s"', $field
+            ));
+        }
+
+        $name = $mapping->getFileNameProperty()->getValue($obj);
+        if ($name === null) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to get filename property value: "%s"', $field
+            ));
+        }
+
+        $uriPrefix = $mapping->getUriPrefix();
+        $parts = explode($uriPrefix, $mapping->getUploadDir($obj, $field));
+        return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
+    }
 }
