@@ -83,6 +83,13 @@ vich_uploader:
     db_driver: orm # or mongodb
 ```
 
+Also you must decide if you want to use the file_system storage(default) or the gaufrette one.
+
+The filesystem storage is simpler to use and allows the usage of the DirectoryNamer 
+interface, while Gaufrett gives you more options wrt to where you can store files.
+
+#### Gaufrette configuration
+
 In order to map configuration options to the property of the entity you first
 need to create a mapping in the bundle configuration. You create these mappings
 under the `mappings` key. Each mapping should have a unique name. So, if you wanted
@@ -102,6 +109,7 @@ knp_gaufrette:
 
 vich_uploader:
     db_driver: orm
+    storage: vich_uploader.storage.gaufrette
     mappings:
         product_image:
             uri_prefix: /images/products
@@ -111,7 +119,7 @@ vich_uploader:
 The `upload_destination` is the only required configuration option for an entity mapping.
 All options are listed below:
 
-- `upload_destination`: The gaufrette fs id to upload the file to
+- `upload_destination`: The gaufrette fs id to upload the file if you use the gaufrette upload option.
 - `namer`: The id of the file namer service for this entity (See Namers section below)
 - `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
 - `delete_on_remove`: Set to true if the file should be deleted from the
@@ -119,6 +127,38 @@ filesystem when the entity is removed
 - `inject_on_load`: Set to true if the file should be injected into the uploadable
 field property when it is loaded from the data store. The object will be an instance
 of `Symfony\Component\HttpFoundation\File\File`
+
+#### Gaufrette configuration
+
+In order to map configuration options to the property of the entity you first
+need to create a mapping in the bundle configuration. You create these mappings
+under the `mappings` key. Each mapping should have a unique name. So, if you wanted
+to name your mapping `product_image`, the configuration for this mapping would be
+similar to:
+
+``` yaml
+vich_uploader:
+    db_driver: orm
+    storage: vich_uploader.storage.file_system
+    mappings:
+        product_image:
+            uri_prefix: /images/products
+            upload_destination: %kernel.root_dir%/../web/images/products
+```
+
+The `upload_destination` is the only required configuration option for an entity mapping.
+All options are listed below:
+
+- `upload_destination`: The gaufrette fs id to upload the file if you use the gaufrette upload option.
+- `namer`: The id of the file namer service for this entity (See Namers section below)
+- `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
+- `delete_on_remove`: Set to true if the file should be deleted from the
+filesystem when the entity is removed
+- `inject_on_load`: Set to true if the file should be injected into the uploadable
+field property when it is loaded from the data store. The object will be an instance
+of `Symfony\Component\HttpFoundation\File\File`
+
+
 
 **Note:**
 
@@ -272,6 +312,7 @@ Below is the full default coniguration for the bundle:
 vich_uploader:
     db_driver: orm # or mongodb
     twig: true
+    storage: vich_uploader.storage.file_system
     mappings:
         product_image:
             uri_prefix: /images/products # uri prefix to resource
