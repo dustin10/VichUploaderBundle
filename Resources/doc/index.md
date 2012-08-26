@@ -274,7 +274,7 @@ vich_uploader:
     twig: true
     mappings:
         product_image:
-            uri_prefix: /images # uri prefix to resource
+            uri_prefix: /images/products # uri prefix to resource
             upload_destination: ~ # gaufrette storage fs id, required
             namer: ~ # specify a file namer service id for this entity, null default
             directory_namer: ~ # specify a directory namer service id for this entity, null default
