@@ -11,6 +11,13 @@ when the entity is loaded from the datastore. The bundle also provides templatin
 for generating URLs to the file. The file can also be configured to be removed from the
 file system upon removal of the entity.
 
+The bundle provide different ways to interact with the filesystem, you can choose
+your preferred one by configuration. Basically you can choose to work with with local 
+filesystem or integrate guafrette to have nice abstraction over filesystem (for more
+info see [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)).
+
+You can also implemente your own StorageInterface if you need to.
+
 ## Installation
 
 ### Get the bundle
@@ -72,6 +79,44 @@ public function registerBundles()
 )
 ```
 
+**Note:**
+
+> Even if you don't plan to use Gaufrette you must include it in your
+> deps file and activate KnpGaufretteBundle
+
+## Usage
+
+VichUploaderBundle try to handle file uploads according to a combination
+of configuration parameters and annotations. In order to have your upload 
+working you have to:
+
+* Choos which storage service you want to use (vich_uploader.storage.file_system 
+or vich_uploader.storage.gaufrette)
+* Define a basic configuration set
+* Annotate your Entities
+* Optionally implements namer services (see Namer later) 
+
+*Please note that some bundle components has a slightly different meaning according to the 
+storage service you are using. Read more about it in [Configuration reference](#a-hrefreferenceaconfiguration-reference)*
+
+### FileSystemStorage VS GaufretteStorage
+
+Gaufrette is a great piece of code and provide a great level of filesystem 
+abstraction. Using Gaufrette you will be able to store files locally or using
+some external service without impact on your application. This means that you 
+will be able to change your medias position if your project requires to, without
+refactoring your code.
+
+**For this reason GaufretteStorage if probably the most flexible solution and your 
+best choice as storage service.**
+
+If you don't need this level of abstraction, if you preferer to 
+keep things simple, or if your just don't feel confortable working
+with gaufrette you can go with FileSystemStorage. 
+
+For more information on how use one storage instead of another,
+go to [Configuration](#configuration)  section
+
 ### Configuration
 
 First configure the `db_driver` option. You must specify either `orm` or
@@ -83,11 +128,56 @@ vich_uploader:
     db_driver: orm # or mongodb
 ```
 
-In order to map configuration options to the property of the entity you first
-need to create a mapping in the bundle configuration. You create these mappings
-under the `mappings` key. Each mapping should have a unique name. So, if you wanted
-to name your mapping `product_image`, the configuration for this mapping would be
+And then add your mappings information. In order to map 
+configuration options to the property of the entity you first
+need to create a mapping in the bundle configuration. You 
+create these mappings
+under the `mappings` key. Each mapping should have a unique name. 
+So, if you wanted
+to name your mapping `product_image`, the configuration for this 
+mapping would be
 similar to:
+
+``` yaml
+vich_uploader:
+    db_driver: orm
+    mappings:
+        product_image:
+            uri_prefix: /images/products
+            upload_destination: %kernel.root_dir%/../web/images/products
+```
+
+The `upload_destination` is the only required configuration option for an entity mapping.
+
+All options are listed below:
+
+- `upload_destination`: The gaufrette fs id to upload the file to
+- `namer`: The id of the file namer service for this entity (See [Namers](#namers) section below)
+- `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
+- `delete_on_remove`: Set to true if the file should be deleted from the
+filesystem when the entity is removed
+- `inject_on_load`: Set to true if the file should be injected into the uploadable
+field property when it is loaded from the data store. The object will be an instance
+of `Symfony\Component\HttpFoundation\File\File`
+
+**Note:**
+
+> This is the easiest configuration and will use the default
+> storage service (vich_uploader.storage.file_system). 
+> If you want to use Gaufrette you will have to add some bit 
+> of configuration (see [gaufrette configuration](#gaufrette-configuration) for more help).
+
+**Note:**
+
+> A verbose configuration reference including all configuration options and their
+> default values is included at the bottom of this document.
+
+#### Gaufrette configuration
+
+In order to use Gaufrette you have to configure it. Here it is
+a sample configuration that store your file in your local filesystem,
+but you can use your preferred adapters and FS (for details 
+on this topic you should referer gaufrette documentation).
 
 ``` yaml
 knp_gaufrette:
@@ -102,30 +192,25 @@ knp_gaufrette:
 
 vich_uploader:
     db_driver: orm
+    storage: vich_uploader.storage.gaufrette
     mappings:
         product_image:
             uri_prefix: /images/products
             upload_destination: product_image_fs
 ```
 
-The `upload_destination` is the only required configuration option for an entity mapping.
-All options are listed below:
-
-- `upload_destination`: The gaufrette fs id to upload the file to
-- `namer`: The id of the file namer service for this entity (See Namers section below)
-- `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
-- `delete_on_remove`: Set to true if the file should be deleted from the
-filesystem when the entity is removed
-- `inject_on_load`: Set to true if the file should be injected into the uploadable
-field property when it is loaded from the data store. The object will be an instance
-of `Symfony\Component\HttpFoundation\File\File`
+Using vich_uploader.storage.gaufrette as storage service
+you can still use the same mappings options that you will 
+use with default storage. 
 
 **Note:**
 
-> A verbose configuration reference including all configuration options and their
-> default values is included at the bottom of this document.
+> In this case upload_destination refer to a guafrette filesystem
+> and directory_namer should be used to generate a valid
+> filesystem ID (and not a real path). See more about this
+> in [Namers section](#Namers)
 
-## Annotate Entities
+### Annotate Entities
 
 In order for your entity or document to work with the bundle, you need to add a
 few annotations to it. First, annotate your class with the `Uploadable` annotation.
@@ -200,7 +285,9 @@ and in the `name` method of your class return the desired file name. Since your 
 is passed to the `name` method, as well as the field name, you are free to get any information
 from it to create the name, or inject any other services that you require.
 
-> **Note**: The name returned should include the file extension as well. This can easily
+**Note**:
+
+> The name returned should include the file extension as well. This can easily
 > be retrieved from the `UploadedFile` instance using the `getExtension` or `guessExtension`
 > depending on what version of PHP you are running.
 
@@ -223,9 +310,12 @@ was uploaded.
 
 ### Directory Namer
 
-To create a custom directory namer, simply implement the `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
-and in the `directoryName` method of your class return the absolute directory. Since your entity, field name
-and default `upload_destination` are all passed to the `directoryName` method you are free to get any information
+To create a custom directory namer, simply implement the 
+`Vich\UploaderBundle\Naming\DirectoryNamerInterface`
+and in the `directoryName` method of your class return the absolute directory. 
+Since your entity, field name
+and default `upload_destination` are all passed to the `directoryName` method 
+you are free to get any information
 from it to create the name, or inject any other services that you require.
 
 After you have created your directory namer and configured it as a service, you simply specify
@@ -241,6 +331,11 @@ vich_uploader:
 ```
 
 If no directory namer is configured for a mapping, the bundle will simply use the `upload_destination` configuration option.
+
+**Note**:
+
+> If you are using Gaufrette to abstract from the filesystem the name returned
+> will be used as a guafrette filesystem ID and not as a proper path.
 
 ## Generating URLs
 
@@ -260,7 +355,9 @@ or in a Twig template you can use the `vich_uploader_asset` function:
 
 You must specify the annotated property you wish to get the file path for.
 
-> **Note:** The path returned is relative to the web directory which is specified
+**Note:**
+
+> The path returned is relative to the web directory which is specified
 > using the `uri_prefix` configuration parameter.
 
 ## Configuration Reference
@@ -272,6 +369,7 @@ Below is the full default coniguration for the bundle:
 vich_uploader:
     db_driver: orm # or mongodb
     twig: true
+    storage: vich_uploader.storage.file_system
     mappings:
         product_image:
             uri_prefix: /images/products # uri prefix to resource
@@ -282,3 +380,8 @@ vich_uploader:
             inject_on_load: true # determines whether to inject a File instance upon load
         # ... more mappings
 ```
+
+- `storage`: The id of the storage service used by the bundle to
+store files. The bundle ships with vich_uploader.storage.file_system 
+and vich_uploader.storage.gaufrette see 
+[FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)
