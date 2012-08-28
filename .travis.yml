@@ -4,15 +4,8 @@ php:
   - 5.3
   - 5.4
 
-env:
-  - SYMFONY_VERSION=@stable
-  - SYMFONY_VERSION=2.1.x-dev
-  - SYMFONY_VERSION=2.0.x-dev
-
 before_script:
     - curl -s http://getcomposer.org/installer | php
-    - php composer.phar require symfony/symfony:${SYMFONY_VERSION} --dev
-    - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION}
     - php composer.phar install --dev 
 
 notifications:
