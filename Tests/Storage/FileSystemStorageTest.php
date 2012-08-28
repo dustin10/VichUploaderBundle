@@ -216,7 +216,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the resolve uri
-     * 
+     *
      * @dataProvider resolveUriDataProvider
      */
     public function testResolveUri($uploadDir, $uri)
@@ -260,7 +260,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($uri, $path);
     }
-    
+
     public function resolveUriDataProvider()
     {
         return array(

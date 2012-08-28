@@ -42,7 +42,7 @@ class FileSystemStorage extends AbstractStorage
     {
         return $dir . DIRECTORY_SEPARATOR . $name;
     }
-    
+
     /**
      * {@inheritDoc}
      */

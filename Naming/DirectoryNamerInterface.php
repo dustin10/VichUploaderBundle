@@ -17,5 +17,5 @@ interface DirectoryNamerInterface
      * @param string $uploadDir The upload directory set in config
      * @return string The directory name.
      */
-    function directoryName($obj, $field, $uploadDir);
+    public function directoryName($obj, $field, $uploadDir);
 }
