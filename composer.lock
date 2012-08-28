@@ -1,5 +1,5 @@
 {
-    "hash": "b0ce09e095a03cf2b2aa017bb940ed59",
+    "hash": "def05f2a7ec692296b27c88a42e83856",
     "packages": [
         {
             "package": "doctrine/common",
@@ -14,6 +14,42 @@
             "version": "dev-master",
             "source-reference": "ca477696cc87347aa2499843e3ebd23fabf118b7",
             "commit-date": "1343910168"
+        },
+        {
+            "package": "symfony/config",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/framework-bundle",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/routing",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/templating",
+            "version": "v2.0.16"
+        },
+        {
+            "package": "symfony/translation",
+            "version": "v2.0.16"
         }
     ],
     "packages-dev": [
@@ -36,6 +72,12 @@
         {
             "package": "doctrine/mongodb-odm",
             "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "doctrine/mongodb-odm",
+            "version": "dev-master",
             "source-reference": "43f678b345a46d8399d86305a3d6947b3d19cfca",
             "commit-date": "1345760269"
         },
@@ -45,17 +87,15 @@
         },
         {
             "package": "monolog/monolog",
-            "version": "1.2.0"
+            "version": "1.1.0"
         },
         {
             "package": "swiftmailer/swiftmailer",
-            "version": "v4.2.1"
+            "version": "v4.1.8"
         },
         {
             "package": "symfony/symfony",
-            "version": "2.0.x-dev",
-            "source-reference": "462f93ad12c0916b51dbcaaec5b46349b2c96826",
-            "commit-date": "1346143395"
+            "version": "v2.0.16"
         },
         {
             "package": "twig/twig",
@@ -67,6 +107,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "symfony/framework-bundle": 0,
         "knplabs/knp-gaufrette-bundle": 20,
         "symfony/symfony": 0,
         "twig/twig": 0,

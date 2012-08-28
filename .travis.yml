@@ -11,8 +11,9 @@ env:
 
 before_script:
     - curl -s http://getcomposer.org/installer | php
-    - php composer.phar --dev require symfony/symfony:${SYMFONY_VERSION}
-    - php composer.phar --dev install
+    - php composer.phar require symfony/symfony:${SYMFONY_VERSION} --dev
+    - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION}
+    - php composer.phar install --dev 
 
 notifications:
   email:
