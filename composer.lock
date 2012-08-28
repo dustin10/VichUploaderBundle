@@ -1,0 +1,79 @@
+{
+    "hash": "b0ce09e095a03cf2b2aa017bb940ed59",
+    "packages": [
+        {
+            "package": "doctrine/common",
+            "version": "2.2.2"
+        },
+        {
+            "package": "knplabs/gaufrette",
+            "version": "v0.1"
+        },
+        {
+            "package": "knplabs/knp-gaufrette-bundle",
+            "version": "dev-master",
+            "source-reference": "ca477696cc87347aa2499843e3ebd23fabf118b7",
+            "commit-date": "1343910168"
+        }
+    ],
+    "packages-dev": [
+        {
+            "package": "doctrine/dbal",
+            "version": "2.2.2"
+        },
+        {
+            "package": "doctrine/mongodb",
+            "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "doctrine/mongodb",
+            "version": "dev-master",
+            "source-reference": "fdf44d850d7482b2cea7a0793d46999641c68e4f",
+            "commit-date": "1344539108"
+        },
+        {
+            "package": "doctrine/mongodb-odm",
+            "version": "dev-master",
+            "source-reference": "43f678b345a46d8399d86305a3d6947b3d19cfca",
+            "commit-date": "1345760269"
+        },
+        {
+            "package": "doctrine/orm",
+            "version": "2.2.3"
+        },
+        {
+            "package": "monolog/monolog",
+            "version": "1.2.0"
+        },
+        {
+            "package": "swiftmailer/swiftmailer",
+            "version": "v4.2.1"
+        },
+        {
+            "package": "symfony/symfony",
+            "version": "2.0.x-dev",
+            "source-reference": "462f93ad12c0916b51dbcaaec5b46349b2c96826",
+            "commit-date": "1346143395"
+        },
+        {
+            "package": "twig/twig",
+            "version": "v1.9.2"
+        }
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "knplabs/knp-gaufrette-bundle": 20,
+        "symfony/symfony": 0,
+        "twig/twig": 0,
+        "doctrine/orm": 0,
+        "doctrine/common": 0,
+        "doctrine/dbal": 0,
+        "doctrine/mongodb": 20,
+        "doctrine/mongodb-odm": 20
+    }
+}

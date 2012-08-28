@@ -5,11 +5,13 @@ php:
   - 5.4
 
 env:
-  - SYMFONY_VERSION=v2.0.12
-  - SYMFONY_VERSION=origin/2.0
-  - SYMFONY_VERSION=origin/master
+  - SYMFONY_VERSION=@stable
+  - SYMFONY_VERSION=2.1.x-dev
+  - SYMFONY_VERSION=2.0.x-dev
 
-before_script: php vendor/vendors.php
+before_script:
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar require vendor/package:${SYMFONY_VERSION} install --dev
 
 notifications:
   email:
