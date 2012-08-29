@@ -13,11 +13,11 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "@stable",
+        "symfony/framework-bundle": "2.0.x-dev",
         "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
-        "symfony/symfony": "@stable",
+        "symfony/symfony": "2.0.x-dev",
         "twig/twig": "@stable",
         "doctrine/orm": "@stable",
         "doctrine/common": "@stable",
