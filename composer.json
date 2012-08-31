@@ -11,20 +11,19 @@
             "email": "ddobervich@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "2.0.x-dev",
+        "symfony/framework-bundle": ">=2.0,<2.2-dev",
         "knplabs/knp-gaufrette-bundle": "dev-master"
     },
     "require-dev": {
-        "symfony/symfony": "2.0.x-dev",
         "twig/twig": "@stable",
         "doctrine/orm": "@stable",
         "doctrine/common": "@stable",
         "doctrine/dbal": "@stable",
         "doctrine/mongodb": "dev-master",
         "doctrine/mongodb-odm": "dev-master"
-        
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",
