@@ -211,7 +211,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new FileSystemStorage($this->factory);
         $path = $storage->resolvePath($obj, 'file');
 
-        $this->assertEquals('/tmp/file.txt', $path);
+        $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
 
     /**
