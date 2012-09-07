@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('db_driver')->isRequired()->end()
                 ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
                 ->scalarNode('twig')->defaultTrue()->end()
+                ->scalarNode('gaufrette')->defaultFalse()->end()
                 ->arrayNode('mappings')
                     ->useAttributeAsKey('id')
                     ->prototype('array')

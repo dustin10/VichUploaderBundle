@@ -1,7 +1,7 @@
 Upgrading from v0.4.0 to v0.5.0
 ===============================
 
-- gaufrette and KnpGaufretteBundle are now dependencies
+- gaufrette and KnpGaufretteBundle are now soft dependencies
 
 - `storage` configuration entry added.
 
