@@ -31,7 +31,10 @@ Add the following lines in your composer.json:
 ```
 {
     "require": {
-        "vich/uploader-bundle": "dev-master"
+        "vich/uploader-bundle": "dev-master",
+        "knplabs/gaufrette" : "dev-master",
+        "knplabs/knp-gaufrette-bundle" : "dev-master"
+
     }
 }
 ```
