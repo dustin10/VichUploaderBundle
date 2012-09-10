@@ -26,7 +26,17 @@ To install the bundle, place it in the `vendor/bundles/Vich/UploaderBundle`
 directory of your project. You can do this by adding the bundle to your deps file,
 as a submodule, cloning it, or simply downloading the source.
 
-Add to `deps` file:
+Add the following lines in your composer.json:
+
+```
+{
+    "require": {
+        "vich/uploader-bundle": "dev-master"
+    }
+}
+```
+
+OR add to `deps` file:
 
 ```
 [gaufrette]
