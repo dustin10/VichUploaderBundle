@@ -23,7 +23,10 @@ Current limitations:
 For usage documentation, see:
 
 [Resources/doc/index.md](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md)
-    
+
+If upgrading from a previous version, also check:
+
+[Resources/doc/index.md](https://github.com/dustin10/VichUploaderBundle/blob/master/UPGRADE.md)
 
 For license, see:
 
