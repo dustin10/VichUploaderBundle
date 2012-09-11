@@ -26,7 +26,7 @@ For usage documentation, see:
 
 If upgrading from a previous version, also check:
 
-[Resources/doc/index.md](https://github.com/dustin10/VichUploaderBundle/blob/master/UPGRADE.md)
+[UPGRADE.md](https://github.com/dustin10/VichUploaderBundle/blob/master/UPGRADE.md)
 
 For license, see:
 
