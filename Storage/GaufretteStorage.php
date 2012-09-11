@@ -86,6 +86,6 @@ class GaufretteStorage extends AbstractStorage
      */
     protected function doResolvePath($dir, $name)
     {
-        return 'gaufrette://' . $dir . DIRECTORY_SEPARATOR . $name;
+        return 'gaufrette://' . $dir . '/' . $name;
     }
 }
