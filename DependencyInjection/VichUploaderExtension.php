@@ -19,8 +19,14 @@ class VichUploaderExtension extends Extension
      * @var array $tagMap
      */
     protected $tagMap = array(
-        'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
+        'sf-2.0' => array(
+            'orm' => 'doctrine.event_subscriber',
+            'mongodb' => 'doctrine.odm.mongodb.event_subscriber'
+        ),
+        'sf-2.1' => array(
+            'orm' => 'doctrine.event_subscriber',
+            'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
+        )
     );
 
     /**
@@ -39,6 +45,7 @@ class VichUploaderExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->setTagMap();
         $configuration = new Configuration();
 
         $config = $this->processConfiguration($configuration, $configs);
@@ -77,5 +84,17 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
+    }
+
+    /**
+     * Sets the correct tag map depending on current symfony version.
+     */
+    protected function setTagMap()
+    {
+        if(version_compare(Kernel::VERSION, '2.1.0', '>=')){
+            $this->tagMap = $this->tagMap['sf-2.1'];
+        } else {
+            $this->tagMap = $this->tagMap['sf-2.0'];
+        }
     }
 }
