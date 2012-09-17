@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Vich\UploaderBundle\DependencyInjection\Configuration;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * VichUploaderExtension.
@@ -19,14 +20,8 @@ class VichUploaderExtension extends Extension
      * @var array $tagMap
      */
     protected $tagMap = array(
-        'sf-2.0' => array(
-            'orm' => 'doctrine.event_subscriber',
-            'mongodb' => 'doctrine.odm.mongodb.event_subscriber'
-        ),
-        'sf-2.1' => array(
-            'orm' => 'doctrine.event_subscriber',
-            'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
-        )
+        'orm' => 'doctrine.event_subscriber',
+        'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
     );
 
     /**
@@ -45,7 +40,11 @@ class VichUploaderExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->setTagMap();
+        // Set correct doctrine subscriber event for versions of symfony before 2.1
+        if( !defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100 ){
+            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
+        }
+
         $configuration = new Configuration();
 
         $config = $this->processConfiguration($configuration, $configs);
@@ -84,17 +83,5 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
-    }
-
-    /**
-     * Sets the correct tag map depending on current symfony version.
-     */
-    protected function setTagMap()
-    {
-        if(version_compare(Kernel::VERSION, '2.1.0', '>=')){
-            $this->tagMap = $this->tagMap['sf-2.1'];
-        } else {
-            $this->tagMap = $this->tagMap['sf-2.0'];
-        }
     }
 }
