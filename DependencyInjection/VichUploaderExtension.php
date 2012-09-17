@@ -41,7 +41,7 @@ class VichUploaderExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         // Set correct doctrine subscriber event for versions of symfony before 2.1
-        if( !defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100 ){
+        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
             $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
         }
 
