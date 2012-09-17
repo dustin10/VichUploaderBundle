@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Vich\UploaderBundle\DependencyInjection\Configuration;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * VichUploaderExtension.
@@ -20,7 +21,7 @@ class VichUploaderExtension extends Extension
      */
     protected $tagMap = array(
         'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine.odm.mongodb.event_subscriber'
+        'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
     );
 
     /**
@@ -39,6 +40,11 @@ class VichUploaderExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        // Set correct doctrine subscriber event for versions of symfony before 2.1
+        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
+            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
+        }
+
         $configuration = new Configuration();
 
         $config = $this->processConfiguration($configuration, $configs);
