@@ -103,7 +103,7 @@ VichUploaderBundle try to handle file uploads according to a combination
 of configuration parameters and annotations. In order to have your upload
 working you have to:
 
-* Choos which storage service you want to use (vich_uploader.storage.file_system
+* Choose which storage service you want to use (vich_uploader.storage.file_system
 or vich_uploader.storage.gaufrette)
 * Define a basic configuration set
 * Annotate your Entities
