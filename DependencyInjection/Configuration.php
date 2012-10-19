@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('namer')->defaultNull()->end()
                             ->scalarNode('directory_namer')->defaultNull()->end()
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
+                            ->scalarNode('delete_on_update')->defaultTrue()->end()
                             ->scalarNode('inject_on_load')->defaultTrue()->end()
                         ->end()
                     ->end()
