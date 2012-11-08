@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('id')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('uri_prefix')->defaultValue('web')->end()
+                            ->scalarNode('uri_prefix')->defaultValue('/uploads')->end()
                             ->scalarNode('upload_destination')->isRequired()->end()
                             ->scalarNode('namer')->defaultNull()->end()
                             ->scalarNode('directory_namer')->defaultNull()->end()
