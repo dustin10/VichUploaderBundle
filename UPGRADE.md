@@ -1,3 +1,8 @@
+Upgrading from v0.4.0 to master
+===============================
+
+- `getUriPrefix` default value is now /uploads
+
 Upgrading from v0.4.0 to v0.5.0
 ===============================
 
