@@ -25,9 +25,10 @@ class FileSystemStorage extends AbstractStorage
     /**
      * Do real remove
      *
-     * @param object          $obj
-     * @param string          $name
+     * @param string $dir
+     * @param string $name
      *
+     * @internal param object $obj
      * @return boolean
      */
     protected function doRemove($dir, $name)
