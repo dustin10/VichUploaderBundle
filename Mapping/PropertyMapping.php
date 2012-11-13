@@ -235,6 +235,17 @@ class PropertyMapping
     }
 
     /**
+     * Determines if the file should be deleted when the file is
+     * replaced by an other one.
+     *
+     * @return bool True if delete on update, false otherwise.
+     */
+    public function getDeleteOnUpdate()
+    {
+        return $this->mapping['delete_on_update'];
+    }
+
+    /**
      * Determines if the uploadable field should be injected with a
      * Symfony\Component\HttpFoundation\File\File instance when
      * the object is loaded from the datastore.

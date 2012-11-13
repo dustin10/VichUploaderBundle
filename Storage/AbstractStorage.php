@@ -51,6 +51,14 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
+            if ($mapping->getDeleteOnUpdate() && $mapping->getFileNameProperty()->getValue($obj)) {
+                $name = $mapping->getFileNameProperty()->getValue($obj);
+
+                $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+
+                $this->doRemove($dir, $name);
+            }
+
             if ($mapping->hasNamer()) {
                 $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
             } else {
