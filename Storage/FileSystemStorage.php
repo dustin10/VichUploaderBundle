@@ -64,7 +64,6 @@ class FileSystemStorage extends AbstractStorage
         }
 
         $uriPrefix = $mapping->getUriPrefix();
-        $parts = explode($uriPrefix, $mapping->getUploadDir($obj, $field));
-        return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
+        return sprintf('%s/%s', $uriPrefix . $mapping->getUploadDir($obj, $field), $name);
     }
 }
