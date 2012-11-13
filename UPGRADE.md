@@ -3,6 +3,8 @@ Upgrading from v0.4.0 to master
 
 - `getUriPrefix` default value is now /uploads
 
+- `delete_on_update` config param added. It defaults to true.
+
 Upgrading from v0.4.0 to v0.5.0
 ===============================
 
