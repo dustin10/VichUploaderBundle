@@ -169,6 +169,8 @@ All options are listed below:
 - `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
 - `delete_on_remove`: Set to true if the file should be deleted from the
 filesystem when the entity is removed
+- `delete_on_update`: Set to true if the file should be deleted from the
+filesystem when the file is replaced by an other one
 - `inject_on_load`: Set to true if the file should be injected into the uploadable
 field property when it is loaded from the data store. The object will be an instance
 of `Symfony\Component\HttpFoundation\File\File`
