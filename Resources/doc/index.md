@@ -32,9 +32,7 @@ Add the following lines in your composer.json:
 {
     "require": {
         "vich/uploader-bundle": "dev-master",
-        "knplabs/gaufrette" : "dev-master",
         "knplabs/knp-gaufrette-bundle" : "dev-master"
-
     }
 }
 ```
@@ -44,6 +42,7 @@ OR add to `deps` file:
 ```
 [gaufrette]
     git=http://github.com/KnpLabs/Gaufrette.git
+    version=v0.1.3
 
 [KnpGaufretteBundle]
     git=http://github.com/KnpLabs/KnpGaufretteBundle.git
