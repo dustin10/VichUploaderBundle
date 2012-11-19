@@ -52,7 +52,7 @@ class FileInjector implements FileInjectorInterface
 
                 $mapping->getProperty()->setValue(
                     $obj,
-                    new File($path, false)
+                    array('file' => new File($path, false))
                 );
             }
         }
