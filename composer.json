@@ -23,7 +23,7 @@
         "doctrine/dbal": "@stable",
         "doctrine/mongodb": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
-        "knplabs/knp-gaufrette-bundle": "dev-master"
+        "knplabs/knp-gaufrette-bundle": "0.2.*"
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",
