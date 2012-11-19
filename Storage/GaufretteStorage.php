@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
-use Gaufrette\FileStream\Local;
+use Gaufrette\Stream\Local;
 use Gaufrette\StreamMode;
 
 /**
@@ -58,7 +58,7 @@ class GaufretteStorage extends AbstractStorage
         $adapter = $this->getAdapter($dir);
 
         $src = new Local($file->getPathname());
-        $dst = $adapter->createFileStream($name);
+        $dst = $adapter->createStream($name);
 
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('ab+'));
