@@ -272,7 +272,7 @@ class Product
      *     maxSize="1M",
      *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg"}
      * )
-     * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      *
      * @var File $image
      */
