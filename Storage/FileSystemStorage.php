@@ -19,7 +19,9 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doUpload(UploadedFile $file, $dir, $name)
     {
-        return $file->move($dir, $name);
+        $adjustedDir =  rtrim(str_replace('//', '/', $dir . '/' . dirname($name)),'/.');
+        $adjustedName = basename($name);
+        return $file->move($adjustedDir, $adjustedName);
     }
 
     /**

@@ -304,6 +304,193 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     *  Test that file upload moves uploaded file to correct directory and with correct filename
+     */
+    public function testUploadedFileIsCorrectlyMoved()
+    {
+        $obj = new DummyEntity();
+
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file
+            ->expects($this->any())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('filename.txt'));
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $name = new \stdClass();
+
+        $prop
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $mapping
+            ->expects($this->any())
+            ->method('getProperty')
+            ->will($this->returnValue($prop));
+
+
+        $mapping
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue($prop));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getPropertyValue')
+            ->with($obj)
+            ->will($this->returnValue($file));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getDeleteOnUpdate')
+            ->will($this->returnValue(false));
+
+        $mapping
+            ->expects($this->once())
+            ->method('hasNamer')
+            ->will($this->returnValue(false));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->with($obj,$name)
+            ->will($this->returnValue('/dir'));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromObject')
+            ->with($obj)
+            ->will($this->returnValue(array($mapping)));
+
+        $file
+            ->expects($this->once())
+            ->method('move')
+            ->with('/dir', 'filename.txt');
+
+        $storage = new FileSystemStorage($this->factory);
+        $storage->upload($obj);
+
+    }
+
+
+    /**
+     *  Test file upload when filename contains directories
+     * @dataProvider filenameWithDirectoriesDataProvider
+     */
+    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
+    {
+        $obj = new DummyEntity();
+
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $name = new \stdClass();
+
+        $namer = $this->getMockBuilder('Vich\UploaderBundle\Naming\NamerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $namer
+            ->expects($this->once())
+            ->method('name')
+            ->with($obj, $name)
+            ->will($this->returnValue($filename));
+
+        $prop
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $mapping
+            ->expects($this->once())
+            ->method('getNamer')
+            ->will($this->returnValue($namer));
+
+        $mapping
+            ->expects($this->any())
+            ->method('getProperty')
+            ->will($this->returnValue($prop));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue($prop));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getPropertyValue')
+            ->with($obj)
+            ->will($this->returnValue($file));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getDeleteOnUpdate')
+            ->will($this->returnValue(false));
+
+        $mapping
+            ->expects($this->once())
+            ->method('hasNamer')
+            ->will($this->returnValue(true));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->with($obj,$name)
+            ->will($this->returnValue($dir));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromObject')
+            ->with($obj)
+            ->will($this->returnValue(array($mapping)));
+
+        $file
+            ->expects($this->once())
+            ->method('move')
+            ->with($expectedDir, $expectedFileName);
+
+        $storage = new FileSystemStorage($this->factory);
+        $storage->upload($obj);
+
+    }
+
+    public function filenameWithDirectoriesDataProvider()
+    {
+        return array(
+            array(
+                '/root_dir',
+                '/dir_1/dir_2/filename.txt',
+                '/root_dir/dir_1/dir_2',
+                'filename.txt'
+            ),
+            array(
+                '/root_dir',
+                'dir_1/dir_2/filename.txt',
+                '/root_dir/dir_1/dir_2',
+                'filename.txt'
+            ),
+        );
+    }
+
+    /**
      * Creates a mock factory.
      *
      * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
