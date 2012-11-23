@@ -269,6 +269,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
                 '/uploads/file.txt'
             ),
             array(
+                'c:\abs\path\web\uploads',
+                '/uploads/file.txt'
+            ),
+            array(
                 '/abs/path/web/project/web/uploads',
                 '/uploads/file.txt'
             ),
