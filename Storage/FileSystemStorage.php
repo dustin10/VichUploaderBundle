@@ -19,9 +19,9 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doUpload(UploadedFile $file, $dir, $name)
     {
-        $adjustedDir =  rtrim(str_replace('//', '/', $dir . '/' . dirname($name)),'/.');
-        $adjustedName = basename($name);
-        return $file->move($adjustedDir, $adjustedName);
+        $uploadDir = $this->getUploadDirectory($dir, $name);
+        $fileName = basename($name);
+        return $file->move($uploadDir, $fileName);
     }
 
     /**
@@ -79,5 +79,27 @@ class FileSystemStorage extends AbstractStorage
     protected function convertWindowsDirectorySeparator($string)
     {
         return str_replace('\\', '/', $string);
+    }
+
+    /**
+     * Returns the upload directory
+     *
+     * The method extract any directory present in $name and combine
+     * it with $dir to get the right upload directory.
+     *
+     * @param $dir
+     * @param $name
+     * @return string
+     */
+    protected function getUploadDirectory($dir, $name)
+    {
+        return rtrim(
+            str_replace(
+                DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR,
+                DIRECTORY_SEPARATOR,
+                $dir . DIRECTORY_SEPARATOR . dirname($name)
+            ),
+            DIRECTORY_SEPARATOR . '.'
+        );
     }
 }
