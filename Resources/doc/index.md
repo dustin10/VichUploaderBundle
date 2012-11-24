@@ -248,6 +248,7 @@ Lets look at an example using a fictional `Product` ORM entity:
 namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -271,7 +272,7 @@ class Product
      *     maxSize="1M",
      *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg"}
      * )
-     * @Vich\UploadableField(mapping="property_image", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      *
      * @var File $image
      */
