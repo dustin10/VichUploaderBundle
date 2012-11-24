@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Storage;
 
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Gaufrette\Exception\FileNotFound;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
@@ -64,7 +65,7 @@ class GaufretteStorage extends AbstractStorage
         $dst->open(new StreamMode('ab+'));
 
         while (!$src->eof()) {
-            $data    = $src->read(100000);
+            $data = $src->read(100000);
             $written = $dst->write($data);
         }
         $dst->close();
@@ -78,7 +79,12 @@ class GaufretteStorage extends AbstractStorage
     {
         $adapter = $this->getFilesystem($dir);
 
-        return $adapter->delete($name);
+        try {
+            return $adapter->delete($name);
+        } catch (FileNotFound $e) {
+            return false;
+        }
+
     }
 
     /**

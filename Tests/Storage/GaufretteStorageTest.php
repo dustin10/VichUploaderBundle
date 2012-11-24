@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use Vich\UploaderBundle\Storage\GaufretteStorage;
+use Gaufrette\Exception\FileNotFound;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -263,6 +264,69 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('delete')
             ->with('file.txt');
+
+        $this
+            ->filesystemMap
+            ->expects($this->once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->will($this->returnValue($filesystem));
+
+        $this
+            ->factory
+            ->expects($this->once())
+            ->method('fromObject')
+            ->with($obj)
+            ->will($this->returnValue(array($mapping)));
+
+        $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
+        $storage->remove($obj, 'file');
+    }
+
+    /**
+     * Test that FileNotFound exception is catched
+     */
+    public function testRemoveNotFoundFile()
+    {
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $obj = new DummyEntity();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $prop
+            ->expects($this->any())
+            ->method('getValue')
+            ->with($obj)
+            ->will($this->returnValue('file.txt'));
+        $prop
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('nameProperty'));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getDeleteOnRemove')
+            ->will($this->returnValue(true));
+        $mapping
+            ->expects($this->any())
+            ->method('getUploadDir')
+            ->will($this->returnValue('filesystemKey'));
+        $mapping
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue($prop));
+        $mapping
+            ->expects($this->once())
+            ->method('getProperty')
+            ->will($this->returnValue($prop));
+
+        $filesystem = $this->getFilesystemMock();
+        $filesystem
+            ->expects($this->once())
+            ->method('delete')
+            ->with('file.txt')
+            ->will($this->throwException(new FileNotFound('File Not Found')));
 
         $this
             ->filesystemMap
