@@ -36,7 +36,7 @@ class FileSystemStorage extends AbstractStorage
     protected function doRemove($dir, $name)
     {
         $file = $dir . DIRECTORY_SEPARATOR . $name;
-        return file_exists($file)? unlink($file):false;
+        return file_exists($file) ? unlink($file) : false;
     }
 
     /**
