@@ -173,6 +173,67 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new FileSystemStorage($this->factory);
         $storage->remove($obj);
     }
+    /**
+     * Test the remove method skips trying to remove a file that no longer exists
+     */
+    public function testRemoveSkipsNonExistingFile()
+    {
+        $obj = new DummyEntity();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $prop
+                ->expects($this->once())
+                ->method('getValue')
+                ->with($obj)
+                ->will($this->returnValue('file.txt'));
+
+        $propertyMock = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $propertyMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue(null));
+
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping
+                ->expects($this->once())
+                ->method('getDeleteOnRemove')
+                ->will($this->returnValue(true));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('/tmp'));
+
+        $mapping
+            ->expects($this->any())
+            ->method('getProperty')
+            ->will($this->returnValue($propertyMock));
+
+        $mapping
+                ->expects($this->once())
+                ->method('getFileNameProperty')
+                ->will($this->returnValue($prop));
+
+        $this->factory
+                ->expects($this->once())
+                ->method('fromObject')
+                ->with($obj)
+                ->will($this->returnValue(array($mapping)));
+
+        $storage = new FileSystemStorage($this->factory);
+        try{
+             $storage->remove($obj);
+        }
+        catch(\Exception $e){
+            $this->fail('We tried to remove nonexistent file');
+        }
+    }
 
     /**
      * Test the resolve path method.
