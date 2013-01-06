@@ -67,7 +67,8 @@ abstract class AbstractStorage implements StorageInterface
 
             $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
 
-            $this->doUpload($file, $dir, $name);
+            $movedFile = $this->doUpload($file, $dir, $name);
+            $mapping->setPropertyValue($obj, $movedFile);
 
             $mapping->getFileNameProperty()->setValue($obj, $name);
         }
