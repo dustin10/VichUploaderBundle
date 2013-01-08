@@ -292,9 +292,27 @@ class Product
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
 implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
 configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. if you would like to change this then you must implement a custom namer.
+was uploaded. if you would like to change this then you can use one of the provided namers or implement a custom one.
 
 ### File Namer
+
+#### Use a provided file namer
+
+Only the `vich_uploader.namer_uniqid` is available at the moment. It will rename your uploaded files with an unique name,
+like `50eb3db039715.jpeg`.
+
+To use it, you just have to specify the service id for the `namer` configuration option of your mapping :
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image
+            namer: vich_uploader.namer_uniqid
+```
+
+#### Create a custom file namer
 
 To create a custom file namer, simply implement the `Vich\UploaderBundle\Naming\NamerInterface`
 and in the `name` method of your class return the desired file name. Since your entity
