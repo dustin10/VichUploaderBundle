@@ -94,6 +94,11 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('upload')
             ->with($obj);
 
+        $this->injector
+            ->expects($this->once())
+            ->method('injectFiles')
+            ->with($obj);
+
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
         $listener->prePersist($args);
     }
@@ -129,6 +134,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->storage
             ->expects($this->never())
             ->method('upload');
+
+        $this->injector
+            ->expects($this->never())
+            ->method('injectFiles');
 
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
         $listener->prePersist($args);
@@ -176,6 +185,11 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('upload')
             ->with($obj);
 
+        $this->injector
+            ->expects($this->once())
+            ->method('injectFiles')
+            ->with($obj);
+
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
         $listener->preUpdate($args);
     }
@@ -215,6 +229,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->adapter
             ->expects($this->never())
             ->method('recomputeChangeSet');
+
+        $this->injector
+            ->expects($this->never())
+            ->method('injectFiles');git
 
         $listener = new UploaderListener($this->adapter, $this->driver, $this->storage, $this->injector);
         $listener->preUpdate($args);
