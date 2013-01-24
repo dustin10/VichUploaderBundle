@@ -308,7 +308,7 @@ vich_uploader:
     # ...
     mappings:
         product_image:
-            upload_destination: product_image
+            upload_destination: product_image_fs
             namer: vich_uploader.namer_uniqid
 ```
 
