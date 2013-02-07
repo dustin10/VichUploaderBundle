@@ -21,6 +21,12 @@ class UniqidNamer implements NamerInterface
 
         $file = $refProp->getValue($obj);
 
-        return sprintf('%s.%s', uniqid(), $file->guessExtension());
+        $name = uniqid();
+
+        if ($extension = $file->guessExtension()) {
+            $name = sprintf('%s.%s', $name, $file->guessExtension());
+        }
+
+        return $name;
     }
 }
