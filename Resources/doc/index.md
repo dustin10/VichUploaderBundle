@@ -223,7 +223,7 @@ use with default storage.
 > In this case upload_destination refer to a guafrette filesystem
 > and directory_namer should be used to generate a valid
 > filesystem ID (and not a real path). See more about this
-> in [Namers section](#Namers)
+> in [Namers section](#namers)
 
 ### Annotate Entities
 
