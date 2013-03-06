@@ -366,6 +366,255 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $storage->resolvePath($obj, 'oops');
     }
 
+    public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapter()
+    {
+        $obj = new DummyEntity();
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $adapter = $this->getMockBuilder('\Gaufrette\Adapter\MetadataSupporter')
+            ->disableOriginalConstructor()
+            ->setMethods(array('setMetadata', 'getMetadata'))
+            ->getMock();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $prop
+            ->expects($this->any())
+            ->method('getValue')
+            ->with($obj)
+            ->will($this->returnValue('file.txt'));
+
+        $prop
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('nameProperty'));
+
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file
+            ->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('filename'));
+
+        $file
+            ->expects($this->once())
+            ->method('getPathname')
+            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getPropertyValue')
+            ->will($this->returnValue($file));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('filesystemKey'));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue($prop));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getProperty')
+            ->will($this->returnValue($prop));
+
+        $filesystem = $this
+            ->getMockBuilder('\Gaufrette\Filesystem')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getAdapter', 'createStream', 'write'))
+            ->getMock();
+
+        $imb = $this
+            ->getMockBuilder('\Gaufrette\Stream\InMemoryBuffer')
+            ->disableOriginalConstructor()
+            ->setMethods(array('open', 'write', 'close'))
+            ->getMock();
+
+        $imb
+            ->expects($this->once())
+            ->method('open')
+            ->will($this->returnValue(true));
+
+        $imb
+            ->expects($this->once())
+            ->method('write')
+            ->will($this->returnValue(true));
+
+        $imb
+            ->expects($this->once())
+            ->method('close')
+            ->will($this->returnValue(true));
+
+        $filesystem
+            ->expects($this->once())
+            ->method('createStream')
+            ->will($this->returnValue($imb));
+
+        $filesystemMap = $this
+            ->getMockBuilder('Knp\Bundle\GaufretteBundle\FilesystemMap')
+            ->disableOriginalConstructor()
+            ->setMethods(array('get'))
+            ->getMock();
+
+        $filesystemMap->expects($this->once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->will($this->returnValue($filesystem));
+
+        $this
+            ->factory
+            ->expects($this->once())
+            ->method('fromObject')
+            ->with($obj)
+            ->will($this->returnValue(array($mapping)));
+
+        $adapter
+            ->expects($this->once())
+            ->method('setMetadata')
+            ->will($this->returnValue(null));
+
+        $filesystem
+            ->expects($this->any())
+            ->method('getAdapter')
+            ->will($this->returnValue($adapter));
+
+
+        $storage = new GaufretteStorage($this->factory, $filesystemMap);
+        $storage->upload($obj);
+    }
+
+    public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
+    {
+        $obj = new DummyEntity();
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $adapter = $this->getMockBuilder('\Gaufrette\Adapter\Apc')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $prop
+            ->expects($this->any())
+            ->method('getValue')
+            ->with($obj)
+            ->will($this->returnValue('file.txt'));
+
+        $prop
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('nameProperty'));
+
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file
+            ->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('filename'));
+
+        $file
+            ->expects($this->once())
+            ->method('getPathname')
+            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getPropertyValue')
+            ->will($this->returnValue($file));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('filesystemKey'));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getFileNameProperty')
+            ->will($this->returnValue($prop));
+
+        $mapping
+            ->expects($this->once())
+            ->method('getProperty')
+            ->will($this->returnValue($prop));
+
+        $filesystem = $this
+            ->getMockBuilder('\Gaufrette\Filesystem')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getAdapter', 'createStream', 'write'))
+            ->getMock();
+
+        $imb = $this
+            ->getMockBuilder('\Gaufrette\Stream\InMemoryBuffer')
+            ->disableOriginalConstructor()
+            ->setMethods(array('open', 'write', 'close'))
+            ->getMock();
+
+        $imb
+            ->expects($this->once())
+            ->method('open')
+            ->will($this->returnValue(true));
+
+        $imb
+            ->expects($this->once())
+            ->method('write')
+            ->will($this->returnValue(true));
+
+        $imb
+            ->expects($this->once())
+            ->method('close')
+            ->will($this->returnValue(true));
+
+        $filesystem
+            ->expects($this->once())
+            ->method('createStream')
+            ->will($this->returnValue($imb));
+
+        $filesystemMap = $this
+            ->getMockBuilder('Knp\Bundle\GaufretteBundle\FilesystemMap')
+            ->disableOriginalConstructor()
+            ->setMethods(array('get'))
+            ->getMock();
+
+        $filesystemMap->expects($this->once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->will($this->returnValue($filesystem));
+
+        $this
+            ->factory
+            ->expects($this->once())
+            ->method('fromObject')
+            ->with($obj)
+            ->will($this->returnValue(array($mapping)));
+
+        $adapter
+            ->expects($this->never())
+            ->method('setMetadata')
+            ->will($this->returnValue(null));
+
+        $filesystem
+            ->expects($this->any())
+            ->method('getAdapter')
+            ->will($this->returnValue($adapter));
+
+
+        $storage = new GaufretteStorage($this->factory, $filesystemMap);
+        $storage->upload($obj);
+    }
+
     /**
      * Creates a mock factory.
      *

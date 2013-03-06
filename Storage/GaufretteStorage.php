@@ -13,6 +13,7 @@ use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
+use Gaufrette\Adapter\MetadataSupporter;
 
 /**
  * GaufretteStorage.
@@ -57,6 +58,10 @@ class GaufretteStorage extends AbstractStorage
     protected function doUpload(UploadedFile $file, $dir, $name)
     {
         $filesystem = $this->getFilesystem($dir);
+
+        if ($filesystem->getAdapter() instanceof MetadataSupporter) {
+            $filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
+        }
 
         $src = new LocalStream($file->getPathname());
         $dst = $filesystem->createStream($name);
