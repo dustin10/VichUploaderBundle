@@ -129,8 +129,8 @@ class PropertyMappingFactory
         $config = $this->mappings[$field->getMapping()];
 
         $mapping = new PropertyMapping();
-        $mapping->setProperty($class->getProperty($field->getPropertyName()));
-        $mapping->setFileNameProperty($class->getProperty($field->getFileNameProperty()));
+        $mapping->setProperty(self::getProperty($class, $field->getPropertyName()));
+        $mapping->setFileNameProperty(self::getProperty($class, $field->getFileNameProperty()));
         $mapping->setMappingName($field->getMapping());
         $mapping->setMapping($config);
 
@@ -143,5 +143,26 @@ class PropertyMappingFactory
         }
 
         return $mapping;
+    }
+
+    public static function getProperties(\ReflectionClass $class)
+    {
+        $properties = $class->getProperties();
+        if ($parentClass = $class->getParentClass()) {
+            $properties = array_merge(self::getProperties($parentClass), $properties);
+        }
+        return $properties;
+    }
+
+    public static function getProperty(\ReflectionClass $class, $property)
+    {
+        try {
+            return $class->getProperty($property);
+        } catch (\ReflectionException $e) {
+            if ($parentClass = $class->getParentClass()) {
+                return self::getProperty($parentClass, $property);
+            }
+            throw $e;
+        }
     }
 }
