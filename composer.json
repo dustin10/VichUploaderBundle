@@ -21,14 +21,14 @@
         "doctrine/orm": "@stable",
         "doctrine/common": "@stable",
         "doctrine/dbal": "@stable",
-        "doctrine/mongodb": "dev-master",
         "doctrine/mongodb-odm": "dev-master",
         "knplabs/knp-gaufrette-bundle": "0.2.*"
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",
         "symfony/mongodb-odm-bundle": "*",
-        "knplabs/knp-gaufrette-bundle": "*"
+        "knplabs/knp-gaufrette-bundle": "*",
+        "phpunit/phpunit": "~3.7@stable"
     },
     "autoload": {
         "psr-0": { "Vich\\UploaderBundle": "" }
