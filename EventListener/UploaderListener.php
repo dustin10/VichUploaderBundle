@@ -77,6 +77,8 @@ class UploaderListener implements EventSubscriber
         $obj = $this->adapter->getObjectFromArgs($args);
         if ($this->isUploadable($obj)) {
             $this->storage->upload($obj);
+            
+            $this->injector->injectFiles($obj);
         }
     }
 
@@ -90,6 +92,8 @@ class UploaderListener implements EventSubscriber
         $obj = $this->adapter->getObjectFromArgs($args);
         if ($this->isUploadable($obj)) {
             $this->storage->upload($obj);
+            
+            $this->injector->injectFiles($obj);
 
             $this->adapter->recomputeChangeSet($args);
         }
