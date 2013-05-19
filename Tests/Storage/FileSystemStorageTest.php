@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -433,10 +434,19 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->with($obj)
             ->will($this->returnValue(array($mapping)));
 
+        $movedFile = new File('php://temp/filename.txt', false);
+
         $file
             ->expects($this->once())
             ->method('move')
-            ->with('/dir', 'filename.txt');
+            ->with('/dir', 'filename.txt')
+            ->will($this->returnValue($movedFile));
+
+        $mapping
+            ->expects($this->once())
+            ->method('setPropertyValue')
+            ->with($obj,$movedFile);
+
 
         $storage = new FileSystemStorage($this->factory);
         $storage->upload($obj);
