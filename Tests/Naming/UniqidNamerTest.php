@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Naming\UniqidNamer;
  */
 class UniqidNamerTest extends \PHPUnit_Framework_TestCase
 {
-    public static function fileDataProvider()
+    public function fileDataProvider()
     {
         return array(
             array('jpeg', '/[a-z0-9]{13}.jpeg/'),
