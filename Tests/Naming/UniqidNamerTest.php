@@ -13,7 +13,18 @@ use Vich\UploaderBundle\Naming\UniqidNamer;
  */
 class UniqidNamerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNameReturnsAnUniqueName()
+    public static function fileDataProvider()
+    {
+        return array(
+            array('jpeg', '/[a-z0-9]{13}.jpeg/'),
+            array(null, '/[a-z0-9]{13}/'),
+        );
+    }
+
+    /**
+     * @dataProvider fileDataProvider
+     */
+    public function testNameReturnsAnUniqueName($extension, $pattern)
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
             ->disableOriginalConstructor()
@@ -22,13 +33,13 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
         $file
             ->expects($this->any())
             ->method('guessExtension')
-            ->will($this->returnValue('jpeg'));
+            ->will($this->returnValue($extension));
 
         $entity = new DummyEntity;
         $entity->setFile($file);
 
         $namer = new UniqidNamer();
 
-        $this->assertRegExp('/[a-z0-9]{13}.jpeg/', $namer->name($entity, 'file'));
+        $this->assertRegExp($pattern, $namer->name($entity, 'file'));
     }
 }
