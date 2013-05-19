@@ -200,6 +200,17 @@ class PropertyMapping
     }
 
     /**
+     * Sets the value of the annotated property on the object
+     *
+     * @param object        $obj The object
+     * @param \Symfony\Component\HttpFoundation\File\File
+     */
+    public function setPropertyValue($obj, $file)
+    {
+        $this->property->setValue($obj, $file);
+    }
+
+    /**
      * Gets the configured file name property name.
      *
      * @return string The name.
