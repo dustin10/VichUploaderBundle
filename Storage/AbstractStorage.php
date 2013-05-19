@@ -5,7 +5,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * FileSystemStorage.
@@ -68,10 +67,7 @@ abstract class AbstractStorage implements StorageInterface
 
             $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
 
-            $movedFile = $this->doUpload($file, $dir, $name);
-            if ($movedFile instanceof File) {
-                $mapping->setPropertyValue($obj, $movedFile);
-            }
+            $this->doUpload($file, $dir, $name);
 
             $mapping->getFileNameProperty()->setValue($obj, $name);
         }
