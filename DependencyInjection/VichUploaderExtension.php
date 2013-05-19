@@ -9,6 +9,9 @@ use Symfony\Component\Config\FileLocator;
 use Vich\UploaderBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpKernel\Kernel;
 
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+
 /**
  * VichUploaderExtension.
  *
@@ -83,5 +86,33 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
         $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
         $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
+    }
+
+    private function loadEventListeners(array $config, ContainerBuilder $container)
+    {
+        if ($config['inject_on_load']) {
+            $container
+                ->setDefinition('vich_uploader.listener.inject', new DefinitionDecorator('vich_uploader.event_listener.abstract'))
+                ->setClass('vich_uploader.listener.inject.class')
+                ->setPublic(false)
+                ->addTag('doctrine.event_listener', array('event' => 'postLoad'));
+        }
+
+        if ($config['upload_on_persist']) {
+            $container
+                ->setDefinition('vich_uploader.listener.upload', new DefinitionDecorator('vich_uploader.event_listener.abstract'))
+                ->setClass('vich_uploader.listener.upload.class')
+                ->setPublic(false)
+                ->addTag('doctrine.event_listener', array('event' => 'prePersist'))
+                ->addTag('doctrine.event_listener', array('event' => 'preUpdate'));
+        }
+
+        if ($config['unlink_on_remove']) {
+            $container
+                ->setDefinition('vich_uploader.listener.inject', new DefinitionDecorator('vich_uploader.event_listener.abstract'))
+                ->setClass('vich_uploader.listener.inject.class')
+                ->setPublic(false)
+                ->addTag('doctrine.event_listener', array('event' => 'postRemove'));
+        }        
     }
 }

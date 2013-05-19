@@ -4,9 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <services>
+    <parameters>
+        <parameter key="vich_uploader.listener.abstract.class">Vich\UploaderBundle\EventListener\AbstractListener</parameter>
+        <parameter key="vich_uploader.listener.inject.class">Vich\UploaderBundle\EventListener\InjectListener</parameter>
+        <parameter key="vich_uploader.listener.upload.class">Vich\UploaderBundle\EventListener\UploadListener</parameter>
+        <parameter key="vich_uploader.listener.unlink.class">Vich\UploaderBundle\EventListener\UnlinkListener</parameter>
+    </parameters>
 
-        <service id="vich_uploader.listener.uploader" class="Vich\UploaderBundle\EventListener\UploaderListener" public="false">
+    <services>
+        <service id="vich_uploader.listener.abstract" class="%vich_uploader.listener.abstract.class%" abstract="true">
             <argument type="service" id="vich_uploader.adapter" />
             <argument type="service" id="vich_uploader.annotation_driver" />
             <argument type="service" id="vich_uploader.storage" />

@@ -23,6 +23,13 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      */
     protected $filesystemMap;
 
+    static public function setUpBeforeClass()
+    {
+        if (!class_exists('Gaufrette\Filesystem')) {
+            self::markTestSkipped('Gaufrette not installed');
+        }
+    }
+
     /**
      * Sets up the test.
      */
