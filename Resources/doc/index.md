@@ -296,11 +296,19 @@ was uploaded. if you would like to change this then you can use one of the provi
 
 ### File Namer
 
-#### Use a provided file namer
+#### Provided file namer
 
-At the moment available `vich_uploader.namer_uniqid` and `vich_uploader.namer_origname`.
-It's will rename your uploaded files with an unique name, but `vich_uploader.namer_origname` also
-save client file name after `_` like `50eb3db039715_image.jpeg`.
+At the moment there are two available namers:
+
+- vich_uploader.namer_uniqid
+- vich_uploader.namer_origname
+
+**vich_uploader.namer_uniqid** will rename your uploaded files using a uniqueid for the name and
+keeping the extension. Using this namer foo.jpg will be uploaded as something like 50eb3db039715.jpg.
+
+**vich_uploader.namer_origname** will rename your uploaded files using a uniqueid as the prefix of the
+filename and keeping the original name and extension. Using this namer foo.jpg will be uploaded as
+something like 50eb3db039715_foo.jpg
 
 To use it, you just have to specify the service id for the `namer` configuration option of your mapping :
 
