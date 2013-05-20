@@ -25,8 +25,8 @@
         "knplabs/knp-gaufrette-bundle": "0.2.*"
     },
     "suggest": {
-        "symfony/doctrine-bundle": "*",
-        "symfony/mongodb-odm-bundle": "*",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "*",
         "phpunit/phpunit": "~3.7@stable"
     },
