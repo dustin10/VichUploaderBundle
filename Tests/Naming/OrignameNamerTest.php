@@ -17,7 +17,7 @@ class OrignameNamerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('file.jpeg', '/[a-z0-9]{13}_file.jpeg/'),
-             array('file', '/[a-z0-9]{13}/_file'),
+            array('file', '/[a-z0-9]{13}_file/'),
         );
     }
 
