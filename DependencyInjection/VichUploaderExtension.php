@@ -35,8 +35,9 @@ class VichUploaderExtension extends Extension
     /**
      * Loads the extension.
      *
-     * @param array            $configs   The configuration
+     * @param array $configs   The configuration
      * @param ContainerBuilder $container The container builder
+     * @throws \InvalidArgumentException
      */
     public function load(array $configs, ContainerBuilder $container)
     {

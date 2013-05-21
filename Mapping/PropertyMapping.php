@@ -212,6 +212,8 @@ class PropertyMapping
     /**
      * Gets the configured upload directory.
      *
+     * @param null $obj
+     * @param null $field
      * @return string The configured upload directory.
      */
     public function getUploadDir($obj = null, $field = null)
