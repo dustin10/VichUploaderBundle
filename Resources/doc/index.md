@@ -16,7 +16,7 @@ your preferred one by configuration. Basically you can choose to work with with 
 filesystem or integrate guafrette to have nice abstraction over filesystem (for more
 info see [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)).
 
-You can also implemente your own StorageInterface if you need to.
+You can also implement your own StorageInterface if you need to.
 
 ## Installation
 
@@ -122,8 +122,8 @@ refactoring your code.
 **For this reason GaufretteStorage if probably the most flexible solution and your
 best choice as storage service.**
 
-If you don't need this level of abstraction, if you preferer to
-keep things simple, or if your just don't feel confortable working
+If you don't need this level of abstraction, if you prefer to
+keep things simple, or if you just don't feel comfortable working
 with gaufrette you can go with FileSystemStorage.
 
 For more information on how use one storage instead of another,
@@ -188,10 +188,10 @@ of `Symfony\Component\HttpFoundation\File\File`
 
 #### Gaufrette configuration
 
-In order to use Gaufrette you have to configure it. Here it is
-a sample configuration that store your file in your local filesystem,
+In order to use Gaufrette you have to configure it. Here is
+a sample configuration that stores your file in your local filesystem,
 but you can use your preferred adapters and FS (for details
-on this topic you should referer gaufrette documentation).
+on this topic you should refer to the gaufrette documentation).
 
 ``` yaml
 knp_gaufrette:
@@ -214,8 +214,8 @@ vich_uploader:
             upload_destination: product_image_fs
 ```
 
-Using vich_uploader.storage.gaufrette as storage service
-you can still use the same mappings options that you will
+Using vich_uploader.storage.gaufrette as the storage service
+you can still use the same mappings options that you would
 use with default storage.
 
 **Note:**
@@ -405,7 +405,7 @@ You must specify the annotated property you wish to get the file path for.
 
 ## Configuration Reference
 
-Below is the full default coniguration for the bundle:
+Below is the full default configuration for the bundle:
 
 ``` yaml
 # app/config/config.yml
