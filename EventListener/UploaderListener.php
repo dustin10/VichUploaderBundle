@@ -68,7 +68,7 @@ class UploaderListener implements EventSubscriber
     }
 
     /**
-     * Checks for for file to upload.
+     * Checks for file to upload.
      *
      * @param \Doctrine\Common\EventArgs $args The event arguments.
      */
