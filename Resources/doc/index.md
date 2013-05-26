@@ -3,7 +3,7 @@ VichUploaderBundle
 
 The VichUploaderBundle is a Symfony2 bundle that attempts to ease file
 uploads that are attached to an entity. The bundle will automatically name and
-save the uploaded file according to the configuration specified on a per property
+save the uploaded file according to the configuration specified on a per-property
 basis using a mix of configuration and annotations. After the entity has been created
 and the file has been saved, if configured to do so an instance of
 `Symfony\Component\HttpFoundation\File\File` will be loaded into the annotated property
@@ -11,9 +11,9 @@ when the entity is loaded from the datastore. The bundle also provides templatin
 for generating URLs to the file. The file can also be configured to be removed from the
 file system upon removal of the entity.
 
-The bundle provide different ways to interact with the filesystem, you can choose
-your preferred one by configuration. Basically you can choose to work with with local
-filesystem or integrate guafrette to have nice abstraction over filesystem (for more
+The bundle provides different ways to interact with the filesystem; you can choose
+your preferred one by configuration. Basically, you can choose to work with the local
+filesystem or integrate gaufrette to have nice abstraction over the filesystem (for more
 info see [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)).
 
 You can also implement your own StorageInterface if you need to.
@@ -98,7 +98,7 @@ public function registerBundles()
 
 ## Usage
 
-VichUploaderBundle try to handle file uploads according to a combination
+VichUploaderBundle tries to handle file uploads according to a combination
 of configuration parameters and annotations. In order to have your upload
 working you have to:
 
@@ -106,18 +106,18 @@ working you have to:
 or vich_uploader.storage.gaufrette)
 * Define a basic configuration set
 * Annotate your Entities
-* Optionally implements namer services (see Namer later)
+* Optionally implement namer services (see Namer later)
 
-*Please note that some bundle components has a slightly different meaning according to the
+*Please note that some bundle components have a slightly different meaning according to the
 storage service you are using. Read more about it in [Configuration reference](#a-hrefreferenceaconfiguration-reference)*
 
 ### FileSystemStorage VS GaufretteStorage
 
 Gaufrette is a great piece of code and provide a great level of filesystem
-abstraction. Using Gaufrette you will be able to store files locally or using
+abstraction. Using Gaufrette, you will be able to store files locally, or using
 some external service without impact on your application. This means that you
-will be able to change your medias position if your project requires to, without
-refactoring your code.
+will be able to change the location of your files by changing configuration,
+rather than code.
 
 **For this reason GaufretteStorage if probably the most flexible solution and your
 best choice as storage service.**
@@ -220,7 +220,7 @@ use with default storage.
 
 **Note:**
 
-> In this case upload_destination refer to a guafrette filesystem
+> In this case upload_destination refer to a gaufrette filesystem
 > and directory_namer should be used to generate a valid
 > filesystem ID (and not a real path). See more about this
 > in [Namers section](#namers)
@@ -292,7 +292,7 @@ class Product
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
 implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
 configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. if you would like to change this then you can use one of the provided namers or implement a custom one.
+was uploaded. If you would like to change this, you can use one of the provided namers or implement a custom one.
 
 ### File Namer
 
@@ -304,10 +304,10 @@ At the moment there are two available namers:
 - vich_uploader.namer_origname
 
 **vich_uploader.namer_uniqid** will rename your uploaded files using a uniqueid for the name and
-keeping the extension. Using this namer foo.jpg will be uploaded as something like 50eb3db039715.jpg.
+keep the extension. Using this namer, foo.jpg will be uploaded as something like 50eb3db039715.jpg.
 
 **vich_uploader.namer_origname** will rename your uploaded files using a uniqueid as the prefix of the
-filename and keeping the original name and extension. Using this namer foo.jpg will be uploaded as
+filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
 something like 50eb3db039715_foo.jpg
 
 To use it, you just have to specify the service id for the `namer` configuration option of your mapping :
@@ -378,7 +378,7 @@ If no directory namer is configured for a mapping, the bundle will simply use th
 **Note**:
 
 > If you are using Gaufrette to abstract from the filesystem the name returned
-> will be used as a guafrette filesystem ID and not as a proper path.
+> will be used as a gaufrette filesystem ID and not as a proper path.
 
 ## Generating URLs
 
