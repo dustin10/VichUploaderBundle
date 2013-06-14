@@ -156,7 +156,7 @@ abstract class AbstractStorage implements StorageInterface
             ));
         }
 
-        $uriPrefix = $mapping->getUriPrefix();
+        $uriPrefix = $mapping->getUriPrefix($obj, $field);
 
         return $name ? ($uriPrefix . '/' . $name) : '';
     }
