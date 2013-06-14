@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\DummyDirectoryNamer;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
@@ -28,5 +30,21 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($prop->getUploadDir(), '/tmp');
         $this->assertTrue($prop->getDeleteOnRemove());
         $this->assertTrue($prop->getInjectOnLoad());
+    }
+
+    public function testResolveUriWithDirectoryNamer()
+    {
+        $mapping['uri_prefix'] = '/uploads';
+        $uriPrefix             = '/uploads/custom/dir';
+        $directoryNamerResult  = '/custom/dir';
+
+        $obj = new DummyEntity();
+        $directoryNamer = new DummyDirectoryNamer($directoryNamerResult);
+        $propertyMapping = new PropertyMapping();
+
+        $propertyMapping->setMapping($mapping);
+        $propertyMapping->setDirectoryNamer($directoryNamer);
+
+        $this->assertEquals($uriPrefix, $propertyMapping->getUriPrefix($obj, 'file'));
     }
 }
