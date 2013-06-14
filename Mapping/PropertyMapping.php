@@ -264,8 +264,12 @@ class PropertyMapping
      *
      * @return string
      */
-    public function getUriPrefix()
+    public function getUriPrefix($obj = null, $field = null)
     {
+        if ($this->hasDirectoryNamer()) {
+            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['uri_prefix']);
+        }
+
         return $this->mapping['uri_prefix'];
     }
 }

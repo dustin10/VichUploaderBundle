@@ -68,7 +68,7 @@ class FileSystemStorage extends AbstractStorage
             ));
         }
 
-        $uriPrefix = $mapping->getUriPrefix();
+        $uriPrefix = $mapping->getUriPrefix($obj, $field);
         $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj, $field)));
         return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
     }
