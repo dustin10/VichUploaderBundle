@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Driver;
 
 use Doctrine\Common\Annotations\Reader;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * AnnotationDriver.
@@ -47,7 +48,7 @@ class AnnotationDriver
     {
         $fields = array();
 
-        foreach ($class->getProperties() as $prop) {
+        foreach (PropertyMappingFactory::getProperties($class) as $prop) {
             $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
             if (null !== $field) {
                 $field->setPropertyName($prop->getName());
@@ -69,7 +70,7 @@ class AnnotationDriver
     public function readUploadableField(\ReflectionClass $class, $field)
     {
         try {
-            $prop = $class->getProperty($field);
+            $prop = PropertyMappingFactory::getProperty($class, $field);
 
             $field = $this->reader->getPropertyAnnotation($prop, 'Vich\UploaderBundle\Mapping\Annotation\UploadableField');
             if (null === $field) {
