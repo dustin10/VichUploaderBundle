@@ -14,10 +14,6 @@ instance of `Symfony\Component\HttpFoundation\File\File`
 
 All of this functionality is fully configurable to allow for app-specific customization.
 
-Current limitations:
-
-- Saving/deleting files to the local filesystem only
-
 ## Documentation
 
 For usage documentation, see:
