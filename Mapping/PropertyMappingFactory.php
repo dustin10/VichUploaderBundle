@@ -7,6 +7,7 @@ use Vich\UploaderBundle\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use Doctrine\Common\Persistence\Proxy;
 
 /**
  * PropertyMappingFactory.
@@ -61,6 +62,9 @@ class PropertyMappingFactory
      */
     public function fromObject($obj)
     {
+        if ($obj instanceof Proxy) {
+            $obj->__load();
+        }
         $class = $this->adapter->getReflectionClass($obj);
         $this->checkUploadable($class);
 
@@ -82,6 +86,9 @@ class PropertyMappingFactory
      */
     public function fromField($obj, $field)
     {
+        if ($obj instanceof Proxy) {
+            $obj->__load();
+        }
         $class = $this->adapter->getReflectionClass($obj);
         $this->checkUploadable($class);
 
