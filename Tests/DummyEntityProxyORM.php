@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests;
 
-use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\Common\Persistence\Proxy;
 
 /**
  * DummyEntityProxyORM.
