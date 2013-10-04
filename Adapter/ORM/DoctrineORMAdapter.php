@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Adapter\ORM;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Doctrine\Common\EventArgs;
-use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\Common\Persistence\Proxy;
 
 /**
  * DoctrineORMAdapter.
