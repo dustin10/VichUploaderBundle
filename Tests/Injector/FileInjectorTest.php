@@ -70,7 +70,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getProperty')
             ->will($this->returnValue($prop));
 
-
         $mappings = array($fileMapping);
 
         $this->factory

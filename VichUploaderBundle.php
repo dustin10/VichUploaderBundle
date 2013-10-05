@@ -11,5 +11,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class VichUploaderBundle extends Bundle
 {
-
 }

@@ -7,7 +7,7 @@ use Doctrine\Common\EventSubscriber;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
-use Vich\UploaderBundle\Driver\AnnotationDriver;
+use Vich\UploaderBundle\Mapping\MappingReader;
 
 /**
  * UploaderListener.
@@ -22,9 +22,9 @@ class UploaderListener implements EventSubscriber
     protected $adapter;
 
     /**
-     * @var \Vich\UploaderBundle\Driver\AnnotationDriver $driver
+     * @var \Vich\UploaderBundle\Mapping\MappingReader $mapping
      */
-    protected $driver;
+    protected $mapping;
 
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
@@ -40,14 +40,14 @@ class UploaderListener implements EventSubscriber
      * Constructs a new instance of UploaderListener.
      *
      * @param \Vich\UploaderBundle\Adapter\AdapterInterface       $adapter  The adapter.
-     * @param \Vich\UploaderBundle\Driver\AnnotationDriver        $driver   The driver.
+     * @param \Vich\UploaderBundle\Mapping\MappingReader          $mapping  The mapping reader.
      * @param \Vich\UploaderBundle\Storage\StorageInterface       $storage  The storage.
      * @param \Vich\UploaderBundle\Injector\FileInjectorInterface $injector The injector.
      */
-    public function __construct(AdapterInterface $adapter, AnnotationDriver $driver, StorageInterface $storage, FileInjectorInterface $injector)
+    public function __construct(AdapterInterface $adapter, MappingReader $mapping, StorageInterface $storage, FileInjectorInterface $injector)
     {
         $this->adapter = $adapter;
-        $this->driver = $driver;
+        $this->mapping = $mapping;
         $this->storage = $storage;
         $this->injector = $injector;
     }
@@ -75,9 +75,9 @@ class UploaderListener implements EventSubscriber
     public function prePersist(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
+
+        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->storage->upload($obj);
-            
             $this->injector->injectFiles($obj);
         }
     }
@@ -90,11 +90,10 @@ class UploaderListener implements EventSubscriber
     public function preUpdate(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
-            $this->storage->upload($obj);
-            
-            $this->injector->injectFiles($obj);
 
+        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
+            $this->storage->upload($obj);
+            $this->injector->injectFiles($obj);
             $this->adapter->recomputeChangeSet($args);
         }
     }
@@ -108,7 +107,8 @@ class UploaderListener implements EventSubscriber
     public function postLoad(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
+
+        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->injector->injectFiles($obj);
         }
     }
@@ -121,21 +121,9 @@ class UploaderListener implements EventSubscriber
     public function postRemove(EventArgs $args)
     {
         $obj = $this->adapter->getObjectFromArgs($args);
-        if ($this->isUploadable($obj)) {
+
+        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->storage->remove($obj);
         }
-    }
-
-    /**
-     * Tests if the object is Uploadable.
-     *
-     * @param  object  $obj The object.
-     * @return boolean True if uploadable, false otherwise.
-     */
-    protected function isUploadable($obj)
-    {
-        $class = $this->adapter->getReflectionClass($obj);
-
-        return null !== $this->driver->readUploadable($class);
     }
 }

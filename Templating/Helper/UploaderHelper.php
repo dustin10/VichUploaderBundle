@@ -20,7 +20,7 @@ class UploaderHelper extends Helper
     /**
      * Constructs a new instance of UploaderHelper.
      *
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage    The storage.
+     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage The storage.
      */
     public function __construct(StorageInterface $storage)
     {
