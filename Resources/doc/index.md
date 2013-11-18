@@ -430,11 +430,13 @@ store files. The bundle ships with vich_uploader.storage.file_system
 and vich_uploader.storage.gaufrette see
 [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)
 
-## Know issues
+## Known issues
 
 ### The file is not updated if there are not other changes in the entity
-As the bundle is listen on Doctrine event `prePersist` and `preUpdate`, which are not fired
-when there is no change on field mapped by Doctrine, the file upload is not handled.
+
+As the bundle is listening to Doctrine `prePersist` and `preUpdate` events, which are not fired
+when there is no change on field mapped by Doctrine, the file upload is not handled if the image field 
+is the only updated.
 
 A workaround to solve this issue is to manually generate a change:
 
