@@ -17,18 +17,16 @@
         "symfony/framework-bundle": "~2.0"
     },
     "require-dev": {
-        "twig/twig": "@stable",
         "doctrine/orm": "@stable",
-        "doctrine/common": "@stable",
-        "doctrine/dbal": "@stable",
-        "doctrine/mongodb-odm": "dev-master",
-        "knplabs/knp-gaufrette-bundle": "0.2.*"
+        "doctrine/mongodb-odm": "@dev",
+        "knplabs/knp-gaufrette-bundle": "*",
+        "phpunit/phpunit": "@stable"
     },
     "suggest": {
+        "doctrine/orm": "*",
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "knplabs/knp-gaufrette-bundle": "*",
-        "phpunit/phpunit": "~3.7@stable"
+        "knplabs/knp-gaufrette-bundle": "*"
     },
     "autoload": {
         "psr-0": { "Vich\\UploaderBundle": "" }
