@@ -13,14 +13,14 @@ env:
 
 
 before_script:
-    - curl -s http://getcomposer.org/installer | php
+    - composer selfupdate
     - wget http://pecl.php.net/get/mongo-1.4.5.tgz
     - tar -xzf mongo-1.4.5.tgz
     - sh -c "cd mongo-1.4.5 && phpize && ./configure && sudo make install"
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-    - php composer.phar require --no-update "symfony/framework-bundle":"${SYMFONY_VERSION}"
-    - php composer.phar require --dev --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
-    - php composer.phar install
+    - composer require --no-update "symfony/framework-bundle":"${SYMFONY_VERSION}"
+    - composer require --dev --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
+    - composer install
 
 notifications:
   email:
