@@ -30,7 +30,7 @@ class AnnotationDriver
      * Attempts to read the uploadable annotation.
      *
      * @param  \ReflectionClass                                $class The reflection class.
-     * @return null|\Vich\UploaderBundle\Annotation\Uploadable The annotation.
+     * @return null|\Vich\UploaderBundle\Mapping\Annotation\Uploadable The annotation.
      */
     public function readUploadable(\ReflectionClass $class)
     {
@@ -75,7 +75,7 @@ class AnnotationDriver
      *
      * @param  \ReflectionClass                                     $class The class.
      * @param  string                                               $field The field
-     * @return null|\Vich\UploaderBundle\Annotation\UploadableField The uploadable field.
+     * @return null|\Vich\UploaderBundle\Mapping\Annotation\UploadableField The uploadable field.
      */
     public function readUploadableField(\ReflectionClass $class, $field)
     {
