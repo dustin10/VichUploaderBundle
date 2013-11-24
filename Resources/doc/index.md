@@ -67,12 +67,9 @@ Next you should add the `Vich` namespace to your autoloader:
 <?php
 // app/autoload.php
 
-$loader->registerNamespaces(array(
-    // ...
-    'Knp\Bundle'                => __DIR__.'/../vendor/bundles',
-    'Gaufrette'                 => __DIR__.'/../vendor/gaufrette/src',
-    'Vich' => __DIR__.'/../vendor/bundles'
-));
+$loader->add('Knp\Bundle'   , __DIR__.'/../vendor/bundles');
+$loader->add('Gaufrette'    , __DIR__.'/../vendor/gaufrette/src');
+$loader->add('Vich'         , __DIR__.'/../vendor/bundles');
 ```
 
 ### Initialize the bundle
