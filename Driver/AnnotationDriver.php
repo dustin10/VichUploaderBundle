@@ -34,7 +34,18 @@ class AnnotationDriver
      */
     public function readUploadable(\ReflectionClass $class)
     {
-        return $this->reader->getClassAnnotation($class, 'Vich\UploaderBundle\Mapping\Annotation\Uploadable');
+        $classAnnotation = $this->reader
+            ->getClassAnnotation($class, 'Vich\UploaderBundle\Mapping\Annotation\Uploadable');
+
+        if (null === $classAnnotation) {
+            if ($class->getParentClass()) {
+                return $this->readUploadable($class->getParentClass());
+            }
+
+            return null;
+        }
+
+        return $classAnnotation;
     }
 
     /**
