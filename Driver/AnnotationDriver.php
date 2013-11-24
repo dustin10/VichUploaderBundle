@@ -41,8 +41,6 @@ class AnnotationDriver
             if ($class->getParentClass()) {
                 return $this->readUploadable($class->getParentClass());
             }
-
-            return null;
         }
 
         return $classAnnotation;
