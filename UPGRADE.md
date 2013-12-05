@@ -1,4 +1,4 @@
-Upgrading from v0.7.0 to master
+Upgrading from v0.9.0 to master
 ===============================
 
 Upgrading from v0.7.0 to 0.9.0
