@@ -11,15 +11,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class StorageFactory
 {
-
     /**
-     *
      * @var ContainerInterface
      */
     protected $container;
 
     /**
-     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -31,5 +28,4 @@ class StorageFactory
     {
         return $this->container->get($this->container->getParameter('vich_uploader.storage_service'));
     }
-
 }

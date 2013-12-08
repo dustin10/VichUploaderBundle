@@ -69,8 +69,9 @@ class GaufretteStorage extends AbstractStorage
 
         while (!$src->eof()) {
             $data = $src->read(100000);
-            $written = $dst->write($data);
+            $dst->write($data);
         }
+
         $dst->close();
         $src->close();
     }
@@ -87,7 +88,6 @@ class GaufretteStorage extends AbstractStorage
         } catch (FileNotFound $e) {
             return false;
         }
-
     }
 
     /**

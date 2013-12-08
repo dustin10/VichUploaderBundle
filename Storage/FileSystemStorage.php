@@ -51,22 +51,7 @@ class FileSystemStorage extends AbstractStorage
      */
     public function resolveUri($obj, $field)
     {
-        $mapping = $this->factory->fromField($obj, $field);
-        if (null === $mapping) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to find uploadable field named: "%s"',
-                $field
-            ));
-        }
-
-        $name = $mapping->getFileNameProperty()->getValue($obj);
-        if ($name === null) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to get filename property value: "%s"',
-                $field
-            ));
-        }
-
+        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
         $uriPrefix = $mapping->getUriPrefix();
         $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj, $field)));
 
