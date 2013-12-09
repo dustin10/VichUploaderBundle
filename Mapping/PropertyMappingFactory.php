@@ -2,8 +2,8 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Vich\UploaderBundle\Mapping\MappingReader;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
@@ -22,9 +22,9 @@ class PropertyMappingFactory
     protected $container;
 
     /**
-     * @var AnnotationDriver $driver
+     * @var MappingReader $mapping
      */
-    protected $driver;
+    protected $mapping;
 
     /**
      * @var AdapterInterface $adapter
@@ -40,14 +40,14 @@ class PropertyMappingFactory
      * Constructs a new instance of PropertyMappingFactory.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Driver\AnnotationDriver              $driver    The driver.
+     * @param \Vich\UploaderBundle\Mapping\MappingReader                $mapping   The mapping mapping.
      * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
      * @param array                                                     $mappings  The configured mappings.
      */
-    public function __construct(ContainerInterface $container, AnnotationDriver $driver, AdapterInterface $adapter, array $mappings)
+    public function __construct(ContainerInterface $container, MappingReader $mapping, AdapterInterface $adapter, array $mappings)
     {
         $this->container = $container;
-        $this->driver = $driver;
+        $this->mapping = $mapping;
         $this->adapter = $adapter;
         $this->mappings = $mappings;
     }
@@ -65,12 +65,13 @@ class PropertyMappingFactory
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
+
         $class = $this->adapter->getReflectionClass($obj);
         $this->checkUploadable($class);
 
         $mappings = array();
-        foreach ($this->driver->readUploadableFields($class) as $field) {
-            $mappings[] = $this->createMapping($obj, $field);
+        foreach ($this->mapping->getUploadableFields($class) as $field => $mappingData) {
+            $mappings[] = $this->createMapping($obj, $field, $mappingData);
         }
 
         return $mappings;
@@ -89,15 +90,16 @@ class PropertyMappingFactory
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
+
         $class = $this->adapter->getReflectionClass($obj);
         $this->checkUploadable($class);
 
-        $annot = $this->driver->readUploadableField($class, $field);
-        if (null === $annot) {
+        $mappingData = $this->mapping->getUploadableField($class, $field);
+        if ($mappingData === null) {
             return null;
         }
 
-        return $this->createMapping($obj, $annot);
+        return $this->createMapping($obj, $field, $mappingData);
     }
 
     /**
@@ -108,37 +110,37 @@ class PropertyMappingFactory
      */
     protected function checkUploadable(\ReflectionClass $class)
     {
-        if (null === $this->driver->readUploadable($class)) {
-            throw new \InvalidArgumentException(
-                'The object is not uploadable.'
-            );
+        if (!$this->mapping->isUploadable($class)) {
+            throw new \InvalidArgumentException('The object is not uploadable.');
         }
     }
 
     /**
      * Creates the property mapping from the read annotation and configured mapping.
      *
-     * @param  object                                          $obj   The object.
-     * @param  \Vich\UploaderBundle\Annotation\UploadableField $field The read annotation.
-     * @return PropertyMapping                                 The property mapping.
+     * @param object                                          $obj         The object.
+     * @param string                                          $fieldName   The field name.
+     * @param \Vich\UploaderBundle\Annotation\UploadableField $mappingData The mapping data.
+     *
+     * @return PropertyMapping           The property mapping.
      * @throws \InvalidArgumentException
      */
-    protected function createMapping($obj, UploadableField $field)
+    protected function createMapping($obj, $fieldName, array $mappingData)
     {
         $class = $this->adapter->getReflectionClass($obj);
 
-        if (!array_key_exists($field->getMapping(), $this->mappings)) {
+        if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
             throw new \InvalidArgumentException(sprintf(
-               'No mapping named "%s" configured.', $field->getMapping()
+               'No mapping named "%s" configured.', $mappingData['mapping']
             ));
         }
 
-        $config = $this->mappings[$field->getMapping()];
+        $config = $this->mappings[$mappingData['mapping']];
 
         $mapping = new PropertyMapping();
-        $mapping->setProperty($class->getProperty($field->getPropertyName()));
-        $mapping->setFileNameProperty($class->getProperty($field->getFileNameProperty()));
-        $mapping->setMappingName($field->getMapping());
+        $mapping->setProperty($class->getProperty($mappingData['propertyName'] ?: $fieldName));
+        $mapping->setFileNameProperty($class->getProperty($mappingData['fileNameProperty']));
+        $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
         if ($config['namer']) {

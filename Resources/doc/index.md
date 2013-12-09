@@ -287,6 +287,36 @@ class Product
 }
 ```
 
+### YAML configuration
+
+Alternatively, you can choose to describe your entities in YAML. This bundle
+supports this format and comes with the following syntax to declare your
+uploadable fields:
+
+```yaml
+# src/Acme/DemoBundle/Resources/vich_uploader/Product.yml
+Acme\DemoBundle\Entity\Product:
+    image:
+        mapping:           product_image
+        filename_property: image_name
+
+    fields:
+        id:
+            type:       integer
+            id:         true
+            generator:  {strategy: AUTO}
+
+
+        # other fields
+
+        image_name:
+            type:       string
+            length:     255
+```
+
+**N.B**: in order to be able to use this format, make sure that the `symfony/yaml`
+package is installed.
+
 ## Namers
 
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer

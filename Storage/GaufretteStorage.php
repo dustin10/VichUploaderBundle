@@ -2,10 +2,8 @@
 
 namespace Vich\UploaderBundle\Storage;
 
-use Vich\UploaderBundle\Storage\StorageInterface;
 use Gaufrette\Exception\FileNotFound;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

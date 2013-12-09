@@ -28,4 +28,4 @@ class OrignameNamer implements NamerInterface
 
         return uniqid().'_'.$file->getClientOriginalName();
     }
-} 
+}

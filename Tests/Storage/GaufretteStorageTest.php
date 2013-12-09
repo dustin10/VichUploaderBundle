@@ -486,7 +486,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
 
-
         $storage = new GaufretteStorage($this->factory, $filesystemMap);
         $storage->upload($obj);
     }
@@ -609,7 +608,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
-
 
         $storage = new GaufretteStorage($this->factory, $filesystemMap);
         $storage->upload($obj);

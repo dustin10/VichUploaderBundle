@@ -198,7 +198,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue(null));
 
-
         $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
         $mapping
                 ->expects($this->once())
@@ -227,10 +226,9 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array($mapping)));
 
         $storage = new FileSystemStorage($this->factory);
-        try{
+        try {
              $storage->remove($obj);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->fail('We tried to remove nonexistent file');
         }
     }
@@ -391,14 +389,12 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue($name));
 
-
         $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
 
         $mapping
             ->expects($this->any())
             ->method('getProperty')
             ->will($this->returnValue($prop));
-
 
         $mapping
             ->expects($this->once())
@@ -443,7 +439,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
     }
 
-
     /**
      *  Test file upload when filename contains directories
      * @dataProvider filenameWithDirectoriesDataProvider
@@ -476,7 +471,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));
-
 
         $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
 
