@@ -11,5 +11,4 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  */
 class Uploadable
 {
-
 }

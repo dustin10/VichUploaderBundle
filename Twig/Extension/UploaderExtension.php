@@ -44,7 +44,7 @@ class UploaderExtension extends \Twig_Extension
     public function getFunctions()
     {
         $names = array(
-            'vich_uploader_asset'  => 'asset'
+            'vich_uploader_asset' => 'asset'
         );
 
         $funcs = array();

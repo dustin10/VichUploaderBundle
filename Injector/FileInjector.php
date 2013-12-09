@@ -42,19 +42,21 @@ class FileInjector implements FileInjectorInterface
     {
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
-            if ($mapping->getInjectOnLoad()) {
-                $field = $mapping->getProperty()->getName();
-                try {
-                    $path = $this->storage->resolvePath($obj, $field);
-                } catch (\InvalidArgumentException $e) {
-                    continue;
-                }
-
-                $mapping->getProperty()->setValue(
-                    $obj,
-                    new File($path, false)
-                );
+            if (!$mapping->getInjectOnLoad()) {
+                continue;
             }
+
+            $field = $mapping->getProperty()->getName();
+            try {
+                $path = $this->storage->resolvePath($obj, $field);
+            } catch (\InvalidArgumentException $e) {
+                continue;
+            }
+
+            $mapping->getProperty()->setValue(
+                $obj,
+                new File($path, false)
+            );
         }
     }
 }
