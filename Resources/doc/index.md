@@ -91,10 +91,11 @@ public function registerBundles()
 )
 ```
 
+
 **Note:**
 
-> Even if you don't plan to use Gaufrette you must include it in your
-> deps file and activate KnpGaufretteBundle
+> You need to require and activate KnpGaufretteBundle only if you want to
+> abstract your file storage with Gaufrette.
 
 ## Usage
 
