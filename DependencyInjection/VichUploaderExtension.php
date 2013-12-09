@@ -113,7 +113,7 @@ class VichUploaderExtension extends Extension
                 $bundleName = substr($directory['path'], 1, strpos($directory['path'], '/') - 1);
 
                 if (!isset($bundles[$bundleName])) {
-                    throw new RuntimeException(sprintf('The bundle "%s" has not been registered with AppKernel. Available bundles: %s', $bundleName, implode(', ', array_keys($bundles))));
+                    throw new \RuntimeException(sprintf('The bundle "%s" has not been registered with AppKernel. Available bundles: %s', $bundleName, implode(', ', array_keys($bundles))));
                 }
 
                 $ref = new \ReflectionClass($bundles[$bundleName]);
@@ -142,7 +142,7 @@ class VichUploaderExtension extends Extension
             $dir = $container->getParameterBag()->resolveValue($config['metadata']['file_cache']['dir']);
             if (!file_exists($dir)) {
                 if (!$rs = @mkdir($dir, 0777, true)) {
-                    throw new RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
+                    throw new \RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
                 }
             }
         } else {
