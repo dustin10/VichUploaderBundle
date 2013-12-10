@@ -136,7 +136,7 @@ abstract class AbstractStorage implements StorageInterface
         list($mapping, $filename) = $this->getFileName($obj, $field);
         $uriPrefix = $mapping->getUriPrefix();
 
-        return $name ? ($uriPrefix . '/' . $filename) : '';
+        return $filename ? ($uriPrefix . '/' . $filename) : '';
     }
 
     protected function getFileName($obj, $field)

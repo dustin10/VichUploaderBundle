@@ -130,8 +130,6 @@ class PropertyMappingFactory
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
     {
-        $class = $this->adapter->getReflectionClass($obj);
-
         if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
             throw new \InvalidArgumentException(sprintf(
                'No mapping named "%s" configured.', $mappingData['mapping']
