@@ -41,17 +41,11 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
     {
         $uploadDir = __DIR__ . '/..';
         $name = 'file.txt';
+        $filePropertyName = 'file';
 
         file_put_contents(sprintf('%s/%s', $uploadDir, $name), '');
 
         $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $prop
-            ->expects($this->once())
-            ->method('setValue');
 
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
                        ->disableOriginalConstructor()
@@ -61,9 +55,15 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getInjectOnLoad')
             ->will($this->returnValue(true));
         $fileMapping
-            ->expects($this->exactly(2))
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+            ->expects($this->exactly(1))
+            ->method('getFilePropertyName')
+            ->will($this->returnValue($filePropertyName));
+        $fileMapping
+            ->expects($this->exactly(1))
+            ->method('setFile')
+            ->with($this->equalTo($obj), $this->callback(function($file) {
+                return $file instanceof \Symfony\Component\HttpFoundation\File\File;
+            }));
 
         $this->factory
             ->expects($this->once())
@@ -74,6 +74,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
+            ->with($this->equalTo($obj), $this->equalTo($filePropertyName))
             ->will($this->returnValue($uploadDir));
 
         $inject = new FileInjector($this->factory, $this->storage);
@@ -96,20 +97,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
 
         $obj = $this->getMock('Vich\UploaderBundle\Tests\TwoFieldsDummyEntity');
 
-        $fileProp = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $fileProp
-            ->expects($this->once())
-            ->method('setValue');
-
-        $imageProp = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $imageProp
-            ->expects($this->once())
-            ->method('setValue');
-
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
                        ->disableOriginalConstructor()
                        ->getMock();
@@ -118,9 +105,15 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getInjectOnLoad')
             ->will($this->returnValue(true));
         $fileMapping
-            ->expects($this->exactly(2))
-            ->method('getProperty')
-            ->will($this->returnValue($fileProp));
+            ->expects($this->exactly(1))
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('file'));
+        $fileMapping
+            ->expects($this->exactly(1))
+            ->method('setFile')
+            ->with($this->equalTo($obj), $this->callback(function($file) {
+                return $file instanceof \Symfony\Component\HttpFoundation\File\File;
+            }));
 
         $imageMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
                        ->disableOriginalConstructor()
@@ -130,9 +123,15 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getInjectOnLoad')
             ->will($this->returnValue(true));
         $imageMapping
-            ->expects($this->exactly(2))
-            ->method('getProperty')
-            ->will($this->returnValue($imageProp));
+            ->expects($this->exactly(1))
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('image'));
+        $imageMapping
+            ->expects($this->exactly(1))
+            ->method('setFile')
+            ->with($this->equalTo($obj), $this->callback(function($file) {
+                return $file instanceof \Symfony\Component\HttpFoundation\File\File;
+            }));
 
         $this->factory
             ->expects($this->once())
@@ -199,24 +198,10 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getInjectOnLoad')
             ->will($this->returnValue(true));
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $prop
-            ->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('test_adapter'));
-
-        $prop
-            ->expects($this->once())
-            ->method('setValue');
-
         $fileMapping
-            ->expects($this->exactly(2))
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+            ->expects($this->exactly(1))
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('file'));
 
         $this->factory
             ->expects($this->once())
