@@ -33,11 +33,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
+        $mapping = $this->getMappingMock();
         $mapping
                 ->expects($this->once())
-                ->method('getPropertyValue')
+                ->method('getFile')
                 ->will($this->returnValue(null));
 
         $mapping
@@ -47,10 +46,9 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $mapping
                 ->expects($this->never())
                 ->method('getNamer');
-
         $mapping
                 ->expects($this->never())
-                ->method('getFileNameProperty');
+                ->method('getFileName');
 
         $this->factory
                 ->expects($this->once())
@@ -70,7 +68,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
 
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
                 ->disableOriginalConstructor()
@@ -78,7 +76,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getPropertyValue')
+                ->method('getFile')
                 ->will($this->returnValue($file));
 
         $mapping
@@ -91,7 +89,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->never())
-                ->method('getFileNameProperty');
+                ->method('getFileName');
 
         $this->factory
                 ->expects($this->once())
@@ -111,8 +109,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
+        $mapping = $this->getMappingMock();
         $mapping
                 ->expects($this->once())
                 ->method('getDeleteOnRemove')
@@ -120,7 +117,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->never())
-                ->method('getFileNameProperty');
+                ->method('getFileName');
 
         $this->factory
                 ->expects($this->once())
@@ -140,16 +137,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue(null));
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
         $mapping
                 ->expects($this->once())
                 ->method('getDeleteOnRemove')
@@ -157,8 +145,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+                ->method('getFileName')
+                ->will($this->returnValue(null));
 
         $mapping
                 ->expects($this->never())
@@ -173,6 +161,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new FileSystemStorage($this->factory);
         $storage->remove($obj);
     }
+
     /**
      * Test the remove method skips trying to remove a file that no longer exists
      */
@@ -180,25 +169,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
-
-        $propertyMock = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $propertyMock
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue(null));
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
         $mapping
                 ->expects($this->once())
                 ->method('getDeleteOnRemove')
@@ -210,14 +181,9 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/tmp'));
 
         $mapping
-            ->expects($this->any())
-            ->method('getProperty')
-            ->will($this->returnValue($propertyMock));
-
-        $mapping
                 ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+                ->method('getFileName')
+                ->will($this->returnValue('file.txt'));
 
         $this->factory
                 ->expects($this->once())
@@ -240,26 +206,15 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
-
+        $mapping = $this->getMappingMock();
         $mapping
-                ->expects($this->once())
-                ->method('getUploadDir')
-                ->will($this->returnValue('/tmp'));
-
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('/tmp'));
         $mapping
-                ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $this->factory
                 ->expects($this->once())
@@ -282,17 +237,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
-
+        $mapping = $this->getMappingMock();
         $mapping
                 ->expects($this->once())
                 ->method('getUploadDir')
@@ -305,8 +250,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+                ->method('getFileName')
+                ->will($this->returnValue('file.txt'));
 
         $this->factory
                 ->expects($this->once())
@@ -372,40 +317,23 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
-
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
             ->will($this->returnValue('filename.txt'));
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $name = new \stdClass();
-
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $mapping
-            ->expects($this->any())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+        $mapping = $this->getMappingMock();
 
         $mapping
             ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getPropertyValue')
+            ->method('getFile')
             ->with($obj)
             ->will($this->returnValue($file));
+
+        $mapping
+            ->expects($this->any())
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('file'));
 
         $mapping
             ->expects($this->once())
@@ -420,7 +348,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->with($obj,$name)
+            ->with($obj, 'file')
             ->will($this->returnValue('/dir'));
 
         $this->factory
@@ -446,33 +374,22 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
     {
         $obj = new DummyEntity();
+        $name = 'lala';
 
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $name = new \stdClass();
-
         $namer = $this->getMockBuilder('Vich\UploaderBundle\Naming\NamerInterface')
             ->disableOriginalConstructor()
             ->getMock();
-
         $namer
             ->expects($this->once())
             ->method('name')
             ->with($obj, $name)
             ->will($this->returnValue($filename));
 
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
 
         $mapping
             ->expects($this->once())
@@ -481,17 +398,12 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
             ->expects($this->any())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+            ->method('getFilePropertyName')
+            ->will($this->returnValue($name));
 
         $mapping
             ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getPropertyValue')
+            ->method('getFile')
             ->with($obj)
             ->will($this->returnValue($file));
 
@@ -557,4 +469,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
                         ->getMock();
     }
 
+    protected function getMappingMock()
+    {
+        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+                ->disableOriginalConstructor()
+                ->getMock();
+    }
 }
