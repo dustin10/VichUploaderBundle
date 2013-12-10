@@ -16,7 +16,7 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the getObjectFromEvent method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromEvent()
     {
         if (!class_exists('Doctrine\ORM\Event\LifecycleEventArgs')) {
             $this->markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
