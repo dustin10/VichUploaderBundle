@@ -61,7 +61,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $fileMapping
             ->expects($this->exactly(1))
             ->method('setFile')
-            ->with($this->equalTo($obj), $this->callback(function($file) {
+            ->with($this->equalTo($obj), $this->callback(function ($file) {
                 return $file instanceof \Symfony\Component\HttpFoundation\File\File;
             }));
 
@@ -111,7 +111,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $fileMapping
             ->expects($this->exactly(1))
             ->method('setFile')
-            ->with($this->equalTo($obj), $this->callback(function($file) {
+            ->with($this->equalTo($obj), $this->callback(function ($file) {
                 return $file instanceof \Symfony\Component\HttpFoundation\File\File;
             }));
 
@@ -129,7 +129,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $imageMapping
             ->expects($this->exactly(1))
             ->method('setFile')
-            ->with($this->equalTo($obj), $this->callback(function($file) {
+            ->with($this->equalTo($obj), $this->callback(function ($file) {
                 return $file instanceof \Symfony\Component\HttpFoundation\File\File;
             }));
 
