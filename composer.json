@@ -29,6 +29,7 @@
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "*",
+        "willdurand/propel-eventdispatcher-bundle": "~1.0",
         "symfony/yaml": "@stable"
     },
     "autoload": {

@@ -14,9 +14,9 @@ use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
 class MongoDBAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the getObjectFromArgs method.
+     * Test the getObjectFromEvent method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromEvent()
     {
         if (!class_exists('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')) {
             $this->markTestSkipped('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs does not exist.');
@@ -33,7 +33,7 @@ class MongoDBAdapterTest extends \PHPUnit_Framework_TestCase
 
             $adapter = new MongoDBAdapter();
 
-            $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+            $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
         }
     }
 

@@ -22,9 +22,21 @@ class Configuration implements ConfigurationInterface
         $tb = new TreeBuilder();
         $root = $tb->root('vich_uploader');
 
+        $supportedDbDrivers = array('orm', 'odm', 'propel');
+
         $root
             ->children()
-                ->scalarNode('db_driver')->isRequired()->end()
+                ->scalarNode('db_driver')
+                    ->isRequired()
+                    ->beforeNormalization()
+                        ->ifString()
+                        ->then(function ($v) { return strtolower($v); })
+                    ->end()
+                    ->validate()
+                        ->ifNotInArray($supportedDbDrivers)
+                        ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $supportedDbDrivers))
+                    ->end()
+                ->end()
                 ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
                 ->scalarNode('twig')->defaultTrue()->end()
                 ->scalarNode('gaufrette')->defaultFalse()->end()

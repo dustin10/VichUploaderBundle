@@ -40,6 +40,11 @@ class MappingReader
         return $metadata !== null;
     }
 
+    public function getUploadableClasses()
+    {
+        return $this->reader->getAllClassNames();
+    }
+
     /**
      * Attempts to read the uploadable fields.
      *

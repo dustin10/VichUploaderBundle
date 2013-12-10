@@ -6,6 +6,8 @@ use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 /**
  * FileInjector.
  *
@@ -53,10 +55,8 @@ class FileInjector implements FileInjectorInterface
                 continue;
             }
 
-            $mapping->getProperty()->setValue(
-                $obj,
-                new File($path, false)
-            );
+            $prop = PropertyAccess::getPropertyAccessor();
+            $prop->setValue($obj, $field, new File($path, false));
         }
     }
 }

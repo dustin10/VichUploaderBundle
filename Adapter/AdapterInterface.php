@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\Adapter;
 
-use Doctrine\Common\EventArgs;
-
 /**
  * AdapterInterface.
  *
@@ -12,26 +10,26 @@ use Doctrine\Common\EventArgs;
 interface AdapterInterface
 {
     /**
-     * Gets the mapped object from the event arguments.
+     * Gets the mapped object from an event.
      *
-     * @param  EventArgs $e The event arguments.
-     * @return object    The mapped object.
+     * @param  object $event The event argument.
+     * @return object The mapped object.
      */
-    public function getObjectFromArgs(EventArgs $e);
+    public function getObjectFromEvent($event);
 
     /**
-     * Recomputes the change set for the object.
+     * Recomputes the change set for the given object.
      *
-     * @param EventArgs $e The event arguments.
+     * @param object $event The event arguments.
      */
-    public function recomputeChangeSet(EventArgs $e);
+    public function recomputeChangeSet($event);
 
     /**
-     * Gets the reflection class for the object taking
+     * Gets the reflection class for the object, taking
      * proxies into account.
      *
-     * @param  object           $obj The object.
+     * @param  object           $object The object.
      * @return \ReflectionClass The reflection class.
      */
-    public function getReflectionClass($obj);
+    public function getReflectionClass($object);
 }
