@@ -2,12 +2,13 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Doctrine\Common\Persistence\Proxy;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Mapping\MappingReader;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Doctrine\Common\Persistence\Proxy;
 
 /**
  * PropertyMappingFactory.
@@ -39,10 +40,10 @@ class PropertyMappingFactory
     /**
      * Constructs a new instance of PropertyMappingFactory.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Mapping\MappingReader                $mapping   The mapping mapping.
-     * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
-     * @param array                                                     $mappings  The configured mappings.
+     * @param ContainerInterface $container The container.
+     * @param MappingReader      $mapping   The mapping mapping.
+     * @param AdapterInterface   $adapter   The adapter.
+     * @param array              $mappings  The configured mappings.
      */
     public function __construct(ContainerInterface $container, MappingReader $mapping, AdapterInterface $adapter, array $mappings)
     {
@@ -62,6 +63,7 @@ class PropertyMappingFactory
      */
     public function fromObject($obj)
     {
+        // @todo nothing to do here
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
@@ -87,6 +89,7 @@ class PropertyMappingFactory
      */
     public function fromField($obj, $field)
     {
+        // @todo nothing to do here
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
@@ -105,8 +108,8 @@ class PropertyMappingFactory
     /**
      * Checks to see if the class is uploadable.
      *
-     * @param  \ReflectionClass          $class The class.
-     * @throws \InvalidArgumentException
+     * @param  ReflectionClass          $class The class.
+     * @throws InvalidArgumentException
      */
     protected function checkUploadable(\ReflectionClass $class)
     {
@@ -118,12 +121,12 @@ class PropertyMappingFactory
     /**
      * Creates the property mapping from the read annotation and configured mapping.
      *
-     * @param object                                          $obj         The object.
-     * @param string                                          $fieldName   The field name.
-     * @param \Vich\UploaderBundle\Annotation\UploadableField $mappingData The mapping data.
+     * @param object          $obj         The object.
+     * @param string          $fieldName   The field name.
+     * @param UploadableField $mappingData The mapping data.
      *
-     * @return PropertyMapping           The property mapping.
-     * @throws \InvalidArgumentException
+     * @return PropertyMapping          The property mapping.
+     * @throws InvalidArgumentException
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
     {
@@ -137,9 +140,7 @@ class PropertyMappingFactory
 
         $config = $this->mappings[$mappingData['mapping']];
 
-        $mapping = new PropertyMapping();
-        $mapping->setProperty($class->getProperty($mappingData['propertyName'] ?: $fieldName));
-        $mapping->setFileNameProperty($class->getProperty($mappingData['fileNameProperty']));
+        $mapping = new PropertyMapping($mappingData['propertyName'] ?: $fieldName, $mappingData['fileNameProperty']);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 

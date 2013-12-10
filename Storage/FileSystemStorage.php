@@ -51,7 +51,7 @@ class FileSystemStorage extends AbstractStorage
      */
     public function resolveUri($obj, $field)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $name) = $this->getFileName($obj, $field);
         $uriPrefix = $mapping->getUriPrefix();
         $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj, $field)));
 

@@ -7,6 +7,8 @@ use Metadata\MetadataFactoryInterface;
 /**
  * MappingReader
  *
+ * @todo rename (MetadataReader?)
+ *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class MappingReader
