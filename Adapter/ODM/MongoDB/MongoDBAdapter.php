@@ -45,6 +45,6 @@ class MongoDBAdapter implements AdapterInterface
             return new \ReflectionClass(get_parent_class($object));
         }
 
-        return new \ReflectionClass($obj);
+        return new \ReflectionClass($object);
     }
 }
