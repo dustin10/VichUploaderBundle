@@ -5,7 +5,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * FileSystemStorage.
@@ -47,31 +46,29 @@ abstract class AbstractStorage implements StorageInterface
     {
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
-            $file = $mapping->getPropertyValue($obj);
+            $file = $mapping->getFile($obj);
 
             if ($file === null || !($file instanceof UploadedFile)) {
                 continue;
             }
 
-            if ($mapping->getDeleteOnUpdate() && $mapping->getFileNameProperty()->getValue($obj)) {
-                $name = $mapping->getFileNameProperty()->getValue($obj);
-                $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
+                $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
                 $this->doRemove($dir, $name);
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
+                $name = $mapping->getNamer()->name($obj, $mapping->getFilePropertyName());
             } else {
                 $name = $file->getClientOriginalName();
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
             $this->doUpload($file, $dir, $name);
 
-            $prop = PropertyAccess::getPropertyAccessor();
-            $prop->setValue($obj, $mapping->getFileNamePropertyName(), $name);
+            $mapping->setFileName($obj, $name);
         }
     }
 
@@ -98,13 +95,13 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            $name = $mapping->getFileNameProperty()->getValue($obj);
+            $name = $mapping->getFileName($obj);
 
             if (null === $name) {
                 continue;
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
             $this->doRemove($dir, $name);
         }
@@ -125,7 +122,7 @@ abstract class AbstractStorage implements StorageInterface
      */
     public function resolvePath($obj, $field)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $name) = $this->getFileName($obj, $field);
         $dir = $mapping->getUploadDir($obj, $field);
 
         return $this->doResolvePath($dir, $name);
@@ -136,13 +133,13 @@ abstract class AbstractStorage implements StorageInterface
      */
     public function resolveUri($obj, $field)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $filename) = $this->getFileName($obj, $field);
         $uriPrefix = $mapping->getUriPrefix();
 
-        return $name ? ($uriPrefix . '/' . $name) : '';
+        return $name ? ($uriPrefix . '/' . $filename) : '';
     }
 
-    protected function getFileNamePropertyValue($obj, $field)
+    protected function getFileName($obj, $field)
     {
         $mapping = $this->factory->fromField($obj, $field);
         if (null === $mapping) {
@@ -151,13 +148,13 @@ abstract class AbstractStorage implements StorageInterface
             ));
         }
 
-        $value = $mapping->getFileNameProperty()->getValue($obj);
-        if ($value === null) {
+        $name = $mapping->getFileName($obj);
+        if ($name === null) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to get filename property value: "%s"', $field
             ));
         }
 
-        return array($mapping, $value);
+        return array($mapping, $name);
     }
 }
