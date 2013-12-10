@@ -6,12 +6,24 @@
 
     <services>
 
-        <service id="vich_uploader.listener.uploader" class="Vich\UploaderBundle\EventListener\UploaderListener" public="false">
-            <argument type="service" id="vich_uploader.adapter" />
-            <argument type="service" id="vich_uploader.mapping_reader" />
+        <service id="vich_uploader.upload_handler" class="Vich\UploaderBundle\Handler\UploadHandler">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.file_injector" />
         </service>
+
+        <service id="vich_uploader.listener.uploader.propel" class="Vich\UploaderBundle\EventListener\PropelUploaderListener">
+            <argument type="service" id="vich_uploader.adapter" />
+            <argument type="service" id="vich_uploader.upload_handler" />
+        </service>
+
+        <service id="vich_uploader.listener.uploader.doctrine" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" public="false">
+            <argument type="service" id="vich_uploader.adapter" />
+            <argument type="service" id="vich_uploader.mapping_reader" />
+            <argument type="service" id="vich_uploader.upload_handler" />
+        </service>
+
+        <service id="vich_uploader.listener.uploader.orm" alias="vich_uploader.listener.uploader.doctrine" />
+        <service id="vich_uploader.listener.uploader.odm" alias="vich_uploader.listener.uploader.doctrine" />
 
     </services>
 

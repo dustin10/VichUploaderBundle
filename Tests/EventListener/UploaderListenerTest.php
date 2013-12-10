@@ -71,7 +71,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -113,7 +113,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -153,7 +153,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -200,7 +200,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -244,7 +244,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -281,7 +281,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -317,7 +317,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter
@@ -354,7 +354,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getObjectFromArgs')
+            ->method('getObjectFromEvent')
             ->will($this->returnValue($obj));
 
         $this->adapter

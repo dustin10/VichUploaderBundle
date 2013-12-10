@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the getObjectFromArgs method.
+     * Test the getObjectFromEvent method.
      */
     public function testGetObjectFromArgs()
     {
@@ -33,7 +33,7 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
 
             $adapter = new DoctrineORMAdapter();
 
-            $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+            $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
         }
     }
 
