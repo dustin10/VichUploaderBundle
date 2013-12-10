@@ -17,15 +17,15 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfiguredMappingAccess()
     {
-        $prop = new PropertyMapping();
+        $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping(array(
-            'delete_on_remove' => true,
-            'delete_on_update' => true,
-            'upload_destination' => '/tmp',
-            'inject_on_load' => true
+            'delete_on_remove'      => true,
+            'delete_on_update'      => true,
+            'upload_destination'    => '/tmp',
+            'inject_on_load'        => true
         ));
 
-        $this->assertEquals($prop->getUploadDir(), '/tmp');
+        $this->assertEquals('/tmp', $prop->getUploadDir());
         $this->assertTrue($prop->getDeleteOnRemove());
         $this->assertTrue($prop->getInjectOnLoad());
     }
