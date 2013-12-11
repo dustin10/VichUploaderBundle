@@ -22,8 +22,8 @@ class RegisterPropelModelsPass implements CompilerPassInterface
         }
 
         $propelListener = $container->getDefinition('vich_uploader.listener.uploader.propel');
-        $mapping = $container->get('vich_uploader.mapping_reader');
-        foreach ($mapping->getUploadableClasses() as $class) {
+        $metadata = $container->get('vich_uploader.metadata_reader');
+        foreach ($metadata->getUploadableClasses() as $class) {
             $propelListener->addTag('propel.event_subscriber', array(
                 'class' => $class
             ));
