@@ -16,14 +16,14 @@
             <argument type="service" id="vich_uploader.upload_handler" />
         </service>
 
-        <service id="vich_uploader.listener.uploader.doctrine" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" public="false">
+        <service id="vich_uploader.listener.uploader.doctrine" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" abstract="true">
             <argument type="service" id="vich_uploader.adapter" />
             <argument type="service" id="vich_uploader.metadata_reader" />
             <argument type="service" id="vich_uploader.upload_handler" />
         </service>
 
-        <service id="vich_uploader.listener.uploader.orm" alias="vich_uploader.listener.uploader.doctrine" />
-        <service id="vich_uploader.listener.uploader.odm" alias="vich_uploader.listener.uploader.doctrine" />
+        <service id="vich_uploader.listener.uploader.orm" parent="vich_uploader.listener.uploader.doctrine" />
+        <service id="vich_uploader.listener.uploader.odm" parent="vich_uploader.listener.uploader.doctrine" />
 
     </services>
 
