@@ -26,15 +26,6 @@ class VichUploaderExtension extends Extension
     );
 
     /**
-     * @var array $adapterMap
-     */
-    protected $adapterMap = array(
-        'orm'       => 'Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter',
-        'mongodb'   => 'Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter',
-        'propel'    => 'Vich\UploaderBundle\Adapter\Propel\PropelAdapter'
-    );
-
-    /**
      * Loads the extension.
      *
      * @param  array                     $configs   The configuration
@@ -59,13 +50,16 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.driver', $config['db_driver']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
-        $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$config['db_driver']]);
 
         // choose the right listener
         if ($config['db_driver'] !== 'propel') {
             $container->getDefinition('vich_uploader.listener.uploader.'.$config['db_driver'])->addTag($this->tagMap[$config['db_driver']]);
         }
 
+        // define the adapter listener to use
+        $container->setAlias('vich_uploader.adapter', 'vich_uploader.adapter.'.$config['db_driver']);
+
+        // define the event listener to use
         $container->setAlias('vich_uploader.listener.uploader', 'vich_uploader.listener.uploader.'.$config['db_driver']);
     }
 
