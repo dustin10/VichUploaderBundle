@@ -18,9 +18,9 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected $adapter;
 
     /**
-     * @var \Vich\UploaderBundle\Mapping\MappingReader $mapping
+     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var \Vich\UploaderBundle\Handler\UploadHandler $handler
@@ -33,7 +33,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->adapter = $this->getAdapterMock();
-        $this->mapping = $this->getMappingMock();
+        $this->metadata = $this->getMetadataReaderMock();
         $this->handler = $this->getHandlerMock();
     }
 
@@ -42,7 +42,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $events = $listener->getSubscribedEvents();
 
         $this->assertTrue(in_array('prePersist', $events));
@@ -73,7 +73,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -84,7 +84,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('handleUpload')
             ->with($obj);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->prePersist($args);
     }
 
@@ -110,7 +110,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -120,7 +120,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleUpload');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->prePersist($args);
     }
 
@@ -151,7 +151,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('recomputeChangeSet')
             ->with($args);
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -162,7 +162,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('handleUpload')
             ->with($obj);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->preUpdate($args);
     }
 
@@ -188,7 +188,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -202,7 +202,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleUpload');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->preUpdate($args);
     }
 
@@ -228,7 +228,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -239,7 +239,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('handleHydration')
             ->with($obj);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->postLoad($args);
     }
 
@@ -265,7 +265,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -275,7 +275,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleHydration');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->postLoad($args);
     }
 
@@ -301,7 +301,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -312,7 +312,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('handleDeletion')
             ->with($obj);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->postRemove($args);
     }
 
@@ -338,7 +338,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
@@ -348,7 +348,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleDeletion');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->mapping, $this->handler);
+        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
         $listener->postRemove($args);
     }
 
@@ -365,13 +365,13 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock mapping reader.
+     * Creates a mock metadata reader.
      *
-     * @return \Vich\UploaderBundle\Mapping\MappingReader The mock mapping reader.
+     * @return \Vich\UploaderBundle\Metadata\MetadataReader The mock metadata reader.
      */
-    protected function getMappingMock()
+    protected function getMetadataReaderMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\MappingReader')
+        return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
                ->disableOriginalConstructor()
                ->getMock();
     }

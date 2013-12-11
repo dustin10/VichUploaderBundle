@@ -18,9 +18,9 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     protected $container;
 
     /**
-     * @var \Vich\UploaderBundle\Mapping\MappingReader $mapping
+     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var \Vich\UploaderBundle\Adapter\AdapterInterface $adapter
@@ -33,7 +33,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = $this->getContainerMock();
-        $this->mapping = $this->getMappingMock();
+        $this->metadata = $this->getMetadataReaderMock();
         $this->adapter = $this->getAdapterMock();
     }
 
@@ -52,12 +52,12 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue(new \ReflectionClass($obj)));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->will($this->returnValue(false));
 
-        $factory = new PropertyMappingFactory($this->container, $this->mapping, $this->adapter, array());
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, array());
         $factory->fromObject($obj);
     }
 
@@ -86,13 +86,13 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
             ->will($this->returnValue(true));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with($class)
@@ -104,7 +104,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )));
 
-        $factory = new PropertyMappingFactory($this->container, $this->mapping, $this->adapter, $mappings);
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
         $mappings = $factory->fromObject($obj);
 
         $this->assertEquals(1, count($mappings));
@@ -139,13 +139,13 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
             ->will($this->returnValue(true));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with($class)
@@ -157,8 +157,8 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )));
 
-        $factory = new PropertyMappingFactory($this->container, $this->mapping, $this->adapter, $mappings);
-        $mappings = $factory->fromObject($obj);
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
+        $factory->fromObject($obj);
     }
 
     /**
@@ -175,19 +175,19 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
             ->will($this->returnValue(true));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('getUploadableField')
             ->with($class)
             ->will($this->returnValue(null));
 
-        $factory = new PropertyMappingFactory($this->container, $this->mapping, $this->adapter, array());
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, array());
         $mapping = $factory->fromField($obj, 'oops');
 
         $this->assertNull($mapping);
@@ -222,13 +222,13 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getReflectionClass')
             ->will($this->returnValue($class));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with($class)
             ->will($this->returnValue(true));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with($class)
@@ -240,7 +240,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             )));
 
-        $factory = new PropertyMappingFactory($this->container, $this->mapping, $this->adapter, $mappings);
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
         $mappings = $factory->fromObject($obj);
 
         $this->assertEquals(1, count($mappings));
@@ -266,13 +266,13 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock mapping reader.
+     * Creates a mock metadata reader.
      *
-     * @return \Vich\UploaderBundle\Mapping\MappingReader The mapping reader.
+     * @return \Vich\UploaderBundle\Metadata\MetadataReader The metadata reader.
      */
-    protected function getMappingMock()
+    protected function getMetadataReaderMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\MappingReader')
+        return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
                ->disableOriginalConstructor()
                ->getMock();
     }

@@ -7,7 +7,7 @@ use Doctrine\Common\EventSubscriber;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Mapping\MappingReader;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 /**
  * DoctrineUploaderListener.
@@ -22,9 +22,9 @@ class DoctrineUploaderListener implements EventSubscriber
     protected $adapter;
 
     /**
-     * @var MappingReader $mapping
+     * @var MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var UploaderHandler $handler
@@ -35,13 +35,13 @@ class DoctrineUploaderListener implements EventSubscriber
      * Constructs a new instance of UploaderListener.
      *
      * @param AdapterInterface $adapter The adapter.
-     * @param MappingReader    $mapping The mapping reader.
+     * @param MetadataReader    $metadata The metadata reader.
      * @param UploaderHandler  $handler The upload handler.
      */
-    public function __construct(AdapterInterface $adapter, MappingReader $mapping, UploadHandler $handler)
+    public function __construct(AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
         $this->adapter = $adapter;
-        $this->mapping = $mapping;
+        $this->metadata = $metadata;
         $this->handler = $handler;
     }
 
@@ -69,7 +69,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $obj = $this->adapter->getObjectFromEvent($event);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
+        if ($this->metadata->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->handler->handleUpload($obj);
         }
     }
@@ -83,7 +83,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $obj = $this->adapter->getObjectFromEvent($event);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
+        if ($this->metadata->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->handler->handleUpload($obj);
             $this->adapter->recomputeChangeSet($event);
         }
@@ -98,7 +98,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $obj = $this->adapter->getObjectFromEvent($event);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
+        if ($this->metadata->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->handler->handleHydration($obj);
         }
     }
@@ -112,7 +112,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $obj = $this->adapter->getObjectFromEvent($event);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
+        if ($this->metadata->isUploadable($this->adapter->getReflectionClass($obj))) {
             $this->handler->handleDeletion($obj);
         }
     }

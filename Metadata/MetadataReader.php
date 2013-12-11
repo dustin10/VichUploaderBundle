@@ -1,27 +1,27 @@
 <?php
 
-namespace Vich\UploaderBundle\Mapping;
+namespace Vich\UploaderBundle\Metadata;
 
 use Metadata\MetadataFactoryInterface;
 
 /**
- * MappingReader
+ * MetadataReader
  *
- * @todo rename (MetadataReader?)
+ * Exposes a simple interface to read objects metadata.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class MappingReader
+class MetadataReader
 {
     /**
-     * @var AgnosticReader $reader
+     * @var MetadataFactoryInterface $reader
      */
     protected $reader;
 
     /**
-     * Constructs a new instance of the MappingReader.
+     * Constructs a new instance of the MetadataReader.
      *
-     * @param MetadataFactoryInterface $reader The metadata reader.
+     * @param MetadataFactoryInterface $reader The "low-level" metadata reader.
      */
     public function __construct(MetadataFactoryInterface $reader)
     {
@@ -42,6 +42,11 @@ class MappingReader
         return $metadata !== null;
     }
 
+    /**
+     * Returns a list of uploadable classes.
+     *
+     * @return array A list of class names.
+     */
     public function getUploadableClasses()
     {
         return $this->reader->getAllClassNames();
