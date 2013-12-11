@@ -43,7 +43,7 @@
             </call>
         </service>
 
-        <service id="vich_uploader.mapping_reader" class="Vich\UploaderBundle\Mapping\MappingReader" public="false">
+        <service id="vich_uploader.metadata_reader" class="Vich\UploaderBundle\Metadata\MetadataReader" public="false">
             <argument type="service" id="vich_uploader.metadata_factory" />
         </service>
 
