@@ -41,7 +41,7 @@ class PropertyMappingFactory
      * Constructs a new instance of PropertyMappingFactory.
      *
      * @param ContainerInterface $container The container.
-     * @param MetadataReader      $metadata   The metadata mapping.
+     * @param MetadataReader     $metadata  The metadata mapping.
      * @param AdapterInterface   $adapter   The adapter.
      * @param array              $mappings  The configured mappings.
      */
