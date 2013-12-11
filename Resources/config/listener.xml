@@ -18,7 +18,7 @@
 
         <service id="vich_uploader.listener.uploader.doctrine" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" public="false">
             <argument type="service" id="vich_uploader.adapter" />
-            <argument type="service" id="vich_uploader.mapping_reader" />
+            <argument type="service" id="vich_uploader.metadata_reader" />
             <argument type="service" id="vich_uploader.upload_handler" />
         </service>
 
