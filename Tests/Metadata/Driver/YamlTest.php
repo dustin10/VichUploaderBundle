@@ -63,15 +63,16 @@ class YamlTest extends \PHPUnit_Framework_TestCase
         $singleField = array(
             'mapping' => array(
                 'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'filename_property' => 'fileName',
+                    'mapping'               => 'dummy_file',
+                    'filename_property'     => 'fileName',
                 )
             ),
             'metadata' => array(
                 'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'propertyName'      => 'file',
-                    'fileNameProperty'  => 'fileName',
+                    'mapping'               => 'dummy_file',
+                    'propertyName'          => 'file',
+                    'fileNameProperty'      => 'fileName',
+                    'fileRemoveProperty'    => null,
                 )
             )
         );
@@ -89,14 +90,16 @@ class YamlTest extends \PHPUnit_Framework_TestCase
             ),
             'metadata' => array(
                 'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'propertyName'      => 'file',
-                    'fileNameProperty'  => 'fileName',
+                    'mapping'               => 'dummy_file',
+                    'propertyName'          => 'file',
+                    'fileNameProperty'      => 'fileName',
+                    'fileRemoveProperty'    => null,
                 ),
                 'image' => array(
-                    'mapping'           => 'dummy_image',
-                    'propertyName'      => 'image',
-                    'fileNameProperty'  => 'imageName',
+                    'mapping'               => 'dummy_image',
+                    'propertyName'          => 'image',
+                    'fileNameProperty'      => 'imageName',
+                    'fileRemoveProperty'    => null,
                 )
             )
         );

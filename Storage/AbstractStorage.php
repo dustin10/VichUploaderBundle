@@ -49,10 +49,10 @@ abstract class AbstractStorage implements StorageInterface
             $file = $mapping->getPropertyValue($obj);
 
             if (
-                $mapping->getFileNameProperty()->getValue($obj)
-                && !($file instanceof UploadedFile)
-                && ($fileRemoveProperty = $mapping->getFileRemoveProperty())
+                ($fileRemoveProperty = $mapping->getFileRemoveProperty())
                 && true === $fileRemoveProperty->getValue($obj)
+                && !($file instanceof UploadedFile)
+                && $mapping->getFileNameProperty()->getValue($obj)
             ) {
                 $name = $mapping->getFileNameProperty()->getValue($obj);
                 $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());

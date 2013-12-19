@@ -27,8 +27,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
             ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_file',
-                'fileNameProperty'  => 'fileName'
+                'mapping'               => 'dummy_file',
+                'fileNameProperty'      => 'fileName',
+                'fileRemoveProperty'    => null,
             ))));
 
         $driver = new Annotation($reader);
@@ -38,9 +39,10 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('fields', $metadata);
         $this->assertEquals(array(
             'file' => array(
-                'mapping'           => 'dummy_file',
-                'propertyName'      => null,
-                'fileNameProperty'  => 'fileName',
+                'mapping'               => 'dummy_file',
+                'propertyName'          => null,
+                'fileNameProperty'      => 'fileName',
+                'fileRemoveProperty'    => null,
             )
         ), $metadata->fields);
     }
@@ -77,15 +79,17 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
             ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_file',
-                'fileNameProperty'  => 'fileName'
+                'mapping'               => 'dummy_file',
+                'fileNameProperty'      => 'fileName',
+                'fileRemoveProperty'    => null,
             ))));
         $reader
             ->expects($this->at(3))
             ->method('getPropertyAnnotation')
             ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_image',
-                'fileNameProperty'  => 'imageName'
+                'mapping'               => 'dummy_image',
+                'fileNameProperty'      => 'imageName',
+                'fileRemoveProperty'    => null,
             ))));
 
         $driver = new Annotation($reader);
@@ -93,14 +97,16 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'file' => array(
-                'mapping'           => 'dummy_file',
-                'propertyName'      => null,
-                'fileNameProperty'  => 'fileName',
+                'mapping'               => 'dummy_file',
+                'propertyName'          => null,
+                'fileNameProperty'      => 'fileName',
+                'fileRemoveProperty'    => null,
             ),
             'image' => array(
-                'mapping'           => 'dummy_image',
-                'propertyName'      => null,
-                'fileNameProperty'  => 'imageName',
+                'mapping'               => 'dummy_image',
+                'propertyName'          => null,
+                'fileNameProperty'      => 'imageName',
+                'fileRemoveProperty'    => null,
             )
         ), $metadata->fields);
     }
