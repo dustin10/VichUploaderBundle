@@ -27,6 +27,11 @@ class UploadableField
     protected $fileNameProperty;
 
     /**
+     * @var string|null $fileRemoveProperty
+     */
+    protected $fileRemoveProperty;
+
+    /**
      * Constructs a new instance of UploadableField.
      *
      * @param array $options The options.
@@ -43,6 +48,10 @@ class UploadableField
             $this->fileNameProperty = $options['fileNameProperty'];
         } else {
             throw new \InvalidArgumentException('The "fileNameProperty" attribute of UploadableField is required.');
+        }
+
+        if (isset($options['fileRemoveProperty'])) {
+            $this->fileRemoveProperty = $options['fileRemoveProperty'];
         }
     }
 
@@ -104,5 +113,25 @@ class UploadableField
     public function setFileNameProperty($fileNameProperty)
     {
         $this->fileNameProperty = $fileNameProperty;
+    }
+
+    /**
+     * Gets the file remove property.
+     *
+     * @return string|null The file remove property.
+     */
+    public function getFileRemoveProperty()
+    {
+        return $this->fileRemoveProperty;
+    }
+
+    /**
+     * Sets the file remove property.
+     *
+     * @param $fileRemoveProperty The file remove property.
+     */
+    public function setFileRemoveProperty($fileRemoveProperty)
+    {
+        $this->fileRemoveProperty = $fileRemoveProperty;
     }
 }

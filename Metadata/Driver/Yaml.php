@@ -28,10 +28,16 @@ class Yaml extends AbstractFileDriver
         $metadata = new ClassMetadata($class->name);
 
         foreach ($config[$class->name] as $field => $mappingData) {
+            $fileRemoveProperty = isset($mappingData['fileremove_property'])
+                ? $mappingData['fileremove_property']
+                : null
+            ;
+
             $fieldMetadata = array(
-                'mapping'           => $mappingData['mapping'],
-                'propertyName'      => $field,
-                'fileNameProperty'  => $mappingData['filename_property'],
+                'mapping'               => $mappingData['mapping'],
+                'propertyName'          => $field,
+                'fileNameProperty'      => $mappingData['filename_property'],
+                'fileRemoveProperty'    => $fileRemoveProperty,
             );
 
             $metadata->fields[$field] = $fieldMetadata;

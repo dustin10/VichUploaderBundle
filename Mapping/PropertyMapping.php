@@ -23,6 +23,11 @@ class PropertyMapping
     protected $fileNameProperty;
 
     /**
+     * @var \ReflectionProperty|null $fileRemoveProperty
+     */
+    protected $fileRemoveProperty;
+
+    /**
      * @var NamerInterface $namer
      */
     protected $namer;
@@ -86,6 +91,31 @@ class PropertyMapping
     {
         $this->fileNameProperty = $fileNameProperty;
         $this->fileNameProperty->setAccessible(true);
+    }
+
+    /**
+     * Gets the reflection property that represents the property
+     * which holds the file remove state for the mapping.
+     *
+     * @return \ReflectionProperty|null The reflection property.
+     */
+    public function getFileRemoveProperty()
+    {
+        return $this->fileRemoveProperty;
+    }
+
+    /**
+     * Sets the reflection property that represents the property
+     * which holds the file remove state for the mapping.
+     *
+     * @param \ReflectionProperty|null $fileRemoveProperty The reflection property.
+     */
+    public function setFileRemoveProperty(\ReflectionProperty $fileRemoveProperty = null)
+    {
+        $this->fileRemoveProperty = $fileRemoveProperty;
+        if ($fileRemoveProperty) {
+            $this->fileRemoveProperty->setAccessible(true);
+        }
     }
 
     /**
@@ -207,6 +237,18 @@ class PropertyMapping
     public function getFileNamePropertyName()
     {
         return $this->fileNameProperty->getName();
+    }
+
+    /**
+     * Gets the configured file remove property name.
+     *
+     * @return string|null The name.
+     */
+    public function getFileRemovePropertyName()
+    {
+        if ($this->fileRemoveProperty) {
+            return $this->fileRemoveProperty->getName();
+        }
     }
 
     /**
