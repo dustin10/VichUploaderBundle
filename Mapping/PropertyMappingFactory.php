@@ -140,6 +140,9 @@ class PropertyMappingFactory
         $mapping = new PropertyMapping();
         $mapping->setProperty($class->getProperty($mappingData['propertyName'] ?: $fieldName));
         $mapping->setFileNameProperty($class->getProperty($mappingData['fileNameProperty']));
+        if (isset($mappingData['fileRemoveProperty'])) {
+            $mapping->setFileRemoveProperty($class->getProperty($mappingData['fileRemoveProperty']));
+        }
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
