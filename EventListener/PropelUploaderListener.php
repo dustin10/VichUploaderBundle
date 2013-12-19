@@ -48,7 +48,7 @@ class PropelUploaderListener implements EventSubscriberInterface
             'propel.pre_insert'     => 'onUpload',
             'propel.pre_update'     => 'onUpload',
             'propel.post_delete'    => 'onDelete',
-            'propel.construct'      => 'onConstruct',
+            'propel.post_hydrate'   => 'onHydrate',
         );
     }
 
@@ -68,7 +68,7 @@ class PropelUploaderListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event.
      */
-    public function onConstruct(GenericEvent $event)
+    public function onHydrate(GenericEvent $event)
     {
         $obj = $this->adapter->getObjectFromEvent($event);
         $this->handler->handleHydration($obj);

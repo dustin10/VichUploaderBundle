@@ -47,7 +47,7 @@ class PropelUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('propel.pre_insert', $events);
         $this->assertArrayHasKey('propel.pre_update', $events);
         $this->assertArrayHasKey('propel.post_delete', $events);
-        $this->assertArrayHasKey('propel.construct', $events);
+        $this->assertArrayHasKey('propel.post_hydrate', $events);
     }
 
     public function testOnUpload()
@@ -83,7 +83,7 @@ class PropelUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('handleHydration')
             ->with($obj);
 
-        $this->listener->onConstruct($event);
+        $this->listener->onHydrate($event);
     }
 
     public function testOnDelete()
