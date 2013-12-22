@@ -222,6 +222,46 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the resolve path method when the protocol parameter has been changed.
+     */
+    public function testResolvePathWithChangedProtocol()
+    {
+        $obj = new DummyEntity();
+
+        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+
+        $prop = $this->getMockBuilder('\ReflectionProperty')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $prop
+                ->expects($this->once())
+                ->method('getValue')
+                ->with($obj)
+                ->will($this->returnValue('file.txt'));
+
+        $mapping
+                ->expects($this->once())
+                ->method('getUploadDir')
+                ->will($this->returnValue('filesystemKey'));
+
+        $mapping
+                ->expects($this->once())
+                ->method('getFileNameProperty')
+                ->will($this->returnValue($prop));
+
+        $this->factory
+                ->expects($this->once())
+                ->method('fromField')
+                ->with($obj, 'file')
+                ->will($this->returnValue($mapping));
+
+        $storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'data');
+        $path = $storage->resolvePath($obj, 'file');
+
+        $this->assertEquals('data://filesystemKey/file.txt', $path);
+    }
+
+    /**
      * Test the remove method does delete file from gaufrette filesystem
      */
     public function testThatRemoveMethodDoesDeleteFile()
