@@ -25,11 +25,11 @@ interface AdapterInterface
     public function recomputeChangeSet($event);
 
     /**
-     * Gets the reflection class for the object, taking
-     * proxies into account.
+     * Gets class name for the object, taking proxies into account.
      *
-     * @param  object           $object The object.
-     * @return \ReflectionClass The reflection class.
+     * @param object $object The object.
+     *
+     * @return string The FQCN of the className.
      */
-    public function getReflectionClass($object);
+    public function getClassName($object);
 }

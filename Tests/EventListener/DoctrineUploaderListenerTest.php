@@ -57,7 +57,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPrePersist()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -70,8 +69,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -94,7 +93,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPrePersistSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -107,8 +105,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -130,7 +128,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPreUpdate()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -143,8 +140,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->adapter
             ->expects($this->once())
@@ -172,7 +169,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPreUpdateSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -185,8 +181,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -212,7 +208,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostLoad()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -225,8 +220,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -249,7 +244,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostLoadSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -262,8 +256,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -285,7 +279,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostRemove()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -298,8 +291,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -322,7 +315,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostRemoveSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
                 ->disableOriginalConstructor()
@@ -335,8 +327,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())

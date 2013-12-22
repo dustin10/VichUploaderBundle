@@ -11,9 +11,6 @@ use Vich\UploaderBundle\Adapter\Propel\PropelAdapter;
  */
 class PropelAdapterTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Test the getObjectFromEvent method.
-     */
     public function testGetObjectFromEvent()
     {
         $event = $this->getMock('\Symfony\Component\EventDispatcher\GenericEvent');
@@ -26,16 +23,13 @@ class PropelAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(42, $adapter->getObjectFromEvent($event));
     }
 
-    /**
-     * Tests the getReflectionClass method.
-     */
-    public function testGetReflectionClass()
+    public function testGetClassName()
     {
         $adapter = new PropelAdapter();
 
         $obj = new \DateTime();
-        $class = $adapter->getReflectionClass($obj);
+        $class = $adapter->getClassName($obj);
 
-        $this->assertSame('DateTime', $class->getName());
+        $this->assertSame('DateTime', $class);
     }
 }

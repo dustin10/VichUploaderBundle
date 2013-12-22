@@ -18,7 +18,6 @@ class MongoDBAdapter implements AdapterInterface
     public function getObjectFromEvent($event)
     {
         /* @var $event \Doctrine\Common\EventArgs */
-
         return $event->getDocument();
     }
 
@@ -39,12 +38,12 @@ class MongoDBAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function getReflectionClass($object)
+    public function getClassName($object)
     {
         if ($object instanceof Proxy) {
-            return new \ReflectionClass(get_parent_class($object));
+            return get_parent_class($object);
+        } else {
+            return get_class($object);
         }
-
-        return new \ReflectionClass($object);
     }
 }

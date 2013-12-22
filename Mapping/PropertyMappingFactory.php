@@ -173,7 +173,7 @@ class PropertyMappingFactory
         }
 
         if (is_object($object)) {
-            return $this->adapter->getReflectionClass($object)->name;
+            return $this->adapter->getClassName($object);
         }
 
         throw new \RuntimeException('Impossible to determine the class name. Either specify it explicitly or give an object');
