@@ -45,8 +45,18 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
         $entity = new DummyEntity;
         $entity->setFile($file);
 
+        $mapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($entity)
+            ->will($this->returnValue($file));
+
         $namer = new UniqidNamer();
 
-        $this->assertRegExp($pattern, $namer->name($entity, 'file'));
+        $this->assertRegExp($pattern, $namer->name($mapping, $entity));
     }
 }

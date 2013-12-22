@@ -380,16 +380,16 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $mapping = $this->getMappingMock();
+
         $namer = $this->getMockBuilder('Vich\UploaderBundle\Naming\NamerInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $namer
             ->expects($this->once())
             ->method('name')
-            ->with($obj, $name)
+            ->with($mapping, $obj)
             ->will($this->returnValue($filename));
-
-        $mapping = $this->getMappingMock();
 
         $mapping
             ->expects($this->once())
@@ -420,7 +420,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->with($obj,$name)
+            ->with($obj, $name)
             ->will($this->returnValue($dir));
 
         $this->factory
