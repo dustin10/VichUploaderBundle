@@ -1,10 +1,9 @@
 <?php
 
-namespace Vich\UploaderBundle\Tests\Storage;
-
-use Vich\UploaderBundle\Tests\DummyEntity;
+namespace Vich\UploaderBundle\Tests\Naming;
 
 use Vich\UploaderBundle\Naming\OrignameNamer;
+use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * OrignameNamerTest.
