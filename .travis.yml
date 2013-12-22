@@ -4,6 +4,7 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - hhvm
 
 env:
     - SYMFONY_VERSION="~2.0.0" DOCTRINE_VERSION="~2.2.0"
@@ -11,7 +12,6 @@ env:
     - SYMFONY_VERSION="~2.2.0" DOCTRINE_VERSION="~2.2,>=2.2.3"
     - SYMFONY_VERSION="~2.3.0" DOCTRINE_VERSION=">=2.2.3,<2.4-dev"
     - SYMFONY_VERSION="dev-master" DOCTRINE_VERSION="~2.2,>=2.2.3"
-
 
 before_script:
     - composer selfupdate
@@ -26,3 +26,7 @@ before_script:
 notifications:
   email:
     - tassi.francesco@gmail.com
+
+matrix:
+  allow_failures:
+    - php: hhvm
