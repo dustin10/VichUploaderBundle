@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
+
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -18,251 +21,371 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     protected $factory;
 
     /**
+     * @var PropertyMapping
+     */
+    protected $mapping;
+
+    /**
+     * @var DummyEntity
+     */
+    protected $object;
+
+    /**
+     * @var FileSystemStorage
+     */
+    protected $storage;
+
+    /**
+     * @var vfsStreamDirectory
+     */
+    protected $fsRoot;
+
+    /**
      * Sets up the test.
      */
     public function setUp()
     {
         $this->factory = $this->getFactoryMock();
+        $this->mapping = $this->getMappingMock();
+        $this->object = new DummyEntity();
+        $this->storage = new FileSystemStorage($this->factory);
+
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
+            'uploads' => array(
+                'test.txt' => 'some content'
+            ),
+        ));
+
+        $this->factory
+            ->expects($this->any())
+            ->method('fromObject')
+            ->with($this->object)
+            ->will($this->returnValue(array($this->mapping)));
     }
 
     /**
      * Tests the upload method skips a mapping which has a null
      * uploadable property value.
+     *
+     * @group upload
      */
     public function testUploadSkipsMappingOnNullFile()
     {
-        $obj = new DummyEntity();
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->will($this->returnValue(null));
+        $this->mapping
+            ->expects($this->never())
+            ->method('hasNamer');
+        $this->mapping
+            ->expects($this->never())
+            ->method('getNamer');
+        $this->mapping
+            ->expects($this->never())
+            ->method('getFileName');
 
-        $mapping = $this->getMappingMock();
-        $mapping
-                ->expects($this->once())
-                ->method('getFile')
-                ->will($this->returnValue(null));
-
-        $mapping
-                ->expects($this->never())
-                ->method('hasNamer');
-
-        $mapping
-                ->expects($this->never())
-                ->method('getNamer');
-        $mapping
-                ->expects($this->never())
-                ->method('getFileName');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->upload($obj);
+        $this->storage->upload($this->object);
     }
 
     /**
      * Tests the upload method skips a mapping which has an uploadable
      * field property value that is not an instance of UploadedFile.
+     *
+     * @group upload
      */
     public function testUploadSkipsMappingOnNonUploadedFileInstance()
     {
-        $obj = new DummyEntity();
-
-        $mapping = $this->getMappingMock();
-
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $mapping
+        $this->mapping
                 ->expects($this->once())
                 ->method('getFile')
                 ->will($this->returnValue($file));
 
-        $mapping
+        $this->mapping
                 ->expects($this->never())
                 ->method('hasNamer');
 
-        $mapping
+        $this->mapping
                 ->expects($this->never())
                 ->method('getNamer');
 
-        $mapping
+        $this->mapping
                 ->expects($this->never())
                 ->method('getFileName');
 
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->upload($obj);
+        $this->storage->upload($this->object);
     }
 
     /**
-     * Test the remove method does not remove a file that is configured
-     * to not be deleted upon removal of the entity.
+     * Test that file upload moves uploaded file to correct directory and with correct filename
+     * @group upload
      */
-    public function testRemoveSkipsConfiguredNotToDeleteOnRemove()
+    public function testUploadedFileIsCorrectlyMoved()
     {
-        $obj = new DummyEntity();
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $file
+            ->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('filename.txt'));
 
-        $mapping = $this->getMappingMock();
-        $mapping
-                ->expects($this->once())
-                ->method('getDeleteOnRemove')
-                ->will($this->returnValue(false));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($file));
 
-        $mapping
-                ->expects($this->never())
-                ->method('getFileName');
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('file'));
 
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnUpdate')
+            ->will($this->returnValue(false));
 
-        $storage = new FileSystemStorage($this->factory);
-        $storage->remove($obj);
-    }
+        $this->mapping
+            ->expects($this->once())
+            ->method('hasNamer')
+            ->will($this->returnValue(false));
 
-    /**
-     * Test the remove method skips trying to remove a file whose file name
-     * property value returns null.
-     */
-    public function testRemoveSkipsNullFileNameProperty()
-    {
-        $obj = new DummyEntity();
-
-        $mapping = $this->getMappingMock();
-        $mapping
-                ->expects($this->once())
-                ->method('getDeleteOnRemove')
-                ->will($this->returnValue(true));
-
-        $mapping
-                ->expects($this->once())
-                ->method('getFileName')
-                ->will($this->returnValue(null));
-
-        $mapping
-                ->expects($this->never())
-                ->method('getUploadDir');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->remove($obj);
-    }
-
-    /**
-     * Test the remove method skips trying to remove a file that no longer exists
-     */
-    public function testRemoveSkipsNonExistingFile()
-    {
-        $obj = new DummyEntity();
-
-        $mapping = $this->getMappingMock();
-        $mapping
-                ->expects($this->once())
-                ->method('getDeleteOnRemove')
-                ->will($this->returnValue(true));
-
-        $mapping
+        $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue('/tmp'));
+            ->with($this->object, 'file')
+            ->will($this->returnValue('/dir'));
 
-        $mapping
+        $file
+            ->expects($this->once())
+            ->method('move')
+            ->with('/dir', 'filename.txt');
+
+        $this->storage->upload($this->object);
+
+    }
+
+    /**
+     * Test file upload when filename contains directories
+     *
+     * @dataProvider filenameWithDirectoriesDataProvider
+     * @group upload
+     */
+    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
+    {
+        $name = 'lala';
+
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $namer = $this->getMockBuilder('Vich\UploaderBundle\Naming\NamerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $namer
+            ->expects($this->once())
+            ->method('name')
+            ->with($this->mapping, $this->object)
+            ->will($this->returnValue($filename));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getNamer')
+            ->will($this->returnValue($namer));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFilePropertyName')
+            ->will($this->returnValue($name));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($file));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnUpdate')
+            ->will($this->returnValue(false));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('hasNamer')
+            ->will($this->returnValue(true));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->with($this->object, $name)
+            ->will($this->returnValue($dir));
+
+        $file
+            ->expects($this->once())
+            ->method('move')
+            ->with($expectedDir, $expectedFileName);
+
+        $this->storage->upload($this->object);
+
+    }
+
+    public function filenameWithDirectoriesDataProvider()
+    {
+        return array(
+            array(
+                '/root_dir',
+                '/dir_1/dir_2/filename.txt',
+                '/root_dir/dir_1/dir_2',
+                'filename.txt'
+            ),
+            array(
+                '/root_dir',
+                'dir_1/dir_2/filename.txt',
+                '/root_dir/dir_1/dir_2',
+                'filename.txt'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider removeDataProvider
+     */
+    public function testRemove($deleteOnRemove, $uploadDir, $fileName)
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnRemove')
+            ->will($this->returnValue($deleteOnRemove));
+
+        // if the file should be deleted, we'll need its name
+        if ($deleteOnRemove) {
+            $this->mapping
                 ->expects($this->once())
                 ->method('getFileName')
-                ->will($this->returnValue('file.txt'));
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
-
-        $storage = new FileSystemStorage($this->factory);
-        try {
-             $storage->remove($obj);
-        } catch (\Exception $e) {
-            $this->fail('We tried to remove nonexistent file');
+                ->will($this->returnValue($fileName));
+        } else {
+            $this->mapping
+                ->expects($this->never())
+                ->method('getFileName');
         }
+
+        // if the file should be deleted and we have its name, then we need the
+        // upload dir
+        if ($deleteOnRemove && $fileName !== null) {
+            $this->mapping
+                ->expects($this->once())
+                ->method('getUploadDir')
+                ->will($this->returnValue($this->root->url() . DIRECTORY_SEPARATOR . $uploadDir));
+        } else {
+            $this->mapping
+                ->expects($this->never())
+                ->method('getUploadDir');
+        }
+
+        $this->storage->remove($this->object);
+
+        // the file should have been deleted
+        if ($deleteOnRemove && $fileName !== null) {
+            $this->assertFalse($this->root->hasChild($uploadDir . DIRECTORY_SEPARATOR . $fileName));
+        }
+    }
+
+    public function removeDataProvider()
+    {
+        return array(
+            //    deleteOnRemove    uploadDir   fileName
+            // don't configured to be deleted upon removal of the entity
+            array(false,            null,       null),
+            // configured, but not file present
+            array(true,             null,       null),
+            // configured and present in the filesystem
+            array(true,             '/uploads', 'test.txt'),
+            // configured, but file already deleted
+            array(true,             '/uploads', 'file.txt'),
+        );
     }
 
     /**
      * Test the resolve path method.
+     *
+     * @group resolvePath
      */
     public function testResolvePath()
     {
-        $obj = new DummyEntity();
-
-        $mapping = $this->getMappingMock();
-        $mapping
+        $this->mapping = $this->getMappingMock();
+        $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
             ->will($this->returnValue('/tmp'));
-        $mapping
+        $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->will($this->returnValue('file.txt'));
 
         $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'file')
-                ->will($this->returnValue($mapping));
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file')
+            ->will($this->returnValue($this->mapping));
 
-        $storage = new FileSystemStorage($this->factory);
-        $path = $storage->resolvePath($obj, 'file');
+        $path = $this->storage->resolvePath($this->object, 'file');
 
         $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
+    }
+
+    /**
+     * Test the resolve path method throws exception
+     * when an invaid field name is specified.
+     *
+     * @expectedException \InvalidArgumentException
+     * @group resolvePath
+     */
+    public function testResolvePathThrowsExceptionOnInvalidFieldName()
+    {
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'oops')
+            ->will($this->returnValue(null));
+
+        $this->storage->resolvePath($this->object, 'oops');
     }
 
     /**
      * Test the resolve uri
      *
      * @dataProvider resolveUriDataProvider
+     * @group resolveUri
      */
     public function testResolveUri($uploadDir, $uri)
     {
-        $obj = new DummyEntity();
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue($uploadDir));
 
-        $mapping = $this->getMappingMock();
-        $mapping
-                ->expects($this->once())
-                ->method('getUploadDir')
-                ->will($this->returnValue($uploadDir));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUriPrefix')
+            ->will($this->returnValue('/uploads'));
 
-        $mapping
-                ->expects($this->once())
-                ->method('getUriPrefix')
-                ->will($this->returnValue('/uploads'));
-
-        $mapping
-                ->expects($this->once())
-                ->method('getFileName')
-                ->will($this->returnValue('file.txt'));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'file')
-                ->will($this->returnValue($mapping));
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file')
+            ->will($this->returnValue($this->mapping));
 
-        $storage = new FileSystemStorage($this->factory);
-        $path = $storage->resolveUri($obj, 'file');
-
-        $this->assertEquals($uri, $path);
+        $this->assertEquals($uri, $this->storage->resolveUri($this->object, 'file'));
     }
 
     public function resolveUriDataProvider()
@@ -288,191 +411,21 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the resolve path method throws exception
-     * when an invaid field name is specified.
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testResolvePathThrowsExceptionOnInvalidFieldName()
-    {
-        $obj = new DummyEntity();
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'oops')
-                ->will($this->returnValue(null));
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->resolvePath($obj, 'oops');
-    }
-
-    /**
-     *  Test that file upload moves uploaded file to correct directory and with correct filename
-     */
-    public function testUploadedFileIsCorrectlyMoved()
-    {
-        $obj = new DummyEntity();
-
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $file
-            ->expects($this->any())
-            ->method('getClientOriginalName')
-            ->will($this->returnValue('filename.txt'));
-
-        $mapping = $this->getMappingMock();
-
-        $mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->with($obj)
-            ->will($this->returnValue($file));
-
-        $mapping
-            ->expects($this->any())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('file'));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getDeleteOnUpdate')
-            ->will($this->returnValue(false));
-
-        $mapping
-            ->expects($this->once())
-            ->method('hasNamer')
-            ->will($this->returnValue(false));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getUploadDir')
-            ->with($obj, 'file')
-            ->will($this->returnValue('/dir'));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
-
-        $file
-            ->expects($this->once())
-            ->method('move')
-            ->with('/dir', 'filename.txt');
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->upload($obj);
-
-    }
-
-    /**
-     *  Test file upload when filename contains directories
-     * @dataProvider filenameWithDirectoriesDataProvider
-     */
-    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
-    {
-        $obj = new DummyEntity();
-        $name = 'lala';
-
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mapping = $this->getMappingMock();
-
-        $namer = $this->getMockBuilder('Vich\UploaderBundle\Naming\NamerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $namer
-            ->expects($this->once())
-            ->method('name')
-            ->with($mapping, $obj)
-            ->will($this->returnValue($filename));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getNamer')
-            ->will($this->returnValue($namer));
-
-        $mapping
-            ->expects($this->any())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue($name));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->with($obj)
-            ->will($this->returnValue($file));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getDeleteOnUpdate')
-            ->will($this->returnValue(false));
-
-        $mapping
-            ->expects($this->once())
-            ->method('hasNamer')
-            ->will($this->returnValue(true));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getUploadDir')
-            ->with($obj, $name)
-            ->will($this->returnValue($dir));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
-
-        $file
-            ->expects($this->once())
-            ->method('move')
-            ->with($expectedDir, $expectedFileName);
-
-        $storage = new FileSystemStorage($this->factory);
-        $storage->upload($obj);
-
-    }
-
-    public function filenameWithDirectoriesDataProvider()
-    {
-        return array(
-            array(
-                '/root_dir',
-                '/dir_1/dir_2/filename.txt',
-                '/root_dir/dir_1/dir_2',
-                'filename.txt'
-            ),
-            array(
-                '/root_dir',
-                'dir_1/dir_2/filename.txt',
-                '/root_dir/dir_1/dir_2',
-                'filename.txt'
-            ),
-        );
-    }
-
-    /**
-     * Creates a mock factory.
+     * Creates a mock mapping-factory.
      *
      * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
      */
     protected function getFactoryMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     protected function getMappingMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

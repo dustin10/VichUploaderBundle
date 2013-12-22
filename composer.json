@@ -19,6 +19,7 @@
         "symfony/finder": ">=2.0"
     },
     "require-dev": {
+        "mikey179/vfsStream": "~1.0",
         "doctrine/orm": "@stable",
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
