@@ -76,7 +76,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->handler
@@ -113,7 +113,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->handler
@@ -154,7 +154,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->handler
@@ -191,7 +191,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->adapter
@@ -231,7 +231,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->handler
@@ -268,7 +268,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->handler
@@ -304,7 +304,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->handler
@@ -341,7 +341,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->handler

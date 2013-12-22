@@ -120,10 +120,10 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $field)
+    public function resolvePath($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileName($obj, $field);
-        $dir = $mapping->getUploadDir($obj, $field);
+        list($mapping, $name) = $this->getFileName($obj, $field, $className);
+        $dir = $mapping->getUploadDir($obj, $field, $className);
 
         return $this->doResolvePath($dir, $name);
     }
@@ -131,17 +131,17 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field)
+    public function resolveUri($obj, $field, $className = null)
     {
-        list($mapping, $filename) = $this->getFileName($obj, $field);
+        list($mapping, $filename) = $this->getFileName($obj, $field, $className);
         $uriPrefix = $mapping->getUriPrefix();
 
         return $filename ? ($uriPrefix . '/' . $filename) : '';
     }
 
-    protected function getFileName($obj, $field)
+    protected function getFileName($obj, $field, $className = null)
     {
-        $mapping = $this->factory->fromField($obj, $field);
+        $mapping = $this->factory->fromField($obj, $field, $className);
         if (null === $mapping) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to find uploadable field named: "%s"', $field
