@@ -59,7 +59,7 @@ abstract class AbstractStorage implements StorageInterface
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getFilePropertyName());
+                $name = $mapping->getNamer()->name($mapping, $obj);
             } else {
                 $name = $file->getClientOriginalName();
             }
