@@ -45,12 +45,10 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromObjectThrowsExceptionIfNotUploadable()
     {
-        $obj = new \StdClass();
-
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue(new \ReflectionClass($obj)));
+            ->method('getClassName')
+            ->will($this->returnValue('StdClass'));
 
         $this->metadata
             ->expects($this->once())
@@ -58,7 +56,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, array());
-        $factory->fromObject($obj);
+        $factory->fromObject(new \StdClass());
     }
 
     /**
@@ -68,7 +66,6 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function testFromObjectOneField()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $mappings = array(
             'dummy_file' => array(
@@ -82,9 +79,9 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->adapter
-            ->expects($this->any())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->expects($this->once())
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -140,7 +137,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->never())
-            ->method('getReflectionClass');
+            ->method('getClassName');
 
         $this->metadata
             ->expects($this->once())
@@ -184,16 +181,15 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function testThrowsExceptionOnInvalidMappingName()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $mappings = array(
             'bad_name' => array()
         );
 
         $this->adapter
-            ->expects($this->any())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->expects($this->once())
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -224,12 +220,11 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function testFromFieldReturnsNullOnInvalidFieldName()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $this->adapter
-            ->expects($this->any())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->expects($this->once())
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
@@ -252,7 +247,6 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function testConfiguredNamerRetrievedFromContainer()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $mappings = array(
             'dummy_file' => array(
@@ -274,9 +268,9 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($namer));
 
         $this->adapter
-            ->expects($this->any())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->expects($this->once())
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->metadata
             ->expects($this->once())
