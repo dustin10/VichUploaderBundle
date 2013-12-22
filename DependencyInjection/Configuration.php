@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('directory_namer')->defaultNull()->end()
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
                             ->scalarNode('delete_on_update')->defaultTrue()->end()
-                            ->scalarNode('inject_on_load')->defaultTrue()->end()
+                            ->scalarNode('inject_on_load')->defaultFalse()->end()
                         ->end()
                     ->end()
                 ->end()
