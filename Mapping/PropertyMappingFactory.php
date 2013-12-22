@@ -58,17 +58,19 @@ class PropertyMappingFactory
      * configuration for the uploadable fields in the specified
      * object.
      *
-     * @param  object $obj The object.
-     * @return array  An array up PropertyMapping objects.
+     * @param object $obj       The object.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
+     * @return array An array up PropertyMapping objects.
      */
-    public function fromObject($obj)
+    public function fromObject($obj, $className = null)
     {
         // @todo nothing to do here
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
 
-        $class = $this->adapter->getReflectionClass($obj);
+        $class = $this->getClassName($obj, $className);
         $this->checkUploadable($class);
 
         $mappings = array();
@@ -83,18 +85,20 @@ class PropertyMappingFactory
      * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
-     * @param  object               $obj   The object.
-     * @param  string               $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
      * @return null|PropertyMapping The property mapping.
      */
-    public function fromField($obj, $field)
+    public function fromField($obj, $field, $className = null)
     {
         // @todo nothing to do here
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
 
-        $class = $this->adapter->getReflectionClass($obj);
+        $class = $this->getClassName($obj, $className);
         $this->checkUploadable($class);
 
         $mappingData = $this->metadata->getUploadableField($class, $field);
@@ -108,10 +112,11 @@ class PropertyMappingFactory
     /**
      * Checks to see if the class is uploadable.
      *
-     * @param  ReflectionClass          $class The class.
+     * @param string $class The class name (FQCN).
+     *
      * @throws InvalidArgumentException
      */
-    protected function checkUploadable(\ReflectionClass $class)
+    protected function checkUploadable($class)
     {
         if (!$this->metadata->isUploadable($class)) {
             throw new \InvalidArgumentException('The object is not uploadable.');
@@ -151,5 +156,26 @@ class PropertyMappingFactory
         }
 
         return $mapping;
+    }
+
+    /**
+     * Returns the className of the given object.
+     *
+     * @param object $object    The object to inspect.
+     * @param string $className User specified className.
+     *
+     * @return string
+     */
+    protected function getClassName($object, $className = null)
+    {
+        if ($className !== null) {
+            return $className;
+        }
+
+        if (is_object($object)) {
+            return $this->adapter->getReflectionClass($object)->name;
+        }
+
+        throw new \RuntimeException('Impossible to determine the class name. Either specify it explicitly or give an object');
     }
 }
