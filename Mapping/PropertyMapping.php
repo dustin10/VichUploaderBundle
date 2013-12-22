@@ -61,7 +61,7 @@ class PropertyMapping
             return $this->accessor;
         }
 
-        return $this->accessor = PropertyAccess::createPropertyAccessor();
+        return $this->accessor = PropertyAccess::getPropertyAccessor();
     }
 
     /**
