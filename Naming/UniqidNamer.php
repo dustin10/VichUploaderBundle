@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * UniqidNamer
@@ -31,9 +31,11 @@ class UniqidNamer implements NamerInterface
         return $name;
     }
 
-    protected function getExtension(File $file)
+    protected function getExtension(UploadedFile $file)
     {
-        if ($extension = $file->getExtension()) {
+        $originalName = $file->getClientOriginalName();
+
+        if ($extension = pathinfo($originalName, PATHINFO_EXTENSION)) {
             return $extension;
         }
 

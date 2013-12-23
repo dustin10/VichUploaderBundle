@@ -15,27 +15,27 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
     public function fileDataProvider()
     {
         return array(
-            //    real_extension,   guessed_extension,  pattern
-            array('jpeg',           null,               '/[a-z0-9]{13}.jpeg/'),
-            array('mp3',            'mpga',             '/[a-z0-9]{13}.mp3/'),
-            array(null,             'mpga',             '/[a-z0-9]{13}.mpga/'),
-            array(null,             null,               '/[a-z0-9]{13}/'),
+            //    original_name,    guessed_extension,  pattern
+            array('lala.jpeg',      null,               '/[a-z0-9]{13}.jpeg/'),
+            array('lala.mp3',       'mpga',             '/[a-z0-9]{13}.mp3/'),
+            array('lala',           'mpga',             '/[a-z0-9]{13}.mpga/'),
+            array('lala',           null,               '/[a-z0-9]{13}/'),
         );
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($realExtension, $guessedExtension, $pattern)
+    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern)
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
 
         $file
             ->expects($this->any())
-            ->method('getExtension')
-            ->will($this->returnValue($realExtension));
+            ->method('getClientOriginalName')
+            ->will($this->returnValue($originalName));
 
         $file
             ->expects($this->any())
