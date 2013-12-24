@@ -20,7 +20,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
         $rClass = new \ReflectionClass('\DateTime');
         $driver = $this->getDriver($rClass);
 
-        $driver->mapping_content = array();
+        $driver->mappingContent = array();
 
         $driver->loadMetadataForClass($rClass);
     }
@@ -33,7 +33,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
         $rClass = new \ReflectionClass('\DateTime');
 
         $driver = $this->getDriver($rClass);
-        $driver->mapping_content = array(
+        $driver->mappingContent = array(
             $rClass->name => $mapping
         );
 
@@ -111,10 +111,10 @@ class YamlTest extends \PHPUnit_Framework_TestCase
 
 class TestableYaml extends Yaml
 {
-    public $mapping_content;
+    public $mappingContent;
 
     protected function loadMappingFile($file)
     {
-        return $this->mapping_content;
+        return $this->mappingContent;
     }
 }
