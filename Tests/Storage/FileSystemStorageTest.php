@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamWrapper;
 
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -38,7 +37,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * @var vfsStreamDirectory
      */
-    protected $fsRoot;
+    protected $root;
 
     /**
      * Sets up the test.
