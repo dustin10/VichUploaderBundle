@@ -145,8 +145,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
     {
-        $name = 'lala';
-
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
