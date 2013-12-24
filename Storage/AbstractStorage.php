@@ -73,7 +73,7 @@ abstract class AbstractStorage implements StorageInterface
             // if there already is a file for the given object, delete it if
             // needed
             if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-                $this->doRemove($mapping, $obj, $name);
+                $this->doRemove($mapping, $name);
             }
 
             // keep the original name by default
@@ -122,7 +122,7 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            $this->doRemove($mapping, $obj, $name);
+            $this->doRemove($mapping, $name);
         }
     }
 

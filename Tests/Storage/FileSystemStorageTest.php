@@ -125,18 +125,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('file'));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnUpdate')
-            ->will($this->returnValue(false));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDir')
-            ->with($this->object, 'file')
+            ->method('getUploadDestination')
             ->will($this->returnValue('/dir'));
 
         $file
@@ -178,11 +167,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue($name));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->will($this->returnValue($file));
@@ -199,8 +183,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
-            ->with($this->object, $name)
+            ->method('getUploadDestination')
             ->will($this->returnValue($dir));
 
         $file
@@ -231,7 +214,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider removeDataProvider
+     * @dataProvider    removeDataProvider
+     * @group           remove
      */
     public function testRemove($deleteOnRemove, $uploadDir, $fileName)
     {
@@ -257,12 +241,12 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         if ($deleteOnRemove && $fileName !== null) {
             $this->mapping
                 ->expects($this->once())
-                ->method('getUploadDir')
+                ->method('getUploadDestination')
                 ->will($this->returnValue($this->root->url() . DIRECTORY_SEPARATOR . $uploadDir));
         } else {
             $this->mapping
                 ->expects($this->never())
-                ->method('getUploadDir');
+                ->method('getUploadDestination');
         }
 
         $this->storage->remove($this->object);
@@ -297,7 +281,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('/tmp'));
         $this->mapping
             ->expects($this->once())
@@ -339,11 +323,11 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      * @dataProvider    resolveUriDataProvider
      * @group           resolveUri
      */
-    public function testResolveUri($uploadDir, $uri)
+    public function testResolveUri($uploadDir, $file, $uri)
     {
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue($uploadDir));
 
         $this->mapping
@@ -354,7 +338,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->will($this->returnValue($file));
 
         $this->factory
             ->expects($this->once())
@@ -370,18 +354,27 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '/abs/path/web/uploads',
+                'file.txt',
                 '/uploads/file.txt'
             ),
             array(
                 'c:\abs\path\web\uploads',
+                'file.txt',
                 '/uploads/file.txt'
             ),
             array(
                 '/abs/path/web/project/web/uploads',
+                'file.txt',
                 '/uploads/file.txt'
             ),
             array(
+                '/abs/path/web/project/web/uploads/foo',
+                'custom/dir/file.txt',
+                '/uploads/foo/custom/dir/file.txt'
+            ),
+            array(
                 '/abs/path/web/project/web/uploads/custom/dir',
+                'file.txt',
                 '/uploads/custom/dir/file.txt'
             ),
         );
