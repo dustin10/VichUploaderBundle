@@ -208,18 +208,12 @@ class PropertyMapping
     }
 
     /**
-     * Gets the configured upload directory.
+     * Returns the raw upload destination, as given in the configuration.
      *
-     * @param  null   $obj
-     * @param  null   $field
      * @return string The configured upload directory.
      */
-    public function getUploadDir($obj = null, $field = null)
+    public function getUploadDestination()
     {
-        if ($this->hasDirectoryNamer()) {
-            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_destination']);
-        }
-
         return $this->mapping['upload_destination'];
     }
 
