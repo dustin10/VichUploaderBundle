@@ -28,6 +28,21 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected $handler;
 
     /**
+     * @var EventArgs
+     */
+    protected $event;
+
+    /**
+     * @var DummyEntity
+     */
+    protected $object;
+
+    /**
+     * @var DoctrineUploaderListener
+     */
+    protected $listener;
+
+    /**
      * Sets up the test
      */
     public function setUp()
@@ -35,6 +50,23 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->adapter = $this->getAdapterMock();
         $this->metadata = $this->getMetadataReaderMock();
         $this->handler = $this->getHandlerMock();
+        $this->object = new DummyEntity();
+        $this->event = $this->getEventMock();
+
+        // the adapter is always used to return the object
+        $this->adapter
+            ->expects($this->any())
+            ->method('getObjectFromEvent')
+            ->with($this->event)
+            ->will($this->returnValue($this->object));
+
+        // in these tests, the adapter is always used with the same object
+        $this->adapter
+            ->expects($this->any())
+            ->method('getClassName')
+            ->will($this->returnValue(get_class($this->object)));
+
+        $this->listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -42,13 +74,12 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $events = $listener->getSubscribedEvents();
+        $events = $this->listener->getSubscribedEvents();
 
-        $this->assertTrue(in_array('prePersist', $events));
-        $this->assertTrue(in_array('preUpdate', $events));
-        $this->assertTrue(in_array('postLoad', $events));
-        $this->assertTrue(in_array('postRemove', $events));
+        $this->assertContains('prePersist', $events);
+        $this->assertContains('preUpdate', $events);
+        $this->assertContains('postLoad', $events);
+        $this->assertContains('postRemove', $events);
     }
 
     /**
@@ -56,22 +87,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrePersist()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -81,10 +96,9 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleUpload')
-            ->with($obj);
+            ->with($this->object);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->prePersist($args);
+        $this->listener->prePersist($this->event);
     }
 
     /**
@@ -92,22 +106,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrePersistSkipsNonUploadable()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -118,8 +116,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleUpload');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->prePersist($args);
+        $this->listener->prePersist($this->event);
     }
 
     /**
@@ -127,26 +124,10 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreUpdate()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->adapter
             ->expects($this->once())
             ->method('recomputeChangeSet')
-            ->with($args);
+            ->with($this->event);
 
         $this->metadata
             ->expects($this->once())
@@ -157,10 +138,9 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleUpload')
-            ->with($obj);
+            ->with($this->object);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->preUpdate($args);
+        $this->listener->preUpdate($this->event);
     }
 
     /**
@@ -168,22 +148,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreUpdateSkipsNonUploadable()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -198,8 +162,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleUpload');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->preUpdate($args);
+        $this->listener->preUpdate($this->event);
     }
 
     /**
@@ -207,22 +170,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostLoad()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -232,10 +179,9 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleHydration')
-            ->with($obj);
+            ->with($this->object);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->postLoad($args);
+        $this->listener->postLoad($this->event);
     }
 
     /**
@@ -243,22 +189,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostLoadSkipsNonUploadable()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -269,8 +199,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleHydration');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->postLoad($args);
+        $this->listener->postLoad($this->event);
     }
 
     /**
@@ -278,22 +207,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostRemove()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -303,10 +216,9 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleDeletion')
-            ->with($obj);
+            ->with($this->object);
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->postRemove($args);
+        $this->listener->postRemove($this->event);
     }
 
     /**
@@ -314,22 +226,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostRemoveSkipsNonUploadable()
     {
-        $obj = new DummyEntity();
-
-        $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getObjectFromEvent')
-            ->will($this->returnValue($obj));
-
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
-
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -340,8 +236,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('handleDeletion');
 
-        $listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
-        $listener->postRemove($args);
+        $this->listener->postRemove($this->event);
     }
 
     /**
@@ -352,8 +247,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getAdapterMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Adapter\AdapterInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -364,8 +259,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getMetadataReaderMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -376,7 +271,19 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getHandlerMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Handler\UploadHandler')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Creates a mock doctrine event
+     *
+     * @return \Doctrine\Common\EventArgs
+     */
+    protected function getEventMock()
+    {
+        return $this->getMockBuilder('Doctrine\Common\EventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
