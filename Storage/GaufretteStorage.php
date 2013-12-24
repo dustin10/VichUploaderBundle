@@ -52,7 +52,7 @@ class GaufretteStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping->getUploadDestination());
 
         if ($fs->getAdapter() instanceof MetadataSupporter) {
-            $fs->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
+            $fs->getAdapter()->setMetadata($destinationPath, array('contentType' => $file->getMimeType()));
         }
 
         // just to make sure that $dir is created before we start writing

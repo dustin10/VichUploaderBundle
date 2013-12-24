@@ -25,7 +25,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
             'inject_on_load'        => true
         ));
 
-        $this->assertEquals('/tmp', $prop->getUploadDir());
+        $this->assertEquals('/tmp', $prop->getUploadDestination());
         $this->assertTrue($prop->getDeleteOnRemove());
         $this->assertTrue($prop->getInjectOnLoad());
     }

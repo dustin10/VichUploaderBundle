@@ -119,7 +119,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $mapping = $mappings[0];
 
         $this->assertEquals('dummy_file', $mapping->getMappingName());
-        $this->assertEquals('images', $mapping->getUploadDir());
+        $this->assertEquals('images', $mapping->getUploadDestination());
         $this->assertNull($mapping->getNamer());
         $this->assertFalse($mapping->hasNamer());
         $this->assertTrue($mapping->getDeleteOnRemove());

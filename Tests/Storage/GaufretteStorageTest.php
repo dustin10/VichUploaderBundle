@@ -149,7 +149,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->never())
-                ->method('getUploadDir');
+                ->method('getUploadDestination');
 
         $this->factory
                 ->expects($this->once())
@@ -172,7 +172,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getUploadDir')
+                ->method('getUploadDestination')
                 ->will($this->returnValue('filesystemKey'));
 
         $mapping
@@ -203,7 +203,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getUploadDir')
+                ->method('getUploadDestination')
                 ->will($this->returnValue('filesystemKey'));
 
         $mapping
@@ -237,7 +237,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $mapping
             ->expects($this->once())
@@ -282,16 +282,12 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $mapping
             ->expects($this->once())
             ->method('getFileName')
             ->will($this->returnValue('file.txt'));
-        $mapping
-            ->expects($this->once())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('propertyName'));
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
@@ -368,7 +364,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
         $filesystem = $this
@@ -464,7 +460,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
         $filesystem = $this
