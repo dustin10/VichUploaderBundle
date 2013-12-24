@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Injector;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -16,11 +16,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class FileInjector implements FileInjectorInterface
 {
     /**
-     * @var PropertyMappingFactory $factory
-     */
-    protected $factory;
-
-    /**
      * @var StorageInterface
      */
     protected $storage;
@@ -28,34 +23,26 @@ class FileInjector implements FileInjectorInterface
     /**
      * Constructs a new instance of FileInjector.
      *
-     * @param PropertyMappingFactory $factory The factory.
-     * @param StorageInterface       $storage Storage.
+     * @param StorageInterface $storage Storage.
      */
-    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
+    public function __construct(StorageInterface $storage)
     {
-        $this->factory = $factory;
         $this->storage = $storage;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function injectFiles($obj)
+    public function injectFiles($object, PropertyMapping $mapping)
     {
-        $mappings = $this->factory->fromObject($obj);
-        foreach ($mappings as $mapping) {
-            if (!$mapping->getInjectOnLoad()) {
-                continue;
-            }
+        $field = $mapping->getFilePropertyName();
 
-            $field = $mapping->getFilePropertyName();
-            try {
-                $path = $this->storage->resolvePath($obj, $field);
-            } catch (\InvalidArgumentException $e) {
-                continue;
-            }
-
-            $mapping->setFile($obj, new File($path, false));
+        try {
+            $path = $this->storage->resolvePath($object, $field);
+        } catch (\InvalidArgumentException $e) {
+            continue;
         }
+
+        $mapping->setFile($object, new File($path, false));
     }
 }

@@ -5,10 +5,12 @@ namespace Vich\UploaderBundle\DependencyInjection;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
-use Vich\UploaderBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpKernel\Kernel;
+
+use Vich\UploaderBundle\DependencyInjection\Configuration;
 
 /**
  * VichUploaderExtension.
@@ -17,9 +19,6 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class VichUploaderExtension extends Extension
 {
-    /**
-     * @var array $tagMap
-     */
     protected $tagMap = array(
         'orm'       => 'doctrine.event_subscriber',
         'mongodb'   => 'doctrine_mongodb.odm.event_subscriber',
@@ -45,22 +44,15 @@ class VichUploaderExtension extends Extension
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
         $this->registerCacheStrategy($container, $config);
+        $this->registerEventListeners($container, $config);
 
         // define a few parameters
         $container->setParameter('vich_uploader.driver', $config['db_driver']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
 
-        // choose the right listener
-        if ($config['db_driver'] !== 'propel') {
-            $container->getDefinition('vich_uploader.listener.uploader.'.$config['db_driver'])->addTag($this->tagMap[$config['db_driver']]);
-        }
-
-        // define the adapter listener to use
+        // define the adapter to use
         $container->setAlias('vich_uploader.adapter', 'vich_uploader.adapter.'.$config['db_driver']);
-
-        // define the event listener to use
-        $container->setAlias('vich_uploader.listener.uploader', 'vich_uploader.listener.uploader.'.$config['db_driver']);
     }
 
     protected function loadServicesFiles(ContainerBuilder $container, array $config)
@@ -81,6 +73,39 @@ class VichUploaderExtension extends Extension
 
         if ($config['twig']) {
             $loader->load('twig.xml');
+        }
+    }
+
+    protected function registerEventListeners(ContainerBuilder $container, array $config)
+    {
+        $driver = $config['db_driver'];
+        $servicesMap = array(
+            'inject_on_load'    => 'inject',
+            'delete_on_update'  => 'remove',
+            'delete_on_remove'  => 'remove',
+        );
+
+        foreach ($config['mappings'] as $name => $mapping) {
+            foreach ($servicesMap as $configOption => $service) {
+                if (!$mapping[$configOption]) {
+                    continue;
+                }
+
+                $definition = $container
+                    ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $service, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $service, $driver)))
+                    ->replaceArgument(0, $name);
+
+                if (isset($this->tagMap[$driver])) {
+                    $definition->addTag($this->tagMap[$driver]);
+                }
+            }
+
+            $definition = $container
+                ->setDefinition(sprintf('vich_uploader.listener.upload.%s', $name), new DefinitionDecorator(sprintf('vich_uploader.listener.upload.%s', $driver)))
+                ->replaceArgument(0, $name);
+            if (isset($this->tagMap[$driver])) {
+                $definition->addTag($this->tagMap[$driver], array('priority' => -50));
+            }
         }
     }
 

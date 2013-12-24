@@ -37,6 +37,8 @@ class PropertyMappingFactory
      */
     protected $mappings;
 
+    protected $cache = array();
+
     /**
      * Constructs a new instance of PropertyMappingFactory.
      *
@@ -51,6 +53,24 @@ class PropertyMappingFactory
         $this->metadata = $metadata;
         $this->adapter = $adapter;
         $this->mappings = $mappings;
+    }
+
+    public function hasMapping($object, $mappingName)
+    {
+        $mappings = $this->fromObject($object);
+
+        return isset($mappings[$mappingName]);
+    }
+
+    public function fromName($object, $mappingName)
+    {
+        $mappings = $this->fromObject($object);
+
+        if (!isset($mappings[$mappingName])) {
+            throw new \RuntimeException(sprintf('Mapping %s does not exist', $mappingName));
+        }
+
+        return $mappings[$mappingName];
     }
 
     /**
@@ -71,14 +91,19 @@ class PropertyMappingFactory
         }
 
         $class = $this->getClassName($obj, $className);
+
+        if (isset($this->cache[$class])) {
+            return $this->cache[$class];
+        }
+
         $this->checkUploadable($class);
 
         $mappings = array();
         foreach ($this->metadata->getUploadableFields($class) as $field => $mappingData) {
-            $mappings[] = $this->createMapping($obj, $field, $mappingData);
+            $mappings[$mappingData['mapping']] = $this->createMapping($obj, $field, $mappingData);
         }
 
-        return $mappings;
+        return $this->cache[$class] = $mappings;
     }
 
     /**

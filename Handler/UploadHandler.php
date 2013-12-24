@@ -2,8 +2,11 @@
 
 namespace Vich\UploaderBundle\Handler;
 
-use Vich\UploaderBundle\Storage\StorageInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * Upload handler.
@@ -12,6 +15,11 @@ use Vich\UploaderBundle\Injector\FileInjectorInterface;
  */
 class UploadHandler
 {
+    /**
+     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory
+     */
+    protected $factory;
+
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
      */
@@ -25,11 +33,13 @@ class UploadHandler
     /**
      * Constructs a new instance of UploaderListener.
      *
+     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory  The mapping factory.
      * @param \Vich\UploaderBundle\Storage\StorageInterface       $storage  The storage.
      * @param \Vich\UploaderBundle\Injector\FileInjectorInterface $injector The injector.
      */
-    public function __construct(StorageInterface $storage, FileInjectorInterface $injector)
+    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector)
     {
+        $this->factory = $factory;
         $this->storage = $storage;
         $this->injector = $injector;
     }
@@ -37,19 +47,57 @@ class UploadHandler
     /**
      * Checks for file to upload.
      */
-    public function handleUpload($obj)
+    public function handleUpload($object, $mapping)
     {
-        $this->storage->upload($obj);
-        $this->injector->injectFiles($obj);
+        if (!$this->factory->hasMapping($object, $mapping)) {
+            return;
+        }
+
+        $mapping = $this->factory->fromName($object, $mapping);
+
+        $this->storage->upload($object, $mapping);
+        $this->injector->injectFiles($object, $mapping);
     }
 
-    public function handleHydration($obj)
+    /**
+     * Checks for file to remove before a new upload.
+     */
+    public function handleCleaning($object, $mapping)
     {
-        $this->injector->injectFiles($obj);
+        if (!$this->factory->hasMapping($object, $mapping)) {
+            return;
+        }
+
+        $mapping = $this->factory->fromName($object, $mapping);
+        $file = $mapping->getFile($object);
+
+        if ($file === null || !($file instanceof UploadedFile)) {
+            return;
+        }
+
+        // if there already is a file for the given object, delete it if needed
+        if ($mapping->getFileName($object)) {
+            $this->storage->remove($object, $mapping);
+        }
     }
 
-    public function handleDeletion($obj)
+    public function handleHydration($object, $mapping)
     {
-        $this->storage->remove($obj);
+        if (!$this->factory->hasMapping($object, $mapping)) {
+            return;
+        }
+
+        $mapping = $this->factory->fromName($object, $mapping);
+        $this->injector->injectFiles($object, $mapping);
+    }
+
+    public function handleDeletion($obj, $mapping)
+    {
+        if (!$this->factory->hasMapping($object, $mapping)) {
+            return;
+        }
+
+        $mapping = $this->factory->fromName($object, $mapping);
+        $this->storage->remove($object, $mapping);
     }
 }

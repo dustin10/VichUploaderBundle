@@ -60,68 +60,49 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function upload($obj)
+    public function upload($object, PropertyMapping $mapping)
     {
-        $mappings = $this->factory->fromObject($obj);
-        foreach ($mappings as $mapping) {
-            $file = $mapping->getFile($obj);
+        $file = $mapping->getFile($object);
 
-            if ($file === null || !($file instanceof UploadedFile)) {
-                continue;
-            }
-
-            // if there already is a file for the given object, delete it if
-            // needed
-            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-                $this->doRemove($mapping, $name);
-            }
-
-            // keep the original name by default
-            $name = $file->getClientOriginalName();
-
-            // but use the namer if there is one
-            if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($mapping, $obj);
-            }
-
-            // update the filename
-            $mapping->setFileName($obj, $name);
-
-            // determine the upload directory to use
-            if ($mapping->hasDirectoryNamer()) {
-                $dir = $mapping->getDirectoryNamer()->name($mapping, $obj);
-                $name = $dir . DIRECTORY_SEPARATOR . $name;
-
-                // store the complete path in the filename
-                // @note: we do this because the FileInjector needs the
-                // directory, and the DirectoryNamer might need the File object
-                // to compute it
-                $mapping->setFileName($obj, $name);
-            }
-
-            // and finalize the upload
-            $this->doUpload($mapping, $file, $name);
+        if ($file === null || !($file instanceof UploadedFile)) {
+            continue;
         }
+
+        // keep the original name by default
+        $name = $file->getClientOriginalName();
+
+        // but use the namer if there is one
+        if ($mapping->hasNamer()) {
+            $name = $mapping->getNamer()->name($mapping, $object);
+        }
+
+        // update the filename
+        $mapping->setFileName($object, $name);
+
+        // determine the upload directory to use
+        if ($mapping->hasDirectoryNamer()) {
+            $dir = $mapping->getDirectoryNamer()->name($mapping, $object);
+            $name = $dir . DIRECTORY_SEPARATOR . $name;
+
+            // store the complete path in the filename
+            // @note: we do this because the FileInjector needs the
+            // directory, and the DirectoryNamer might need the File object
+            // to compute it
+            $mapping->setFileName($object, $name);
+        }
+
+        // and finalize the upload
+        $this->doUpload($mapping, $file, $name);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function remove($obj)
+    public function remove($object, PropertyMapping $mapping)
     {
-        $mappings = $this->factory->fromObject($obj);
+        $name = $mapping->getFileName($object);
 
-        /** @var $mapping PropertyMapping */
-        foreach ($mappings as $mapping) {
-            if (!$mapping->getDeleteOnRemove()) {
-                continue;
-            }
-
-            $name = $mapping->getFileName($obj);
-            if (null === $name) {
-                continue;
-            }
-
+        if (null !== $name) {
             $this->doRemove($mapping, $name);
         }
     }

@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * StorageInterface.
  *
@@ -15,14 +17,14 @@ interface StorageInterface
      *
      * @param object $obj The object.
      */
-    public function upload($obj);
+    public function upload($object, PropertyMapping $mapping);
 
     /**
      * Removes the files associated with the object if configured to do so.
      *
      * @param object $obj The object.
      */
-    public function remove($obj);
+    public function remove($object, PropertyMapping $mapping);
 
     /**
      * Resolves the path for a file based on the specified object and field

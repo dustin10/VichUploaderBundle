@@ -11,7 +11,6 @@
     <services>
 
         <service id="vich_uploader.file_injector" class="%vich_uploader.file_injector.class%">
-            <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="vich_uploader.storage" />
         </service>
 
