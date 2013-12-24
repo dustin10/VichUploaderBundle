@@ -20,11 +20,15 @@
             <argument type="service" id="vich_uploader.metadata.file_locator" />
         </service>
 
+        <service id="vich_uploader.metadata_driver.xml" class="Vich\UploaderBundle\Metadata\Driver\Xml" public="false">
+            <argument type="service" id="vich_uploader.metadata.file_locator" />
+        </service>
+
         <service id="vich_uploader.metadata_driver.chain" class="Vich\UploaderBundle\Metadata\Driver\Chain" public="false">
             <argument type="collection">
                 <argument type="service" id="vich_uploader.metadata_driver.annotation" />
                 <argument type="service" id="vich_uploader.metadata_driver.yaml" />
-                <!-- <argument type="service" id="vich_uploader.metadata_driver.xml" /> -->
+                <argument type="service" id="vich_uploader.metadata_driver.xml" />
             </argument>
         </service>
 
