@@ -64,12 +64,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests the upload method skips a mapping which has a null
-     * uploadable property value.
-     *
-     * @group upload
+     * @dataProvider    invalidFileProvider
+     * @group           upload
      */
-    public function testUploadSkipsMappingOnNullFile()
+    public function testUploadSkipsMappingOnInvalidFile()
     {
         $this->mapping
             ->expects($this->once())
@@ -88,40 +86,26 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->storage->upload($this->object);
     }
 
-    /**
-     * Tests the upload method skips a mapping which has an uploadable
-     * field property value that is not an instance of UploadedFile.
-     *
-     * @group upload
-     */
-    public function testUploadSkipsMappingOnNonUploadedFileInstance()
+    public function invalidFileProvider()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->mapping
-                ->expects($this->once())
-                ->method('getFile')
-                ->will($this->returnValue($file));
-
-        $this->mapping
-                ->expects($this->never())
-                ->method('hasNamer');
-
-        $this->mapping
-                ->expects($this->never())
-                ->method('getNamer');
-
-        $this->mapping
-                ->expects($this->never())
-                ->method('getFileName');
-
-        $this->storage->upload($this->object);
+        return array(
+            // skipped because null
+            array( null ),
+            // skipped because not even a file
+            array( new \DateTime() ),
+            // skipped because not instance of UploadedFile
+            array( $file ),
+        );
     }
 
     /**
-     * Test that file upload moves uploaded file to correct directory and with correct filename
+     * Test that file upload moves uploaded file to correct directory and with
+     * correct filename.
+     *
      * @group upload
      */
     public function testUploadedFileIsCorrectlyMoved()
@@ -152,11 +136,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('hasNamer')
-            ->will($this->returnValue(false));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getUploadDir')
             ->with($this->object, 'file')
             ->will($this->returnValue('/dir'));
@@ -173,8 +152,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * Test file upload when filename contains directories
      *
-     * @dataProvider filenameWithDirectoriesDataProvider
-     * @group upload
+     * @dataProvider    filenameWithDirectoriesDataProvider
+     * @group           upload
      */
     public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
     {
@@ -317,7 +296,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvePath()
     {
-        $this->mapping = $this->getMappingMock();
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
@@ -342,8 +320,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      * Test the resolve path method throws exception
      * when an invaid field name is specified.
      *
-     * @expectedException \InvalidArgumentException
-     * @group resolvePath
+     * @expectedException   InvalidArgumentException
+     * @group               resolvePath
      */
     public function testResolvePathThrowsExceptionOnInvalidFieldName()
     {
@@ -359,8 +337,8 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the resolve uri
      *
-     * @dataProvider resolveUriDataProvider
-     * @group resolveUri
+     * @dataProvider    resolveUriDataProvider
+     * @group           resolveUri
      */
     public function testResolveUri($uploadDir, $uri)
     {
