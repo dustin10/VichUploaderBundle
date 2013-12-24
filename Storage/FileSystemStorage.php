@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\Storage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * FileSystemStorage.
  *
@@ -14,26 +16,20 @@ class FileSystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doUpload(UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $destinationPath)
     {
-        $uploadDir = $this->getUploadDirectory($dir, $name);
-        $fileName = basename($name);
+        $uploadDir = $this->getUploadDirectory($mapping->getUploadDestination(), $destinationPath);
+        $fileName = basename($destinationPath);
 
         return $file->move($uploadDir, $fileName);
     }
 
     /**
-     * Do real remove
-     *
-     * @param string $dir
-     * @param string $name
-     *
-     * @internal param object $obj
-     * @return boolean
+     * {@inheritDoc}
      */
-    protected function doRemove($dir, $name)
+    protected function doRemove(PropertyMapping $mapping, $path)
     {
-        $file = $dir . DIRECTORY_SEPARATOR . $name;
+        $file = $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $path;
 
         return file_exists($file) ? unlink($file) : false;
     }
@@ -49,17 +45,18 @@ class FileSystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field)
+    public function resolveUri($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $name) = $this->getFileName($obj, $field, $className);
         $uriPrefix = $mapping->getUriPrefix();
-        $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj, $field)));
+        $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDestination()));
 
-        return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
+        return sprintf('%s/%s', $uriPrefix . array_pop($parts), $this->convertWindowsDirectorySeparator($name));
     }
 
     /**
      * @param $string
+     *
      * @return string
      */
     protected function convertWindowsDirectorySeparator($string)
@@ -75,6 +72,7 @@ class FileSystemStorage extends AbstractStorage
      *
      * @param $dir
      * @param $name
+     *
      * @return string
      */
     protected function getUploadDirectory($dir, $name)

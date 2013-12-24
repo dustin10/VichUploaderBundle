@@ -31,13 +31,31 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * Do real upload
      *
-     * @param UploadedFile $file
-     * @param string       $dir
-     * @param string       $name
-     *
-     * @return boolean
+     * @param PropertyMapping $mapping         The mapping representing the current object.
+     * @param UploadedFile    $file            The file being uploaded.
+     * @param string          $destinationPath The destination path of the file.
      */
-    abstract protected function doUpload(UploadedFile $file, $dir, $name);
+    abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $destinationPath);
+
+    /**
+     * Do real remove
+     *
+     * @param PropertyMapping $mapping The mapping representing the current object.
+     * @param string          $path    The path of the file to remove.
+     *
+     * @return boolean Whether the file has been removed or not.
+     */
+    abstract protected function doRemove(PropertyMapping $mapping, $path);
+
+    /**
+     * Do resolve path
+     *
+     * @param string $dir
+     * @param string $name
+     *
+     * @return string
+     */
+    abstract protected function doResolvePath($dir, $path);
 
     /**
      * {@inheritDoc}
@@ -46,42 +64,45 @@ abstract class AbstractStorage implements StorageInterface
     {
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
-            $file = $mapping->getPropertyValue($obj);
+            $file = $mapping->getFile($obj);
 
             if ($file === null || !($file instanceof UploadedFile)) {
                 continue;
             }
 
-            if ($mapping->getDeleteOnUpdate() && $mapping->getFileNameProperty()->getValue($obj)) {
-                $name = $mapping->getFileNameProperty()->getValue($obj);
-                $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
-
-                $this->doRemove($dir, $name);
+            // if there already is a file for the given object, delete it if
+            // needed
+            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
+                $this->doRemove($mapping, $name);
             }
 
+            // keep the original name by default
+            $name = $file->getClientOriginalName();
+
+            // but use the namer if there is one
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
-            } else {
-                $name = $file->getClientOriginalName();
+                $name = $mapping->getNamer()->name($mapping, $obj);
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            // update the filename
+            $mapping->setFileName($obj, $name);
 
-            $this->doUpload($file, $dir, $name);
+            // determine the upload directory to use
+            if ($mapping->hasDirectoryNamer()) {
+                $dir = $mapping->getDirectoryNamer()->name($mapping, $obj);
+                $name = $dir . DIRECTORY_SEPARATOR . $name;
 
-            $mapping->getFileNameProperty()->setValue($obj, $name);
+                // store the complete path in the filename
+                // @note: we do this because the FileInjector needs the
+                // directory, and the DirectoryNamer might need the File object
+                // to compute it
+                $mapping->setFileName($obj, $name);
+            }
+
+            // and finalize the upload
+            $this->doUpload($mapping, $file, $name);
         }
     }
-
-    /**
-     * Do real remove
-     *
-     * @param string $dir
-     * @param string $name
-     *
-     * @return boolean
-     */
-    abstract protected function doRemove($dir, $name);
 
     /**
      * {@inheritDoc}
@@ -96,66 +117,52 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            $name = $mapping->getFileNameProperty()->getValue($obj);
-
+            $name = $mapping->getFileName($obj);
             if (null === $name) {
                 continue;
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
-
-            $this->doRemove($dir, $name);
+            $this->doRemove($mapping, $name);
         }
     }
 
     /**
-     * Do resolve path
-     *
-     * @param string $dir
-     * @param string $name
-     *
-     * @return string
-     */
-    abstract protected function doResolvePath($dir, $name);
-
-    /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $field)
+    public function resolvePath($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
-        $dir = $mapping->getUploadDir($obj, $field);
+        list($mapping, $name) = $this->getFileName($obj, $field, $className);
 
-        return $this->doResolvePath($dir, $name);
+        return $this->doResolvePath($mapping->getUploadDestination(), $name);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field)
+    public function resolveUri($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $filename) = $this->getFileName($obj, $field, $className);
         $uriPrefix = $mapping->getUriPrefix();
 
-        return $name ? ($uriPrefix . '/' . $name) : '';
+        return $filename ? ($uriPrefix . '/' . $filename) : '';
     }
 
-    protected function getFileNamePropertyValue($obj, $field)
+    protected function getFileName($obj, $field, $className = null)
     {
-        $mapping = $this->factory->fromField($obj, $field);
+        $mapping = $this->factory->fromField($obj, $field, $className);
         if (null === $mapping) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to find uploadable field named: "%s"', $field
             ));
         }
 
-        $value = $mapping->getFileNameProperty()->getValue($obj);
-        if ($value === null) {
+        $name = $mapping->getFileName($obj);
+        if ($name === null) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to get filename property value: "%s"', $field
             ));
         }
 
-        return array($mapping, $value);
+        return array($mapping, $name);
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * OrignameNamer
@@ -15,16 +14,11 @@ class OrignameNamer implements NamerInterface
     /**
      * {@inheritDoc}
      */
-    public function name($obj, $field)
+    public function name(PropertyMapping $mapping, $object)
     {
-        $refObj = new \ReflectionObject($obj);
+        $file = $mapping->getFile($object);
 
-        $refProp = $refObj->getProperty($field);
-        $refProp->setAccessible(true);
-
-        $file = $refProp->getValue($obj);
-
-        /** @var $file UploadedFile */
+        /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
 
         return uniqid().'_'.$file->getClientOriginalName();
     }

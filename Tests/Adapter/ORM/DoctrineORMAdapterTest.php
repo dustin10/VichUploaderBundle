@@ -14,9 +14,9 @@ use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the getObjectFromArgs method.
+     * Test the getObjectFromEvent method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromEvent()
     {
         if (!class_exists('Doctrine\ORM\Event\LifecycleEventArgs')) {
             $this->markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
@@ -33,39 +33,39 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
 
             $adapter = new DoctrineORMAdapter();
 
-            $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+            $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
         }
     }
 
     /**
      * Tests the getReflectionClass method.
      */
-    public function testGetReflectionClass()
+    public function testGetClassName()
     {
         if (!interface_exists('Doctrine\ORM\Proxy\Proxy')) {
             $this->markTestSkipped('Doctrine\ORM\Proxy\Proxy does not exist.');
         } else {
             $obj = new DummyEntity();
             $adapter = new DoctrineORMAdapter();
-            $class = $adapter->getReflectionClass($obj);
+            $class = $adapter->getClassName($obj);
 
-            $this->assertEquals($class->getName(), get_class($obj));
+            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
         }
     }
 
     /**
      * Tests the getReflectionClass method with a proxy.
      */
-    public function testGetReflectionClassProxy()
+    public function testGetClassNameWithProxy()
     {
         if (!interface_exists('Doctrine\ORM\Proxy\Proxy')) {
             $this->markTestSkipped('Doctrine\ORM\Proxy\Proxy does not exist.');
         } else {
             $obj = new DummyEntityProxyORM();
             $adapter = new DoctrineORMAdapter();
-            $class = $adapter->getReflectionClass($obj);
+            $class = $adapter->getClassName($obj);
 
-            $this->assertEquals($class->getName(), get_parent_class($obj));
+            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
         }
     }
 }

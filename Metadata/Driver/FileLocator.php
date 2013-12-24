@@ -2,10 +2,10 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-use Metadata\Driver\FileLocatorInterface;
+use Metadata\Driver\AdvancedFileLocatorInterface;
 use Symfony\Component\Finder\Finder;
 
-class FileLocator implements FileLocatorInterface
+class FileLocator implements AdvancedFileLocatorInterface
 {
     private $dirs;
 
@@ -27,12 +27,13 @@ class FileLocator implements FileLocatorInterface
      */
     public function findFileForClass(\ReflectionClass $class, $extension)
     {
+        $finder = new Finder();
+
         foreach ($this->dirs as $prefix => $dir) {
             if ('' !== $prefix && 0 !== strpos($class->getNamespaceName(), $prefix)) {
                 continue;
             }
 
-            $finder = new Finder();
             $files = $finder->files()->in($dir)->name(sprintf('*%s*.%s', $class->getShortName(), $extension));
 
             if (count($files) !== 1) {
@@ -45,5 +46,25 @@ class FileLocator implements FileLocatorInterface
         }
 
         return null;
+    }
+
+    /**
+     * Finds all possible metadata files.
+     *
+     * @param string $extension
+     *
+     * @return array
+     */
+    public function findAllClasses($extension)
+    {
+        $files = array();
+        $finder = new Finder();
+
+        foreach ($this->dirs as $dir) {
+            $results = $finder->files()->in($dir)->name('*.' . $extension);
+            $files = array_merge(iterator_to_array($results), $files);
+        }
+
+        return array_unique($files);
     }
 }
