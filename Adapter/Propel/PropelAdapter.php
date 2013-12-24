@@ -17,6 +17,7 @@ class PropelAdapter implements AdapterInterface
     public function getObjectFromEvent($event)
     {
         /* @var $event \Symfony\Component\EventDispatcher\GenericEvent */
+
         return $event->getSubject();
     }
 

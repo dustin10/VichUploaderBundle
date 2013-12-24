@@ -18,6 +18,7 @@ class MongoDBAdapter implements AdapterInterface
     public function getObjectFromEvent($event)
     {
         /* @var $event \Doctrine\Common\EventArgs */
+
         return $event->getDocument();
     }
 
