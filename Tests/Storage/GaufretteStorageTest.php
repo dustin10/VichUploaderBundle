@@ -199,16 +199,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
+        $mapping = $this->getMappingMock();
 
         $mapping
                 ->expects($this->once())
@@ -217,8 +208,8 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $mapping
                 ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+                ->method('getFileName')
+                ->will($this->returnValue('file.txt'));
 
         $this->factory
                 ->expects($this->once())
