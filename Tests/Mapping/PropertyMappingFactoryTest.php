@@ -28,6 +28,11 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     protected $adapter;
 
     /**
+     * @var DummyEntity
+     */
+    protected $object;
+
+    /**
      * Sets up the test.
      */
     public function setUp()
@@ -35,20 +40,22 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $this->container = $this->getContainerMock();
         $this->metadata = $this->getMetadataReaderMock();
         $this->adapter = $this->getAdapterMock();
+
+        $this->object = new DummyEntity();
     }
 
     /**
-     * Tests that an exception is thrown if a non uploadable
-     * object is passed in.
+     * Tests that an exception is thrown if a non uploadable object is passed.
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException           InvalidArgumentException
+     * @expectedExceptionMessage    The object is not uploadable.
      */
     public function testFromObjectThrowsExceptionIfNotUploadable()
     {
         $this->adapter
             ->expects($this->once())
             ->method('getClassName')
-            ->will($this->returnValue('StdClass'));
+            ->will($this->returnValue('stdClass'));
 
         $this->metadata
             ->expects($this->once())
@@ -56,43 +63,46 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, array());
-        $factory->fromObject(new \StdClass());
+        $factory->fromObject(new \stdClass());
     }
 
     /**
-     * Test the fromObject method with one uploadable
-     * field.
+     * @dataProvider uploadableClassNameProvider
      */
-    public function testFromObjectOneField()
+    public function testFromObjectWithValidMapping($givenClassName, $inferredClassName)
     {
-        $obj = new DummyEntity();
-
         $mappings = array(
             'dummy_file' => array(
-                'upload_destination' => 'images',
-                'delete_on_remove' => true,
-                'delete_on_update' => true,
-                'namer' => null,
-                'inject_on_load' => true,
-                'directory_namer' => null
+                'upload_destination'    => 'images',
+                'delete_on_remove'      => true,
+                'delete_on_update'      => true,
+                'namer'                 => null,
+                'inject_on_load'        => true,
+                'directory_namer'       => null
             )
         );
 
-        $this->adapter
-            ->expects($this->once())
-            ->method('getClassName')
-            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
+        if ($givenClassName === null) {
+            $this->adapter
+                ->expects($this->once())
+                ->method('getClassName')
+                ->will($this->returnValue($inferredClassName));
+        } else {
+            $this->adapter
+                ->expects($this->never())
+                ->method('getClassName');
+        }
 
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->with($inferredClassName)
             ->will($this->returnValue(true));
 
         $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->with($inferredClassName)
             ->will($this->returnValue(array(
                 'file' => array(
                     'mapping'           => 'dummy_file',
@@ -102,7 +112,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             )));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
-        $mappings = $factory->fromObject($obj);
+        $mappings = $factory->fromObject($this->object, $givenClassName);
 
         $this->assertEquals(1, count($mappings));
 
@@ -116,72 +126,26 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($mapping->getInjectOnLoad());
     }
 
-    /**
-     * Test the fromObject method with one uploadable
-     * field, with the object classname given.
-     */
-    public function testFromObjectOneFieldWithClassName()
+    public function uploadableClassNameProvider()
     {
-        $obj = new DummyEntity();
+        $uploadableClassName = 'Vich\UploaderBundle\Tests\DummyEntity';
 
-        $mappings = array(
-            'dummy_file' => array(
-                'upload_destination' => 'images',
-                'delete_on_remove' => true,
-                'delete_on_update' => true,
-                'namer' => null,
-                'inject_on_load' => true,
-                'directory_namer' => null
-            )
+        return array(
+            //      given className,        inferred className
+            array(  null,                   $uploadableClassName),
+            array(  $uploadableClassName,   $uploadableClassName),
         );
-
-        $this->adapter
-            ->expects($this->never())
-            ->method('getClassName');
-
-        $this->metadata
-            ->expects($this->once())
-            ->method('isUploadable')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
-            ->will($this->returnValue(true));
-
-        $this->metadata
-            ->expects($this->once())
-            ->method('getUploadableFields')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
-            ->will($this->returnValue(array(
-                'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'propertyName'      => 'file',
-                    'fileNameProperty'  => 'fileName',
-                )
-            )));
-
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
-        $mappings = $factory->fromObject($obj, 'Vich\UploaderBundle\Tests\DummyEntity');
-
-        $this->assertEquals(1, count($mappings));
-
-        $mapping = $mappings[0];
-
-        $this->assertEquals('dummy_file', $mapping->getMappingName());
-        $this->assertEquals('images', $mapping->getUploadDir());
-        $this->assertNull($mapping->getNamer());
-        $this->assertFalse($mapping->hasNamer());
-        $this->assertTrue($mapping->getDeleteOnRemove());
-        $this->assertTrue($mapping->getInjectOnLoad());
     }
 
     /**
      * Test that an exception is thrown when an invalid mapping name
      * is specified.
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException           InvalidArgumentException
+     * @expectedExceptionMessage    No mapping named "dummy_file" configured.
      */
     public function testThrowsExceptionOnInvalidMappingName()
     {
-        $obj = new DummyEntity();
-
         $mappings = array(
             'bad_name' => array()
         );
@@ -210,17 +174,15 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             )));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
-        $factory->fromObject($obj);
+        $factory->fromObject($this->object);
     }
 
     /**
-     * Test that the fromField method returns null when an invalid
-     * field name is specified.
+     * Test that the fromField method returns null when an invalid field name
+     * is specified.
      */
     public function testFromFieldReturnsNullOnInvalidFieldName()
     {
-        $obj = new DummyEntity();
-
         $this->adapter
             ->expects($this->once())
             ->method('getClassName')
@@ -239,23 +201,21 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, array());
-        $mapping = $factory->fromField($obj, 'oops');
+        $mapping = $factory->fromField($this->object, 'oops');
 
         $this->assertNull($mapping);
     }
 
     public function testConfiguredNamerRetrievedFromContainer()
     {
-        $obj = new DummyEntity();
-
         $mappings = array(
             'dummy_file' => array(
-                'upload_destination' => 'images',
-                'delete_on_remove' => true,
-                'delete_on_update' => true,
-                'namer' => 'my.custom.namer',
-                'inject_on_load' => true,
-                'directory_namer' => null
+                'upload_destination'    => 'images',
+                'delete_on_remove'      => true,
+                'delete_on_update'      => true,
+                'namer'                 => 'my.custom.namer',
+                'inject_on_load'        => true,
+                'directory_namer'       => null
             )
         );
 
@@ -291,16 +251,14 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             )));
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $this->adapter, $mappings);
-        $mappings = $factory->fromObject($obj);
+        $mappings = $factory->fromObject($this->object);
 
         $this->assertEquals(1, count($mappings));
 
-        if (count($mappings) > 0) {
-            $mapping = $mappings[0];
+        $mapping = $mappings[0];
 
-            $this->assertEquals($namer, $mapping->getNamer());
-            $this->assertTrue($mapping->hasNamer());
-        }
+        $this->assertEquals($namer, $mapping->getNamer());
+        $this->assertTrue($mapping->hasNamer());
     }
 
     /**
@@ -311,8 +269,8 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     protected function getContainerMock()
     {
         return $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -323,8 +281,8 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     protected function getMetadataReaderMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -335,7 +293,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     protected function getAdapterMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Adapter\AdapterInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
