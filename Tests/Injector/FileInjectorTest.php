@@ -101,7 +101,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property.
      */
-    protected function getPropertyMappingMock($injectOnLoadEnabled = true)
+    protected function getPropertyMappingMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()

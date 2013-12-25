@@ -54,6 +54,11 @@ class UploadHandler
         }
 
         $mapping = $this->factory->fromName($object, $mapping);
+        $file = $mapping->getFile($object);
+
+        if ($file === null || !($file instanceof UploadedFile)) {
+            return;
+        }
 
         $this->storage->upload($object, $mapping);
         $this->injector->injectFiles($object, $mapping);
@@ -91,7 +96,7 @@ class UploadHandler
         $this->injector->injectFiles($object, $mapping);
     }
 
-    public function handleDeletion($obj, $mapping)
+    public function handleDeletion($object, $mapping)
     {
         if (!$this->factory->hasMapping($object, $mapping)) {
             return;
