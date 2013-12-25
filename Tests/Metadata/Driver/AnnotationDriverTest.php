@@ -3,16 +3,16 @@
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Vich\UploaderBundle\Metadata\Driver\Annotation;
+use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TwoFieldsDummyEntity;
 
 /**
- * AnnotationTest
+ * AnnotationDriverTest
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class AnnotationTest extends \PHPUnit_Framework_TestCase
+class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 {
     public function testReadUploadableAnnotation()
     {
@@ -31,7 +31,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
                 'fileNameProperty'  => 'fileName'
             ))));
 
-        $driver = new Annotation($reader);
+        $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertInstanceOf('\Vich\UploaderBundle\Metadata\ClassMetadata', $metadata);
@@ -58,7 +58,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getPropertyAnnotation');
 
-        $driver = new Annotation($reader);
+        $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertNull($metadata);
@@ -88,7 +88,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
                 'fileNameProperty'  => 'imageName'
             ))));
 
-        $driver = new Annotation($reader);
+        $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertEquals(array(
@@ -115,7 +115,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             ->method('getClassAnnotation')
             ->will($this->returnValue('something not null'));
 
-        $driver = new Annotation($reader);
+        $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertEmpty($metadata->fields);

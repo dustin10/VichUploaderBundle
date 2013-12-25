@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Metadata\Driver\AdvancedDriverInterface;
 
-class Chain implements AdvancedDriverInterface
+class ChainDriver implements AdvancedDriverInterface
 {
     private $drivers;
 

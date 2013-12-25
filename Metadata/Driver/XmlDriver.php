@@ -9,8 +9,11 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class Xml extends AbstractFileDriver
+class XmlDriver extends AbstractFileDriver
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
     {
         $previous = libxml_use_internal_errors(true);
