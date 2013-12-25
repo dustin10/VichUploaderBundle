@@ -13,59 +13,51 @@ use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
  */
 class MongoDBAdapterTest extends \PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        if (!class_exists('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')) {
+            self::markTestSkipped('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs does not exist.');
+        }
+    }
+
     /**
      * Test the getObjectFromEvent method.
      */
     public function testGetObjectFromEvent()
     {
-        if (!class_exists('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')) {
-            $this->markTestSkipped('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs does not exist.');
-        } else {
-            $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
 
-            $args = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-            $args
-                ->expects($this->once())
-                ->method('getDocument')
-                ->will($this->returnValue($entity));
+        $args = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $args
+            ->expects($this->once())
+            ->method('getDocument')
+            ->will($this->returnValue($entity));
 
-            $adapter = new MongoDBAdapter();
+        $adapter = new MongoDBAdapter();
 
-            $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
-        }
+        $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
     }
 
     /**
-     * Tests the getReflectionClass method.
+     * @dataProvider entityProvider
      */
-    public function testGetClassName()
+    public function testGetClassName($entity, $expectedClassName)
     {
-        if (!interface_exists('Doctrine\ODM\MongoDB\Proxy\Proxy')) {
-            $this->markTestSkipped('Doctrine\ODM\MongoDB\Proxy\Proxy does not exist.');
-        } else {
-            $obj = new DummyEntity();
-            $adapter = new MongoDBAdapter();
-            $class = $adapter->getClassName($obj);
+        $adapter = new MongoDBAdapter();
 
-            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
-        }
+        $this->assertEquals($expectedClassName, $adapter->getClassName($entity));
     }
 
-    /**
-     * Tests the getReflectionClass method with a proxy.
-     */
-    public function testGetClassNameWithProxy()
+    public function entityProvider()
     {
-        if (!interface_exists('Doctrine\ODM\MongoDB\Proxy\Proxy')) {
-            $this->markTestSkipped('Doctrine\ODM\MongoDB\Proxy\Proxy does not exist.');
-        } else {
-            $obj = new DummyEntityProxyMongo();
-            $adapter = new MongoDBAdapter();
-            $class = $adapter->getClassName($obj);
+        $classicEntity = new DummyEntity();
+        $proxiedEntity = new DummyEntityProxyMongo();
 
-            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
-        }
+        return array(
+            array($classicEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
+            array($proxiedEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
+        );
     }
 }
