@@ -13,28 +13,31 @@ use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
  */
 class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        if (!class_exists('Doctrine\ORM\Event\LifecycleEventArgs')) {
+            self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
+        }
+    }
+
     /**
      * Test the getObjectFromEvent method.
      */
     public function testGetObjectFromEvent()
     {
-        if (!class_exists('Doctrine\ORM\Event\LifecycleEventArgs')) {
-            $this->markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
-        } else {
-            $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
 
-            $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-            $args
-                ->expects($this->once())
-                ->method('getEntity')
-                ->will($this->returnValue($entity));
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $args
+            ->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($entity));
 
-            $adapter = new DoctrineORMAdapter();
+        $adapter = new DoctrineORMAdapter();
 
-            $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
-        }
+        $this->assertEquals($entity, $adapter->getObjectFromEvent($args));
     }
 
     /**
@@ -42,15 +45,11 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClassName()
     {
-        if (!interface_exists('Doctrine\ORM\Proxy\Proxy')) {
-            $this->markTestSkipped('Doctrine\ORM\Proxy\Proxy does not exist.');
-        } else {
-            $obj = new DummyEntity();
-            $adapter = new DoctrineORMAdapter();
-            $class = $adapter->getClassName($obj);
+        $obj = new DummyEntity();
+        $adapter = new DoctrineORMAdapter();
+        $class = $adapter->getClassName($obj);
 
-            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
-        }
+        $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
     }
 
     /**
@@ -58,14 +57,10 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClassNameWithProxy()
     {
-        if (!interface_exists('Doctrine\ORM\Proxy\Proxy')) {
-            $this->markTestSkipped('Doctrine\ORM\Proxy\Proxy does not exist.');
-        } else {
-            $obj = new DummyEntityProxyORM();
-            $adapter = new DoctrineORMAdapter();
-            $class = $adapter->getClassName($obj);
+        $obj = new DummyEntityProxyORM();
+        $adapter = new DoctrineORMAdapter();
+        $class = $adapter->getClassName($obj);
 
-            $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
-        }
+        $this->assertEquals('Vich\UploaderBundle\Tests\DummyEntity', $class);
     }
 }
