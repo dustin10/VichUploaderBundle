@@ -6,13 +6,13 @@ use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
 
 /**
- * RemoveListener
+ * CleanListener
  *
- * Listen to the remove event to delete files accordingly.
+ * Listen to the update event to delete old files accordingly.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class RemoveListener extends BaseListener implements EventSubscriber
+class CleanListener extends BaseListener implements EventSubscriber
 {
     /**
      * The events the listener is subscribed to.
@@ -22,21 +22,22 @@ class RemoveListener extends BaseListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'postRemove',
+            'preUpdate',
         );
     }
 
     /**
-     * Removes the file if necessary.
+     * Update the file and file name if necessary.
      *
      * @param EventArgs $event The event.
      */
-    public function postRemove(EventArgs $event)
+    public function preUpdate(EventArgs $event)
     {
         $object = $this->adapter->getObjectFromEvent($event);
 
         if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
-            $this->handler->handleDeletion($object, $this->mapping);
+            $this->handler->handleCleaning($object, $this->mapping);
+            $this->adapter->recomputeChangeSet($event);
         }
     }
 }

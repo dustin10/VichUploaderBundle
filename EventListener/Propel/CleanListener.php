@@ -6,13 +6,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * InjectListener
+ * CleanListener
  *
- * Listen to the load event in order to inject File objects.
+ * Listen to the update event to delete old files accordingly.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class InjectListener extends BaseListener implements EventSubscriberInterface
+class CleanListener extends BaseListener implements EventSubscriberInterface
 {
     /**
      * The events the listener is subscribed to.
@@ -22,18 +22,18 @@ class InjectListener extends BaseListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'propel.post_hydrate' => 'onHydrate',
+            'propel.pre_update' => 'onUpload',
         );
     }
 
     /**
-     * Populates uploadable fields from filename properties.
+     * Update the file and file name if necessary.
      *
      * @param GenericEvent $event The event.
      */
-    public function onHydrate(GenericEvent $event)
+    public function onUpload(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromEvent($event);
-        $this->handler->handleHydration($object, $this->mapping);
+        $this->handler->handleCleaning($object, $this->mapping);
     }
 }

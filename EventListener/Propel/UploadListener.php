@@ -19,7 +19,7 @@ class UploadListener extends BaseListener implements EventSubscriberInterface
      *
      * @return array The array of events.
      */
-    public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             'propel.pre_insert' => 'onUpload',

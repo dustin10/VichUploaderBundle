@@ -81,7 +81,7 @@ class VichUploaderExtension extends Extension
         $driver = $config['db_driver'];
         $servicesMap = array(
             'inject_on_load'    => 'inject',
-            'delete_on_update'  => 'remove',
+            'delete_on_update'  => 'clean',
             'delete_on_remove'  => 'remove',
         );
 
