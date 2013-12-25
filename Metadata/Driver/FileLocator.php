@@ -57,14 +57,11 @@ class FileLocator implements AdvancedFileLocatorInterface
      */
     public function findAllClasses($extension)
     {
-        $files = array();
-        $finder = new Finder();
+        $files = Finder::create()
+            ->files()
+            ->name('*.'.$extension)
+            ->in($this->dirs);
 
-        foreach ($this->dirs as $dir) {
-            $results = $finder->files()->in($dir)->name('*.' . $extension);
-            $files = array_merge(iterator_to_array($results), $files);
-        }
-
-        return array_unique($files);
+        return iterator_to_array($files);
     }
 }

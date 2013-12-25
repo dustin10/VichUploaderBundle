@@ -14,9 +14,9 @@ use Metadata\Driver\FileLocatorInterface;
 abstract class AbstractFileDriver implements AdvancedDriverInterface
 {
     /**
-     * @var FileLocatorInterface|FileLocator
+     * @var FileLocatorInterface
      */
-    private $locator;
+    protected $locator;
 
     public function __construct(FileLocatorInterface $locator)
     {

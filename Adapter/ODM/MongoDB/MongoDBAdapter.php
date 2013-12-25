@@ -17,8 +17,6 @@ class MongoDBAdapter implements AdapterInterface
      */
     public function getObjectFromEvent($event)
     {
-        /* @var $event \Doctrine\Common\EventArgs */
-
         return $event->getDocument();
     }
 
@@ -27,7 +25,6 @@ class MongoDBAdapter implements AdapterInterface
      */
     public function recomputeChangeSet($event)
     {
-        /* @var $event \Doctrine\Common\EventArgs */
         $object = $this->getObjectFromEvent($event);
 
         $dm = $event->getDocumentManager();

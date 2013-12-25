@@ -37,9 +37,7 @@ class MetadataReader
      */
     public function isUploadable($class)
     {
-        $metadata = $this->reader->getMetadataForClass($class);
-
-        return $metadata !== null;
+        return $this->reader->getMetadataForClass($class) !== null;
     }
 
     /**
