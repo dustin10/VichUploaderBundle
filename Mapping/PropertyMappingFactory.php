@@ -37,8 +37,6 @@ class PropertyMappingFactory
      */
     protected $mappings;
 
-    protected $cache = array();
-
     /**
      * Constructs a new instance of PropertyMappingFactory.
      *
@@ -91,11 +89,6 @@ class PropertyMappingFactory
         }
 
         $class = $this->getClassName($obj, $className);
-
-        if (isset($this->cache[$class])) {
-            return $this->cache[$class];
-        }
-
         $this->checkUploadable($class);
 
         $mappings = array();
@@ -103,7 +96,7 @@ class PropertyMappingFactory
             $mappings[$mappingData['mapping']] = $this->createMapping($obj, $field, $mappingData);
         }
 
-        return $this->cache[$class] = $mappings;
+        return $mappings;
     }
 
     /**
