@@ -40,7 +40,7 @@ class FileInjector implements FileInjectorInterface
         try {
             $path = $this->storage->resolvePath($object, $field);
         } catch (\InvalidArgumentException $e) {
-            continue;
+            return;
         }
 
         $mapping->setFile($object, new File($path, false));

@@ -65,7 +65,7 @@ abstract class AbstractStorage implements StorageInterface
         $file = $mapping->getFile($object);
 
         if ($file === null || !($file instanceof UploadedFile)) {
-            continue;
+            return;
         }
 
         // keep the original name by default

@@ -16,11 +16,6 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class FileInjectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
-     */
-    protected $factory;
-
-    /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
      */
     protected $storage;
@@ -40,7 +35,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->factory = $this->getMockMappingFactory();
         $this->storage = $this->getMockStorage();
         $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
             'uploads' => array(
@@ -49,7 +43,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $this->injector = new FileInjector($this->factory, $this->storage);
+        $this->injector = new FileInjector($this->storage);
     }
 
     /**
@@ -63,10 +57,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $fileMapping = $this->getPropertyMappingMock();
         $fileMapping
             ->expects($this->once())
-            ->method('getInjectOnLoad')
-            ->will($this->returnValue(true));
-        $fileMapping
-            ->expects($this->once())
             ->method('getFilePropertyName')
             ->will($this->returnValue($filePropertyName));
         $fileMapping
@@ -76,89 +66,13 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
                 return $file instanceof File;
             }));
 
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($fileMapping)));
-
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
             ->with($this->equalTo($obj), $this->equalTo($filePropertyName))
             ->will($this->returnValue($this->getUploadDir() . DIRECTORY_SEPARATOR . 'file.txt'));
 
-        $this->injector->injectFiles($obj);
-    }
-
-    /**
-     * Test inject two files.
-     */
-    public function testInjectTwoFiles()
-    {
-        $obj = $this->getMock('Vich\UploaderBundle\Tests\TwoFieldsDummyEntity');
-
-        $fileMapping = $this->getPropertyMappingMock();
-        $fileMapping
-            ->expects($this->once())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('file'));
-        $fileMapping
-            ->expects($this->once())
-            ->method('setFile')
-            ->with($this->equalTo($obj), $this->callback(function ($file) {
-                return $file instanceof File;
-            }));
-
-        $imageMapping = $this->getPropertyMappingMock();
-        $imageMapping
-            ->expects($this->once())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('image'));
-        $imageMapping
-            ->expects($this->once())
-            ->method('setFile')
-            ->with($this->equalTo($obj), $this->callback(function ($file) {
-                return $file instanceof File;
-            }));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($fileMapping, $imageMapping)));
-
-        $this->storage
-            ->expects($this->exactly(2))
-            ->method('resolvePath')
-            ->will($this->onConsecutiveCalls(
-                $this->getUploadDir() . DIRECTORY_SEPARATOR . 'file.txt',
-                $this->getUploadDir() . DIRECTORY_SEPARATOR . 'image.png'
-            ));
-
-        $this->injector->injectFiles($obj);
-    }
-
-    /**
-     * Test injection is skipped if inject_on_load is configured
-     * to false.
-     */
-    public function testInjectionIsSkippedIfNotConfigured()
-    {
-        $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
-
-        $fileMapping = $this->getPropertyMappingMock(false);
-        $fileMapping
-            ->expects($this->never())
-            ->method('setFile');
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($fileMapping)));
-
-        $this->injector->injectFiles($obj);
+        $this->injector->injectFiles($obj, $fileMapping);
     }
 
     public function testPropertyIsNullWhenFileNamePropertyIsNull()
@@ -174,30 +88,12 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('setFile');
 
-        $this->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($fileMapping)));
-
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
             ->will($this->throwException(new \InvalidArgumentException));
 
-        $this->injector->injectFiles($obj);
-    }
-
-    /**
-     * Gets a mock mapping factory.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
-     */
-    protected function getMockMappingFactory()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->injector->injectFiles($obj, $fileMapping);
     }
 
     /**
@@ -207,16 +103,9 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPropertyMappingMock($injectOnLoadEnabled = true)
     {
-        $mapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $mapping
-            ->expects($this->once())
-            ->method('getInjectOnLoad')
-            ->will($this->returnValue($injectOnLoadEnabled));
-
-        return $mapping;
     }
 
     /**

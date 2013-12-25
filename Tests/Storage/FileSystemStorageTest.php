@@ -82,7 +82,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getFileName');
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     public function invalidFileProvider()
@@ -133,7 +133,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('move')
             ->with('/dir', 'filename.txt');
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
 
     }
 
@@ -171,11 +171,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnUpdate')
-            ->will($this->returnValue(false));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('hasNamer')
             ->will($this->returnValue(true));
 
@@ -189,7 +184,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('move')
             ->with($expectedDir, $expectedFileName);
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
 
     }
 
@@ -215,28 +210,16 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      * @dataProvider    removeDataProvider
      * @group           remove
      */
-    public function testRemove($deleteOnRemove, $uploadDir, $fileName)
+    public function testRemove($uploadDir, $fileName)
     {
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue($deleteOnRemove));
-
-        // if the file should be deleted, we'll need its name
-        if ($deleteOnRemove) {
-            $this->mapping
-                ->expects($this->once())
-                ->method('getFileName')
-                ->will($this->returnValue($fileName));
-        } else {
-            $this->mapping
-                ->expects($this->never())
-                ->method('getFileName');
-        }
+            ->method('getFileName')
+            ->will($this->returnValue($fileName));
 
         // if the file should be deleted and we have its name, then we need the
         // upload dir
-        if ($deleteOnRemove && $fileName !== null) {
+        if ($fileName !== null) {
             $this->mapping
                 ->expects($this->once())
                 ->method('getUploadDestination')
@@ -247,10 +230,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
                 ->method('getUploadDestination');
         }
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
 
         // the file should have been deleted
-        if ($deleteOnRemove && $fileName !== null) {
+        if ($fileName !== null) {
             $this->assertFalse($this->root->hasChild($uploadDir . DIRECTORY_SEPARATOR . $fileName));
         }
     }
@@ -258,15 +241,13 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     public function removeDataProvider()
     {
         return array(
-            //    deleteOnRemove    uploadDir   fileName
-            // don't configured to be deleted upon removal of the entity
-            array(false,            null,       null),
-            // configured, but not file present
-            array(true,             null,       null),
-            // configured and present in the filesystem
-            array(true,             '/uploads', 'test.txt'),
-            // configured, but file already deleted
-            array(true,             '/uploads', 'file.txt'),
+            //    uploadDir   fileName
+            // no file present
+            array(null,       null),
+            // present in the filesystem
+            array('/uploads', 'test.txt'),
+            // file already deleted
+            array('/uploads', 'file.txt'),
         );
     }
 
