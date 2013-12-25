@@ -218,40 +218,6 @@ class PropertyMapping
     }
 
     /**
-     * Determines if the file should be deleted upon removal of the
-     * entity.
-     *
-     * @return bool True if delete on remove, false otherwise.
-     */
-    public function getDeleteOnRemove()
-    {
-        return $this->mapping['delete_on_remove'];
-    }
-
-    /**
-     * Determines if the file should be deleted when the file is
-     * replaced by an other one.
-     *
-     * @return bool True if delete on update, false otherwise.
-     */
-    public function getDeleteOnUpdate()
-    {
-        return $this->mapping['delete_on_update'];
-    }
-
-    /**
-     * Determines if the uploadable field should be injected with a
-     * Symfony\Component\HttpFoundation\File\File instance when
-     * the object is loaded from the datastore.
-     *
-     * @return bool True if the field should be injected, false otherwise.
-     */
-    public function getInjectOnLoad()
-    {
-        return $this->mapping['inject_on_load'];
-    }
-
-    /**
      * Get uri prefix
      *
      * @return string
