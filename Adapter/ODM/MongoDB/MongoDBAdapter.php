@@ -40,8 +40,8 @@ class MongoDBAdapter implements AdapterInterface
     {
         if ($object instanceof Proxy) {
             return get_parent_class($object);
-        } else {
-            return get_class($object);
         }
+
+        return get_class($object);
     }
 }
