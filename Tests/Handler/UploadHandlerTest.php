@@ -52,7 +52,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector);
     }
 
-    public function testHandleUploadDoesNothingIfMappingDoesntExistForObject()
+    public function testUploadDoesNothingIfMappingDoesntExistForObject()
     {
         $this->factory
             ->expects($this->once())
@@ -68,13 +68,13 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('injectFiles');
 
-        $this->handler->handleUpload($this->object, 'dummy_mapping');
+        $this->handler->upload($this->object, 'dummy_mapping');
     }
 
     /**
      * @dataProvider invalidUploadedFileProvider
      */
-    public function testHandleUploadDoesNothingIfNoFileIsUploaded($file)
+    public function testUploadDoesNothingIfNoFileIsUploaded($file)
     {
         $mapping = $this->getPropertyMappingMock();
 
@@ -104,10 +104,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('injectFiles');
 
-        $this->handler->handleUpload($this->object, 'dummy_mapping');
+        $this->handler->upload($this->object, 'dummy_mapping');
     }
 
-    public function testHandleUpload()
+    public function testUpload()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
@@ -143,10 +143,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFiles')
             ->with($this->object, $mapping);
 
-        $this->handler->handleUpload($this->object, 'dummy_mapping');
+        $this->handler->upload($this->object, 'dummy_mapping');
     }
 
-    public function testHandleCleaningDoesNothingIfMappingDoesntExistForObject()
+    public function testCleanDoesNothingIfMappingDoesntExistForObject()
     {
         $this->factory
             ->expects($this->once())
@@ -158,10 +158,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $this->handler->handleCleaning($this->object, 'dummy_mapping');
+        $this->handler->clean($this->object, 'dummy_mapping');
     }
 
-    public function testHandleCleaningDoesNothingIfNoOldFileIsPresent()
+    public function testCleanDoesNothingIfNoOldFileIsPresent()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
@@ -196,13 +196,13 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $this->handler->handleCleaning($this->object, 'dummy_mapping');
+        $this->handler->clean($this->object, 'dummy_mapping');
     }
 
     /**
      * @dataProvider invalidUploadedFileProvider
      */
-    public function testHandleCleaningDoesNothingIfNoFileIsUploaded($file)
+    public function testCleanDoesNothingIfNoFileIsUploaded($file)
     {
         $mapping = $this->getPropertyMappingMock();
 
@@ -228,7 +228,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $this->handler->handleCleaning($this->object, 'dummy_mapping');
+        $this->handler->clean($this->object, 'dummy_mapping');
     }
 
     public function invalidUploadedFileProvider()
@@ -245,7 +245,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testHandleCleaning()
+    public function testClean()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
@@ -281,10 +281,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with($this->object, $mapping);
 
-        $this->handler->handleCleaning($this->object, 'dummy_mapping');
+        $this->handler->clean($this->object, 'dummy_mapping');
     }
 
-    public function testHandleHydrationDoesNothingIfMappingDoesntExistForObject()
+    public function testHydrateDoesNothingIfMappingDoesntExistForObject()
     {
         $this->factory
             ->expects($this->once())
@@ -296,10 +296,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('injectFiles');
 
-        $this->handler->handleHydration($this->object, 'dummy_mapping');
+        $this->handler->hydrate($this->object, 'dummy_mapping');
     }
 
-    public function testHandleHydration()
+    public function testHydrate()
     {
         $mapping = $this->getPropertyMappingMock();
 
@@ -320,10 +320,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFiles')
             ->with($this->object, $mapping);
 
-        $this->handler->handleHydration($this->object, 'dummy_mapping');
+        $this->handler->hydrate($this->object, 'dummy_mapping');
     }
 
-    public function testHandleDeletionDoesNothingIfMappingDoesntExistForObject()
+    public function testDeleteDoesNothingIfMappingDoesntExistForObject()
     {
         $this->factory
             ->expects($this->once())
@@ -335,10 +335,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $this->handler->handleDeletion($this->object, 'dummy_mapping');
+        $this->handler->delete($this->object, 'dummy_mapping');
     }
 
-    public function testHandleDeletion()
+    public function testDelete()
     {
         $mapping = $this->getPropertyMappingMock();
 
@@ -359,7 +359,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with($this->object, $mapping);
 
-        $this->handler->handleDeletion($this->object, 'dummy_mapping');
+        $this->handler->delete($this->object, 'dummy_mapping');
     }
 
     /**

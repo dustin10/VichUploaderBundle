@@ -34,6 +34,6 @@ class CleanListener extends BaseListener implements EventSubscriberInterface
     public function onUpload(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromEvent($event);
-        $this->handler->handleCleaning($object, $this->mapping);
+        $this->handler->clean($object, $this->mapping);
     }
 }

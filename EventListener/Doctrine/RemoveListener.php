@@ -36,7 +36,7 @@ class RemoveListener extends BaseListener implements EventSubscriber
         $object = $this->adapter->getObjectFromEvent($event);
 
         if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
-            $this->handler->handleDeletion($object, $this->mapping);
+            $this->handler->delete($object, $this->mapping);
         }
     }
 }

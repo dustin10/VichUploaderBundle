@@ -44,7 +44,7 @@ class InjectListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->once())
-            ->method('handleHydration')
+            ->method('hydrate')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->postLoad($this->event);
@@ -63,7 +63,7 @@ class InjectListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->never())
-            ->method('handleHydration', self::MAPPING_NAME);
+            ->method('hydrate', self::MAPPING_NAME);
 
         $this->listener->postLoad($this->event);
     }

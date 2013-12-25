@@ -35,6 +35,6 @@ class UploadListener extends BaseListener implements EventSubscriberInterface
     public function onUpload(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromEvent($event);
-        $this->handler->handleUpload($object, $this->mapping);
+        $this->handler->upload($object, $this->mapping);
     }
 }

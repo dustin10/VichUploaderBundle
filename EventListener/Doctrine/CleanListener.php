@@ -36,7 +36,7 @@ class CleanListener extends BaseListener implements EventSubscriber
         $object = $this->adapter->getObjectFromEvent($event);
 
         if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
-            $this->handler->handleCleaning($object, $this->mapping);
+            $this->handler->clean($object, $this->mapping);
             $this->adapter->recomputeChangeSet($event);
         }
     }

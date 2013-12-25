@@ -44,7 +44,7 @@ class CleanListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->once())
-            ->method('handleCleaning')
+            ->method('clean')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->adapter
@@ -69,7 +69,7 @@ class CleanListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->never())
-            ->method('handleCleaning');
+            ->method('clean');
 
         $this->adapter
             ->expects($this->never())

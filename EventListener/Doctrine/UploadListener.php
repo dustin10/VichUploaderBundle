@@ -37,7 +37,7 @@ class UploadListener extends BaseListener implements EventSubscriber
         $object = $this->adapter->getObjectFromEvent($event);
 
         if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
-            $this->handler->handleUpload($object, $this->mapping);
+            $this->handler->upload($object, $this->mapping);
         }
     }
 
@@ -51,7 +51,7 @@ class UploadListener extends BaseListener implements EventSubscriber
         $object = $this->adapter->getObjectFromEvent($event);
 
         if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
-            $this->handler->handleUpload($object, $this->mapping);
+            $this->handler->upload($object, $this->mapping);
             $this->adapter->recomputeChangeSet($event);
         }
     }

@@ -44,7 +44,7 @@ class UploadListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->once())
-            ->method('handleUpload')
+            ->method('upload')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->prePersist($this->event);
@@ -63,7 +63,7 @@ class UploadListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->never())
-            ->method('handleUpload');
+            ->method('upload');
 
         $this->listener->prePersist($this->event);
     }
@@ -86,7 +86,7 @@ class UploadListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->once())
-            ->method('handleUpload')
+            ->method('upload')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->preUpdate($this->event);
@@ -109,7 +109,7 @@ class UploadListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->never())
-            ->method('handleUpload');
+            ->method('upload');
 
         $this->listener->preUpdate($this->event);
     }

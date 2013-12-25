@@ -47,7 +47,7 @@ class UploadHandler
     /**
      * Checks for file to upload.
      */
-    public function handleUpload($object, $mapping)
+    public function upload($object, $mapping)
     {
         if (!$this->factory->hasMapping($object, $mapping)) {
             return;
@@ -67,7 +67,7 @@ class UploadHandler
     /**
      * Checks for file to remove before a new upload.
      */
-    public function handleCleaning($object, $mapping)
+    public function clean($object, $mapping)
     {
         if (!$this->factory->hasMapping($object, $mapping)) {
             return;
@@ -86,7 +86,7 @@ class UploadHandler
         }
     }
 
-    public function handleHydration($object, $mapping)
+    public function hydrate($object, $mapping)
     {
         if (!$this->factory->hasMapping($object, $mapping)) {
             return;
@@ -96,7 +96,7 @@ class UploadHandler
         $this->injector->injectFiles($object, $mapping);
     }
 
-    public function handleDeletion($object, $mapping)
+    public function delete($object, $mapping)
     {
         if (!$this->factory->hasMapping($object, $mapping)) {
             return;

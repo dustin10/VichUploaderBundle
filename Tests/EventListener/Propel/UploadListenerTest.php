@@ -36,7 +36,7 @@ class UploadListenerTest extends ListenerTestCase
     {
         $this->handler
             ->expects($this->once())
-            ->method('handleUpload')
+            ->method('upload')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->onUpload($this->event);

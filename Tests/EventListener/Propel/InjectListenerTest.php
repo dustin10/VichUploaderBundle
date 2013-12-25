@@ -35,7 +35,7 @@ class InjectListenerTest extends ListenerTestCase
     {
         $this->handler
             ->expects($this->once())
-            ->method('handleHydration')
+            ->method('hydrate')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->onHydrate($this->event);
