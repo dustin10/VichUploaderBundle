@@ -72,7 +72,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($obj), $this->equalTo($filePropertyName))
             ->will($this->returnValue($this->getUploadDir() . DIRECTORY_SEPARATOR . 'file.txt'));
 
-        $this->injector->injectFiles($obj, $fileMapping);
+        $this->injector->injectFile($obj, $fileMapping);
     }
 
     public function testPropertyIsNullWhenFileNamePropertyIsNull()
@@ -93,7 +93,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('resolvePath')
             ->will($this->throwException(new \InvalidArgumentException));
 
-        $this->injector->injectFiles($obj, $fileMapping);
+        $this->injector->injectFile($obj, $fileMapping);
     }
 
     /**

@@ -33,7 +33,7 @@ class FileInjector implements FileInjectorInterface
     /**
      * {@inheritDoc}
      */
-    public function injectFiles($object, PropertyMapping $mapping)
+    public function injectFile($object, PropertyMapping $mapping)
     {
         $field = $mapping->getFilePropertyName();
 

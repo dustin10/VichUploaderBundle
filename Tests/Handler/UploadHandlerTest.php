@@ -66,7 +66,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->injector
             ->expects($this->never())
-            ->method('injectFiles');
+            ->method('injectFile');
 
         $this->handler->upload($this->object, 'dummy_mapping');
     }
@@ -102,7 +102,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->injector
             ->expects($this->never())
-            ->method('injectFiles');
+            ->method('injectFile');
 
         $this->handler->upload($this->object, 'dummy_mapping');
     }
@@ -140,7 +140,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->injector
             ->expects($this->once())
-            ->method('injectFiles')
+            ->method('injectFile')
             ->with($this->object, $mapping);
 
         $this->handler->upload($this->object, 'dummy_mapping');
@@ -294,7 +294,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->injector
             ->expects($this->never())
-            ->method('injectFiles');
+            ->method('injectFile');
 
         $this->handler->hydrate($this->object, 'dummy_mapping');
     }
@@ -317,7 +317,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->injector
             ->expects($this->once())
-            ->method('injectFiles')
+            ->method('injectFile')
             ->with($this->object, $mapping);
 
         $this->handler->hydrate($this->object, 'dummy_mapping');

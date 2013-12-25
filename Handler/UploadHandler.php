@@ -61,7 +61,7 @@ class UploadHandler
         }
 
         $this->storage->upload($object, $mapping);
-        $this->injector->injectFiles($object, $mapping);
+        $this->injector->injectFile($object, $mapping);
     }
 
     /**
@@ -93,7 +93,7 @@ class UploadHandler
         }
 
         $mapping = $this->factory->fromName($object, $mapping);
-        $this->injector->injectFiles($object, $mapping);
+        $this->injector->injectFile($object, $mapping);
     }
 
     public function delete($object, $mapping)
