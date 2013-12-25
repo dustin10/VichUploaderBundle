@@ -93,7 +93,8 @@ class VichUploaderExtension extends Extension
 
                 $definition = $container
                     ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $service, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $service, $driver)))
-                    ->replaceArgument(0, $name);
+                    ->replaceArgument(0, $name)
+                    ->addTag('vich_uploader.listener');
 
                 if (isset($this->tagMap[$driver])) {
                     $definition->addTag($this->tagMap[$driver]);
@@ -102,7 +103,9 @@ class VichUploaderExtension extends Extension
 
             $definition = $container
                 ->setDefinition(sprintf('vich_uploader.listener.upload.%s', $name), new DefinitionDecorator(sprintf('vich_uploader.listener.upload.%s', $driver)))
-                ->replaceArgument(0, $name);
+                ->replaceArgument(0, $name)
+                ->addTag('vich_uploader.listener');
+
             if (isset($this->tagMap[$driver])) {
                 $definition->addTag($this->tagMap[$driver], array('priority' => -50));
             }

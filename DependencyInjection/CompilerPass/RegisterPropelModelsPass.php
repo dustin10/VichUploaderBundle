@@ -21,12 +21,19 @@ class RegisterPropelModelsPass implements CompilerPassInterface
             return;
         }
 
-        $propelListener = $container->getDefinition('vich_uploader.listener.uploader.propel');
         $metadata = $container->get('vich_uploader.metadata_reader');
-        foreach ($metadata->getUploadableClasses() as $class) {
-            $propelListener->addTag('propel.event_subscriber', array(
-                'class' => $class
-            ));
+        $classes = $metadata->getUploadableClasses();
+
+        foreach ($container->findTaggedServiceIds('vich_uploader.listener') as $id => $attributes) {
+            $listener = $container->getDefinition($id);
+            $listener->setClass($container->getDefinition($listener->getParent())->getClass());
+            $listener->setPublic(true);
+
+            foreach ($classes as $class) {
+                $listener->addTag('propel.event_subscriber', array(
+                    'class' => $class
+                ));
+            }
         }
     }
 }
