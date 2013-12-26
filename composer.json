@@ -24,7 +24,7 @@
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
         "phpunit/phpunit": "~3.7",
-        "propel/propel1": "~1",
+        "propel/propel1": ">=1.6",
         "willdurand/propel-eventdispatcher-bundle": "~1.0",
         "symfony/yaml": "@stable"
     },
