@@ -196,6 +196,8 @@ on this topic you should refer to the gaufrette documentation).
 
 ``` yaml
 knp_gaufrette:
+    stream_wrapper: ~
+
     adapters:
         product_adapter:
             local:
@@ -208,7 +210,7 @@ knp_gaufrette:
 vich_uploader:
     db_driver: orm
     gaufrette: true
-    storage: vich_uploader.storage.gaufrette
+    storage:   vich_uploader.storage.gaufrette
     mappings:
         product_image:
             uri_prefix: /images/products
@@ -218,6 +220,8 @@ vich_uploader:
 Using vich_uploader.storage.gaufrette as the storage service
 you can still use the same mappings options that you would
 use with default storage.
+
+**N.B**: make sure that Gaufrette stream wrapper overloading is enabled.
 
 **Note:**
 
