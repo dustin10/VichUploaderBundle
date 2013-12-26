@@ -13,10 +13,10 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.0",
+        "symfony/framework-bundle": "~2.1",
         "jms/metadata": "~1.5",
         "symfony/property-access": ">=2.2,<3.0",
-        "symfony/finder": ">=2.0"
+        "symfony/finder": "~2.0"
     },
     "require-dev": {
         "mikey179/vfsStream": "~1.0",
