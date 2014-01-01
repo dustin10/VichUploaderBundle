@@ -69,9 +69,9 @@ Next you should add the `Vich` namespace to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
-    'Knp\Bundle'                => __DIR__.'/../vendor/bundles',
-    'Gaufrette'                 => __DIR__.'/../vendor/gaufrette/src',
-    'Vich' => __DIR__.'/../vendor/bundles'
+    'Knp\Bundle'  => __DIR__.'/../vendor/bundles',
+    'Gaufrette'   => __DIR__.'/../vendor/gaufrette/src',
+    'Vich'        => __DIR__.'/../vendor/bundles'
 ));
 ```
 
@@ -128,7 +128,7 @@ keep things simple, or if you just don't feel comfortable working
 with gaufrette you can go with FileSystemStorage.
 
 For more information on how use one storage instead of another,
-go to [Configuration](#configuration)  section
+go to [Configuration](#configuration) section
 
 ### Configuration
 
@@ -144,19 +144,17 @@ vich_uploader:
 And then add your mappings information. In order to map
 configuration options to the property of the entity you first
 need to create a mapping in the bundle configuration. You
-create these mappings
-under the `mappings` key. Each mapping should have a unique name.
-So, if you wanted
-to name your mapping `product_image`, the configuration for this
-mapping would be
-similar to:
+create these mappings under the `mappings` key. Each mapping should have a
+unique name.
+So, if you wanted to name your mapping `product_image`, the configuration
+for this mapping would be similar to:
 
 ``` yaml
 vich_uploader:
     db_driver: orm
     mappings:
         product_image:
-            uri_prefix: /images/products
+            uri_prefix:         /images/products
             upload_destination: %kernel.root_dir%/../web/images/products
 ```
 
@@ -213,7 +211,7 @@ vich_uploader:
     storage:   vich_uploader.storage.gaufrette
     mappings:
         product_image:
-            uri_prefix: /images/products
+            uri_prefix:         /images/products
             upload_destination: product_image_fs
 ```
 
@@ -221,7 +219,9 @@ Using vich_uploader.storage.gaufrette as the storage service
 you can still use the same mappings options that you would
 use with default storage.
 
-**N.B**: make sure that Gaufrette stream wrapper overloading is enabled.
+**Note:**
+
+> Make sure that Gaufrette stream wrapper overloading is enabled.
 
 **Note:**
 
@@ -353,7 +353,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image_fs
-            namer: vich_uploader.namer_uniqid
+            namer:              vich_uploader.namer_uniqid
 ```
 
 #### Create a custom file namer
@@ -378,7 +378,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            namer: my.namer.product
+            namer:              my.namer.product
 ```
 
 Here `my.namer.product` is the configured id of the service.
@@ -405,7 +405,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            directory_namer: my.directory_namer.product
+            directory_namer:    my.directory_namer.product
 ```
 
 If no directory namer is configured for a mapping, the bundle will simply use the `upload_destination` configuration option.
@@ -445,18 +445,18 @@ Below is the full default configuration for the bundle:
 ``` yaml
 # app/config/config.yml
 vich_uploader:
-    db_driver: orm # or mongodb
-    twig: true
-    gaufrette: false # set to true to enable gaufrette support
-    storage: vich_uploader.storage.file_system
+    db_driver:  orm # or mongodb
+    twig:       true
+    gaufrette:  false # set to true to enable gaufrette support
+    storage:    vich_uploader.storage.file_system
     mappings:
         product_image:
-            uri_prefix: web # uri prefix to resource
-            upload_destination: ~ # gaufrette storage fs id, required
-            namer: ~ # specify a file namer service id for this entity, null default
-            directory_namer: ~ # specify a directory namer service id for this entity, null default
-            delete_on_remove: true # determines whether to delete file upon removal of entity
-            inject_on_load: true # determines whether to inject a File instance upon load
+            uri_prefix:         web   # uri prefix to resource
+            upload_destination: ~     # gaufrette storage fs id, required
+            namer:              ~     # specify a file namer service id for this entity, null default
+            directory_namer:    ~     # specify a directory namer service id for this entity, null default
+            delete_on_remove:   true  # determines whether to delete file upon removal of entity
+            inject_on_load:     true  # determines whether to inject a File instance upon load
         # ... more mappings
 ```
 
@@ -470,7 +470,7 @@ and vich_uploader.storage.gaufrette see
 ### The file is not updated if there are not other changes in the entity
 
 As the bundle is listening to Doctrine `prePersist` and `preUpdate` events, which are not fired
-when there is no change on field mapped by Doctrine, the file upload is not handled if the image field 
+when there is no change on field mapped by Doctrine, the file upload is not handled if the image field
 is the only updated.
 
 A workaround to solve this issue is to manually generate a change:
@@ -479,20 +479,20 @@ A workaround to solve this issue is to manually generate a change:
 class Product
 {
     // ...
-    
+
     /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime $updatedAt
      */
     protected $updatedAt;
-    
+
     // ...
-    
+
     public function setImage($image)
     {
         $this->image = $image;
-        
+
         if ($this->image) {
             $this->updatedAt = new \DateTime('now');
         }
