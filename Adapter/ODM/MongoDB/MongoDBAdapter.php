@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Adapter\ODM\MongoDB;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Doctrine\Common\EventArgs;
 use Doctrine\ODM\MongoDB\Proxy\Proxy;
 
 /**
@@ -16,33 +15,33 @@ class MongoDBAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function getObjectFromArgs(EventArgs $e)
+    public function getObjectFromEvent($event)
     {
-        return $e->getDocument();
+        return $event->getDocument();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function recomputeChangeSet(EventArgs $e)
+    public function recomputeChangeSet($event)
     {
-        $obj = $this->getObjectFromArgs($e);
+        $object = $this->getObjectFromEvent($event);
 
-        $dm = $e->getDocumentManager();
+        $dm = $event->getDocumentManager();
         $uow = $dm->getUnitOfWork();
-        $metadata = $dm->getClassMetadata(get_class($obj));
-        $uow->recomputeSingleDocumentChangeSet($metadata, $obj);
+        $metadata = $dm->getClassMetadata(get_class($object));
+        $uow->recomputeSingleDocumentChangeSet($metadata, $object);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getReflectionClass($obj)
+    public function getClassName($object)
     {
-        if ($obj instanceof Proxy) {
-            return new \ReflectionClass(get_parent_class($obj));
+        if ($object instanceof Proxy) {
+            return get_parent_class($object);
         }
 
-        return new \ReflectionClass($obj);
+        return get_class($object);
     }
 }

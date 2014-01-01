@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class Annotation implements DriverInterface
+class AnnotationDriver implements DriverInterface
 {
     const UPLOADABLE_ANNOTATION         = 'Vich\UploaderBundle\Mapping\Annotation\Uploadable';
     const UPLOADABLE_FIELD_ANNOTATION   = 'Vich\UploaderBundle\Mapping\Annotation\UploadableField';

@@ -3,15 +3,14 @@
 namespace Vich\UploaderBundle\Storage;
 
 use Gaufrette\Exception\FileNotFound;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
-
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Gaufrette\Adapter\MetadataSupporter;
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * GaufretteStorage.
@@ -33,9 +32,9 @@ class GaufretteStorage extends AbstractStorage
     /**
      * Constructs a new instance of FileSystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory       The factory.
-     * @param FilesystemMap                                       $filesystemMap Gaufrete filesystem factory.
-     * @param string                                              $protocol      Gaufrette stream wrapper protocol.
+     * @param PropertyMappingFactory $factory       The factory.
+     * @param FilesystemMap          $filesystemMap Gaufrete filesystem factory.
+     * @param string                 $protocol      Gaufrette stream wrapper protocol.
      */
     public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap, $protocol = 'gaufrette')
     {
@@ -46,30 +45,22 @@ class GaufretteStorage extends AbstractStorage
     }
 
     /**
-     * Get filesystem adapter by key
-     *
-     * @param string $key
-     *
-     * @return \Gaufrette\Filesystem
-     */
-    protected function getFilesystem($key)
-    {
-        return $this->filesystemMap->get($key);
-    }
-
-    /**
      * {@inheritDoc}
      */
-    protected function doUpload(UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $destinationPath)
     {
-        $filesystem = $this->getFilesystem($dir);
+        $fs = $this->getFilesystem($mapping->getUploadDestination());
 
-        if ($filesystem->getAdapter() instanceof MetadataSupporter) {
-            $filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
+        if ($fs->getAdapter() instanceof MetadataSupporter) {
+            $fs->getAdapter()->setMetadata($destinationPath, array('contentType' => $file->getMimeType()));
         }
 
+        // just to make sure that $dir is created before we start writing
+        // @todo: find a better way to do this
+        $fs->write($destinationPath, 'test');
+
         $src = new LocalStream($file->getPathname());
-        $dst = $filesystem->createStream($name);
+        $dst = $fs->createStream($destinationPath);
 
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('wb+'));
@@ -86,12 +77,12 @@ class GaufretteStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doRemove($dir, $name)
+    protected function doRemove(PropertyMapping $mapping, $path)
     {
-        $adapter = $this->getFilesystem($dir);
+        $fs = $this->getFilesystem($mapping->getUploadDestination());
 
         try {
-            return $adapter->delete($name);
+            return $fs->delete($path);
         } catch (FileNotFound $e) {
             return false;
         }
@@ -103,5 +94,17 @@ class GaufretteStorage extends AbstractStorage
     protected function doResolvePath($dir, $name)
     {
         return $this->protocol.'://' . $dir . '/' . $name;
+    }
+
+    /**
+     * Get filesystem adapter by key
+     *
+     * @param string $key
+     *
+     * @return \Gaufrette\Filesystem
+     */
+    protected function getFilesystem($key)
+    {
+        return $this->filesystemMap->get($key);
     }
 }

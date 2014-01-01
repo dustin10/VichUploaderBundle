@@ -2,8 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Gaufrette\Exception\FileNotFound;
+use org\bovigo\vfs\vfsStream;
+
+use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -24,12 +26,22 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     protected $filesystemMap;
 
     /**
+     * @var vfsStreamDirectory
+     */
+    protected $root;
+
+    /**
      * Sets up the test.
      */
     public function setUp()
     {
         $this->factory = $this->getFactoryMock();
         $this->filesystemMap = $this->getFilesystemMapMock();
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
+            'uploads' => array(
+                'file.txt'  => 'some content',
+            ),
+        ));
     }
 
     /**
@@ -40,33 +52,22 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
+        $mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->will($this->returnValue(null));
 
         $mapping
-                ->expects($this->once())
-                ->method('getPropertyValue')
-                ->will($this->returnValue(null));
+            ->expects($this->never())
+            ->method('hasNamer');
 
         $mapping
-                ->expects($this->never())
-                ->method('hasNamer');
-
-        $mapping
-                ->expects($this->never())
-                ->method('getNamer');
-
-        $mapping
-                ->expects($this->never())
-                ->method('getFileNameProperty');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
+            ->expects($this->never())
+            ->method('getNamer');
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->upload($obj);
+        $storage->upload($obj, $mapping);
     }
 
     /**
@@ -77,66 +78,27 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
 
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $mapping
-                ->expects($this->once())
-                ->method('getPropertyValue')
-                ->will($this->returnValue($file));
+            ->expects($this->once())
+            ->method('getFile')
+            ->will($this->returnValue($file));
 
         $mapping
-                ->expects($this->never())
-                ->method('hasNamer');
+            ->expects($this->never())
+            ->method('hasNamer');
 
         $mapping
-                ->expects($this->never())
-                ->method('getNamer');
-
-        $mapping
-                ->expects($this->never())
-                ->method('getFileNameProperty');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
+            ->expects($this->never())
+            ->method('getNamer');
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->upload($obj);
-    }
-
-    /**
-     * Test the remove method does not remove a file that is configured
-     * to not be deleted upon removal of the entity.
-     */
-    public function testRemoveSkipsConfiguredNotToDeleteOnRemove()
-    {
-        $obj = new DummyEntity();
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $mapping
-                ->expects($this->once())
-                ->method('getDeleteOnRemove')
-                ->will($this->returnValue(false));
-
-        $mapping
-                ->expects($this->never())
-                ->method('getFileNameProperty');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
-
-        $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->remove($obj);
+        $storage->upload($obj, $mapping);
     }
 
     /**
@@ -147,38 +109,18 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue(null));
-
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
         $mapping
-                ->expects($this->once())
-                ->method('getDeleteOnRemove')
-                ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue(null));
 
         $mapping
-                ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
-
-        $mapping
-                ->expects($this->never())
-                ->method('getUploadDir');
-
-        $this->factory
-                ->expects($this->once())
-                ->method('fromObject')
-                ->with($obj)
-                ->will($this->returnValue(array($mapping)));
+            ->expects($this->never())
+            ->method('getUploadDestination');
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->remove($obj);
+        $storage->remove($obj, $mapping);
     }
 
     /**
@@ -188,32 +130,23 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
+        $mapping = $this->getMappingMock();
 
         $mapping
-                ->expects($this->once())
-                ->method('getUploadDir')
-                ->will($this->returnValue('filesystemKey'));
+            ->expects($this->once())
+            ->method('getUploadDestination')
+            ->will($this->returnValue('filesystemKey'));
 
         $mapping
-                ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'file')
-                ->will($this->returnValue($mapping));
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($obj, 'file')
+            ->will($this->returnValue($mapping));
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
         $path = $storage->resolvePath($obj, 'file');
@@ -228,32 +161,23 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
-
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $prop
-                ->expects($this->once())
-                ->method('getValue')
-                ->with($obj)
-                ->will($this->returnValue('file.txt'));
+        $mapping = $this->getMappingMock();
 
         $mapping
-                ->expects($this->once())
-                ->method('getUploadDir')
-                ->will($this->returnValue('filesystemKey'));
+            ->expects($this->once())
+            ->method('getUploadDestination')
+            ->will($this->returnValue('filesystemKey'));
 
         $mapping
-                ->expects($this->once())
-                ->method('getFileNameProperty')
-                ->will($this->returnValue($prop));
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'file')
-                ->will($this->returnValue($mapping));
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($obj, 'file')
+            ->will($this->returnValue($mapping));
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'data');
         $path = $storage->resolvePath($obj, 'file');
@@ -266,38 +190,17 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatRemoveMethodDoesDeleteFile()
     {
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
         $obj = new DummyEntity();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $prop
-            ->expects($this->any())
-            ->method('getValue')
-            ->with($obj)
-            ->will($this->returnValue('file.txt'));
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('nameProperty'));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
         $mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $mapping
             ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-        $mapping
-            ->expects($this->once())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
@@ -312,15 +215,8 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
-        $this
-            ->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
-
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->remove($obj, 'file');
+        $storage->remove($obj, $mapping);
     }
 
     /**
@@ -328,38 +224,17 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveNotFoundFile()
     {
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
         $obj = new DummyEntity();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $prop
-            ->expects($this->any())
-            ->method('getValue')
-            ->with($obj)
-            ->will($this->returnValue('file.txt'));
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('nameProperty'));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
         $mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $mapping
             ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-        $mapping
-            ->expects($this->once())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
@@ -375,15 +250,8 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
-        $this
-            ->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
-
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
-        $storage->remove($obj, 'file');
+        $storage->remove($obj, $mapping);
     }
 
     /**
@@ -397,10 +265,10 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $obj = new DummyEntity();
 
         $this->factory
-                ->expects($this->once())
-                ->method('fromField')
-                ->with($obj, 'oops')
-                ->will($this->returnValue(null));
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($obj, 'oops')
+            ->will($this->returnValue(null));
 
         $storage = new GaufretteStorage($this->factory, $this->filesystemMap);
         $storage->resolvePath($obj, 'oops');
@@ -410,61 +278,34 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
 
         $adapter = $this->getMockBuilder('\Gaufrette\Adapter\MetadataSupporter')
             ->disableOriginalConstructor()
             ->setMethods(array('setMetadata', 'getMetadata'))
             ->getMock();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $prop
-            ->expects($this->any())
-            ->method('getValue')
-            ->with($obj)
-            ->will($this->returnValue('file.txt'));
-
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('nameProperty'));
-
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
-
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
             ->will($this->returnValue('filename'));
-
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+            ->will($this->returnValue($this->getUploadDir() . DIRECTORY_SEPARATOR . 'file.txt'));
 
         $mapping
             ->expects($this->once())
-            ->method('getPropertyValue')
+            ->method('getFile')
             ->will($this->returnValue($file));
 
         $mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
 
         $filesystem = $this
             ->getMockBuilder('\Gaufrette\Filesystem')
@@ -508,13 +349,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
-
-        $this
-            ->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
 
         $adapter
             ->expects($this->once())
@@ -527,67 +361,40 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($adapter));
 
         $storage = new GaufretteStorage($this->factory, $filesystemMap);
-        $storage->upload($obj);
+        $storage->upload($obj, $mapping);
     }
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
     {
         $obj = new DummyEntity();
 
-        $mapping = $this->getMock('Vich\UploaderBundle\Mapping\PropertyMapping');
+        $mapping = $this->getMappingMock();
 
         $adapter = $this->getMockBuilder('\Gaufrette\Adapter\Apc')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $prop = $this->getMockBuilder('\ReflectionProperty')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $prop
-            ->expects($this->any())
-            ->method('getValue')
-            ->with($obj)
-            ->will($this->returnValue('file.txt'));
-
-        $prop
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('nameProperty'));
-
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
-
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
             ->will($this->returnValue('filename'));
-
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+            ->will($this->returnValue($this->getUploadDir() . DIRECTORY_SEPARATOR . 'file.txt'));
 
         $mapping
             ->expects($this->once())
-            ->method('getPropertyValue')
+            ->method('getFile')
             ->will($this->returnValue($file));
 
         $mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getFileNameProperty')
-            ->will($this->returnValue($prop));
-
-        $mapping
-            ->expects($this->once())
-            ->method('getProperty')
-            ->will($this->returnValue($prop));
 
         $filesystem = $this
             ->getMockBuilder('\Gaufrette\Filesystem')
@@ -631,13 +438,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
-
-        $this
-            ->factory
-            ->expects($this->once())
-            ->method('fromObject')
-            ->with($obj)
-            ->will($this->returnValue(array($mapping)));
 
         $adapter
             ->expects($this->never())
@@ -650,7 +450,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($adapter));
 
         $storage = new GaufretteStorage($this->factory, $filesystemMap);
-        $storage->upload($obj);
+        $storage->upload($obj, $mapping);
     }
 
     /**
@@ -690,5 +490,17 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('\Gaufrette\Filesystem')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getMappingMock()
+    {
+        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getUploadDir()
+    {
+        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
     }
 }

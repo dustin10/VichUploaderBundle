@@ -3,11 +3,14 @@
 namespace Vich\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
-use Vich\UploaderBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpKernel\Kernel;
+
+use Vich\UploaderBundle\DependencyInjection\Configuration;
 
 /**
  * VichUploaderExtension.
@@ -16,20 +19,9 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class VichUploaderExtension extends Extension
 {
-    /**
-     * @var array $tagMap
-     */
     protected $tagMap = array(
-        'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
-    );
-
-    /**
-     * @var array $adapterMap
-     */
-    protected $adapterMap = array(
-        'orm' => 'Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter',
-        'mongodb' => 'Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter'
+        'orm'       => 'doctrine.event_subscriber',
+        'mongodb'   => 'doctrine_mongodb.odm.event_subscriber',
     );
 
     /**
@@ -41,23 +33,25 @@ class VichUploaderExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // Set correct doctrine subscriber event for versions of symfony before 2.1
-        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
-            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
-        }
-
         $configuration = new Configuration();
-
         $config = $this->processConfiguration($configuration, $configs);
 
-        $driver = strtolower($config['db_driver']);
-        if (!in_array($driver, array_keys($this->tagMap))) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid "db_driver" configuration option specified: "%s"',
-                $driver
-            ));
-        }
+        $this->loadServicesFiles($container, $config);
+        $this->registerMetadataDirectories($container, $config);
+        $this->registerCacheStrategy($container, $config);
+        $this->registerEventListeners($container, $config);
 
+        // define a few parameters
+        $container->setParameter('vich_uploader.driver', $config['db_driver']);
+        $container->setParameter('vich_uploader.mappings', $config['mappings']);
+        $container->setParameter('vich_uploader.storage_service', $config['storage']);
+
+        // define the adapter to use
+        $container->setAlias('vich_uploader.adapter', 'vich_uploader.adapter.'.$config['db_driver']);
+    }
+
+    protected function loadServicesFiles(ContainerBuilder $container, array $config)
+    {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $toLoad = array(
@@ -75,16 +69,42 @@ class VichUploaderExtension extends Extension
         if ($config['twig']) {
             $loader->load('twig.xml');
         }
+    }
 
-        $mappings = isset($config['mappings']) ? $config['mappings'] : array();
-        $container->setParameter('vich_uploader.mappings', $mappings);
+    protected function registerEventListeners(ContainerBuilder $container, array $config)
+    {
+        $driver = $config['db_driver'];
+        $servicesMap = array(
+            'inject_on_load'    => 'inject',
+            'delete_on_update'  => 'clean',
+            'delete_on_remove'  => 'remove',
+        );
 
-        $container->setParameter('vich_uploader.storage_service', $config['storage']);
-        $container->setParameter('vich_uploader.adapter.class', $this->adapterMap[$driver]);
-        $container->getDefinition('vich_uploader.listener.uploader')->addTag($this->tagMap[$driver]);
+        foreach ($config['mappings'] as $name => $mapping) {
+            foreach ($servicesMap as $configOption => $service) {
+                if (!$mapping[$configOption]) {
+                    continue;
+                }
 
-        $this->registerMetadataDirectories($container, $config);
-        $this->registerCacheStrategy($container, $config);
+                $definition = $container
+                    ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $service, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $service, $driver)))
+                    ->replaceArgument(0, $name)
+                    ->addTag('vich_uploader.listener');
+
+                if (isset($this->tagMap[$driver])) {
+                    $definition->addTag($this->tagMap[$driver]);
+                }
+            }
+
+            $definition = $container
+                ->setDefinition(sprintf('vich_uploader.listener.upload.%s', $name), new DefinitionDecorator(sprintf('vich_uploader.listener.upload.%s', $driver)))
+                ->replaceArgument(0, $name)
+                ->addTag('vich_uploader.listener');
+
+            if (isset($this->tagMap[$driver])) {
+                $definition->addTag($this->tagMap[$driver], array('priority' => -50));
+            }
+        }
     }
 
     protected function registerMetadataDirectories(ContainerBuilder $container, array $config)
@@ -94,7 +114,7 @@ class VichUploaderExtension extends Extension
         // directories
         $directories = array();
         if ($config['metadata']['auto_detection']) {
-            foreach ($bundles as $name => $class) {
+            foreach ($bundles as $class) {
                 $ref = new \ReflectionClass($class);
                 $directory = dirname($ref->getFileName()).'/Resources/config/vich_uploader';
 
@@ -140,10 +160,8 @@ class VichUploaderExtension extends Extension
             ;
 
             $dir = $container->getParameterBag()->resolveValue($config['metadata']['file_cache']['dir']);
-            if (!file_exists($dir)) {
-                if (!$rs = @mkdir($dir, 0777, true)) {
-                    throw new \RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
-                }
+            if (!file_exists($dir) && !@mkdir($dir, 0777, true)) {
+                throw new \RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
             }
         } else {
             $container->setAlias('vich_uploader.metadata.cache', new Alias($config['metadata']['cache'], false));

@@ -41,12 +41,14 @@ class UploaderHelper extends Helper
      * Gets the public path for the file associated with the
      * object.
      *
-     * @param  object $obj   The object.
-     * @param  string $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
      * @return string The public asset path.
      */
-    public function asset($obj, $field)
+    public function asset($obj, $field, $className = null)
     {
-        return $this->storage->resolveUri($obj, $field);
+        return $this->storage->resolveUri($obj, $field, $className);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -22,12 +23,37 @@ class Configuration implements ConfigurationInterface
         $tb = new TreeBuilder();
         $root = $tb->root('vich_uploader');
 
+        $supportedDbDrivers = array('orm', 'odm', 'propel');
+
         $root
             ->children()
-                ->scalarNode('db_driver')->isRequired()->end()
+                ->scalarNode('db_driver')
+                    ->isRequired()
+                    ->beforeNormalization()
+                        ->ifString()
+                        ->then(function ($v) { return strtolower($v); })
+                    ->end()
+                    ->validate()
+                        ->ifNotInArray($supportedDbDrivers)
+                        ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $supportedDbDrivers))
+                    ->end()
+                ->end()
                 ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
                 ->scalarNode('twig')->defaultTrue()->end()
                 ->scalarNode('gaufrette')->defaultFalse()->end()
+            ->end()
+        ;
+
+        $this->addMetadataSection($root);
+        $this->addMappingsSection($root);
+
+        return $tb;
+    }
+
+    protected function addMetadataSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
                 ->arrayNode('metadata')
                     ->addDefaultsIfNotSet()
                     ->fixXmlConfig('directory', 'directories')
@@ -50,6 +76,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->end();
+    }
+
+    protected function addMappingsSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
                 ->arrayNode('mappings')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
@@ -64,9 +97,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
-
-        return $tb;
+            ->end();
     }
 }

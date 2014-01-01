@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 
@@ -12,16 +14,6 @@ use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
  */
 class PropertyMapping
 {
-    /**
-     * @var \ReflectionProperty $property
-     */
-    protected $property;
-
-    /**
-     * @var \ReflectionProperty $fileNameProperty
-     */
-    protected $fileNameProperty;
-
     /**
      * @var NamerInterface $namer
      */
@@ -43,49 +35,33 @@ class PropertyMapping
     protected $mappingName;
 
     /**
-     * Gets the reflection property that represents the
-     * annotated property.
-     *
-     * @return \ReflectionProperty The property.
+     * @var string $filePropertyPath
      */
-    public function getProperty()
-    {
-        return $this->property;
-    }
+    protected $filePropertyPath;
 
     /**
-     * Sets the reflection property that represents the annotated
-     * property.
-     *
-     * @param \ReflectionProperty $property The reflection property.
+     * @var string $fileNamePropertyPath
      */
-    public function setProperty(\ReflectionProperty $property)
-    {
-        $this->property = $property;
-        $this->property->setAccessible(true);
-    }
+    protected $fileNamePropertyPath;
 
     /**
-     * Gets the reflection property that represents the property
-     * which holds the file name for the mapping.
-     *
-     * @return \ReflectionProperty The reflection property.
+     * @var PropertyAccess $accessor
      */
-    public function getFileNameProperty()
+    protected $accessor;
+
+    public function __construct($filePropertyPath, $fileNamePropertyPath)
     {
-        return $this->fileNameProperty;
+        $this->filePropertyPath = $filePropertyPath;
+        $this->fileNamePropertyPath = $fileNamePropertyPath;
     }
 
-    /**
-     * Sets the reflection property that represents the property
-     * which holds the file name for the mapping.
-     *
-     * @param \ReflectionProperty $fileNameProperty The reflection property.
-     */
-    public function setFileNameProperty(\ReflectionProperty $fileNameProperty)
+    protected function getAccessor()
     {
-        $this->fileNameProperty = $fileNameProperty;
-        $this->fileNameProperty->setAccessible(true);
+        if ($this->accessor !== null) {
+            return $this->accessor;
+        }
+
+        return $this->accessor = PropertyAccess::getPropertyAccessor();
     }
 
     /**
@@ -179,84 +155,66 @@ class PropertyMapping
     }
 
     /**
-     * Gets the name of the annotated property.
-     *
-     * @return string The name.
-     */
-    public function getPropertyName()
-    {
-        return $this->property->getName();
-    }
-
-    /**
-     * Gets the value of the annotated property.
+     * Gets the file property value for the given object.
      *
      * @param  object       $obj The object.
      * @return UploadedFile The file.
      */
-    public function getPropertyValue($obj)
+    public function getFile($obj)
     {
-        return $this->property->getValue($obj);
+        return $this->getAccessor()->getValue($obj, $this->filePropertyPath);
     }
 
     /**
-     * Gets the configured file name property name.
+     * Modifies the file property value for the given object.
+     *
+     * @param object       $obj  The object.
+     * @param UploadedFile $file The new file.
+     */
+    public function setFile($obj, $file)
+    {
+        $this->getAccessor()->setValue($obj, $this->filePropertyPath, $file);
+    }
+
+    /**
+     * Gets the fileName property of the given object.
+     *
+     * @param  object $obj The object.
+     * @return string The filename.
+     */
+    public function getFileName($obj)
+    {
+        return $this->getAccessor()->getValue($obj, $this->fileNamePropertyPath);
+    }
+
+    /**
+     * Modifies the fileName property of the given object.
+     *
+     * @param object $obj The object.
+     */
+    public function setFileName($obj, $value)
+    {
+        $this->getAccessor()->setValue($obj, $this->fileNamePropertyPath, $value);
+    }
+
+    /**
+     * Gets the configured file property name.
      *
      * @return string The name.
      */
-    public function getFileNamePropertyName()
+    public function getFilePropertyName()
     {
-        return $this->fileNameProperty->getName();
+        return $this->filePropertyPath;
     }
 
     /**
-     * Gets the configured upload directory.
+     * Returns the raw upload destination, as given in the configuration.
      *
-     * @param  null   $obj
-     * @param  null   $field
      * @return string The configured upload directory.
      */
-    public function getUploadDir($obj = null, $field = null)
+    public function getUploadDestination()
     {
-        if ($this->hasDirectoryNamer()) {
-            return $this->getDirectoryNamer()->directoryName($obj, $field, $this->mapping['upload_destination']);
-        }
-
         return $this->mapping['upload_destination'];
-    }
-
-    /**
-     * Determines if the file should be deleted upon removal of the
-     * entity.
-     *
-     * @return bool True if delete on remove, false otherwise.
-     */
-    public function getDeleteOnRemove()
-    {
-        return $this->mapping['delete_on_remove'];
-    }
-
-    /**
-     * Determines if the file should be deleted when the file is
-     * replaced by an other one.
-     *
-     * @return bool True if delete on update, false otherwise.
-     */
-    public function getDeleteOnUpdate()
-    {
-        return $this->mapping['delete_on_update'];
-    }
-
-    /**
-     * Determines if the uploadable field should be injected with a
-     * Symfony\Component\HttpFoundation\File\File instance when
-     * the object is loaded from the datastore.
-     *
-     * @return bool True if the field should be injected, false otherwise.
-     */
-    public function getInjectOnLoad()
-    {
-        return $this->mapping['inject_on_load'];
     }
 
     /**

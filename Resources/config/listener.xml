@@ -6,12 +6,44 @@
 
     <services>
 
-        <service id="vich_uploader.listener.uploader" class="Vich\UploaderBundle\EventListener\UploaderListener" public="false">
-            <argument type="service" id="vich_uploader.adapter" />
-            <argument type="service" id="vich_uploader.mapping_reader" />
+        <!-- global handler -->
+        <service id="vich_uploader.upload_handler" class="Vich\UploaderBundle\Handler\UploadHandler">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.file_injector" />
         </service>
+
+        <!-- propel listeners -->
+        <service id="vich_uploader.listener.propel.base" abstract="true" public="false">
+            <!-- will contain the mapping name -->
+            <argument />
+            <argument type="service" id="vich_uploader.adapter" />
+            <argument type="service" id="vich_uploader.upload_handler" />
+        </service>
+
+        <service id="vich_uploader.listener.inject.propel" class="Vich\UploaderBundle\EventListener\Propel\InjectListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.upload.propel" class="Vich\UploaderBundle\EventListener\Propel\UploadListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.clean.propel" class="Vich\UploaderBundle\EventListener\Propel\CleanListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.remove.propel" class="Vich\UploaderBundle\EventListener\Propel\RemoveListener" parent="vich_uploader.listener.propel.base" />
+
+        <!-- doctrine listeners -->
+        <service id="vich_uploader.listener.doctrine.base" abstract="true" public="false">
+            <!-- will contain the mapping name -->
+            <argument />
+            <argument type="service" id="vich_uploader.adapter" />
+            <argument type="service" id="vich_uploader.metadata_reader" />
+            <argument type="service" id="vich_uploader.upload_handler" />
+        </service>
+
+        <service id="vich_uploader.listener.inject.orm" class="Vich\UploaderBundle\EventListener\Doctrine\InjectListener" parent="vich_uploader.listener.doctrine.base" />
+        <service id="vich_uploader.listener.upload.orm" class="Vich\UploaderBundle\EventListener\Doctrine\UploadListener" parent="vich_uploader.listener.doctrine.base" />
+        <service id="vich_uploader.listener.clean.orm" class="Vich\UploaderBundle\EventListener\Doctrine\CleanListener" parent="vich_uploader.listener.doctrine.base" />
+        <service id="vich_uploader.listener.remove.orm" class="Vich\UploaderBundle\EventListener\Doctrine\RemoveListener" parent="vich_uploader.listener.doctrine.base" />
+
+        <service id="vich_uploader.listener.inject.odm" parent="vich_uploader.listener.inject.orm" />
+        <service id="vich_uploader.listener.upload.odm" parent="vich_uploader.listener.upload.orm" />
+        <service id="vich_uploader.listener.clean.odm" parent="vich_uploader.listener.clean.orm" />
+        <service id="vich_uploader.listener.remove.odm" parent="vich_uploader.listener.remove.orm" />
 
     </services>
 
