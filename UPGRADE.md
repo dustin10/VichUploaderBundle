@@ -1,3 +1,9 @@
+Upgrading from v0.9.0 to master
+===============================
+
+- `inject_on_load` config param defaults to false. Set it to
+true if you want to keep your old behavior.
+
 Upgrading from v0.5.0 to 0.6.0
 ===============================
 
