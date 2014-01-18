@@ -141,7 +141,7 @@ class PropertyMappingFactory
 
         $config = $this->mappings[$mappingData['mapping']];
 
-        $mapping = new PropertyMapping($mappingData['propertyName'] ?: $fieldName, $mappingData['fileNameProperty']);
+        $mapping = new PropertyMapping(isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName, $mappingData['fileNameProperty']);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
