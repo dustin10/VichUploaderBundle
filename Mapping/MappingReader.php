@@ -29,13 +29,13 @@ class MappingReader
     /**
      * Tells if the given class is uploadable.
      *
-     * @param Reflectionclass $class The class to test.
+     * @param string $class The class name to test (FQCN).
      *
      * @return bool
      */
-    public function isUploadable(\ReflectionClass $class)
+    public function isUploadable($class)
     {
-        $metadata = $this->reader->getMetadataForClass($class->name);
+        $metadata = $this->reader->getMetadataForClass($class);
 
         return $metadata !== null;
     }
@@ -43,14 +43,14 @@ class MappingReader
     /**
      * Attempts to read the uploadable fields.
      *
-     * @param \ReflectionClass $class The reflection class.
+     * @param string $class The class name to test (FQCN).
      *
      * @return array A list of uploadable fields.
      */
-    public function getUploadableFields(\ReflectionClass $class)
+    public function getUploadableFields($class)
     {
-        $metadata = $this->reader->getMetadataForClass($class->getName());
-        $classMetadata = $metadata->classMetadata[$class->getName()];
+        $metadata = $this->reader->getMetadataForClass($class);
+        $classMetadata = $metadata->classMetadata[$class];
 
         return $classMetadata->fields;
     }
@@ -58,12 +58,12 @@ class MappingReader
     /**
      * Attempts to read the mapping of a specified property.
      *
-     * @param \ReflectionClass $class The class.
-     * @param string           $field The field
+     * @param string $class The class name to test (FQCN).
+     * @param string $field The field
      *
      * @return null|array The field mapping.
      */
-    public function getUploadableField(\ReflectionClass $class, $field)
+    public function getUploadableField($class, $field)
     {
         $fieldsMetadata = $this->getUploadableFields($class);
 

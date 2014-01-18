@@ -37,12 +37,12 @@ class DoctrineORMAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function getReflectionClass($obj)
+    public function getClassName($object)
     {
-        if ($obj instanceof Proxy) {
-            return new \ReflectionClass(get_parent_class($obj));
+        if ($object instanceof Proxy) {
+            return get_parent_class($object);
         }
 
-        return new \ReflectionClass($obj);
+        return get_class($object);
     }
 }
