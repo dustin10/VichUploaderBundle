@@ -20,7 +20,7 @@ class DummyEntity
 
     public function getFile()
     {
-        $this->file;
+        return $this->file;
     }
 
     public function setFile($file)
