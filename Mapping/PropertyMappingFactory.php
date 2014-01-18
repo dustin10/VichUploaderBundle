@@ -61,7 +61,7 @@ class PropertyMappingFactory
      * @param object $obj       The object.
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
-     * @return array  An array up PropertyMapping objects.
+     * @return array An array up PropertyMapping objects.
      */
     public function fromObject($obj, $className = null)
     {
@@ -84,8 +84,8 @@ class PropertyMappingFactory
      * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
-     * @param  object               $obj   The object.
-     * @param  string               $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return null|PropertyMapping The property mapping.

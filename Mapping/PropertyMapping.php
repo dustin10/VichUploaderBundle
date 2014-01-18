@@ -50,8 +50,8 @@ class PropertyMapping
     protected $accessor;
 
     /**
-     * @param string $filePropertyPath      The path to the "file" property.
-     * @param string $fileNamePropertyPath  The path to the "filename" property.
+     * @param string $filePropertyPath     The path to the "file" property.
+     * @param string $fileNamePropertyPath The path to the "filename" property.
      */
     public function __construct($filePropertyPath, $fileNamePropertyPath)
     {
@@ -84,7 +84,7 @@ class PropertyMapping
     /**
      * Gets the fileName property of the given object.
      *
-     * @param  object $obj The object.
+     * @param object $obj The object.
      *
      * @return string The filename.
      */
@@ -206,8 +206,8 @@ class PropertyMapping
     /**
      * Gets the configured upload directory.
      *
-     * @param  object|null   $obj
-     * @param  string|null   $field
+     * @param object|null $obj
+     * @param string|null $field
      *
      * @return string The configured upload directory.
      */
