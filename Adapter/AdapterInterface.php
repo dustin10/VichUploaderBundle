@@ -29,7 +29,7 @@ interface AdapterInterface
     /**
      * Gets class name for the object, taking proxies into account.
      *
-     * @param  object $obj The object.
+     * @param object $obj The object.
      *
      * @return string The FQCN of the given object.
      */

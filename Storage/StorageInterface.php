@@ -29,8 +29,8 @@ interface StorageInterface
      * Resolves the path for a file based on the specified object
      * and field name.
      *
-     * @param object $obj   The object.
-     * @param string $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return string The path.
@@ -41,8 +41,8 @@ interface StorageInterface
      * Resolves the uri for any based on the specified object
      * and field name.
      *
-     * @param object $obj   The object.
-     * @param string $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return string The uri.
