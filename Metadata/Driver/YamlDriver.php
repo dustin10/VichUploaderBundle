@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class Yaml extends AbstractFileDriver
+class YamlDriver extends AbstractFileDriver
 {
     /**
      * {@inheritDoc}

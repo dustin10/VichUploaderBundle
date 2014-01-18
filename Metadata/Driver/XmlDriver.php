@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class Xml extends AbstractFileDriver
+class XmlDriver extends AbstractFileDriver
 {
     protected function loadMetadataFromFile(\ReflectionClass $class, $file)
     {
