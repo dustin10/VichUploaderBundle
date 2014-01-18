@@ -2,12 +2,13 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Doctrine\Common\Persistence\Proxy;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Mapping\MappingReader;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Doctrine\Common\Persistence\Proxy;
 
 /**
  * PropertyMappingFactory.
@@ -137,9 +138,7 @@ class PropertyMappingFactory
 
         $config = $this->mappings[$mappingData['mapping']];
 
-        $mapping = new PropertyMapping();
-        $mapping->setProperty($class->getProperty($mappingData['propertyName'] ?: $fieldName));
-        $mapping->setFileNameProperty($class->getProperty($mappingData['fileNameProperty']));
+        $mapping = new PropertyMapping($mappingData['propertyName'] ?: $fieldName, $mappingData['fileNameProperty']);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
