@@ -33,6 +33,11 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected $injector;
 
     /**
+     * @var \Vich\UploaderBundle\EventListener\UploaderListener $listener
+     */
+    protected $listener;
+
+    /**
      * Sets up the test
      */
     public function setUp()
@@ -41,6 +46,8 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->mapping = $this->getMappingMock();
         $this->storage = $this->getStorageMock();
         $this->injector = $this->getInjectorMock();
+
+        $this->listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
     }
 
     /**
@@ -48,8 +55,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $events = $listener->getSubscribedEvents();
+        $events = $this->listener->getSubscribedEvents();
 
         $this->assertTrue(in_array('prePersist', $events));
         $this->assertTrue(in_array('preUpdate', $events));
@@ -63,11 +69,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPrePersist()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -76,13 +81,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->storage
@@ -95,8 +100,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFiles')
             ->with($obj);
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->prePersist($args);
+        $this->listener->prePersist($args);
     }
 
     /**
@@ -105,11 +109,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPrePersistSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -118,13 +121,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->storage
@@ -135,8 +138,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('injectFiles');
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->prePersist($args);
+        $this->listener->prePersist($args);
     }
 
     /**
@@ -145,11 +147,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPreUpdate()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -158,8 +159,8 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->adapter
             ->expects($this->once())
@@ -169,7 +170,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->storage
@@ -182,8 +183,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFiles')
             ->with($obj);
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->preUpdate($args);
+        $this->listener->preUpdate($args);
     }
 
     /**
@@ -192,11 +192,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPreUpdateSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -205,13 +204,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->storage
@@ -226,8 +225,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('injectFiles');
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->preUpdate($args);
+        $this->listener->preUpdate($args);
     }
 
     /**
@@ -236,11 +234,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostLoad()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -249,13 +246,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->injector
@@ -263,8 +260,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFiles')
             ->with($obj);
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->postLoad($args);
+        $this->listener->postLoad($args);
     }
 
     /**
@@ -273,11 +269,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostLoadSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -286,21 +281,20 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->injector
             ->expects($this->never())
             ->method('injectFiles');
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->postLoad($args);
+        $this->listener->postLoad($args);
     }
 
     /**
@@ -309,11 +303,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostRemove()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -322,13 +315,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
         $this->storage
@@ -336,8 +329,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with($obj);
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->postRemove($args);
+        $this->listener->postRemove($args);
     }
 
     /**
@@ -346,11 +338,10 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function testPostRemoveSkipsNonUploadable()
     {
         $obj = new DummyEntity();
-        $class = new \ReflectionClass($obj);
 
         $args = $this->getMockBuilder('Doctrine\Common\EventArgs')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->adapter
             ->expects($this->once())
@@ -359,21 +350,20 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->adapter
             ->expects($this->once())
-            ->method('getReflectionClass')
-            ->will($this->returnValue($class));
+            ->method('getClassName')
+            ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
         $this->mapping
             ->expects($this->once())
             ->method('isUploadable')
-            ->with($class)
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(false));
 
         $this->storage
             ->expects($this->never())
             ->method('remove');
 
-        $listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
-        $listener->postRemove($args);
+        $this->listener->postRemove($args);
     }
 
     /**
@@ -384,8 +374,8 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getAdapterMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Adapter\AdapterInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -396,8 +386,8 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getMappingMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\MappingReader')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -408,8 +398,8 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getStorageMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Storage\StorageInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -420,7 +410,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected function getInjectorMock()
     {
         return $this->getMockBuilder('Vich\UploaderBundle\Injector\FileInjectorInterface')
-               ->disableOriginalConstructor()
-               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
