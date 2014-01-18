@@ -1,10 +1,11 @@
 <?php
 namespace Vich\UploaderBundle\Storage;
 
-use Vich\UploaderBundle\Storage\StorageInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * FileSystemStorage.
@@ -46,30 +47,29 @@ abstract class AbstractStorage implements StorageInterface
     {
         $mappings = $this->factory->fromObject($obj);
         foreach ($mappings as $mapping) {
-            $file = $mapping->getPropertyValue($obj);
+            $file = $mapping->getFile($obj);
 
             if ($file === null || !($file instanceof UploadedFile)) {
                 continue;
             }
 
-            if ($mapping->getDeleteOnUpdate() && $mapping->getFileNameProperty()->getValue($obj)) {
-                $name = $mapping->getFileNameProperty()->getValue($obj);
-                $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
+                $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
                 $this->doRemove($dir, $name);
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getProperty()->getName());
+                $name = $mapping->getNamer()->name($obj, $mapping->getFilePropertyName());
             } else {
                 $name = $file->getClientOriginalName();
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
             $this->doUpload($file, $dir, $name);
 
-            $mapping->getFileNameProperty()->setValue($obj, $name);
+            $mapping->setFileName($obj, $name);
         }
     }
 
@@ -96,13 +96,13 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            $name = $mapping->getFileNameProperty()->getValue($obj);
+            $name = $mapping->getFileName($obj);
 
             if (null === $name) {
                 continue;
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getProperty()->getName());
+            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
 
             $this->doRemove($dir, $name);
         }
@@ -121,41 +121,41 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $field)
+    public function resolvePath($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $filename) = $this->getFilename($obj, $field, $className);
         $dir = $mapping->getUploadDir($obj, $field);
 
-        return $this->doResolvePath($dir, $name);
+        return $this->doResolvePath($dir, $filename);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field)
+    public function resolveUri($obj, $field, $className = null)
     {
-        list($mapping, $name) = $this->getFileNamePropertyValue($obj, $field);
+        list($mapping, $filename) = $this->getFilename($obj, $field, $className);
         $uriPrefix = $mapping->getUriPrefix();
 
-        return $name ? ($uriPrefix . '/' . $name) : '';
+        return $filename ? ($uriPrefix . '/' . $filename) : '';
     }
 
-    protected function getFileNamePropertyValue($obj, $field)
+    protected function getFilename($obj, $field, $className = null)
     {
-        $mapping = $this->factory->fromField($obj, $field);
+        $mapping = $this->factory->fromField($obj, $field, $className);
         if (null === $mapping) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to find uploadable field named: "%s"', $field
             ));
         }
 
-        $value = $mapping->getFileNameProperty()->getValue($obj);
-        if ($value === null) {
+        $filename = $mapping->getFileName($obj);
+        if ($filename === null) {
             throw new \InvalidArgumentException(sprintf(
                 'Unable to get filename property value: "%s"', $field
             ));
         }
 
-        return array($mapping, $value);
+        return array($mapping, $filename);
     }
 }

@@ -74,11 +74,11 @@ class UploaderListener implements EventSubscriber
      */
     public function prePersist(EventArgs $args)
     {
-        $obj = $this->adapter->getObjectFromArgs($args);
+        $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
-            $this->storage->upload($obj);
-            $this->injector->injectFiles($obj);
+        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+            $this->storage->upload($object);
+            $this->injector->injectFiles($object);
         }
     }
 
@@ -89,11 +89,11 @@ class UploaderListener implements EventSubscriber
      */
     public function preUpdate(EventArgs $args)
     {
-        $obj = $this->adapter->getObjectFromArgs($args);
+        $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
-            $this->storage->upload($obj);
-            $this->injector->injectFiles($obj);
+        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+            $this->storage->upload($object);
+            $this->injector->injectFiles($object);
             $this->adapter->recomputeChangeSet($args);
         }
     }
@@ -106,10 +106,10 @@ class UploaderListener implements EventSubscriber
      */
     public function postLoad(EventArgs $args)
     {
-        $obj = $this->adapter->getObjectFromArgs($args);
+        $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
-            $this->injector->injectFiles($obj);
+        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+            $this->injector->injectFiles($object);
         }
     }
 
@@ -120,10 +120,10 @@ class UploaderListener implements EventSubscriber
      */
     public function postRemove(EventArgs $args)
     {
-        $obj = $this->adapter->getObjectFromArgs($args);
+        $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getReflectionClass($obj))) {
-            $this->storage->remove($obj);
+        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+            $this->storage->remove($object);
         }
     }
 }

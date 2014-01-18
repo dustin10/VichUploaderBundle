@@ -438,6 +438,17 @@ You must specify the annotated property you wish to get the file path for.
 > The path returned is relative to the web directory which is specified
 > using the `uri_prefix` configuration parameter.
 
+**Note:**
+
+> If the `product` variable isn't hydrated as an object but as an array, you
+> will have to manually specify its className so that VichUploaderBundle can
+> determine the right mapping configuration to use.
+> Exemple:
+
+```html+jinja
+{{ vich_uploader_asset(product, 'image', 'FooBundle\Entity\Product') }}
+```
+
 ## Configuration Reference
 
 Below is the full default configuration for the bundle:

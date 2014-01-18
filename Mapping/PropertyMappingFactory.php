@@ -2,12 +2,13 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Doctrine\Common\Persistence\Proxy;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Mapping\MappingReader;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Doctrine\Common\Persistence\Proxy;
 
 /**
  * PropertyMappingFactory.
@@ -57,16 +58,18 @@ class PropertyMappingFactory
      * configuration for the uploadable fields in the specified
      * object.
      *
-     * @param  object $obj The object.
-     * @return array  An array up PropertyMapping objects.
+     * @param object $obj       The object.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
+     * @return array An array up PropertyMapping objects.
      */
-    public function fromObject($obj)
+    public function fromObject($obj, $className = null)
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
 
-        $class = $this->adapter->getReflectionClass($obj);
+        $class = $this->getClassName($obj, $className);
         $this->checkUploadable($class);
 
         $mappings = array();
@@ -81,17 +84,19 @@ class PropertyMappingFactory
      * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
-     * @param  object               $obj   The object.
-     * @param  string               $field The field.
+     * @param object $obj       The object.
+     * @param string $field     The field.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
      * @return null|PropertyMapping The property mapping.
      */
-    public function fromField($obj, $field)
+    public function fromField($obj, $field, $className = null)
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
         }
 
-        $class = $this->adapter->getReflectionClass($obj);
+        $class = $this->getClassName($obj, $className);
         $this->checkUploadable($class);
 
         $mappingData = $this->mapping->getUploadableField($class, $field);
@@ -105,10 +110,11 @@ class PropertyMappingFactory
     /**
      * Checks to see if the class is uploadable.
      *
-     * @param  \ReflectionClass          $class The class.
+     * @param string $class The class name (FQCN).
+     *
      * @throws \InvalidArgumentException
      */
-    protected function checkUploadable(\ReflectionClass $class)
+    protected function checkUploadable($class)
     {
         if (!$this->mapping->isUploadable($class)) {
             throw new \InvalidArgumentException('The object is not uploadable.');
@@ -127,8 +133,6 @@ class PropertyMappingFactory
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
     {
-        $class = $this->adapter->getReflectionClass($obj);
-
         if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
             throw new \InvalidArgumentException(sprintf(
                'No mapping named "%s" configured.', $mappingData['mapping']
@@ -137,9 +141,7 @@ class PropertyMappingFactory
 
         $config = $this->mappings[$mappingData['mapping']];
 
-        $mapping = new PropertyMapping();
-        $mapping->setProperty($class->getProperty($mappingData['propertyName'] ?: $fieldName));
-        $mapping->setFileNameProperty($class->getProperty($mappingData['fileNameProperty']));
+        $mapping = new PropertyMapping(isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName, $mappingData['fileNameProperty']);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
@@ -152,5 +154,26 @@ class PropertyMappingFactory
         }
 
         return $mapping;
+    }
+
+    /**
+     * Returns the className of the given object.
+     *
+     * @param object $object    The object to inspect.
+     * @param string $className User specified className.
+     *
+     * @return string
+     */
+    protected function getClassName($object, $className = null)
+    {
+        if ($className !== null) {
+            return $className;
+        }
+
+        if (is_object($object)) {
+            return $this->adapter->getClassName($object);
+        }
+
+        throw new \RuntimeException('Impossible to determine the class name. Either specify it explicitly or give an object');
     }
 }
