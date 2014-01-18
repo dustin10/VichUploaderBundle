@@ -15,7 +15,8 @@
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.0",
         "jms/metadata": "~1.5",
-        "symfony/finder": ">=2.0"
+        "symfony/finder": ">=2.0",
+        "symfony/property-access": ">=2.2,<3.0"
     },
     "require-dev": {
         "doctrine/orm": "@stable",
