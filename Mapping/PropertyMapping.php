@@ -67,7 +67,8 @@ class PropertyMapping
      */
     public function getFile($obj)
     {
-        return $this->getAccessor()->getValue($obj, $this->filePropertyPath);
+        $propertyPath = $this->fixPropertyPath($obj, $this->filePropertyPath);
+        return $this->getAccessor()->getValue($obj, $propertyPath);
     }
 
     /**
@@ -78,7 +79,8 @@ class PropertyMapping
      */
     public function setFile($obj, $file)
     {
-        $this->getAccessor()->setValue($obj, $this->filePropertyPath, $file);
+        $propertyPath = $this->fixPropertyPath($obj, $this->filePropertyPath);
+        $this->getAccessor()->setValue($obj, $propertyPath, $file);
     }
 
     /**
@@ -90,7 +92,8 @@ class PropertyMapping
      */
     public function getFileName($obj)
     {
-        return $this->getAccessor()->getValue($obj, $this->fileNamePropertyPath);
+        $propertyPath = $this->fixPropertyPath($obj, $this->fileNamePropertyPath);
+        return $this->getAccessor()->getValue($obj, $propertyPath);
     }
 
     /**
@@ -101,7 +104,8 @@ class PropertyMapping
      */
     public function setFileName($obj, $value)
     {
-        $this->getAccessor()->setValue($obj, $this->fileNamePropertyPath, $value);
+        $propertyPath = $this->fixPropertyPath($obj, $this->fileNamePropertyPath);
+        $this->getAccessor()->setValue($obj, $propertyPath, $value);
     }
 
     /**
@@ -263,6 +267,26 @@ class PropertyMapping
     public function getUriPrefix()
     {
         return $this->mapping['uri_prefix'];
+    }
+
+    /**
+     * Fixes a given propertyPath to make it usable both with arrays and
+     * objects.
+     * Ie: if the given object is in fact an array, the property path must
+     * look like [myPath].
+     *
+     * @param object|array  $object         The object to inspect.
+     * @param string        $propertyPath   The property path to fix.
+     *
+     * @return string The fixed property path.
+     */
+    protected function fixPropertyPath($object, $propertyPath)
+    {
+        if (!is_array($object)) {
+            return $propertyPath;
+        }
+
+        return $propertyPath[0] === '[' ? $propertyPath : sprintf('[%s]', $propertyPath);
     }
 
     protected function getAccessor()

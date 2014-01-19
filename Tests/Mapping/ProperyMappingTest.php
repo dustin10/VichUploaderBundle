@@ -33,17 +33,33 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($prop->getInjectOnLoad());
     }
 
-    public function testPropertiesAreAccessed()
+    /**
+     * @dataProvider propertiesAccessProvider
+     */
+    public function testPropertiesAreAccessed($object, $file, $fileName)
+    {
+        $prop = new PropertyMapping('file', 'fileName');
+
+        $this->assertSame($file, $prop->getFile($object));
+        $this->assertSame($fileName, $prop->getFileName($object));
+    }
+
+    public function propertiesAccessProvider()
     {
         $date = new \DateTime();
         $object = new DummyEntity();
         $object->setFileName('joe.png');
         $object->setFile($date);
 
-        $prop = new PropertyMapping('file', 'fileName');
+        $array = array(
+            'fileName'  => 'joe.png',
+            'file'      => $date,
+        );
 
-        $this->assertSame($date, $prop->getFile($object));
-        $this->assertSame('joe.png', $prop->getFileName($object));
+        return array(
+            array( $object, $date, 'joe.png' ),
+            array( $array,  $date, 'joe.png' ),
+        );
     }
 
     public function testPropertiesAreSet()
