@@ -23,6 +23,7 @@
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
         "phpunit/phpunit": "~3.7",
+        "mikey179/vfsStream": "~1.0",
         "symfony/yaml": "@stable"
     },
     "suggest": {
