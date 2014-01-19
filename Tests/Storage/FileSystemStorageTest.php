@@ -2,11 +2,13 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use org\bovigo\vfs\vfsStream;
+
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
- * FileSystem$this->storageTest.
+ * FileSystemStorageTest.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
@@ -33,6 +35,11 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     protected $storage;
 
     /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    protected $root;
+
+    /**
      * Sets up the test.
      */
     public function setUp()
@@ -47,44 +54,24 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('fromObject')
             ->with($this->object)
             ->will($this->returnValue(array($this->mapping)));
+
+        // and initialize the virtual filesystem
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
+            'uploads' => array(
+                'test.txt' => 'some content'
+            ),
+        ));
     }
 
     /**
-     * Tests the upload method skips a mapping which has a null
+     * Tests the upload method skips a mapping which has a non
      * uploadable property value.
+     *
+     * @dataProvider    invalidFileProvider
+     * @group           upload
      */
-    public function testUploadSkipsMappingOnNullFile()
+    public function testUploadSkipsMappingOnInvalid($file)
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->will($this->returnValue(null));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('hasNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->upload($this->object);
-    }
-
-    /**
-     * Tests the upload method skips a mapping which has an uploadable
-     * field property value that is not an instance of UploadedFile.
-     */
-    public function testUploadSkipsMappingOnNonUploadedFileInstance()
-    {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
@@ -103,6 +90,22 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName');
 
         $this->storage->upload($this->object);
+    }
+
+    public function invalidFileProvider()
+    {
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return array(
+            // skipped because null
+            array( null ),
+            // skipped because not even a file
+            array( new \DateTime() ),
+            // skipped because not instance of UploadedFile
+            array( $file ),
+        );
     }
 
     /**
@@ -145,6 +148,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->storage->remove($this->object);
     }
+
     /**
      * Test the remove method skips trying to remove a file that no longer exists
      */
@@ -158,18 +162,35 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue('/tmp'));
+            ->will($this->returnValue($this->getValidUploadDir()));
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->will($this->returnValue('foo.txt'));
 
-        try {
-            $this->storage->remove($this->object);
-        } catch (\Exception $e) {
-            $this->fail('We tried to remove nonexistent file');
-        }
+        $this->storage->remove($this->object);
+    }
+
+    public function testRemove()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnRemove')
+            ->will($this->returnValue(true));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue($this->getValidUploadDir()));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('test.txt'));
+
+        $this->storage->remove($this->object);
+        $this->assertFalse($this->root->hasChild('uploads' . DIRECTORY_SEPARATOR . 'test.txt'));
     }
 
     /**
@@ -396,5 +417,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getValidUploadDir()
+    {
+        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Gaufrette\Exception\FileNotFound;
+use org\bovigo\vfs\vfsStream;
+
+use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -39,6 +41,11 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     protected $filesystemMap;
 
     /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    protected $root;
+
+    /**
      * Sets up the test.
      */
     public function setUp()
@@ -54,44 +61,25 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('fromObject')
             ->with($this->object)
             ->will($this->returnValue(array($this->mapping)));
+
+        // and initialize the virtual filesystem
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
+            'uploads' => array(
+                'test.txt' => 'some content'
+            ),
+        ));
     }
 
+
     /**
-     * Tests the upload method skips a mapping which has a null
+     * Tests the upload method skips a mapping which has a non
      * uploadable property value.
+     *
+     * @dataProvider    invalidFileProvider
+     * @group           upload
      */
-    public function testUploadSkipsMappingOnNullFile()
+    public function testUploadSkipsMappingOnInvalid($file)
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->will($this->returnValue(null));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('hasNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->upload($this->object);
-    }
-
-    /**
-     * Tests the upload method skips a mapping which has an uploadable
-     * field property value that is not an instance of UploadedFile.
-     */
-    public function testUploadSkipsMappingOnNonUploadedFileInstance()
-    {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
@@ -110,6 +98,22 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName');
 
         $this->storage->upload($this->object);
+    }
+
+    public function invalidFileProvider()
+    {
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return array(
+            // skipped because null
+            array( null ),
+            // skipped because not even a file
+            array( new \DateTime() ),
+            // skipped because not instance of UploadedFile
+            array( $file ),
+        );
     }
 
     /**
@@ -155,8 +159,10 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the resolve path method.
+     *
+     * @dataProvider protocolProvider
      */
-    public function testResolvePath()
+    public function testResolvePath($protocol)
     {
         $this->mapping
             ->expects($this->once())
@@ -174,36 +180,18 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->with($this->object, 'file')
             ->will($this->returnValue($this->mapping));
 
+        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, $protocol);
         $path = $this->storage->resolvePath($this->object, 'file');
 
-        $this->assertEquals('gaufrette://filesystemKey/file.txt', $path);
+        $this->assertEquals($protocol.'://filesystemKey/file.txt', $path);
     }
 
-    /**
-     * Test the resolve path method when the protocol parameter has been changed.
-     */
-    public function testResolvePathWithChangedProtocol()
+    public function protocolProvider()
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDir')
-            ->will($this->returnValue('filesystemKey'));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromField')
-            ->with($this->object, 'file')
-            ->will($this->returnValue($this->mapping));
-
-        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'data');
-        $path = $this->storage->resolvePath($this->object, 'file');
-
-        $this->assertEquals('data://filesystemKey/file.txt', $path);
+        return array(
+            array( 'gaufrette' ),
+            array( 'data' ),
+        );
     }
 
     /**
@@ -312,7 +300,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+            ->will($this->returnValue($this->getValidUploadDir() . DIRECTORY_SEPARATOR . 'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -387,7 +375,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue(__DIR__ . '/../Fixtures/file.txt'));
+            ->will($this->returnValue($this->getValidUploadDir() . DIRECTORY_SEPARATOR . 'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -495,5 +483,10 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getValidUploadDir()
+    {
+        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
     }
 }
