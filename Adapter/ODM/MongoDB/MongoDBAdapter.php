@@ -4,14 +4,14 @@ namespace Vich\UploaderBundle\Adapter\ODM\MongoDB;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Doctrine\Common\EventArgs;
-use Doctrine\ODM\MongoDB\Proxy\Proxy;
+use Vich\UploaderBundle\Adapter\Doctrine\DoctrineAdapter;
 
 /**
  * MongoDBAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MongoDBAdapter implements AdapterInterface
+class MongoDBAdapter extends DoctrineAdapter implements AdapterInterface
 {
     /**
      * {@inheritDoc}
@@ -34,15 +34,4 @@ class MongoDBAdapter implements AdapterInterface
         $uow->recomputeSingleDocumentChangeSet($metadata, $obj);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getClassName($object)
-    {
-        if ($object instanceof Proxy) {
-            return get_parent_class($object);
-        }
-
-        return get_class($object);
-    }
 }

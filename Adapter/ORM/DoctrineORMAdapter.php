@@ -5,13 +5,14 @@ namespace Vich\UploaderBundle\Adapter\ORM;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\Persistence\Proxy;
+use Vich\UploaderBundle\Adapter\Doctrine\DoctrineAdapter;
 
 /**
  * DoctrineORMAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class DoctrineORMAdapter implements AdapterInterface
+class DoctrineORMAdapter extends DoctrineAdapter implements AdapterInterface
 {
     /**
      * {@inheritDoc}
@@ -34,15 +35,4 @@ class DoctrineORMAdapter implements AdapterInterface
         $uow->recomputeSingleEntityChangeSet($metadata, $obj);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getClassName($object)
-    {
-        if ($object instanceof Proxy) {
-            return get_parent_class($object);
-        }
-
-        return get_class($object);
-    }
 }
