@@ -97,6 +97,7 @@ class PropertyMapping
      * Modifies the fileName property of the given object.
      *
      * @param object $obj The object.
+     * @param $value
      */
     public function setFileName($obj, $value)
     {
