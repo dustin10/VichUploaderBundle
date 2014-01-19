@@ -30,6 +30,7 @@ class UploadableField
      * Constructs a new instance of UploadableField.
      *
      * @param array $options The options.
+     * @throws \InvalidArgumentException
      */
     public function __construct(array $options)
     {
