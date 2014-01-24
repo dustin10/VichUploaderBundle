@@ -16,6 +16,10 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
+        <service id="vich_uploader.metadata_driver.xml" class="Vich\UploaderBundle\Metadata\Driver\Xml" public="false">
+            <argument type="service" id="vich_uploader.metadata.file_locator" />
+        </service>
+
         <service id="vich_uploader.metadata_driver.yaml" class="Vich\UploaderBundle\Metadata\Driver\Yaml" public="false">
             <argument type="service" id="vich_uploader.metadata.file_locator" />
         </service>
@@ -24,7 +28,7 @@
             <argument type="collection">
                 <argument type="service" id="vich_uploader.metadata_driver.annotation" />
                 <argument type="service" id="vich_uploader.metadata_driver.yaml" />
-                <!-- <argument type="service" id="vich_uploader.metadata_driver.xml" /> -->
+                <argument type="service" id="vich_uploader.metadata_driver.xml" />
             </argument>
         </service>
 
