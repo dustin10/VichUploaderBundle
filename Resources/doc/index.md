@@ -322,6 +322,20 @@ Acme\DemoBundle\Entity\Product:
 **N.B**: in order to be able to use this format, make sure that the `symfony/yaml`
 package is installed.
 
+### XML configuration
+
+The last available configuration format is XML. Here is an exemple of how to use it:
+
+```yaml
+# src/Acme/DemoBundle/Resources/vich_uploader/Product.xml
+<vich_uploader class="Acme\DemoBundle\Entity\Product">
+  <field mapping="product_image" name="image" filename_property="image_name" />
+</vich_uploader>
+```
+
+**N.B**: in order to be able to use this format, make sure that the `simplexml`
+extension is enabled (it is by default).
+
 ## Namers
 
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
