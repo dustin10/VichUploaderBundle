@@ -18,9 +18,9 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected $adapter;
 
     /**
-     * @var \Vich\UploaderBundle\Mapping\MappingReader $mapping
+     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
@@ -43,11 +43,11 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->adapter = $this->getAdapterMock();
-        $this->mapping = $this->getMappingMock();
+        $this->metadata = $this->getMetadataReaderMock();
         $this->storage = $this->getStorageMock();
         $this->injector = $this->getInjectorMock();
 
-        $this->listener = new UploaderListener($this->adapter, $this->mapping, $this->storage, $this->injector);
+        $this->listener = new UploaderListener($this->adapter, $this->metadata, $this->storage, $this->injector);
     }
 
     /**
@@ -84,7 +84,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -124,7 +124,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -167,7 +167,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('recomputeChangeSet')
             ->with($args);
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -207,7 +207,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -249,7 +249,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -284,7 +284,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -318,7 +318,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -353,7 +353,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassName')
             ->will($this->returnValue('Vich\UploaderBundle\Tests\DummyEntity'));
 
-        $this->mapping
+        $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
@@ -379,15 +379,15 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock mapping reader.
+     * Creates a mock metadata reader.
      *
-     * @return \Vich\UploaderBundle\Mapping\MappingReader The mock mapping reader.
+     * @return \Vich\UploaderBundle\Metadata\MetadataReader The mock metadata reader.
      */
-    protected function getMappingMock()
+    protected function getMetadataReaderMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\MappingReader')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
+               ->disableOriginalConstructor()
+               ->getMock();
     }
 
     /**

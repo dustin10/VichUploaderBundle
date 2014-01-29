@@ -6,9 +6,9 @@ use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\Mapping\MappingReader;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 /**
  * PropertyMappingFactory.
@@ -23,9 +23,9 @@ class PropertyMappingFactory
     protected $container;
 
     /**
-     * @var MappingReader $mapping
+     * @var MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var AdapterInterface $adapter
@@ -41,14 +41,14 @@ class PropertyMappingFactory
      * Constructs a new instance of PropertyMappingFactory.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Mapping\MappingReader                $mapping   The mapping mapping.
+     * @param \Vich\UploaderBundle\Metadata\MetadataReader                $metadata   The mapping mapping.
      * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
      * @param array                                                     $mappings  The configured mappings.
      */
-    public function __construct(ContainerInterface $container, MappingReader $mapping, AdapterInterface $adapter, array $mappings)
+    public function __construct(ContainerInterface $container, MetadataReader $metadata, AdapterInterface $adapter, array $mappings)
     {
         $this->container = $container;
-        $this->mapping = $mapping;
+        $this->metadata = $metadata;
         $this->adapter = $adapter;
         $this->mappings = $mappings;
     }
@@ -73,7 +73,7 @@ class PropertyMappingFactory
         $this->checkUploadable($class);
 
         $mappings = array();
-        foreach ($this->mapping->getUploadableFields($class) as $field => $mappingData) {
+        foreach ($this->metadata->getUploadableFields($class) as $field => $mappingData) {
             $mappings[] = $this->createMapping($obj, $field, $mappingData);
         }
 
@@ -99,7 +99,7 @@ class PropertyMappingFactory
         $class = $this->getClassName($obj, $className);
         $this->checkUploadable($class);
 
-        $mappingData = $this->mapping->getUploadableField($class, $field);
+        $mappingData = $this->metadata->getUploadableField($class, $field);
         if ($mappingData === null) {
             return null;
         }
@@ -116,7 +116,7 @@ class PropertyMappingFactory
      */
     protected function checkUploadable($class)
     {
-        if (!$this->mapping->isUploadable($class)) {
+        if (!$this->metadata->isUploadable($class)) {
             throw new \InvalidArgumentException('The object is not uploadable.');
         }
     }

@@ -3,14 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Vich\UploaderBundle\Metadata\Driver\Yaml;
+use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 /**
- * YamlTest
+ * YamlDriverTest
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class YamlTest extends \PHPUnit_Framework_TestCase
+class YamlDriverTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException RuntimeException
@@ -20,7 +20,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
         $rClass = new \ReflectionClass('\DateTime');
         $driver = $this->getDriver($rClass);
 
-        $driver->mapping_content = array();
+        $driver->mappingContent = array();
 
         $driver->loadMetadataForClass($rClass);
     }
@@ -33,7 +33,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
         $rClass = new \ReflectionClass('\DateTime');
 
         $driver = $this->getDriver($rClass);
-        $driver->mapping_content = array(
+        $driver->mappingContent = array(
             $rClass->name => $mapping
         );
 
@@ -47,7 +47,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
     protected function getDriver(\ReflectionClass $class, $found = true)
     {
         $fileLocator = $this->getMock('\Metadata\Driver\FileLocatorInterface');
-        $driver = new TestableYaml($fileLocator);
+        $driver = new TestableYamlDriver($fileLocator);
 
         $fileLocator
             ->expects($this->once())
@@ -109,12 +109,12 @@ class YamlTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class TestableYaml extends Yaml
+class TestableYamlDriver extends YamlDriver
 {
-    public $mapping_content;
+    public $mappingContent;
 
     protected function loadMappingFile($file)
     {
-        return $this->mapping_content;
+        return $this->mappingContent;
     }
 }

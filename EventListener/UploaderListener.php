@@ -4,10 +4,11 @@ namespace Vich\UploaderBundle\EventListener;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
-use Vich\UploaderBundle\Storage\StorageInterface;
+
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
-use Vich\UploaderBundle\Mapping\MappingReader;
+use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * UploaderListener.
@@ -22,9 +23,9 @@ class UploaderListener implements EventSubscriber
     protected $adapter;
 
     /**
-     * @var \Vich\UploaderBundle\Mapping\MappingReader $mapping
+     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
      */
-    protected $mapping;
+    protected $metadata;
 
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
@@ -40,14 +41,14 @@ class UploaderListener implements EventSubscriber
      * Constructs a new instance of UploaderListener.
      *
      * @param \Vich\UploaderBundle\Adapter\AdapterInterface       $adapter  The adapter.
-     * @param \Vich\UploaderBundle\Mapping\MappingReader          $mapping  The mapping reader.
+     * @param \Vich\UploaderBundle\Metadata\MetadataReader        $metadata The metadata reader.
      * @param \Vich\UploaderBundle\Storage\StorageInterface       $storage  The storage.
      * @param \Vich\UploaderBundle\Injector\FileInjectorInterface $injector The injector.
      */
-    public function __construct(AdapterInterface $adapter, MappingReader $mapping, StorageInterface $storage, FileInjectorInterface $injector)
+    public function __construct(AdapterInterface $adapter, MetadataReader $metadata, StorageInterface $storage, FileInjectorInterface $injector)
     {
         $this->adapter = $adapter;
-        $this->mapping = $mapping;
+        $this->metadata = $metadata;
         $this->storage = $storage;
         $this->injector = $injector;
     }
@@ -76,7 +77,7 @@ class UploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
             $this->storage->upload($object);
             $this->injector->injectFiles($object);
         }
@@ -91,7 +92,7 @@ class UploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
             $this->storage->upload($object);
             $this->injector->injectFiles($object);
             $this->adapter->recomputeChangeSet($args);
@@ -108,7 +109,7 @@ class UploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
             $this->injector->injectFiles($object);
         }
     }
@@ -122,7 +123,7 @@ class UploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($args);
 
-        if ($this->mapping->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
             $this->storage->remove($object);
         }
     }
