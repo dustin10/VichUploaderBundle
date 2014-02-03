@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
 
     protected function addGeneralSection(ArrayNodeDefinition $node)
     {
-        $supportedDbDrivers = array('orm', 'mongodb');
+        $supportedDbDrivers = array('orm', 'mongodb', 'propel');
 
         $node
             ->children()

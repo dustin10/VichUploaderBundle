@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 
+use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyEntityProxyORM;
-use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 
 /**
  * DoctrineORMAdapterTest.

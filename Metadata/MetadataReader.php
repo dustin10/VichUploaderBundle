@@ -43,6 +43,16 @@ class MetadataReader
     }
 
     /**
+     * Search for all uploadable classes.
+     *
+     * @return array A list of uploadable class names.
+     */
+    public function getUploadableClasses()
+    {
+        return $this->reader->getAllClassNames();
+    }
+
+    /**
      * Attempts to read the uploadable fields.
      *
      * @param string $class The class name to test (FQCN).

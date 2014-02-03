@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-use Metadata\Driver\AbstractFileDriver;
-
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
@@ -13,7 +11,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
+    protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
     {
         $previous = libxml_use_internal_errors(true);
         $elem = simplexml_load_file($file);
@@ -23,7 +21,8 @@ class XmlDriver extends AbstractFileDriver
             throw new \RuntimeException(libxml_get_last_error());
         }
 
-        $metadata = new ClassMetadata($class->name);
+        $className = $this->guessClassName($file, $elem, $class);
+        $metadata = new ClassMetadata($className);
 
         foreach ($elem->children() as $field) {
             $fieldMetadata = array(
@@ -44,5 +43,18 @@ class XmlDriver extends AbstractFileDriver
     protected function getExtension()
     {
         return 'xml';
+    }
+
+    protected function guessClassName($file, \SimpleXMLElement $elem, \ReflectionClass $class = null)
+    {
+        if ($class === null) {
+            return (string) $elem->attributes()->class;
+        }
+
+        if ($class->name !== (string) $elem->attributes()->class) {
+            throw new \RuntimeException(sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
+        }
+
+        return $class->name;
     }
 }
