@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Vich\UploaderBundle\Adapter\Doctrine;
 
 use Doctrine\Common\Persistence\Proxy;
@@ -18,5 +17,4 @@ abstract class DoctrineAdapter
 
         return get_class($object);
     }
-
 }

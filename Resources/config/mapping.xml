@@ -24,7 +24,7 @@
             <argument type="service" id="vich_uploader.metadata.file_locator" />
         </service>
 
-        <service id="vich_uploader.metadata_driver.chain" class="Metadata\Driver\DriverChain" public="false">
+        <service id="vich_uploader.metadata_driver.chain" class="Vich\UploaderBundle\Metadata\Driver\ChainDriver" public="false">
             <argument type="collection">
                 <argument type="service" id="vich_uploader.metadata_driver.annotation" />
                 <argument type="service" id="vich_uploader.metadata_driver.yaml" />
