@@ -119,6 +119,16 @@ class PropertyMapping
     }
 
     /**
+     * Gets the configured filename property name.
+     *
+     * @return string The name.
+     */
+    public function getFileNamePropertyName()
+    {
+        return $this->fileNamePropertyPath;
+    }
+
+    /**
      * Gets the configured namer.
      *
      * @return null|\Vich\UploaderBundle\Naming\NamerInterface The namer.
