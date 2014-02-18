@@ -211,19 +211,6 @@ Acme\DemoBundle\Entity\Product:
     image:
         mapping:           product_image
         filename_property: image_name
-
-    fields:
-        id:
-            type:       integer
-            id:         true
-            generator:  {strategy: AUTO}
-
-
-        # other fields
-
-        image_name:
-            type:       string
-            length:     255
 ```
 
 **N.B**: in order to be able to use this format, make sure that the `symfony/yaml`
