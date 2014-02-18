@@ -206,7 +206,7 @@ supports this format and comes with the following syntax to declare your
 uploadable fields:
 
 ```yaml
-# src/Acme/DemoBundle/Resources/vich_uploader/Product.yml
+# src/Acme/DemoBundle/Resources/config/vich_uploader/Product.yml
 Acme\DemoBundle\Entity\Product:
     image:
         mapping:           product_image
@@ -221,7 +221,7 @@ package is installed.
 The last available configuration format is XML. Here is an exemple of how to use it:
 
 ```xml
-# src/Acme/DemoBundle/Resources/vich_uploader/Product.xml
+# src/Acme/DemoBundle/Resources/config/vich_uploader/Product.xml
 <vich_uploader class="Acme\DemoBundle\Entity\Product">
   <field mapping="product_image" name="image" filename_property="image_name" />
 </vich_uploader>
