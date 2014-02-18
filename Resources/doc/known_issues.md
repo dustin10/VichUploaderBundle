@@ -34,3 +34,10 @@ class Product
 }
 ```
 See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
+
+
+## Annotations don't work with Propel
+
+When Propel is the chosen database driver, the "uploadable" entities must be
+known when the service container is built. As there is no way to retrieve all
+annotated entities, the only workaround is to define mappings using Yaml or XML.
