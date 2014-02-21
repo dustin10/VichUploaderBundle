@@ -28,6 +28,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('/tmp', $prop->getUploadDir());
         $this->assertEquals('file', $prop->getFilePropertyName());
+        $this->assertEquals('fileName', $prop->getFileNamePropertyName());
         $this->assertTrue($prop->getDeleteOnRemove());
         $this->assertTrue($prop->getDeleteOnUpdate());
         $this->assertFalse($prop->getInjectOnLoad());
