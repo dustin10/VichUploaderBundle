@@ -338,7 +338,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $namer
             ->expects($this->once())
             ->method('name')
-            ->with($this->object, 'file')
+            ->with($this->object, $this->mapping)
             ->will($this->returnValue($filename));
 
         $this->mapping
@@ -365,7 +365,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->with($this->object, 'file')
+            ->with($this->object)
             ->will($this->returnValue($dir));
 
         $file

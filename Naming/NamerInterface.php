@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Naming;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * NamerInterface.
  *
@@ -12,9 +14,10 @@ interface NamerInterface
     /**
      * Creates a name for the file being uploaded.
      *
-     * @param  object $obj   The object the upload is attached to.
-     * @param  string $field The name of the uploadable field to generate a name for.
+     * @param object          $object  The object the upload is attached to.
+     * @param Propertymapping $mapping The mapping to use to manipulate the given object.
+     *
      * @return string The file name.
      */
-    public function name($obj, $field);
+    public function name($object, PropertyMapping $mapping);
 }
