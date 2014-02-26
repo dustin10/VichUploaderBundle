@@ -34,7 +34,7 @@ class FileLocator implements AdvancedFileLocatorInterface
                 continue;
             }
 
-            $files = $finder->files()->in($dir)->name(sprintf('*%s*.%s', $class->getShortName(), $extension));
+            $files = $finder->files()->in($dir)->name(sprintf('%s.%s', $class->getShortName(), $extension));
 
             if (count($files) !== 1) {
                 continue;
@@ -42,7 +42,7 @@ class FileLocator implements AdvancedFileLocatorInterface
 
             $file = current(iterator_to_array($files));
 
-            return $file->getRealpath();
+            return $file->getPathname();
         }
 
         return null;
