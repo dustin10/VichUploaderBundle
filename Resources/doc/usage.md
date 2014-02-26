@@ -296,6 +296,28 @@ was uploaded.
 
 ## Directory Namer
 
+### Provided directory namer
+
+At the moment there are only one directory namer available:
+
+- vich_uploader.directory_namer_current_date
+
+**vich_uploader.directory_namer_current_date** will create a directory path from current date with format `yyyy/mm/dd`
+
+To use it, you just have to specify the service id for the `directory_namer` configuration option of your mapping :
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image_fs
+            namer:              vich_uploader.namer_uniqid
+            directory_namer:    vich_uploader.directory_namer_current_date
+```
+
+### Create a custom directory namer
+
 To create a custom directory namer, simply implement the
 `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
 and in the `directoryName` method of your class return the absolute directory.

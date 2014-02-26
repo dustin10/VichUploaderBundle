@@ -7,6 +7,7 @@
     <services>
         <service id="vich_uploader.namer_uniqid" class="Vich\UploaderBundle\Naming\UniqidNamer" />
         <service id="vich_uploader.namer_origname" class="Vich\UploaderBundle\Naming\OrignameNamer" />
+        <service id="vich_uploader.directory_namer_current_date" class="Vich\UploaderBundle\Naming\CurrentDateDirectoryNamer" />
     </services>
 
 </container>
