@@ -77,6 +77,10 @@ class VichUploaderExtension extends Extension
             $loader->load('gaufrette.xml');
         }
 
+        if ($config['flysystem']) {
+            $loader->load('flysystem.xml');
+        }
+
         if ($config['twig']) {
             $loader->load('twig.xml');
         }

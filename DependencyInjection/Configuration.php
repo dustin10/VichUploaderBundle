@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
                 ->scalarNode('twig')->defaultTrue()->end()
                 ->scalarNode('gaufrette')->defaultFalse()->end()
+                ->scalarNode('flysystem')->defaultFalse()->end()
             ->end()
         ;
     }

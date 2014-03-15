@@ -11,6 +11,7 @@ vich_uploader:
     db_driver:  orm # or mongodb or propel
     twig:       true
     gaufrette:  false # set to true to enable gaufrette support
+    flysystem:  false # set to true to enable flysystem support
     storage:    vich_uploader.storage.file_system
     mappings:
         product_image:
@@ -24,6 +25,6 @@ vich_uploader:
 ```
 
 - `storage`: The id of the storage service used by the bundle to
-store files. The bundle ships with vich_uploader.storage.file_system
-and vich_uploader.storage.gaufrette see
-[FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage)
+store files. The bundle ships with vich_uploader.storage.file_system,
+vich_uploader.storage.gaufrette (see [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage))
+and vich_uploader.storage.flysystem.

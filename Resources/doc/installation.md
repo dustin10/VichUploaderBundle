@@ -77,7 +77,8 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(), // or new Oneup\FlysystemBundle\OneupFlysystemBundle(),
+
         new Vich\UploaderBundle\VichUploaderBundle(),
         // ...
     );
@@ -86,8 +87,9 @@ public function registerBundles()
 
 **Note:**
 
-> You need to require and activate KnpGaufretteBundle only if you want to
-> abstract your file storage with Gaufrette.
+> Both KnpGaufretteBundle and OneupFlysystemBundle are supported but none of
+> them is required. Require and activate one of them only if you want to
+> abstract your file storage with Gaufrette or Flysystem.
 
 
 ## Doctrine
@@ -116,7 +118,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(), // or new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         new Vich\UploaderBundle\VichUploaderBundle(),
         new Bazinga\Bundle\PropelEventDispatcherBundle\BazingaPropelEventDispatcherBundle(),
         // ..

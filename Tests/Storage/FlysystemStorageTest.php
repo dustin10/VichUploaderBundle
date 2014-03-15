@@ -2,10 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use org\bovigo\vfs\vfsStream;
+
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -15,82 +13,181 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Filesystem
+     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
      */
-    private $fs;
+    protected $factory;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Vich\UploaderBundle\Mapping\PropertyMapping
      */
-    private $factory;
+    protected $mapping;
+
+    /**
+     * @var \Oneup\FlysystemBundle\Filesystem\FilesystemMap $filesystemMap
+     */
+    protected $filesystemMap;
 
     /**
      * @var FlysystemStorage
      */
-    private $storage;
+    protected $storage;
+
+    /**
+     * @var \Vich\UploaderBundle\Tests\DummyEntity
+     */
+    protected $object;
+
+    /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    protected $root;
 
     protected function setUp()
     {
-        $this->root = sys_get_temp_dir().'/test';
+        $this->mapping = $this->getMappingMock();
+        $this->object = new DummyEntity();
+        $this->factory = $this->getFactoryMock();
+        $this->filesystemMap = $this->getFilesystemMapMock();
 
-        $this->fs = new Filesystem(new Local($this->root));
+        $this->factory
+            ->expects($this->any())
+            ->method('fromObject')
+            ->with($this->object)
+            ->will($this->returnValue(array($this->mapping)));
 
-        $this->factory = $this->getMockBuilder('Vich\\UploaderBundle\\Mapping\\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->storage = new FlysystemStorage($this->factory, $this->filesystemMap);
 
-        $this->storage = new FlysystemStorage($this->fs, $this->factory);
-    }
-
-    protected function tearDown()
-    {
-        $it = new \FilesystemIterator($this->root);
-        foreach ($it as $path) {
-            @unlink($path->getRealPath());
-        }
+        // and initialize the virtual filesystem
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
+            'uploads' => array(
+                'test.txt' => 'some content'
+            ),
+        ));
     }
 
     public function testUpload()
     {
-        $mapping = new PropertyMapping('file', 'fileName');
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $filesystem = $this->getFilesystemMock();
 
-        $this->factory->expects($this->once())
-            ->method('fromObject')
-            ->will($this->returnValue(array($mapping)));
+        $file
+            ->expects($this->once())
+            ->method('getRealPath')
+            ->will($this->returnValue($this->root->url() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'test.txt'));
+        $file
+            ->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('originalName.txt'));
 
-        $filename = tempnam(sys_get_temp_dir(), 'uploader');
-        file_put_contents($filename, 'Hello World!');
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->will($this->returnValue($file));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('filesystemKey'));
 
-        $obj = new DummyEntity();
-        $obj->setFileName('test.txt');
-        $obj->setFile(new UploadedFile($filename, 'test.txt', null, null, null, true));
+        $this->filesystemMap
+            ->expects($this->once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->will($this->returnValue($filesystem));
 
-        $this->storage->upload($obj);
+        $filesystem
+            ->expects($this->once())
+            ->method('writeStream')
+            ->with(
+                'filesystemKey/originalName.txt',
+                $this->isType('resource'),
+                $this->isType('array')
+            );
 
-        $this->assertTrue(is_file($this->root.'/test.txt'));
+        $this->storage->upload($this->object);
     }
 
     public function testRemove()
     {
-        $mapping = new PropertyMapping('file', 'fileName');
-        $mapping->setMapping(array(
-            'upload_destination' => '',
-            'delete_on_remove'   => true
-        ));
+        $filesystem = $this->getFilesystemMock();
+        $filesystem
+            ->expects($this->once())
+            ->method('delete')
+            ->with('dir/test.txt');
 
-        $this->factory->expects($this->once())
-            ->method('fromObject')
-            ->will($this->returnValue(array($mapping)));
+        $this->filesystemMap
+            ->expects($this->once())
+            ->method('get')
+            ->with('dir')
+            ->will($this->returnValue($filesystem));
 
-        $filename = $this->root.'/test.txt';
-        file_put_contents($filename, 'Hello World!');
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnRemove')
+            ->will($this->returnValue(true));
 
-        $obj = new DummyEntity();
-        $obj->setFileName('test.txt');
-        $obj->setFile(new UploadedFile($filename, 'test.txt', null, null, null, true));
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('dir'));
 
-        $this->storage->remove($obj);
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('test.txt'));
 
-        $this->assertFalse(is_file($filename));
+        $this->storage->remove($this->object);
     }
-} 
+
+    /**
+     * Creates a mock factory.
+     *
+     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
+     */
+    protected function getFactoryMock()
+    {
+        return $this
+            ->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Creates a filesystem map mock.
+     *
+     * @return \Oneup\FlysystemBundle\Filesystem\FilesystemMap The filesystem map.
+     */
+    protected function getFilesystemMapMock()
+    {
+        return $this
+            ->getMockBuilder('Oneup\FlysystemBundle\Filesystem\FilesystemMap')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Creates a filesystem mock.
+     *
+     * @return \League\Flysystem\FilesystemInterface The filesystem object.
+     */
+    protected function getFilesystemMock()
+    {
+        return $this
+            ->getMockBuilder('League\Flysystem\FilesystemInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Creates a mapping mock.
+     *
+     * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property mapping.
+     */
+    protected function getMappingMock()
+    {
+        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+}

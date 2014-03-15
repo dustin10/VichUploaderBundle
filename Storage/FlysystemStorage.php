@@ -2,8 +2,9 @@
 
 namespace Vich\UploaderBundle\Storage;
 
-use League\Flysystem\Filesystem;
+use Oneup\FlysystemBundle\Filesystem\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
@@ -11,13 +12,22 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  */
 class FlysystemStorage extends AbstractStorage
 {
-    private $fs;
+    /**
+     * @var FilesystemMap
+     */
+    protected $filesystemMap;
 
-    public function __construct(Filesystem $fs, PropertyMappingFactory $factory)
+    /**
+     * Constructs a new instance of FlysystemStorage.
+     *
+     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory       The factory.
+     * @param \Oneup\FlysystemBundle\Filesystem\FilesystemMap     $filesystemMap Gaufrete filesystem factory.
+     */
+    public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap)
     {
         parent::__construct($factory);
 
-        $this->fs = $fs;
+        $this->filesystemMap = $filesystemMap;
     }
 
     /**
@@ -25,8 +35,10 @@ class FlysystemStorage extends AbstractStorage
      */
     protected function doUpload(UploadedFile $file, $dir, $name)
     {
+        $fs = $this->getFilesystem($dir);
+
         $stream = fopen($file->getRealPath(), 'r+');
-        $this->fs->writeStream($dir.'/'.$name, $stream, array(
+        $fs->writeStream($dir.'/'.$name, $stream, array(
             'content-type' => $file->getMimeType()
         ));
     }
@@ -36,7 +48,9 @@ class FlysystemStorage extends AbstractStorage
      */
     protected function doRemove($dir, $name)
     {
-        $this->fs->delete($dir.'/'.$name);
+        $fs = $this->getFilesystem($dir);
+
+        $fs->delete($dir.'/'.$name);
     }
 
     /**
@@ -46,4 +60,16 @@ class FlysystemStorage extends AbstractStorage
     {
         return $dir.'/'.$name;
     }
-} 
+
+    /**
+     * Get filesystem adapter by key
+     *
+     * @param string $key
+     *
+     * @return \League\Flysystem\FilesystemInterface
+     */
+    protected function getFilesystem($key)
+    {
+        return $this->filesystemMap->get($key);
+    }
+}
