@@ -131,4 +131,10 @@ public function registerBundles()
 
 **Note:**
 
+> Each uploadable entity must have the `event_dispatcher` behavior.
+> To do this, add the following line in the concerned `schema.xml` files:
+> ```<behavior name="event_dispatcher" />```
+
+**Note:**
+
 > Propel2 is **NOT** supported.
