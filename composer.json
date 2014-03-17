@@ -25,7 +25,8 @@
         "phpunit/phpunit": "~3.7",
         "mikey179/vfsStream": "~1.0",
         "symfony/yaml": "@stable",
-        "matthiasnoback/symfony-dependency-injection-test": "0.*"
+        "matthiasnoback/symfony-dependency-injection-test": "0.*",
+        "oneup/flysystem-bundle": "dev-master"
     },
     "suggest": {
         "doctrine/orm": "*",
