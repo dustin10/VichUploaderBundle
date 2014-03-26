@@ -100,7 +100,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('writeStream')
             ->with(
-                'filesystemKey/originalName.txt',
+                'originalName.txt',
                 $this->isType('resource'),
                 $this->isType('array')
             );
@@ -114,7 +114,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('delete')
-            ->with('dir/test.txt');
+            ->with('test.txt');
 
         $this->filesystemMap
             ->expects($this->once())
@@ -136,6 +136,39 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->will($this->returnValue('test.txt'));
+
+        $this->storage->remove($this->object);
+    }
+
+    public function testRemoveOnNonExistentFile()
+    {
+        $filesystem = $this->getFilesystemMock();
+        $filesystem
+            ->expects($this->once())
+            ->method('delete')
+            ->with('not_found.txt')
+            ->will($this->throwException(new \League\Flysystem\FileNotFoundException('dummy path')));
+
+        $this->filesystemMap
+            ->expects($this->once())
+            ->method('get')
+            ->with('dir')
+            ->will($this->returnValue($filesystem));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getDeleteOnRemove')
+            ->will($this->returnValue(true));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('dir'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('not_found.txt'));
 
         $this->storage->remove($this->object);
     }

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use League\Flysystem\FileNotFoundException;
 use Oneup\FlysystemBundle\Filesystem\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -38,7 +39,7 @@ class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($dir);
 
         $stream = fopen($file->getRealPath(), 'r+');
-        $fs->writeStream($dir.'/'.$name, $stream, array(
+        $fs->writeStream($name, $stream, array(
             'content-type' => $file->getMimeType()
         ));
     }
@@ -50,7 +51,11 @@ class FlysystemStorage extends AbstractStorage
     {
         $fs = $this->getFilesystem($dir);
 
-        $fs->delete($dir.'/'.$name);
+        try {
+            return $fs->delete($name);
+        } catch (FileNotFoundException $e) {
+            return false;
+        }
     }
 
     /**
@@ -58,7 +63,7 @@ class FlysystemStorage extends AbstractStorage
      */
     protected function doResolvePath($dir, $name)
     {
-        return $dir.'/'.$name;
+        return $name;
     }
 
     /**
