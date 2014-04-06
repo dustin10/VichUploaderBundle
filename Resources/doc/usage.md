@@ -251,7 +251,7 @@ class Product
      */
     public function setImage(File $image)
     {
-        $this->image = $image
+        $this->image = $image;
     }
     
     /**
