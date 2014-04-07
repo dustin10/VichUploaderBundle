@@ -53,18 +53,18 @@ abstract class AbstractStorage implements StorageInterface
             }
 
             if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-                $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
+                $dir = $mapping->getUploadDir($obj);
 
                 $this->doRemove($dir, $name);
             }
 
             if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping->getFilePropertyName());
+                $name = $mapping->getNamer()->name($obj, $mapping);
             } else {
                 $name = $file->getClientOriginalName();
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
+            $dir = $mapping->getUploadDir($obj);
 
             $this->doUpload($file, $dir, $name);
 
@@ -101,7 +101,7 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            $dir = $mapping->getUploadDir($obj, $mapping->getFilePropertyName());
+            $dir = $mapping->getUploadDir($obj);
 
             $this->doRemove($dir, $name);
         }
@@ -123,7 +123,7 @@ abstract class AbstractStorage implements StorageInterface
     public function resolvePath($obj, $field, $className = null)
     {
         list($mapping, $filename) = $this->getFilename($obj, $field, $className);
-        $dir = $mapping->getUploadDir($obj, $field);
+        $dir = $mapping->getUploadDir($obj);
 
         return $this->doResolvePath($dir, $filename);
     }

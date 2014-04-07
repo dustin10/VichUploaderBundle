@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\Naming;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * UniqidNamer
  *
@@ -14,14 +16,9 @@ class UniqidNamer implements NamerInterface
     /**
      * {@inheritDoc}
      */
-    public function name($obj, $field)
+    public function name($object, PropertyMapping $mapping)
     {
-        $refObj = new \ReflectionObject($obj);
-
-        $refProp = $refObj->getProperty($field);
-        $refProp->setAccessible(true);
-
-        $file = $refProp->getValue($obj);
+        $file = $mapping->getFile($object);
         $name = uniqid();
 
         if ($extension = $this->getExtension($file)) {

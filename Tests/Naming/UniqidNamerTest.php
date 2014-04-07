@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use Vich\UploaderBundle\Naming\UniqidNamer;
-use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * UniqidNamerTest.
@@ -31,22 +30,27 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
             ->getMock();
-
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
             ->will($this->returnValue($originalName));
-
         $file
             ->expects($this->any())
             ->method('guessExtension')
             ->will($this->returnValue($guessedExtension));
 
-        $entity = new DummyEntity;
-        $entity->setFile($file);
+        $entity = new \DateTime();
+
+        $mapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mapping->expects($this->once())
+            ->method('getFile')
+            ->with($entity)
+            ->will($this->returnValue($file));
 
         $namer = new UniqidNamer();
 
-        $this->assertRegExp($pattern, $namer->name($entity, 'file'));
+        $this->assertRegExp($pattern, $namer->name($entity, $mapping));
     }
 }

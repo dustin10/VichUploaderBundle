@@ -75,4 +75,24 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($date, $object->getFile());
         $this->assertSame('joe.png', $object->getFileName());
     }
+
+    public function testDirectoryNamerIsCalled()
+    {
+        $prop = new PropertyMapping('file', 'fileName');
+        $prop->setMapping(array(
+            'upload_destination' => '/tmp',
+        ));
+
+        $namer = $this->getMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
+        $namer
+            ->expects($this->once())
+            ->method('directoryName')
+            ->with(null, $prop)
+            ->will($this->returnValue('/other-dir'));
+
+        $prop->setDirectoryNamer($namer);
+
+        $this->assertEquals('/other-dir', $prop->getUploadDir());
+        $this->assertEquals('/tmp', $prop->getUploadDestination());
+    }
 }
