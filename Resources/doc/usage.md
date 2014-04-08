@@ -349,8 +349,9 @@ vich_uploader:
 
 To create a custom file namer, simply implement the `Vich\UploaderBundle\Naming\NamerInterface`
 and in the `name` method of your class return the desired file name. Since your entity
-is passed to the `name` method, as well as the field name, you are free to get any information
-from it to create the name, or inject any other services that you require.
+is passed to the `name` method, as well as the mapping describing it, you are
+free to get any information from it to create the name, or inject any other
+services you require.
 
 **Note**:
 
@@ -380,10 +381,9 @@ was uploaded.
 To create a custom directory namer, simply implement the
 `Vich\UploaderBundle\Naming\DirectoryNamerInterface`
 and in the `directoryName` method of your class return the absolute directory.
-Since your entity, field name
-and default `upload_destination` are all passed to the `directoryName` method
-you are free to get any information
-from it to create the name, or inject any other services that you require.
+Since your entity and the mapping information describing it are both passed to
+the `directoryName` method you are free to get any information from it to
+create the name, or inject any other services you require.
 
 After you have created your directory namer and configured it as a service, you simply specify
 the service id for the `directory_namer` configuration option of your mapping. An example:
@@ -401,8 +401,9 @@ If no directory namer is configured for a mapping, the bundle will simply use th
 
 **Note**:
 
-> If you are using Gaufrette to abstract from the filesystem the name returned
-> will be used as a gaufrette filesystem ID and not as a proper path.
+> If you are using Gaufrette or Flysystem to abstract from the filesystem the
+> name returned will be used as a gaufrette filesystem ID and not as a proper
+> path.
 
 ## Generating URLs
 
