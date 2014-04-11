@@ -8,8 +8,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\HttpKernel\Kernel;
 
-use Vich\UploaderBundle\DependencyInjection\Configuration;
-
 /**
  * VichUploaderExtension.
  *

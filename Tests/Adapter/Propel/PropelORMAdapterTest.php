@@ -1,6 +1,6 @@
 <?php
 
-namespace Vich\UploaderBundle\Tests\Adapter\ORM;
+namespace Vich\UploaderBundle\Tests\Adapter\Propel;
 
 use Vich\UploaderBundle\Adapter\Propel\PropelORMAdapter;
 

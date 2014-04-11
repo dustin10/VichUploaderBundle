@@ -68,6 +68,7 @@ class PropertyMapping
     public function getFile($obj)
     {
         $propertyPath = $this->fixPropertyPath($obj, $this->filePropertyPath);
+
         return $this->getAccessor()->getValue($obj, $propertyPath);
     }
 
@@ -93,6 +94,7 @@ class PropertyMapping
     public function getFileName($obj)
     {
         $propertyPath = $this->fixPropertyPath($obj, $this->fileNamePropertyPath);
+
         return $this->getAccessor()->getValue($obj, $propertyPath);
     }
 
@@ -294,8 +296,8 @@ class PropertyMapping
      * Ie: if the given object is in fact an array, the property path must
      * look like [myPath].
      *
-     * @param object|array  $object         The object to inspect.
-     * @param string        $propertyPath   The property path to fix.
+     * @param object|array $object       The object to inspect.
+     * @param string       $propertyPath The property path to fix.
      *
      * @return string The fixed property path.
      */

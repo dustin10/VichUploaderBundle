@@ -70,7 +70,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
-
     /**
      * Tests the upload method skips a mapping which has a non
      * uploadable property value.

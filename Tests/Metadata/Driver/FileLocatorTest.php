@@ -81,7 +81,7 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     public function testFindAllClasses($extension, array $expectedClasses)
     {
         $classes = $this->locator->findAllClasses($extension);
-        $classNames = array_values(array_map(function($item) {
+        $classNames = array_values(array_map(function ($item) {
             return $item->getFileName();
         }, $classes));
 

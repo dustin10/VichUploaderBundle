@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
 /**
@@ -41,7 +40,7 @@ class PropertyMappingFactory
      * Constructs a new instance of PropertyMappingFactory.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Metadata\MetadataReader                $metadata   The mapping mapping.
+     * @param \Vich\UploaderBundle\Metadata\MetadataReader              $metadata  The mapping mapping.
      * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
      * @param array                                                     $mappings  The configured mappings.
      */

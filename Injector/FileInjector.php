@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Injector;
 
 use Symfony\Component\HttpFoundation\File\File;
 
-use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
