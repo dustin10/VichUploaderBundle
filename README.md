@@ -4,7 +4,7 @@ VichUploaderBundle
 [![Build Status](https://secure.travis-ci.org/dustin10/VichUploaderBundle.png?branch=master)](http://travis-ci.org/dustin10/VichUploaderBundle)	[![Total Downloads](https://poser.pugx.org/vich/uploader-bundle/downloads.png)](https://packagist.org/packages/vich/uploader-bundle) [![Latest Unstable Version](https://poser.pugx.org/vich/uploader-bundle/v/unstable.png)](https://packagist.org/packages/vich/uploader-bundle)
 
 The VichUploaderBundle is a Symfony2 bundle that attempts to ease file
-uploads that are attached to ORM entities or ODM documents.
+uploads that are attached to ORM entities, ODM documents or Propel models.
 
 - Automatically name and save a file to a configured directory
 - Inject the file back into the entity or document when it is loaded from the datastore as an
