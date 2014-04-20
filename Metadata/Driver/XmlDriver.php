@@ -13,13 +13,7 @@ class XmlDriver extends AbstractFileDriver
 {
     protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
     {
-        $previous = libxml_use_internal_errors(true);
-        $elem = simplexml_load_file($file);
-        libxml_use_internal_errors($previous);
-
-        if (false === $elem) {
-            throw new \RuntimeException(libxml_get_last_error());
-        }
+        $elem = $this->loadMappingFile($file);
 
         $className = $this->guessClassName($file, $elem, $class);
         $metadata = new ClassMetadata($className);
@@ -35,6 +29,24 @@ class XmlDriver extends AbstractFileDriver
         }
 
         return $metadata;
+    }
+
+    protected function getClassNameFromFile($file)
+    {
+        return $this->guessClassName($file, $this->loadMappingFile($file));
+    }
+
+    protected function loadMappingFile($file)
+    {
+        $previous = libxml_use_internal_errors(true);
+        $elem = simplexml_load_file($file);
+        libxml_use_internal_errors($previous);
+
+        if (false === $elem) {
+            throw new \RuntimeException(libxml_get_last_error());
+        }
+
+        return $elem;
     }
 
     /**

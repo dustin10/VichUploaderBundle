@@ -43,8 +43,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
 
         $classNames = array();
         foreach ($this->locator->findAllClasses($this->getExtension()) as $file) {
-            $metadata = $this->loadMetadataFromFile($file->getRealpath());
-            $classNames[] = $metadata->name;
+            $classNames[] = $this->getClassNameFromFile($file->getRealpath());
         }
 
         return $classNames;
@@ -59,6 +58,15 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
      * @return \MetaData\ClassMetadata|null
      */
     abstract protected function loadMetadataFromFile($file, \ReflectionClass $class = null);
+
+    /**
+     * Retrieves the name of the class described in the given file.
+     *
+     * @param string           $file
+     *
+     * @return string
+     */
+    abstract protected function getClassNameFromFile($file);
 
     /**
      * Returns the extension of the file.

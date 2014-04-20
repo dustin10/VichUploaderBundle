@@ -40,6 +40,11 @@ class YamlDriver extends AbstractFileDriver
         return $metadata;
     }
 
+    protected function getClassNameFromFile($file)
+    {
+        return $this->guessClassName($file, $this->loadMappingFile($file));
+    }
+
     protected function loadMappingFile($file)
     {
         return YmlParser::parse($file);
