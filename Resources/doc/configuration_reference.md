@@ -20,7 +20,8 @@ vich_uploader:
             namer:              ~     # specify a file namer service id for this entity, null default
             directory_namer:    ~     # specify a directory namer service id for this entity, null default
             delete_on_remove:   true  # determines whether to delete file upon removal of entity
-            inject_on_load:     false  # determines whether to inject a File instance upon load
+            delete_on_update:   true  # determines wheter to delete the file upon update of entity
+            inject_on_load:     false # determines whether to inject a File instance upon load
         # ... more mappings
 ```
 
