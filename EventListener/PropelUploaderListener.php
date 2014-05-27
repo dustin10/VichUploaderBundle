@@ -21,7 +21,7 @@ class PropelUploaderListener implements EventSubscriberInterface
     protected $adapter;
 
     /**
-     * @var UploaderHandler $handler
+     * @var UploadHandler $handler
      */
     protected $handler;
 
@@ -29,7 +29,7 @@ class PropelUploaderListener implements EventSubscriberInterface
      * Constructs a new instance of UploaderListener.
      *
      * @param AdapterInterface $adapter The adapter.
-     * @param UploaderHandler  $handler The upload handler.
+     * @param UploadHandler    $handler The upload handler.
      */
     public function __construct(AdapterInterface $adapter, UploadHandler $handler)
     {
