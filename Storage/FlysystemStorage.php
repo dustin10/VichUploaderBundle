@@ -41,7 +41,7 @@ class FlysystemStorage extends AbstractStorage
 
         $stream = fopen($file->getRealPath(), 'r+');
         $fs->writeStream($dir . $name, $stream, array(
-            'content-type' => $file->getMimeType()
+            'mimetype' => $file->getMimeType()
         ));
     }
 
