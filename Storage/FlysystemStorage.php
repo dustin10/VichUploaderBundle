@@ -6,6 +6,7 @@ use League\Flysystem\FileNotFoundException;
 use Oneup\FlysystemBundle\Filesystem\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
@@ -34,12 +35,13 @@ class FlysystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doUpload(UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
-        $fs = $this->getFilesystem($dir);
+        $fs = $this->getFilesystem($mapping);
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         $stream = fopen($file->getRealPath(), 'r+');
-        $fs->writeStream($name, $stream, array(
+        $fs->writeStream($dir . $name, $stream, array(
             'content-type' => $file->getMimeType()
         ));
     }
@@ -47,12 +49,13 @@ class FlysystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doRemove($dir, $name)
+    protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
-        $fs = $this->getFilesystem($dir);
+        $fs = $this->getFilesystem($mapping);
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         try {
-            return $fs->delete($name);
+            return $fs->delete($dir . $name);
         } catch (FileNotFoundException $e) {
             return false;
         }
@@ -61,9 +64,13 @@ class FlysystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doResolvePath($dir, $name)
+    protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
-        return $name;
+        $fs = $this->getFilesystem($mapping);
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
+        $file = $fs->get($dir . $name);
+
+        return $file->getPath();
     }
 
     /**
@@ -73,8 +80,8 @@ class FlysystemStorage extends AbstractStorage
      *
      * @return \League\Flysystem\FilesystemInterface
      */
-    protected function getFilesystem($key)
+    protected function getFilesystem(PropertyMapping $mapping)
     {
-        return $this->filesystemMap->get($key);
+        return $this->filesystemMap->get($mapping->getUploadDestination());
     }
 }

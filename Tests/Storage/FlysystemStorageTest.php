@@ -87,7 +87,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($file));
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
         $this->filesystemMap
@@ -129,7 +129,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('dir'));
 
         $this->mapping
@@ -162,7 +162,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('dir'));
 
         $this->mapping

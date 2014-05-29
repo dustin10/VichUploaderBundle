@@ -30,13 +30,14 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * Do real upload
      *
+     * @param PropertyMapping $mapping
      * @param UploadedFile $file
      * @param string       $dir
      * @param string       $name
      *
      * @return boolean
      */
-    abstract protected function doUpload(UploadedFile $file, $dir, $name);
+    abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name);
 
     /**
      * {@inheritDoc}
@@ -54,7 +55,7 @@ abstract class AbstractStorage implements StorageInterface
             if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
                 $dir = $mapping->getUploadDir($obj);
 
-                $this->doRemove($dir, $name);
+                $this->doRemove($mapping, $dir, $name);
             }
 
             if ($mapping->hasNamer()) {
@@ -65,7 +66,7 @@ abstract class AbstractStorage implements StorageInterface
 
             $dir = $mapping->getUploadDir($obj);
 
-            $this->doUpload($file, $dir, $name);
+            $this->doUpload($mapping, $file, $dir, $name);
 
             $mapping->setFileName($obj, $name);
         }
@@ -74,12 +75,13 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * Do real remove
      *
+     * @param PropertyMapping $mapping
      * @param string $dir
      * @param string $name
      *
      * @return boolean
      */
-    abstract protected function doRemove($dir, $name);
+    abstract protected function doRemove(PropertyMapping $mapping, $dir, $name);
 
     /**
      * {@inheritDoc}
@@ -102,19 +104,20 @@ abstract class AbstractStorage implements StorageInterface
 
             $dir = $mapping->getUploadDir($obj);
 
-            $this->doRemove($dir, $name);
+            $this->doRemove($mapping, $dir, $name);
         }
     }
 
     /**
      * Do resolve path
      *
+     * @param PropertyMapping $mapping
      * @param string $dir
      * @param string $name
      *
      * @return string
      */
-    abstract protected function doResolvePath($dir, $name);
+    abstract protected function doResolvePath(PropertyMapping $mapping, $dir, $name);
 
     /**
      * {@inheritDoc}
@@ -124,7 +127,7 @@ abstract class AbstractStorage implements StorageInterface
         list($mapping, $filename) = $this->getFilename($obj, $field, $className);
         $dir = $mapping->getUploadDir($obj);
 
-        return $this->doResolvePath($dir, $filename);
+        return $this->doResolvePath($mapping, $dir, $filename);
     }
 
     /**
@@ -133,9 +136,14 @@ abstract class AbstractStorage implements StorageInterface
     public function resolveUri($obj, $field, $className = null)
     {
         list($mapping, $filename) = $this->getFilename($obj, $field, $className);
-        $uriPrefix = $mapping->getUriPrefix();
 
-        return $filename ? ($uriPrefix . '/' . $filename) : '';
+        if (!$filename) {
+            return '';
+        }
+
+        $dir = ($dir = $mapping->getUploadDir($obj)) ? $dir . '/' : '';
+
+        return $mapping->getUriPrefix() . '/' . $dir . $filename;
     }
 
     protected function getFilename($obj, $field, $className = null)

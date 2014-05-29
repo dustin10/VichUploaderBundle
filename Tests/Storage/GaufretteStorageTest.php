@@ -159,14 +159,19 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the resolve path method.
      *
-     * @dataProvider protocolProvider
+     * @dataProvider pathProvider
      */
-    public function testResolvePath($protocol)
+    public function testResolvePath($protocol, $filesystemKey, $uploadDir, $expectedPath)
     {
         $this->mapping
             ->expects($this->once())
+            ->method('getUploadDestination')
+            ->will($this->returnValue($filesystemKey));
+
+        $this->mapping
+            ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue('filesystemKey'));
+            ->will($this->returnValue($uploadDir));
 
         $this->mapping
             ->expects($this->once())
@@ -182,14 +187,16 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, $protocol);
         $path = $this->storage->resolvePath($this->object, 'file');
 
-        $this->assertEquals($protocol.'://filesystemKey/file.txt', $path);
+        $this->assertEquals($expectedPath, $path);
     }
 
-    public function protocolProvider()
+    public function pathProvider()
     {
         return array(
-            array( 'gaufrette' ),
-            array( 'data' ),
+            //      protocol,   fs identifier,  upload dir, full path
+            array( 'gaufrette', 'filesystemKey', null,  'gaufrette://filesystemKey/file.txt' ),
+            array( 'data',      'filesystemKey', null,  'data://filesystemKey/file.txt' ),
+            array( 'gaufrette', 'filesystemKey', 'foo', 'gaufrette://filesystemKey/foo/file.txt' ),
         );
     }
 
@@ -204,7 +211,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $this->mapping
             ->expects($this->once())
@@ -238,7 +245,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->mapping
             ->expects($this->any())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
         $this->mapping
             ->expects($this->once())
@@ -308,7 +315,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
         $imb = $this
@@ -383,7 +390,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
         $filesystem = $this->getFilesystemMock();

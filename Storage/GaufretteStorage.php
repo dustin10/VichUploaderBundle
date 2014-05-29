@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Storage;
 
 use Gaufrette\Exception\FileNotFound;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -46,30 +47,19 @@ class GaufretteStorage extends AbstractStorage
     }
 
     /**
-     * Get filesystem adapter by key
-     *
-     * @param string $key
-     *
-     * @return \Gaufrette\Filesystem
-     */
-    protected function getFilesystem($key)
-    {
-        return $this->filesystemMap->get($key);
-    }
-
-    /**
      * {@inheritDoc}
      */
-    protected function doUpload(UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
-        $filesystem = $this->getFilesystem($dir);
+        $filesystem = $this->getFilesystem($mapping);
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
             $filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
         }
 
         $src = new LocalStream($file->getPathname());
-        $dst = $filesystem->createStream($name);
+        $dst = $filesystem->createStream($dir . $name);
 
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('wb+'));
@@ -86,12 +76,13 @@ class GaufretteStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doRemove($dir, $name)
+    protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
-        $adapter = $this->getFilesystem($dir);
+        $filesystem = $this->getFilesystem($mapping);
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         try {
-            return $adapter->delete($name);
+            return $filesystem->delete($dir . $name);
         } catch (FileNotFound $e) {
             return false;
         }
@@ -100,8 +91,23 @@ class GaufretteStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doResolvePath($dir, $name)
+    protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
-        return $this->protocol.'://' . $dir . '/' . $name;
+        $fsIdentifier = $mapping->getUploadDestination();
+        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
+
+        return $this->protocol.'://' . $fsIdentifier . DIRECTORY_SEPARATOR . $dir . $name;
+    }
+
+    /**
+     * Get filesystem adapter from the property mapping
+     *
+     * @param PropertyMapping $mapping
+     *
+     * @return \Gaufrette\Filesystem
+     */
+    protected function getFilesystem(PropertyMapping $mapping)
+    {
+        return $this->filesystemMap->get($mapping->getUploadDestination());
     }
 }
