@@ -438,3 +438,10 @@ You must specify the annotated property you wish to get the file path for.
 ```html+jinja
 {{ vich_uploader_asset(product, 'image', 'FooBundle\Entity\Product') }}
 ```
+
+## Events
+
+Several events are triggered by the bundle, allowing you to react to upload
+events in your application.
+See the [Events](https://github.com/dustin10/VichUploaderBundle/blob/master/Event/Events.php) class
+for a full list and explanation of the events.
