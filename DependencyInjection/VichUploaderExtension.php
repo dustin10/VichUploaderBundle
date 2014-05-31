@@ -91,7 +91,7 @@ class VichUploaderExtension extends Extension
         // directories
         $directories = array();
         if ($config['metadata']['auto_detection']) {
-            foreach ($bundles as $name => $class) {
+            foreach ($bundles as $class) {
                 $ref = new \ReflectionClass($class);
                 $directory = dirname($ref->getFileName()).'/Resources/config/vich_uploader';
 

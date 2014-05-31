@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
 /**
@@ -123,11 +122,11 @@ class PropertyMappingFactory
     /**
      * Creates the property mapping from the read annotation and configured mapping.
      *
-     * @param object                                          $obj         The object.
-     * @param string                                          $fieldName   The field name.
-     * @param \Vich\UploaderBundle\Annotation\UploadableField $mappingData The mapping data.
+     * @param object $obj         The object.
+     * @param string $fieldName   The field name.
+     * @param array  $mappingData The mapping data.
      *
-     * @return PropertyMapping           The property mapping.
+     * @return PropertyMapping    The property mapping.
      * @throws \InvalidArgumentException
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
@@ -162,6 +161,7 @@ class PropertyMappingFactory
      * @param string $className User specified className.
      *
      * @return string
+     * @throws \RuntimeException
      */
     protected function getClassName($object, $className = null)
     {

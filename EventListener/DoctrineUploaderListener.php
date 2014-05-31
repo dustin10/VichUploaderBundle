@@ -27,7 +27,7 @@ class DoctrineUploaderListener implements EventSubscriber
     protected $metadata;
 
     /**
-     * @var UploaderHandler $handler
+     * @var UploadHandler $handler
      */
     protected $handler;
 
@@ -36,7 +36,7 @@ class DoctrineUploaderListener implements EventSubscriber
      *
      * @param AdapterInterface $adapter  The adapter.
      * @param MetadataReader   $metadata The metadata reader.
-     * @param UploaderHandler  $handler  The upload handler.
+     * @param UploadHandler    $handler  The upload handler.
      */
     public function __construct(AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {

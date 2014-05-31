@@ -14,7 +14,7 @@ use Metadata\MetadataFactoryInterface;
 class MetadataReader
 {
     /**
-     * @var \MetadataFactoryInterface $reader
+     * @var MetadataFactoryInterface $reader
      */
     protected $reader;
 

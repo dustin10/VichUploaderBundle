@@ -171,8 +171,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testPropertyIsNullWhenFileNamePropertyIsNull()
     {
-        $uploadDir = __DIR__ . '/..';
-
         $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
 
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
