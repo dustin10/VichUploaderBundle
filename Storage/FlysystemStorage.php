@@ -38,7 +38,6 @@ class FlysystemStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         $stream = fopen($file->getRealPath(), 'r+');
         $fs->writeStream($dir . $name, $stream, array(
@@ -52,7 +51,6 @@ class FlysystemStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         try {
             return $fs->delete($dir . $name);
@@ -67,7 +65,6 @@ class FlysystemStorage extends AbstractStorage
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
         $file = $fs->get($dir . $name);
 
         return $file->getPath();

@@ -52,7 +52,6 @@ class GaufretteStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
             $filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
@@ -79,7 +78,6 @@ class GaufretteStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         try {
             return $filesystem->delete($dir . $name);
@@ -94,7 +92,6 @@ class GaufretteStorage extends AbstractStorage
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
         $fsIdentifier = $mapping->getUploadDestination();
-        $dir = $dir ? $dir . DIRECTORY_SEPARATOR : '';
 
         return $this->protocol.'://' . $fsIdentifier . DIRECTORY_SEPARATOR . $dir . $name;
     }

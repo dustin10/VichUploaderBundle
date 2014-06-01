@@ -18,10 +18,9 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
-        $uploadDir = $this->getUploadDirectory($dir, $name);
-        $fileName = basename($name);
+        $uploadDir = $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $dir;
 
-        return $file->move($uploadDir, $fileName);
+        return $file->move($uploadDir, basename($name));
     }
 
     /**
@@ -35,7 +34,7 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
-        $file = $dir . DIRECTORY_SEPARATOR . $name;
+        $file = $this->doResolvePath($mapping, $dir, $name);
 
         return file_exists($file) ? unlink($file) : false;
     }
@@ -45,7 +44,7 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
-        return $dir . DIRECTORY_SEPARATOR . $name;
+        return $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $dir . $name;
     }
 
     /**
@@ -54,8 +53,10 @@ class FileSystemStorage extends AbstractStorage
     public function resolveUri($obj, $field, $className = null)
     {
         list($mapping, $name) = $this->getFilename($obj, $field, $className);
+
         $uriPrefix = $mapping->getUriPrefix();
-        $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj)));
+        $uploadDir = $mapping->getUploadDestination() . $mapping->getUploadDir($obj);
+        $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($uploadDir));
 
         return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
     }

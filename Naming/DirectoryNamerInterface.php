@@ -17,8 +17,6 @@ interface DirectoryNamerInterface
      * @param object          $object  The object the upload is attached to.
      * @param Propertymapping $mapping The mapping to use to manipulate the given object.
      *
-     * @note The $object parameter can be null.
-     *
      * @return string The directory name.
      */
     public function directoryName($object, PropertyMapping $mapping);

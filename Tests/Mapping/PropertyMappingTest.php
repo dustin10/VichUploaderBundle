@@ -18,6 +18,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfiguredMappingAccess()
     {
+        $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping(array(
             'upload_destination'    => '/tmp',
@@ -26,7 +27,8 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
             'inject_on_load'        => false,
         ));
 
-        $this->assertEquals('/tmp', $prop->getUploadDir());
+        $this->assertEquals('', $prop->getUploadDir($object));
+        $this->assertEquals('/tmp', $prop->getUploadDestination());
         $this->assertEquals('file', $prop->getFilePropertyName());
         $this->assertEquals('fileName', $prop->getFileNamePropertyName());
         $this->assertTrue($prop->getDeleteOnRemove());
@@ -78,6 +80,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
 
     public function testDirectoryNamerIsCalled()
     {
+        $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping(array(
             'upload_destination' => '/tmp',
@@ -87,12 +90,12 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $namer
             ->expects($this->once())
             ->method('directoryName')
-            ->with(null, $prop)
+            ->with($object, $prop)
             ->will($this->returnValue('/other-dir'));
 
         $prop->setDirectoryNamer($namer);
 
-        $this->assertEquals('/other-dir', $prop->getUploadDir());
+        $this->assertEquals('/other-dir/', $prop->getUploadDir($object));
         $this->assertEquals('/tmp', $prop->getUploadDestination());
     }
 }

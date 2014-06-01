@@ -52,12 +52,14 @@ abstract class AbstractStorage implements StorageInterface
                 continue;
             }
 
-            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-                $dir = $mapping->getUploadDir($obj);
+            // determine the file's directory
+            $dir = $mapping->getUploadDir($obj);
 
+            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
                 $this->doRemove($mapping, $dir, $name);
             }
 
+            // determine the file's name
             if ($mapping->hasNamer()) {
                 $name = $mapping->getNamer()->name($obj, $mapping);
             } else {
@@ -65,7 +67,6 @@ abstract class AbstractStorage implements StorageInterface
             }
 
             $mapping->setFileName($obj, $name);
-            $dir = $mapping->getUploadDir($obj);
 
             $this->doUpload($mapping, $file, $dir, $name);
         }
@@ -140,9 +141,7 @@ abstract class AbstractStorage implements StorageInterface
             return '';
         }
 
-        $dir = ($dir = $mapping->getUploadDir($obj)) ? $dir . '/' : '';
-
-        return $mapping->getUriPrefix() . '/' . $dir . $filename;
+        return $mapping->getUriPrefix() . '/' . $mapping->getUploadDir($obj) . $filename;
     }
 
     protected function getFilename($obj, $field, $className = null)
