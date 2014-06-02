@@ -221,19 +221,26 @@ class PropertyMapping
     }
 
     /**
-     * Gets the configured upload directory.
+     * Gets the upload directory for a given file (uses the directory namers).
      *
-     * @param object|null $obj
+     * @param object $obj
      *
-     * @return string The configured upload directory.
+     * @return string The upload directory.
      */
-    public function getUploadDir($obj = null)
+    public function getUploadDir($obj)
     {
-        if ($this->hasDirectoryNamer()) {
-            return $this->getDirectoryNamer()->directoryName($obj, $this);
+        if (!$this->hasDirectoryNamer()) {
+            return '';
         }
 
-        return $this->getUploadDestination();
+        $dir = $this->getDirectoryNamer()->directoryName($obj, $this);
+
+        // append the trailing directory separator if needed
+        if (!empty($dir)) {
+            $dir .= substr($dir, -1) !== DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
+        }
+
+        return $dir;
     }
 
     /**

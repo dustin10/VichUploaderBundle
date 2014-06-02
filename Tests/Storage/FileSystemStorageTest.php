@@ -181,7 +181,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue($this->getValidUploadDir()));
 
         $this->mapping
@@ -201,6 +201,11 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
+            ->will($this->returnValue(''));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDestination')
             ->will($this->returnValue('/tmp'));
 
         $this->mapping
@@ -313,13 +318,13 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getUploadDir')
+            ->method('getUploadDestination')
             ->will($this->returnValue('/dir'));
 
         $file
             ->expects($this->once())
             ->method('move')
-            ->with('/dir', 'filename.txt');
+            ->with('/dir/', 'filename.txt');
 
         $this->storage->upload($this->object);
     }
@@ -328,7 +333,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      * Test file upload when filename contains directories
      * @dataProvider filenameWithDirectoriesDataProvider
      */
-    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($dir, $filename, $expectedDir, $expectedFileName)
+    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($uploadDir, $dir, $filename, $expectedDir, $expectedFileName)
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()
@@ -364,6 +369,11 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
+            ->method('getUploadDestination')
+            ->will($this->returnValue($uploadDir));
+
+        $this->mapping
+            ->expects($this->once())
             ->method('getUploadDir')
             ->with($this->object)
             ->will($this->returnValue($dir));
@@ -382,13 +392,15 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '/root_dir',
-                '/dir_1/dir_2/filename.txt',
+                'dir_1/dir_2',
+                'filename.txt',
                 '/root_dir/dir_1/dir_2',
                 'filename.txt'
             ),
             array(
                 '/root_dir',
-                'dir_1/dir_2/filename.txt',
+                'dir_1/dir_2',
+                'filename.txt',
                 '/root_dir/dir_1/dir_2',
                 'filename.txt'
             ),
