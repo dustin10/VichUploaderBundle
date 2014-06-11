@@ -94,8 +94,8 @@ public function registerBundles()
 
 ## Doctrine
 
-Just make sure that `doctrine/orm` or `doctrine/mongodb-odm` are installed and
-properly registered in your application.
+Just make sure that `doctrine/orm` or `doctrine/mongodb-odm` or `doctrine/phpcr-odm` 
+are installed and properly registered in your application.
 
 
 ## Propel
