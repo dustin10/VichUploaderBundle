@@ -8,7 +8,7 @@ Below is the full default configuration for the bundle:
 ``` yaml
 # app/config/config.yml
 vich_uploader:
-    db_driver:  orm # or mongodb or propel
+    db_driver:  orm # or mongodb or propel or phpcr
     twig:       true
     gaufrette:  false # set to true to enable gaufrette support
     flysystem:  false # set to true to enable flysystem support

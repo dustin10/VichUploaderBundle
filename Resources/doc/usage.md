@@ -35,13 +35,13 @@ go to [Configuration](#configuration) section
 
 ## Configuration
 
-First configure the `db_driver` option. You must specify either `orm` or
-`mongodb`.
+First configure the `db_driver` option. You must specify either `orm`,
+`mongodb` or `phpcr`.
 
 ``` yaml
 # app/config/config.yml
 vich_uploader:
-    db_driver: orm # or mongodb or propel
+    db_driver: orm # or mongodb or propel or phpcr
 ```
 
 And then add your mappings information. In order to map

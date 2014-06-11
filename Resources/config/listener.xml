@@ -24,7 +24,10 @@
         </service>
 
         <service id="vich_uploader.listener.uploader.orm" parent="vich_uploader.listener.uploader.doctrine.base" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" />
+
         <service id="vich_uploader.listener.uploader.mongodb" parent="vich_uploader.listener.uploader.orm" />
+
+        <service id="vich_uploader.listener.uploader.phpcr" parent="vich_uploader.listener.uploader.doctrine.base" class="Vich\UploaderBundle\EventListener\DoctrineUploaderListener" />
 
     </services>
 
