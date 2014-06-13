@@ -5,8 +5,8 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
  * PropertyMappingFactory.
@@ -26,11 +26,6 @@ class PropertyMappingFactory
     protected $metadata;
 
     /**
-     * @var AdapterInterface $adapter
-     */
-    protected $adapter;
-
-    /**
      * @var array $mappings
      */
     protected $mappings;
@@ -40,14 +35,12 @@ class PropertyMappingFactory
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
      * @param \Vich\UploaderBundle\Metadata\MetadataReader              $metadata  The mapping mapping.
-     * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
      * @param array                                                     $mappings  The configured mappings.
      */
-    public function __construct(ContainerInterface $container, MetadataReader $metadata, AdapterInterface $adapter, array $mappings)
+    public function __construct(ContainerInterface $container, MetadataReader $metadata, array $mappings)
     {
         $this->container = $container;
         $this->metadata = $metadata;
-        $this->adapter = $adapter;
         $this->mappings = $mappings;
     }
 
@@ -170,7 +163,7 @@ class PropertyMappingFactory
         }
 
         if (is_object($object)) {
-            return $this->adapter->getClassName($object);
+            return ClassUtils::getClass($object);
         }
 
         throw new \RuntimeException('Impossible to determine the class name. Either specify it explicitly or give an object');

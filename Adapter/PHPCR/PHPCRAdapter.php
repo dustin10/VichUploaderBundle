@@ -3,14 +3,13 @@
 namespace Vich\UploaderBundle\Adapter\PHPCR;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\Adapter\Doctrine\DoctrineAdapter;
 
 /**
  * PHPCRAdapter.
  *
  * @author Ben Glassman <bglassman@gmail.com>
  */
-class PHPCRAdapter extends DoctrineAdapter implements AdapterInterface
+class PHPCRAdapter implements AdapterInterface
 {
     /**
      * {@inheritDoc}
@@ -31,5 +30,4 @@ class PHPCRAdapter extends DoctrineAdapter implements AdapterInterface
         $uow = $dm->getUnitOfWork();
         $uow->computeSingleDocumentChangeSet($object);
     }
-
 }

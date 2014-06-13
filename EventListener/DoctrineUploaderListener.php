@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\Proxy;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
  * DoctrineUploaderListener.
@@ -142,6 +143,6 @@ class DoctrineUploaderListener implements EventSubscriber
      */
     private function isUploadable($object)
     {
-        return $this->metadata->isUploadable($this->adapter->getClassName($object));
+        return $this->metadata->isUploadable(ClassUtils::getClass($object));
     }
 }

@@ -64,14 +64,6 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
                 return $that->object;
             }));
 
-        // the adapter is always used to determine the object class name
-        $this->adapter
-            ->expects($this->any())
-            ->method('getClassName')
-            ->will($this->returnCallback(function () use ($that) {
-                return get_class($that->object);
-            }));
-
         $this->listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
     }
 

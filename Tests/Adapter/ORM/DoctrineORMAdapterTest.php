@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 
 use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\DummyEntityProxyORM;
 
 /**
  * DoctrineORMAdapterTest.
@@ -25,7 +24,7 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectFromArgs()
     {
-        $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $entity = new DummyEntity();
 
         $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
@@ -38,26 +37,5 @@ class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter = new DoctrineORMAdapter();
 
         $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
-    }
-
-    /**
-     * @dataProvider entityProvider
-     */
-    public function testGetClassName($entity, $expectedClassName)
-    {
-        $adapter = new DoctrineORMAdapter();
-
-        $this->assertEquals($expectedClassName, $adapter->getClassName($entity));
-    }
-
-    public function entityProvider()
-    {
-        $classicEntity = new DummyEntity();
-        $proxiedEntity = new DummyEntityProxyORM();
-
-        return array(
-            array($classicEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
-            array($proxiedEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
-        );
     }
 }
