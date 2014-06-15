@@ -56,7 +56,7 @@ class UploadHandler
     /**
      * Checks for file to upload.
      */
-    public function handleUpload($obj, $mapping)
+    public function upload($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
 
@@ -68,7 +68,7 @@ class UploadHandler
         $this->dispatch(Events::POST_UPLOAD, new Event($obj));
     }
 
-    public function handleHydration($obj, $mapping)
+    public function inject($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
 
@@ -79,13 +79,9 @@ class UploadHandler
         $this->dispatch(Events::POST_INJECT, new Event($obj));
     }
 
-    public function handleDeletion($obj, $mapping)
+    public function clean($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
-
-        if ($mapping->getDeleteOnRemove()) {
-            return;
-        }
 
         $this->dispatch(Events::PRE_REMOVE, new Event($obj));
 

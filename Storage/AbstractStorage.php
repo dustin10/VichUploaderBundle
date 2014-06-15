@@ -54,10 +54,6 @@ abstract class AbstractStorage implements StorageInterface
         // determine the file's directory
         $dir = $mapping->getUploadDir($obj);
 
-        if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-            $this->doRemove($mapping, $dir, $name);
-        }
-
         // determine the file's name
         if ($mapping->hasNamer()) {
             $name = $mapping->getNamer()->name($obj, $mapping);
