@@ -34,14 +34,21 @@ class DoctrineUploaderListener implements EventSubscriber
     protected $handler;
 
     /**
+     * @var string $mapping
+     */
+    protected $mapping;
+
+    /**
      * Constructs a new instance of UploaderListener.
      *
+     * @param string           $mapping  The mapping name.
      * @param AdapterInterface $adapter  The adapter.
      * @param MetadataReader   $metadata The metadata reader.
      * @param UploadHandler    $handler  The upload handler.
      */
-    public function __construct(AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
+    public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
+        $this->mapping = $mapping;
         $this->adapter = $adapter;
         $this->metadata = $metadata;
         $this->handler = $handler;
@@ -73,7 +80,7 @@ class DoctrineUploaderListener implements EventSubscriber
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            $this->handler->handleUpload($object);
+            $this->handler->handleUpload($object, $this->mapping);
         }
     }
 
@@ -87,7 +94,7 @@ class DoctrineUploaderListener implements EventSubscriber
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            $this->handler->handleUpload($object);
+            $this->handler->handleUpload($object, $this->mapping);
             $this->adapter->recomputeChangeSet($event);
         }
     }
@@ -102,7 +109,7 @@ class DoctrineUploaderListener implements EventSubscriber
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            $this->handler->handleHydration($object);
+            $this->handler->handleHydration($object, $this->mapping);
         }
     }
 
@@ -130,7 +137,7 @@ class DoctrineUploaderListener implements EventSubscriber
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            $this->handler->handleDeletion($object);
+            $this->handler->handleDeletion($object, $this->mapping);
         }
     }
 

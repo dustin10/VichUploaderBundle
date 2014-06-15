@@ -45,6 +45,25 @@ class PropertyMappingFactory
     }
 
     /**
+     * Creates PropetyMapping from its name.
+     *
+     * @param object $object      The object.
+     * @param string $mappingName The mapping name.
+     *
+     * @return PropertyMapping
+     */
+    public function fromName($object, $mappingName)
+    {
+        $mappings = $this->fromObject($object);
+
+        if (!isset($mappings[$mappingName])) {
+            throw new \RuntimeException(sprintf('Mapping %s does not exist', $mappingName));
+        }
+
+        return $mappings[$mappingName];
+    }
+
+    /**
      * Creates an array of PropetyMapping objects which contain the
      * configuration for the uploadable fields in the specified
      * object.
@@ -65,7 +84,7 @@ class PropertyMappingFactory
 
         $mappings = array();
         foreach ($this->metadata->getUploadableFields($class) as $field => $mappingData) {
-            $mappings[] = $this->createMapping($obj, $field, $mappingData);
+            $mappings[$mappingData['mapping']] = $this->createMapping($obj, $field, $mappingData);
         }
 
         return $mappings;
@@ -119,7 +138,7 @@ class PropertyMappingFactory
      * @param string $fieldName   The field name.
      * @param array  $mappingData The mapping data.
      *
-     * @return PropertyMapping    The property mapping.
+     * @return PropertyMapping           The property mapping.
      * @throws \InvalidArgumentException
      */
     protected function createMapping($obj, $fieldName, array $mappingData)

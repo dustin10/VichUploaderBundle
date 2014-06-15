@@ -89,7 +89,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getFileName');
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     public function invalidFileProvider()
@@ -109,24 +109,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the remove method does not remove a file that is configured
-     * to not be deleted upon removal of the entity.
-     */
-    public function testRemoveSkipsConfiguredNotToDeleteOnRemove()
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(false));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->remove($this->object);
-    }
-
-    /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
      *
@@ -136,11 +118,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getFileName')
             ->will($this->returnValue($propertyValue));
 
@@ -148,7 +125,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getUploadDir');
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     public function emptyFilenameProvider()
@@ -166,11 +143,6 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     {
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getUploadDir')
             ->will($this->returnValue($this->getValidUploadDir()));
 
@@ -179,16 +151,11 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName')
             ->will($this->returnValue('foo.txt'));
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     public function testRemove()
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDestination')
@@ -199,7 +166,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName')
             ->will($this->returnValue('test.txt'));
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
         $this->assertFalse($this->root->hasChild('uploads' . DIRECTORY_SEPARATOR . 'test.txt'));
     }
 
@@ -336,7 +303,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('move')
             ->with('/dir/', 'filename.txt');
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     /**
@@ -393,7 +360,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('move')
             ->with($expectedDir, $expectedFileName);
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
 
     }
 

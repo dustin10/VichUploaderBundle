@@ -105,7 +105,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
                 $this->isType('array')
             );
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     public function testRemove()
@@ -124,11 +124,6 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getUploadDestination')
             ->will($this->returnValue('dir'));
 
@@ -137,7 +132,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName')
             ->will($this->returnValue('test.txt'));
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     public function testRemoveOnNonExistentFile()
@@ -157,11 +152,6 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->mapping
             ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
-        $this->mapping
-            ->expects($this->once())
             ->method('getUploadDestination')
             ->will($this->returnValue('dir'));
 
@@ -170,7 +160,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getFileName')
             ->will($this->returnValue('not_found.txt'));
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     /**

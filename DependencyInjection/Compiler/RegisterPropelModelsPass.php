@@ -17,6 +17,8 @@ class RegisterPropelModelsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        // @todo: rewrite
+        return;
         if ($container->getParameter('vich_uploader.driver') !== 'propel') {
             return;
         }

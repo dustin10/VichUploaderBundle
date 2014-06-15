@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\HttpKernel\Kernel;
@@ -24,6 +26,14 @@ class VichUploaderExtension extends Extension
         'phpcr'     => 'doctrine_phpcr.event_subscriber'
     );
 
+    public function __construct()
+    {
+        // Set correct doctrine subscriber event for versions of symfony before 2.1
+        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
+            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
+        }
+    }
+
     /**
      * Loads the extension.
      *
@@ -32,32 +42,19 @@ class VichUploaderExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // Set correct doctrine subscriber event for versions of symfony before 2.1
-        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
-            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
-        }
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $config = $this->fixDbDriverConfig($config);
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
         $this->registerCacheStrategy($container, $config);
 
         // define a few parameters
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
-        $container->setParameter('vich_uploader.driver', $config['db_driver']);
         $container->setParameter('vich_uploader.storage_service', $config['storage']);
 
-        // for propel, the uploader listener registration is handled by a
-        // compiler pass
-        if ($config['db_driver'] !== 'propel') {
-            $container
-                ->getDefinition('vich_uploader.listener.uploader.'.$config['db_driver'])
-                ->addTag($this->tagMap[$config['db_driver']]);
-        }
-
-        $container->setAlias('vich_uploader.adapter', 'vich_uploader.adapter.'.$config['db_driver']);
+        $this->registerListeners($container, $config);
     }
 
     protected function loadServicesFiles(ContainerBuilder $container, array $config)
@@ -143,6 +140,43 @@ class VichUploaderExtension extends Extension
             }
         } else {
             $container->setAlias('vich_uploader.metadata.cache', new Alias($config['metadata']['cache'], false));
+        }
+    }
+
+    protected function fixDbDriverConfig(array $config)
+    {
+        foreach ($config['mappings'] as &$mapping) {
+            $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
+        }
+
+        return $config;
+    }
+
+    protected function registerListeners(ContainerBuilder $container, array $config)
+    {
+        $listenersMappings = array_combine(array_keys($this->tagMap), array_fill(0, count($this->tagMap), array()));
+
+        foreach ($config['mappings'] as $name => $mapping) {
+            if (!isset($listenersMappings[$mapping['db_driver']])) {
+                continue;
+            }
+
+            $listenersMappings[$mapping['db_driver']][] = $name;
+        }
+
+        foreach ($listenersMappings as $db_driver => $mappings) {
+            if (!count($mappings)) {
+                $container->removeDefinition('vich_uploader.listener.uploader.'.$db_driver);
+                continue;
+            }
+
+            foreach ($mappings as $mapping) {
+                $definition = $container
+                    ->setDefinition(sprintf('vich_uploader.listener.uploader.%s', $name), new DefinitionDecorator('vich_uploader.listener.uploader.'.$db_driver))
+                    ->addTag($this->tagMap[$db_driver])
+                    ->replaceArgument(0, $mapping)
+                    ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$db_driver));
+            }
         }
     }
 }

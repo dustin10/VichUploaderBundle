@@ -13,6 +13,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    protected $supportedDbDrivers = array('orm', 'mongodb', 'propel', 'phpcr');
+
     /**
      * Gets the configuration tree builder for the extension.
      *
@@ -32,8 +34,6 @@ class Configuration implements ConfigurationInterface
 
     protected function addGeneralSection(ArrayNodeDefinition $node)
     {
-        $supportedDbDrivers = array('orm', 'mongodb', 'propel', 'phpcr');
-
         $node
             ->children()
                 ->scalarNode('db_driver')
@@ -43,8 +43,8 @@ class Configuration implements ConfigurationInterface
                         ->then(function ($v) { return strtolower($v); })
                     ->end()
                     ->validate()
-                        ->ifNotInArray($supportedDbDrivers)
-                        ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $supportedDbDrivers))
+                        ->ifNotInArray($this->supportedDbDrivers)
+                        ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $this->supportedDbDrivers))
                     ->end()
                 ->end()
                 ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
@@ -99,6 +99,17 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
                             ->scalarNode('delete_on_update')->defaultTrue()->end()
                             ->scalarNode('inject_on_load')->defaultFalse()->end()
+                            ->scalarNode('db_driver')
+                                ->defaultNUll()
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(function ($v) { return strtolower($v); })
+                                ->end()
+                                ->validate()
+                                    ->ifNotInArray($this->supportedDbDrivers)
+                                    ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $this->supportedDbDrivers))
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

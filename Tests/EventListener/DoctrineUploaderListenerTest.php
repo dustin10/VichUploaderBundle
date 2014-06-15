@@ -42,6 +42,8 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
      */
     public $object;
 
+    const MAPPING_ID = 'mapping_id';
+
     /**
      * Sets up the test
      */
@@ -64,7 +66,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
                 return $that->object;
             }));
 
-        $this->listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
+        $this->listener = new DoctrineUploaderListener(self::MAPPING_ID, $this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -95,7 +97,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleUpload')
-            ->with($this->object);
+            ->with($this->object, self::MAPPING_ID);
 
         $this->listener->prePersist($this->event);
     }
@@ -137,7 +139,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleUpload')
-            ->with($this->object);
+            ->with($this->object, self::MAPPING_ID);
 
         $this->listener->preUpdate($this->event);
     }
@@ -178,7 +180,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleHydration')
-            ->with($this->object);
+            ->with($this->object, self::MAPPING_ID);
 
         $this->listener->postLoad($this->event);
     }
@@ -266,7 +268,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->handler
             ->expects($this->once())
             ->method('handleDeletion')
-            ->with($this->object);
+            ->with($this->object, self::MAPPING_ID);
 
         $this->listener->postRemove($this->event);
     }
