@@ -46,10 +46,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $fileMapping
             ->expects($this->once())
-            ->method('getInjectOnLoad')
-            ->will($this->returnValue(true));
-        $fileMapping
-            ->expects($this->once())
             ->method('getFilePropertyName')
             ->will($this->returnValue('file'));
         $fileMapping
@@ -69,32 +65,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test injection is skipped if inject_on_load is configured
-     * to false.
-     */
-    public function testInjectionIsSkippedIfNotConfigured()
-    {
-        $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
-
-        $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $fileMapping
-            ->expects($this->once())
-            ->method('getInjectOnLoad')
-            ->will($this->returnValue(false));
-        $fileMapping
-            ->expects($this->never())
-            ->method('setValue');
-
-        $inject = new FileInjector($this->storage);
-        $inject->injectFile($obj, $fileMapping);
-
-        $this->assertNull($obj->getFile());
-    }
-
-    /**
      * Test that if the file name property returns a null value
      * then no file is injected.
      */
@@ -106,10 +76,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $fileMapping
-            ->expects($this->once())
-            ->method('getInjectOnLoad')
-            ->will($this->returnValue(true));
         $fileMapping
             ->expects($this->never())
             ->method('setValue');

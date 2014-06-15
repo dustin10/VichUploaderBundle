@@ -38,7 +38,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->mapping));
     }
 
-    public function testHandleUpload()
+    public function testUpload()
     {
         $this->dispatcher
             ->expects($this->any())
@@ -58,10 +58,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
-        $this->handler->handleUpload($this->object, self::MAPPING_ID);
+        $this->handler->upload($this->object, self::MAPPING_ID);
     }
 
-    public function testHandleHydration()
+    public function testInject()
     {
         $this->dispatcher
             ->expects($this->any())
@@ -76,10 +76,10 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
-        $this->handler->handleHydration($this->object, self::MAPPING_ID);
+        $this->handler->inject($this->object, self::MAPPING_ID);
     }
 
-    public function testHandleDeletion()
+    public function testClean()
     {
         $this->dispatcher
             ->expects($this->any())
@@ -94,7 +94,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with($this->object, $this->mapping);
 
-        $this->handler->handleDeletion($this->object, self::MAPPING_ID);
+        $this->handler->clean($this->object, self::MAPPING_ID);
     }
 
     protected function getStorageMock()
