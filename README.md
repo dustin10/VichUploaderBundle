@@ -25,6 +25,10 @@ If upgrading from a previous version, also check:
 
 [UPGRADE.md](https://github.com/dustin10/VichUploaderBundle/blob/master/UPGRADE.md)
 
-For license, see:
+## Contributing
 
-[Resources/meta/LICENSE](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/meta/LICENSE)
+See the [CONTRIBUTING](https://github.com/dustin10/VichUploaderBundle/blob/master/CONTRIBUTING.md) file.
+
+## License
+
+See the bundled [LICENSE](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/meta/LICENSE) file.
