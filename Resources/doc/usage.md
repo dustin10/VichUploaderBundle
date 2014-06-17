@@ -287,6 +287,28 @@ supports this format and comes with the following syntax to declare your
 uploadable fields:
 
 ```yaml
+# src/Acme/DemoBundle/Resources/config/doctrine/Product.orm.yml
+Acme\DemoBundle\Entity\Product:
+    type: entity
+    table: product
+    repositoryClass: Acme\DemoBundle\Entity\Repository\ProductRepository
+
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:             
+    
+    # Others fields ...
+    
+        imageName:
+            type: string
+            column: image_name
+```
+
+
+```yaml
 # src/Acme/DemoBundle/Resources/config/vich_uploader/Product.yml
 Acme\DemoBundle\Entity\Product:
     image:
