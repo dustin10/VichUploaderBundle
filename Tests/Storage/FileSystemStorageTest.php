@@ -129,8 +129,10 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
+     *
+     * @dataProvider emptyFilenameProvider
      */
-    public function testRemoveSkipsNullFileNameProperty()
+    public function testRemoveSkipsEmptyFilenameProperties($propertyValue)
     {
         $this->mapping
             ->expects($this->once())
@@ -140,13 +142,21 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue($propertyValue));
 
         $this->mapping
             ->expects($this->never())
             ->method('getUploadDir');
 
         $this->storage->remove($this->object);
+    }
+
+    public function emptyFilenameProvider()
+    {
+        return array(
+            array( null ),
+            array( '' ),
+        );
     }
 
     /**

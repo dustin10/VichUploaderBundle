@@ -98,7 +98,9 @@ abstract class AbstractStorage implements StorageInterface
 
             $name = $mapping->getFileName($obj);
 
-            if (null === $name) {
+            // the non-strict comparison is done on purpose: we want to skip
+            // null and empty filenames
+            if (null == $name) {
                 continue;
             }
 
