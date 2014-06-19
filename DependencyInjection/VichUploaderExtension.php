@@ -154,7 +154,6 @@ class VichUploaderExtension extends Extension
 
     protected function registerListeners(ContainerBuilder $container, array $config)
     {
-        $driver = $config['db_driver'];
         $servicesMap = array(
             'inject_on_load'    => 'inject',
             'delete_on_update'  => 'clean',
@@ -164,62 +163,29 @@ class VichUploaderExtension extends Extension
         foreach ($config['mappings'] as $name => $mapping) {
             $driver = $mapping['db_driver'];
 
+            // create optionnal listeners
             foreach ($servicesMap as $configOption => $service) {
                 if (!$mapping[$configOption]) {
                     continue;
                 }
 
-                $definition = $container
-                    ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $service, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $service, $driver)))
-                    ->replaceArgument(0, $name)
-                    ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
-
-                if (isset($this->tagMap[$driver])) {
-                    $definition->addTag($this->tagMap[$driver]);
-                }
+                $this->createListener($container, $name, $service, $driver);
             }
 
-            $definition = $container
-                ->setDefinition(sprintf('vich_uploader.listener.upload.%s', $name), new DefinitionDecorator(sprintf('vich_uploader.listener.upload.%s', $driver)))
-                ->replaceArgument(0, $name)
-                ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$mapping['db_driver']));
-
-            if (isset($this->tagMap[$driver])) {
-                $definition->addTag($this->tagMap[$driver]);
-            }
-        }
-
-        return;
-        $listenersMappings = array_combine(array_keys($this->tagMap), array_fill(0, count($this->tagMap), array()));
-
-        // build a driver --> mappings map
-        foreach ($config['mappings'] as $mapping) {
-            if (!isset($listenersMappings[$mapping['db_driver']])) {
-                continue;
-            }
-
-            $listenersMappings[$mapping['db_driver']][] = $mapping;
-        }
-
-        foreach ($listenersMappings as $db_driver => $mappings) {
-            if (!count($mappings)) {
-                $container->removeDefinition('vich_uploader.listener.uploader.'.$db_driver);
-                continue;
-            }
-
-            foreach ($mappings as $mapping) {
-                $this->registerListenersForMapping($container, $mapping);
-//                $definition = $container
-//                    ->setDefinition(sprintf('vich_uploader.listener.uploader.%s', $name), new DefinitionDecorator('vich_uploader.listener.uploader.'.$db_driver))
-//                    ->addTag($this->tagMap[$db_driver])
-//                    ->replaceArgument(0, $mapping)
-//                    ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$db_driver));
-            }
+            // the upload listener is mandatory
+            $this->createListener($container, $name, 'upload', $driver);
         }
     }
 
-    protected function registerListenersForMapping(ContainerBuilder $container, array $mapping)
+    protected function createListener(ContainerBuilder $container, $name, $type, $driver)
     {
-        var_dump($mapping);exit;
+        $definition = $container
+            ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
+            ->replaceArgument(0, $name)
+            ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
+
+        if (isset($this->tagMap[$driver])) {
+            $definition->addTag($this->tagMap[$driver]);
+        }
     }
 }
