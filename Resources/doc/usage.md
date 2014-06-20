@@ -445,3 +445,35 @@ Several events are triggered by the bundle, allowing you to react to upload
 events in your application.
 See the [Events](https://github.com/dustin10/VichUploaderBundle/blob/master/Event/Events.php) class
 for a full list and explanation of the events.
+
+Sample usage - set custom permissions for all uploaded files. In order to do it, you will need to create custom listener, like
+
+```
+<?php
+namespace VENDOR\BUNDLE\EventListener;
+
+use Vich\UploaderBundle\Event\Event as VichEvent;
+use Doctrine\Common\Annotations\AnnotationReader;
+
+class VichUploaderListener
+{
+    public function onVichUpload(VichEvent $event)
+    {
+        $reflection = new \ReflectionClass($event->getObject());
+        $reader = new AnnotationReader();
+        foreach($reflection->getProperties() as $reflectionProperty) {
+            if($x = $reader->getPropertyAnnotation($reflectionProperty,'Vich\UploaderBundle\Mapping\Annotation\UploadableField')) {
+                chmod(FILE_PATH_HERE.call_user_func(array($event->getObject(),"get".ucfirst($x->getFileNameProperty()))),0777);
+		// FILE_PATH_HERE - can be ugly constant, variable injected frm container, etc
+            }
+        }
+    }
+}
+```
+
+Register listener in your services with code like
+```
+ 	<service id="kernel.listener.vich_listener" class="VENDOR\BUNDLE\EventListener">
+            <tag name="kernel.event_listener" event="vich_uploader.post_upload" method="onVichUpload" />
+        </service>
+```

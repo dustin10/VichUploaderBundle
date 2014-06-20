@@ -43,6 +43,30 @@ class MetadataReader
     }
 
     /**
+     * Tells if the given class doing uploading right now
+     *
+     * @param string $object Object to test
+     * @param string $class The class name of object to test (FQCN).
+     *
+     * @return bool
+     */
+    public function isUploading($object,$class)
+    {
+        $metadata = $this->reader->getMetadataForClass($class);
+        if($metadata !== null) {
+            /** @var $classMetadata \Vich\UploaderBundle\Metadata\ClassMetadata */
+            foreach($metadata->classMetadata as $classMetadata) {
+                foreach($classMetadata->fields as $fieldName => $fieldInfo) {
+                    if(call_user_func(array($object,"get".ucfirst($fieldName))) !== null) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Search for all uploadable classes.
      *
      * @return array A list of uploadable class names.
