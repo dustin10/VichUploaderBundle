@@ -48,7 +48,7 @@ abstract class AbstractStorage implements StorageInterface
         $file = $mapping->getFile($obj);
 
         if ($file === null || !($file instanceof UploadedFile)) {
-            return;
+            throw new \LogicException('No uploadable file found');
         }
 
         // determine the file's directory

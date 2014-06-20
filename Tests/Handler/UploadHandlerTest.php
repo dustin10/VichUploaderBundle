@@ -48,6 +48,12 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
                 array(Events::POST_UPLOAD, $this->validEvent(), null),
             )));
 
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')->disableOriginalConstructor()->getMock()));
+
         $this->storage
             ->expects($this->once())
             ->method('upload')
@@ -57,6 +63,23 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('injectFile')
             ->with($this->object, $this->mapping);
+
+        $this->handler->upload($this->object, self::MAPPING_ID);
+    }
+
+    public function testUploadSkipsEmptyObjects()
+    {
+        $this->dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->storage
+            ->expects($this->never())
+            ->method('upload');
+
+        $this->injector
+            ->expects($this->never())
+            ->method('injectFile');
 
         $this->handler->upload($this->object, self::MAPPING_ID);
     }

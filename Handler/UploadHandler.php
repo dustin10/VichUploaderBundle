@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -59,6 +60,12 @@ class UploadHandler
     public function upload($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
+        $file = $mapping->getFile($obj);
+
+        // nothing to upload
+        if ($file === null || !($file instanceof UploadedFile)) {
+            return;
+        }
 
         $this->dispatch(Events::PRE_UPLOAD, new Event($obj));
 

@@ -74,8 +74,9 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      * Tests the upload method skips a mapping which has a non
      * uploadable property value.
      *
-     * @dataProvider    invalidFileProvider
-     * @group           upload
+     * @expectedException   LogicException
+     * @dataProvider        invalidFileProvider
+     * @group               upload
      */
     public function testUploadSkipsMappingOnInvalid($file)
     {
