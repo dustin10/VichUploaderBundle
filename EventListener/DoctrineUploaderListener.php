@@ -83,7 +83,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->metadata->isUploading($object,$this->adapter->getClassName($object))) {
             $this->handler->handleUpload($object);
             $this->adapter->recomputeChangeSet($event);
         }
