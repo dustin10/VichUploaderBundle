@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event as BaseEvent;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * Base class for upload events.
  *
@@ -12,10 +14,12 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
 class Event extends BaseEvent
 {
     protected $object;
+    protected $mapping;
 
-    public function __construct($object)
+    public function __construct($object, PropertyMapping $mapping)
     {
         $this->object = $object;
+        $this->mapping = $mapping;
     }
 
     /**
@@ -26,5 +30,15 @@ class Event extends BaseEvent
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * Accessor to the mapping used to manipulate the object.
+     *
+     * @return \Vich\UploaderBundle\Mapping\PropertyMapping
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
     }
 }
