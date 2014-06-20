@@ -33,6 +33,6 @@ class RemoveListener extends BaseListener
     public function onDelete(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-        $this->handler->delete($object, $this->mapping);
+        $this->handler->clean($object, $this->mapping);
     }
 }

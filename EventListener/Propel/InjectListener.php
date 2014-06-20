@@ -33,6 +33,6 @@ class InjectListener extends BaseListener
     public function onHydrate(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-        $this->handler->hydrate($object, $this->mapping);
+        $this->handler->inject($object, $this->mapping);
     }
 }
