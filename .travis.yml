@@ -14,7 +14,7 @@ env:
     - SYMFONY_VERSION="~2.3.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.4.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.5.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="dev-master symfony/event-dispatcher:dev-master symfony/http-kernel:@dev" DOCTRINE_VERSION="~2.2,>=2.2.3"
+    - SYMFONY_VERSION="dev-master symfony/event-dispatcher:dev-master symfony/http-kernel:@dev symfony/debug:@dev" DOCTRINE_VERSION="~2.2,>=2.2.3"
 
 before_script:
     - composer selfupdate
@@ -25,6 +25,8 @@ before_script:
     - composer require --no-update symfony/framework-bundle:${SYMFONY_VERSION}
     - composer require --dev --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
     - composer install
+
+script: vendor/bin/phpunit
 
 notifications:
   email:
