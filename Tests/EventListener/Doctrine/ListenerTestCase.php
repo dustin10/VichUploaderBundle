@@ -36,7 +36,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @var DummyEntity
      */
-    protected $object;
+    public $object;
 
     protected $listener;
 
@@ -51,12 +51,16 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
         $this->object = new DummyEntity();
         $this->event = $this->getEventMock();
 
+        $that = $this;
+
         // the adapter is always used to return the object
         $this->adapter
             ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->will($this->returnValue($this->object));
+            ->will($this->returnCallback(function () use ($that) {
+                return $that->object;
+            }));
     }
 
     /**
