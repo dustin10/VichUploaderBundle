@@ -33,14 +33,14 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * @var EventArgs
+     * @var \Doctrine\Common\EventArgs
      */
     protected $event;
 
     /**
      * @var DummyEntity
      */
-    protected $object;
+    public $object;
 
     /**
      * Sets up the test
@@ -53,18 +53,24 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->object = new DummyEntity();
         $this->event = $this->getEventMock();
 
+        $that = $this;
+
         // the adapter is always used to return the object
         $this->adapter
             ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->will($this->returnValue($this->object));
+            ->will($this->returnCallback(function () use ($that) {
+                return $that->object;
+            }));
 
-        // in these tests, the adapter is always used with the same object
+        // the adapter is always used to determine the object class name
         $this->adapter
             ->expects($this->any())
             ->method('getClassName')
-            ->will($this->returnValue(get_class($this->object)));
+            ->will($this->returnCallback(function () use ($that) {
+                return get_class($that->object);
+            }));
 
         $this->listener = new DoctrineUploaderListener($this->adapter, $this->metadata, $this->handler);
     }
@@ -79,6 +85,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('prePersist', $events);
         $this->assertContains('preUpdate', $events);
         $this->assertContains('postLoad', $events);
+        $this->assertContains('preRemove', $events);
         $this->assertContains('postRemove', $events);
     }
 
@@ -202,6 +209,57 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->postLoad($this->event);
     }
 
+    public function testPreRemove()
+    {
+        $this->object = $this->getEntityProxyMock();
+        $this->object
+            ->expects($this->once())
+            ->method('__load');
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with('VichUploaderEntityProxy')
+            ->will($this->returnValue(true));
+
+        $this->listener->preRemove($this->event);
+    }
+
+    public function testPreRemoveSkipNonUploadable()
+    {
+        $this->object = $this->getEntityProxyMock();
+        $this->object
+            ->expects($this->never())
+            ->method('__load');
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with('VichUploaderEntityProxy')
+            ->will($this->returnValue(false));
+
+        $this->listener->preRemove($this->event);
+    }
+
+    public function testPreRemoveSkipNonProxy()
+    {
+        $this->object = $this->getMockBuilder('Vich\UploaderBundle\Tests\DummyEntity')
+            ->setMockClassName('VichUploaderEntityProxy')
+            ->getMock();
+
+        $this->object
+            ->expects($this->never())
+            ->method('__load');
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with('VichUploaderEntityProxy')
+            ->will($this->returnValue(false));
+
+        $this->listener->preRemove($this->event);
+    }
+
     /**
      * Test the postRemove method.
      */
@@ -276,7 +334,7 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock doctrine event
+     * Creates a mock doctrine event.
      *
      * @return \Doctrine\Common\EventArgs
      */
@@ -284,6 +342,18 @@ class DoctrineUploaderListenerTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMockBuilder('Doctrine\Common\EventArgs')
             ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * Creates a mock doctrine entity proxy.
+     *
+     * @return \Doctrine\Common\Persistence\Proxy
+     */
+    protected function getEntityProxyMock()
+    {
+        return $this->getMockBuilder('Doctrine\Common\Persistence\Proxy')
+            ->setMockClassName('VichUploaderEntityProxy')
             ->getMock();
     }
 }

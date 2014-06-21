@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\EventListener;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
@@ -56,6 +57,7 @@ class DoctrineUploaderListener implements EventSubscriber
             'prePersist',
             'preUpdate',
             'postLoad',
+            'preRemove',
             'postRemove',
         );
     }
@@ -69,7 +71,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->isUploadable($object)) {
             $this->handler->handleUpload($object);
         }
     }
@@ -83,7 +85,7 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->isUploadable($object)) {
             $this->handler->handleUpload($object);
             $this->adapter->recomputeChangeSet($event);
         }
@@ -98,9 +100,23 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->isUploadable($object)) {
             $this->handler->handleHydration($object);
         }
+    }
+
+    /**
+     * Ensures a proxy will be usable in the postRemove.
+     *
+     * @param EventArgs $event The event.
+     */
+    public function preRemove(EventArgs $event)
+    {
+         $object = $this->adapter->getObjectFromArgs($event);
+
+         if ($this->isUploadable($object) && $object instanceof Proxy) {
+             $object->__load();
+         }
     }
 
     /**
@@ -112,8 +128,20 @@ class DoctrineUploaderListener implements EventSubscriber
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->metadata->isUploadable($this->adapter->getClassName($object))) {
+        if ($this->isUploadable($object)) {
             $this->handler->handleDeletion($object);
         }
+    }
+
+    /**
+     * Tells if the given object is uploadable.
+     *
+     * @param object $object The object.
+     *
+     * @return bool
+     */
+    private function isUploadable($object)
+    {
+        return $this->metadata->isUploadable($this->adapter->getClassName($object));
     }
 }
