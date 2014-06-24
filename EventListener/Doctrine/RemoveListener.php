@@ -42,8 +42,6 @@ class RemoveListener extends BaseListener
     }
 
     /**
-     * Removes the file if necessary.
-     *
      * @param EventArgs $event The event.
      */
     public function postRemove(EventArgs $event)

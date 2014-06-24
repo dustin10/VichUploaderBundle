@@ -26,8 +26,6 @@ class CleanListener extends BaseListener
     }
 
     /**
-     * Update the file and file name if necessary.
-     *
      * @param EventArgs $event The event.
      */
     public function preUpdate(EventArgs $event)
@@ -40,4 +38,3 @@ class CleanListener extends BaseListener
         }
     }
 }
-

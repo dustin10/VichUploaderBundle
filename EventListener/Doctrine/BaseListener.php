@@ -39,10 +39,10 @@ abstract class BaseListener implements EventSubscriber
     /**
      * Constructs a new instance of UploaderListener.
      *
-     * @param string $mapping The mapping name.
-     * @param AdapterInterface $adapter The adapter.
-     * @param MetadataReader $metadata The metadata reader.
-     * @param UploaderHandler $handler The upload handler.
+     * @param string           $mapping  The mapping name.
+     * @param AdapterInterface $adapter  The adapter.
+     * @param MetadataReader   $metadata The metadata reader.
+     * @param UploaderHandler  $handler  The upload handler.
      */
     public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
@@ -52,6 +52,13 @@ abstract class BaseListener implements EventSubscriber
         $this->handler = $handler;
     }
 
+    /**
+     * Checks if the given object is uploadable using the current mapping.
+     *
+     * @para mixed $object The object to test.
+     *
+     * @return bool
+     */
     protected function isUploadable($object)
     {
         return $this->metadata->isUploadable(ClassUtils::getClass($object), $this->mapping);

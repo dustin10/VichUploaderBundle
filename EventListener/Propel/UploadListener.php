@@ -27,8 +27,6 @@ class UploadListener extends BaseListener
     }
 
     /**
-     * Update the file and file name if necessary.
-     *
      * @param GenericEvent $event The event.
      */
     public function onUpload(GenericEvent $event)

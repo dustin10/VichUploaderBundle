@@ -27,8 +27,6 @@ class UploadListener extends BaseListener
     }
 
     /**
-     * Checks for file to upload.
-     *
      * @param EventArgs $event The event.
      */
     public function prePersist(EventArgs $event)
@@ -41,8 +39,6 @@ class UploadListener extends BaseListener
     }
 
     /**
-     * Update the file and file name if necessary.
-     *
      * @param EventArgs $event The event.
      */
     public function preUpdate(EventArgs $event)

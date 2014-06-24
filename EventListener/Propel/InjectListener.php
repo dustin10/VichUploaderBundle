@@ -26,8 +26,6 @@ class InjectListener extends BaseListener
     }
 
     /**
-     * Populates uploadable fields from filename properties.
-     *
      * @param GenericEvent $event The event.
      */
     public function onHydrate(GenericEvent $event)

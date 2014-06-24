@@ -26,8 +26,6 @@ class InjectListener extends BaseListener
     }
 
     /**
-     * Populates uploadable fields from filename properties.
-     *
      * @param EventArgs $event The event.
      */
     public function postLoad(EventArgs $event)

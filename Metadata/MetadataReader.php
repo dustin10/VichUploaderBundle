@@ -31,7 +31,7 @@ class MetadataReader
     /**
      * Tells if the given class is uploadable.
      *
-     * @param string $class The class name to test (FQCN).
+     * @param string $class   The class name to test (FQCN).
      * @param string $mapping If given, also checks that the object has the given mapping.
      *
      * @return bool
@@ -42,7 +42,7 @@ class MetadataReader
 
         if ($metadata === null) {
             return false;
-        } else if ($mapping === null) {
+        } elseif ($mapping === null) {
             return true;
         }
 

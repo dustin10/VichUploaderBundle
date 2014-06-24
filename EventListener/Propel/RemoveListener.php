@@ -26,8 +26,6 @@ class RemoveListener extends BaseListener
     }
 
     /**
-     * Removes the file when the object is deleted.
-     *
      * @param GenericEvent $event The event.
      */
     public function onDelete(GenericEvent $event)

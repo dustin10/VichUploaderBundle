@@ -145,6 +145,7 @@ class VichUploaderExtension extends Extension
 
     protected function fixDbDriverConfig(array $config)
     {
+        // mapping with no declared db_driver use the top-level one
         foreach ($config['mappings'] as &$mapping) {
             $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
         }
@@ -184,6 +185,7 @@ class VichUploaderExtension extends Extension
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
+        // propel does not require tags to work
         if (isset($this->tagMap[$driver])) {
             $definition->addTag($this->tagMap[$driver]);
         }

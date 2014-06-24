@@ -55,7 +55,6 @@ class CleanListenerTest extends ListenerTestCase
         $this->listener->preUpdate($this->event);
     }
 
-
     /**
      * Test that preUpdate skips non uploadable entity.
      */

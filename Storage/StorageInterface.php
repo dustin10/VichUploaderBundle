@@ -12,17 +12,19 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 interface StorageInterface
 {
     /**
-     * Uploads the files in the uploadable fields of the
-     * specified object according to the property configuration.
+     * Uploads the file in the uploadable field of the specified object
+     * according to the property configuration.
      *
-     * @param object $obj The object.
+     * @param object          $obj     The object.
+     * @param PropertyMapping $mapping The mapping representing the field to upload.
      */
     public function upload($obj, PropertyMapping $mapping);
 
     /**
-     * Removes the files associated with the object.
+     * Removes the files associated with the given mapping.
      *
-     * @param object $obj The object.
+     * @param object          $obj     The object.
+     * @param PropertyMapping $mapping The mapping representing the field to remove.
      */
     public function remove($obj, PropertyMapping $mapping);
 
