@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -60,10 +61,9 @@ class UploadHandler
     public function upload($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
-        $file = $mapping->getFile($obj);
 
         // nothing to upload
-        if ($file === null || !($file instanceof UploadedFile)) {
+        if (!$this->hasUploadedFile($obj, $mapping)) {
             return;
         }
 
@@ -86,7 +86,19 @@ class UploadHandler
         $this->dispatch(Events::POST_INJECT, new Event($obj));
     }
 
-    public function clean($obj, $mapping)
+    public function clean($obj, $mappingName)
+    {
+        $mapping = $this->factory->fromName($obj, $mappingName);
+
+        // nothing uploaded, do not remove anything
+        if (!$this->hasUploadedFile($obj, $mapping)) {
+            return;
+        }
+
+        $this->remove($obj, $mappingName);
+    }
+
+    public function remove($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
 
@@ -100,5 +112,12 @@ class UploadHandler
     protected function dispatch($eventName, Event $event)
     {
         $this->dispatcher->dispatch($eventName, $event);
+    }
+
+    protected function hasUploadedFile($obj, PropertyMapping $mapping)
+    {
+        $file = $mapping->getFile($obj);
+
+        return $file !== null & $file instanceof UploadedFile;
     }
 }

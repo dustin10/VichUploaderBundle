@@ -49,7 +49,7 @@ class RemoveListener extends BaseListener
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            $this->handler->clean($object, $this->mapping);
+            $this->handler->remove($object, $this->mapping);
         }
     }
 }

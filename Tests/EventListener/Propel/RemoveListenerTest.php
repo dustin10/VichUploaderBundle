@@ -35,7 +35,7 @@ class RemoveListenerTest extends ListenerTestCase
     {
         $this->handler
             ->expects($this->once())
-            ->method('clean')
+            ->method('remove')
             ->with($this->object, self::MAPPING_NAME);
 
         $this->listener->onDelete($this->event);

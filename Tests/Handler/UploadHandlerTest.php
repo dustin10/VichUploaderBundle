@@ -32,7 +32,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
         $this->factory
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('fromName')
             ->with($this->object, self::MAPPING_ID)
             ->will($this->returnValue($this->mapping));
@@ -112,12 +112,49 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
                 array(Events::POST_REMOVE, $this->validEvent(), null),
             )));
 
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')->disableOriginalConstructor()->getMock()));
+
         $this->storage
             ->expects($this->once())
             ->method('remove')
             ->with($this->object, $this->mapping);
 
         $this->handler->clean($this->object, self::MAPPING_ID);
+    }
+
+    public function testCleanSkipsEmptyObjects()
+    {
+        $this->dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $this->handler->clean($this->object, self::MAPPING_ID);
+    }
+
+    public function testRemove()
+    {
+        $this->dispatcher
+            ->expects($this->any())
+            ->method('dispatch')
+            ->will($this->returnValueMap(array(
+                array(Events::PRE_REMOVE, $this->validEvent(), null),
+                array(Events::POST_REMOVE, $this->validEvent(), null),
+            )));
+
+        $this->storage
+            ->expects($this->once())
+            ->method('remove')
+            ->with($this->object, $this->mapping);
+
+        $this->handler->remove($this->object, self::MAPPING_ID);
     }
 
     protected function getStorageMock()
