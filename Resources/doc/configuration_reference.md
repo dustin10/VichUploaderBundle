@@ -27,5 +27,5 @@ vich_uploader:
 
 - `storage`: The id of the storage service used by the bundle to
 store files. The bundle ships with vich_uploader.storage.file_system,
-vich_uploader.storage.gaufrette (see [FileSystemStorage VS GaufretteStorage](#filesystemstorage-vs-gaufrettestorage))
+vich_uploader.storage.gaufrette (see [FileSystemStorage VS GaufretteStorage](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/usage.md#filesystemstorage-vs-gaufrettestorage-vs-flysystemstorage))
 and vich_uploader.storage.flysystem.
