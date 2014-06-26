@@ -5,8 +5,8 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
  * PropertyMappingFactory.
@@ -26,11 +26,6 @@ class PropertyMappingFactory
     protected $metadata;
 
     /**
-     * @var AdapterInterface $adapter
-     */
-    protected $adapter;
-
-    /**
      * @var array $mappings
      */
     protected $mappings;
@@ -40,15 +35,32 @@ class PropertyMappingFactory
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
      * @param \Vich\UploaderBundle\Metadata\MetadataReader              $metadata  The mapping mapping.
-     * @param \Vich\UploaderBundle\Adapter\AdapterInterface             $adapter   The adapter.
      * @param array                                                     $mappings  The configured mappings.
      */
-    public function __construct(ContainerInterface $container, MetadataReader $metadata, AdapterInterface $adapter, array $mappings)
+    public function __construct(ContainerInterface $container, MetadataReader $metadata, array $mappings)
     {
         $this->container = $container;
         $this->metadata = $metadata;
-        $this->adapter = $adapter;
         $this->mappings = $mappings;
+    }
+
+    /**
+     * Creates PropetyMapping from its name.
+     *
+     * @param object $object      The object.
+     * @param string $mappingName The mapping name.
+     *
+     * @return PropertyMapping
+     */
+    public function fromName($object, $mappingName)
+    {
+        $mappings = $this->fromObject($object);
+
+        if (!isset($mappings[$mappingName])) {
+            throw new \RuntimeException(sprintf('Mapping %s does not exist', $mappingName));
+        }
+
+        return $mappings[$mappingName];
     }
 
     /**
@@ -72,7 +84,7 @@ class PropertyMappingFactory
 
         $mappings = array();
         foreach ($this->metadata->getUploadableFields($class) as $field => $mappingData) {
-            $mappings[] = $this->createMapping($obj, $field, $mappingData);
+            $mappings[$mappingData['mapping']] = $this->createMapping($obj, $field, $mappingData);
         }
 
         return $mappings;
@@ -126,7 +138,7 @@ class PropertyMappingFactory
      * @param string $fieldName   The field name.
      * @param array  $mappingData The mapping data.
      *
-     * @return PropertyMapping    The property mapping.
+     * @return PropertyMapping           The property mapping.
      * @throws \InvalidArgumentException
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
@@ -170,7 +182,7 @@ class PropertyMappingFactory
         }
 
         if (is_object($object)) {
-            return $this->adapter->getClassName($object);
+            return ClassUtils::getClass($object);
         }
 
         throw new \RuntimeException('Impossible to determine the class name. Either specify it explicitly or give an object');

@@ -23,13 +23,4 @@ interface AdapterInterface
      * @param object $event The event.
      */
     public function recomputeChangeSet($event);
-
-    /**
-     * Gets class name for the object, taking proxies into account.
-     *
-     * @param object $object The object.
-     *
-     * @return string The FQCN of the given object.
-     */
-    public function getClassName($object);
 }

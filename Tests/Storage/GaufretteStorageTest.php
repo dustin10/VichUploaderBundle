@@ -74,8 +74,9 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      * Tests the upload method skips a mapping which has a non
      * uploadable property value.
      *
-     * @dataProvider    invalidFileProvider
-     * @group           upload
+     * @expectedException   LogicException
+     * @dataProvider        invalidFileProvider
+     * @group               upload
      */
     public function testUploadSkipsMappingOnInvalid($file)
     {
@@ -96,7 +97,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getFileName');
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     public function invalidFileProvider()
@@ -116,34 +117,11 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the remove method does not remove a file that is configured
-     * to not be deleted upon removal of the entity.
-     */
-    public function testRemoveSkipsConfiguredNotToDeleteOnRemove()
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(false));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->remove($this->object);
-    }
-
-    /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
      */
     public function testRemoveSkipsNullFileNameProperty()
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
@@ -153,7 +131,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('getUploadDir');
 
-        $this->storage->remove($this->object);
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     /**
@@ -206,10 +184,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     public function testThatRemoveMethodDoesDeleteFile()
     {
         $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
-        $this->mapping
             ->expects($this->any())
             ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
@@ -231,7 +205,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
-        $this->storage->remove($this->object, 'file');
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     /**
@@ -239,10 +213,6 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveNotFoundFile()
     {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getDeleteOnRemove')
-            ->will($this->returnValue(true));
         $this->mapping
             ->expects($this->any())
             ->method('getUploadDestination')
@@ -266,7 +236,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
-        $this->storage->remove($this->object, 'file');
+        $this->storage->remove($this->object, $this->mapping);
     }
 
     /**
@@ -360,7 +330,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
@@ -437,7 +407,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
 
-        $this->storage->upload($this->object);
+        $this->storage->upload($this->object, $this->mapping);
     }
 
     /**

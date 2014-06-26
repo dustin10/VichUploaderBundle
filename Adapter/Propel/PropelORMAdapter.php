@@ -25,12 +25,4 @@ class PropelORMAdapter implements AdapterInterface
     public function recomputeChangeSet($event)
     {
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getClassName($object)
-    {
-        return get_class($object);
-    }
 }

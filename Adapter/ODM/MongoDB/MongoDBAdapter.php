@@ -3,14 +3,13 @@
 namespace Vich\UploaderBundle\Adapter\ODM\MongoDB;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\Adapter\Doctrine\DoctrineAdapter;
 
 /**
  * MongoDBAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MongoDBAdapter extends DoctrineAdapter implements AdapterInterface
+class MongoDBAdapter implements AdapterInterface
 {
     /**
      * {@inheritDoc}
@@ -32,5 +31,4 @@ class MongoDBAdapter extends DoctrineAdapter implements AdapterInterface
         $metadata = $dm->getClassMetadata(get_class($object));
         $uow->recomputeSingleDocumentChangeSet($metadata, $object);
     }
-
 }

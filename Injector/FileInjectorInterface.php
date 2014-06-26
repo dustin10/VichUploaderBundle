@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Injector;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+
 /**
  * FileInjectorInterface.
  *
@@ -10,11 +12,13 @@ namespace Vich\UploaderBundle\Injector;
 interface FileInjectorInterface
 {
     /**
-     * Injects the uploadable fields of the specified object
-     * with a populated Symfony\Component\HttpFoundation\File\File
-     * instance if the field is configured for injection.
+     * Injects the uploadable field of the specified object and mapping.
      *
-     * @param object $obj The object.
+     * The field is populated with a \Symfony\Component\HttpFoundation\File\File
+     * instance.
+     *
+     * @param object          $obj     The object.
+     * @param PropertyMapping $mapping The mapping representing the field to populate.
      */
-    public function injectFiles($obj);
+    public function injectFile($obj, PropertyMapping $mapping);
 }

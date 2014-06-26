@@ -30,27 +30,6 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.cache_dir', sys_get_temp_dir());
     }
 
-    /**
-     * @dataProvider adapterProvider
-     */
-    public function testAdapterIsAnAliasToTheRightService($dbDriver, $expectedService)
-    {
-        $this->load(array(
-            'db_driver' => $dbDriver,
-        ));
-
-        $this->assertContainerBuilderHasAlias('vich_uploader.adapter', $expectedService);
-    }
-
-    public function testDriverParameterIsSet()
-    {
-        $this->load(array(
-            'db_driver' => 'propel',
-        ));
-
-        $this->assertContainerBuilderHasParameter('vich_uploader.driver', 'propel');
-    }
-
     public function testStorageServiceParameterIsSet()
     {
         $this->load(array(
@@ -87,15 +66,30 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             ),
         ));
 
+        // the default db_driver is copied into the mapping
+        $mappings['foo']['db_driver'] = 'propel';
+
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
-    public function adapterProvider()
+    public function testDbDriverIsntOverriden()
     {
-        return array(
-            array( 'orm',       'vich_uploader.adapter.orm' ),
-            array( 'mongodb',   'vich_uploader.adapter.mongodb' ),
-            array( 'propel',    'vich_uploader.adapter.propel' ),
-        );
+        $this->load(array(
+            'db_driver' => 'propel',
+            'mappings' => $mappings = array(
+                'foo' => array(
+                    'upload_destination'    => 'web/',
+                    'uri_prefix'            => '/',
+                    'namer'                 => null,
+                    'directory_namer'       => null,
+                    'delete_on_remove'      => true,
+                    'delete_on_update'      => true,
+                    'inject_on_load'        => true,
+                    'db_driver'             => 'orm',
+                )
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 }

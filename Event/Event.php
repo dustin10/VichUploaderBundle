@@ -18,6 +18,11 @@ class Event extends BaseEvent
         $this->object = $object;
     }
 
+    /**
+     * Accessor to the object being manipulated.
+     *
+     * @return mixed
+     */
     public function getObject()
     {
         return $this->object;

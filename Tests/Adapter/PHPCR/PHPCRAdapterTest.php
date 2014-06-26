@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
 use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\DummyEntityProxyPHPCR;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
 
 /**
@@ -25,7 +24,7 @@ class PHPCRAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectFromArgs()
     {
-        $entity = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $entity = new DummyEntity();
 
         $args = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
@@ -39,26 +38,4 @@ class PHPCRAdapterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
     }
-
-    /**
-     * @dataProvider entityProvider
-     */
-    public function testGetClassName($entity, $expectedClassName)
-    {
-        $adapter = new PHPCRAdapter();
-
-        $this->assertEquals($expectedClassName, $adapter->getClassName($entity));
-    }
-
-    public function entityProvider()
-    {
-        $classicEntity = new DummyEntity();
-        $proxiedEntity = new DummyEntityProxyPHPCR();
-
-        return array(
-            array($classicEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
-            array($proxiedEntity, 'Vich\UploaderBundle\Tests\DummyEntity'),
-        );
-    }
 }
-

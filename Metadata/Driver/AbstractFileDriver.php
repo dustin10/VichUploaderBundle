@@ -62,7 +62,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
     /**
      * Retrieves the name of the class described in the given file.
      *
-     * @param string           $file
+     * @param string $file
      *
      * @return string
      */

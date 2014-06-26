@@ -36,11 +36,6 @@ class PropelORMAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(42, $this->adapter->getObjectFromArgs($event));
     }
 
-    public function testGetClassName()
-    {
-        $this->assertSame('DateTime', $this->adapter->getClassName(new \DateTime()));
-    }
-
     public function testRecomputeChangeset()
     {
         $event = $this->getMock('\Symfony\Component\EventDispatcher\GenericEvent');

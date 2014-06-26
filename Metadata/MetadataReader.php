@@ -31,15 +31,28 @@ class MetadataReader
     /**
      * Tells if the given class is uploadable.
      *
-     * @param string $class The class name to test (FQCN).
+     * @param string $class   The class name to test (FQCN).
+     * @param string $mapping If given, also checks that the object has the given mapping.
      *
      * @return bool
      */
-    public function isUploadable($class)
+    public function isUploadable($class, $mapping = null)
     {
         $metadata = $this->reader->getMetadataForClass($class);
 
-        return $metadata !== null;
+        if ($metadata === null) {
+            return false;
+        } elseif ($mapping === null) {
+            return true;
+        }
+
+        foreach ($this->getUploadableFields($class) as $fieldMetadata) {
+            if ($fieldMetadata['mapping'] === $mapping) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

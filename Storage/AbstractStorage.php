@@ -1,4 +1,5 @@
 <?php
+
 namespace Vich\UploaderBundle\Storage;
 
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -31,9 +32,9 @@ abstract class AbstractStorage implements StorageInterface
      * Do real upload
      *
      * @param PropertyMapping $mapping
-     * @param UploadedFile $file
-     * @param string       $dir
-     * @param string       $name
+     * @param UploadedFile    $file
+     * @param string          $dir
+     * @param string          $name
      *
      * @return boolean
      */
@@ -42,42 +43,35 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function upload($obj)
+    public function upload($obj, PropertyMapping $mapping)
     {
-        $mappings = $this->factory->fromObject($obj);
-        foreach ($mappings as $mapping) {
-            $file = $mapping->getFile($obj);
+        $file = $mapping->getFile($obj);
 
-            if ($file === null || !($file instanceof UploadedFile)) {
-                continue;
-            }
-
-            // determine the file's directory
-            $dir = $mapping->getUploadDir($obj);
-
-            if ($mapping->getDeleteOnUpdate() && ($name = $mapping->getFileName($obj))) {
-                $this->doRemove($mapping, $dir, $name);
-            }
-
-            // determine the file's name
-            if ($mapping->hasNamer()) {
-                $name = $mapping->getNamer()->name($obj, $mapping);
-            } else {
-                $name = $file->getClientOriginalName();
-            }
-
-            $mapping->setFileName($obj, $name);
-
-            $this->doUpload($mapping, $file, $dir, $name);
+        if ($file === null || !($file instanceof UploadedFile)) {
+            throw new \LogicException('No uploadable file found');
         }
+
+        // determine the file's directory
+        $dir = $mapping->getUploadDir($obj);
+
+        // determine the file's name
+        if ($mapping->hasNamer()) {
+            $name = $mapping->getNamer()->name($obj, $mapping);
+        } else {
+            $name = $file->getClientOriginalName();
+        }
+
+        $mapping->setFileName($obj, $name);
+
+        $this->doUpload($mapping, $file, $dir, $name);
     }
 
     /**
      * Do real remove
      *
      * @param PropertyMapping $mapping
-     * @param string $dir
-     * @param string $name
+     * @param string          $dir
+     * @param string          $name
      *
      * @return boolean
      */
@@ -86,36 +80,25 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function remove($obj)
+    public function remove($obj, PropertyMapping $mapping)
     {
-        $mappings = $this->factory->fromObject($obj);
+        $name = $mapping->getFileName($obj);
 
-        /** @var $mapping PropertyMapping */
-        foreach ($mappings as $mapping) {
-            if (!$mapping->getDeleteOnRemove()) {
-                continue;
-            }
-
-            $name = $mapping->getFileName($obj);
-
-            // the non-strict comparison is done on purpose: we want to skip
-            // null and empty filenames
-            if (null == $name) {
-                continue;
-            }
-
-            $dir = $mapping->getUploadDir($obj);
-
-            $this->doRemove($mapping, $dir, $name);
+        // the non-strict comparison is done on purpose: we want to skip
+        // null and empty filenames
+        if (null == $name) {
+            return;
         }
+
+        $this->doRemove($mapping, $mapping->getUploadDir($obj), $name);
     }
 
     /**
      * Do resolve path
      *
      * @param PropertyMapping $mapping
-     * @param string $dir
-     * @param string $name
+     * @param string          $dir
+     * @param string          $name
      *
      * @return string
      */
