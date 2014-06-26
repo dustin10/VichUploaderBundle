@@ -67,23 +67,23 @@ class UploadHandler
             return;
         }
 
-        $this->dispatch(Events::PRE_UPLOAD, new Event($obj));
+        $this->dispatch(Events::PRE_UPLOAD, new Event($obj, $mapping));
 
         $this->storage->upload($obj, $mapping);
         $this->injector->injectFile($obj, $mapping);
 
-        $this->dispatch(Events::POST_UPLOAD, new Event($obj));
+        $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
     }
 
     public function inject($obj, $mapping)
     {
         $mapping = $this->factory->fromName($obj, $mapping);
 
-        $this->dispatch(Events::PRE_INJECT, new Event($obj));
+        $this->dispatch(Events::PRE_INJECT, new Event($obj, $mapping));
 
         $this->injector->injectFile($obj, $mapping);
 
-        $this->dispatch(Events::POST_INJECT, new Event($obj));
+        $this->dispatch(Events::POST_INJECT, new Event($obj, $mapping));
     }
 
     public function clean($obj, $mappingName)
@@ -102,11 +102,11 @@ class UploadHandler
     {
         $mapping = $this->factory->fromName($obj, $mapping);
 
-        $this->dispatch(Events::PRE_REMOVE, new Event($obj));
+        $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
 
         $this->storage->remove($obj, $mapping);
 
-        $this->dispatch(Events::POST_REMOVE, new Event($obj));
+        $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
     }
 
     protected function dispatch($eventName, Event $event)
