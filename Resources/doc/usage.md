@@ -81,99 +81,16 @@ of `Symfony\Component\HttpFoundation\File\File`
 > This is the easiest configuration and will use the default
 > storage service (vich_uploader.storage.file_system).
 > If you want to use Gaufrette you will have to add some bit
-> of configuration (see [gaufrette configuration](#gaufrette-configuration) for more help).
+> of configuration (see [gaufrette configuration](configuration/gaufrette.md) for more help).
 
 **Note:**
 
 > A verbose configuration reference including all configuration options and their
 > default values is included at the bottom of this document.
 
-### Gaufrette configuration
+* [Flysystem configuration](configuration/flysystem.md)
+* [Gaufrette configuration](configuration/gaufrette.md)
 
-In order to use Gaufrette you have to configure it. Here is
-a sample configuration that stores your file in your local filesystem,
-but you can use your preferred adapters and FS (for details
-on this topic you should refer to the gaufrette documentation).
-
-``` yaml
-knp_gaufrette:
-    stream_wrapper: ~
-
-    adapters:
-        product_adapter:
-            local:
-                directory: %kernel.root_dir%/../web/images/products
-
-    filesystems:
-        product_image_fs:
-            adapter:    product_adapter
-
-vich_uploader:
-    db_driver: orm
-    gaufrette: true
-    storage:   vich_uploader.storage.gaufrette
-    mappings:
-        product_image:
-            uri_prefix:         /images/products
-            upload_destination: product_image_fs
-```
-
-Using vich_uploader.storage.gaufrette as the storage service
-you can still use the same mappings options that you would
-use with default storage.
-
-**Note:**
-
-> Make sure that Gaufrette stream wrapper overloading is enabled.
-
-**Note:**
-
-> In this case upload_destination refer to a gaufrette filesystem
-> and directory_namer should be used to generate a valid
-> filesystem ID (and not a real path). See more about this
-> in [Namers section](#namers)
-
-### Flysystem configuration
-
-Flysystem's configuration looks a lot like Gaufrette's.
-Here is a sample configuration that stores your file in your local filesystem,
-but you can use your preferred adapters and FS (for details on this topic you
-should refer to the official documentation).
-
-``` yaml
-oneup_flysystem:
-    adapters:
-        product_adapter:
-            local:
-                directory: %kernel.root_dir%/../web/images/products
-
-    filesystems:
-        product_image_fs:
-            adapter:    product_adapter
-
-vich_uploader:
-    db_driver: orm
-    flysystem: true
-    storage:   vich_uploader.storage.flysystem
-    mappings:
-        product_image:
-            uri_prefix:         /images/products
-            upload_destination: product_image_fs
-```
-
-Using vich_uploader.storage.flysystem as the storage service you can still use
-the same mappings options that you would use with default storage.
-
-**Note:**
-
-> In this case upload_destination refer to a Flysystem filesystem and
-> directory_namer should be used to generate a valid filesystem ID (and not a
-> real path). See more about this in [Namers section](#namers)
-
-**Note:**
-
-> [OneupFlysystemBundle](https://github.com/1up-lab/OneupFlysystemBundle) needs
-> to be installed and activated to get the FlysystemStorage to work.
 
 ## Annotate Entities
 
