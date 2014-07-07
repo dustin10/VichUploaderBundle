@@ -5,8 +5,8 @@ VichUploaderBundle tries to handle file uploads according to a combination
 of configuration parameters and annotations. In order to have your upload
 working you have to:
 
-* Choose which storage service you want to use (vich_uploader.storage.file_system
-or vich_uploader.storage.gaufrette)
+* Choose which storage service you want to use (basic filesystem, Gaufrette or
+  Flysystem)
 * Define a basic configuration set
 * Annotate your Entities
 * Optionally implement namer services (see Namer later)
@@ -251,7 +251,7 @@ keep the extension. Using this namer, foo.jpg will be uploaded as something like
 filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
 something like 50eb3db039715_foo.jpg
 
-To use it, you just have to specify the service id for the `namer` configuration option of your mapping :
+To use it, you just have to specify the service id for the `namer` configuration option of your mapping:
 
 ``` yaml
 vich_uploader:
@@ -262,21 +262,27 @@ vich_uploader:
             namer:              vich_uploader.namer_uniqid
 ```
 
+If no namer is configured for a mapping, the bundle will simply use the name of the file that
+was uploaded.
+
 ### How-to
 
 * [Create a custom file namer](file_namer/howto/create_a_custom_file_namer.md)
 
 ## Directory Namer
 
-To create a custom directory namer, simply implement the
-`Vich\UploaderBundle\Naming\DirectoryNamerInterface`
-and in the `directoryName` method of your class return the absolute directory.
-Since your entity and the mapping information describing it are both passed to
-the `directoryName` method you are free to get any information from it to
-create the name, or inject any other services you require.
+Like file namers, directory namers allow you to customize the directory in which
+uploaded files will be stored.
 
-After you have created your directory namer and configured it as a service, you simply specify
-the service id for the `directory_namer` configuration option of your mapping. An example:
+**Note**:
+
+> Directory namers are called when a file is uploaded but also later, when you
+> want to retrieve the path or URL of an already uploaded file. That's why
+> **directory namers MUST be stateless** and rely only on the data provided by
+> the mapping or the entity itself to determine the directory.
+
+To use it, you just have to specify the service id for the `directory_namer`
+configuration option of your mapping:
 
 ``` yaml
 vich_uploader:
@@ -287,13 +293,12 @@ vich_uploader:
             directory_namer:    my.directory_namer.product
 ```
 
-If no directory namer is configured for a mapping, the bundle will simply use the `upload_destination` configuration option.
+If no directory namer is configured for a mapping, the bundle will simply use
+the `upload_destination` configuration option.
 
-**Note**:
+### How-to
 
-> If you are using Gaufrette or Flysystem to abstract from the filesystem the
-> name returned will be used as a gaufrette filesystem ID and not as a proper
-> path.
+* [Create a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
 
 ## Generating URLs
 
