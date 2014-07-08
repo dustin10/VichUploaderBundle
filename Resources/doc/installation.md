@@ -3,43 +3,12 @@ Installation
 
 ## Installation notes
 
-### Get the bundle
+### Get the bundle using composer
 
-Regardless of the persistence provider you want to use, you can install this
-bundle with Composer, with a `deps.lock` file or a git submodule.
+Add VichUploaderBundle by running the command:
 
-If you want to use Composer, just add the right dependencies to your
-`composer.json`:
-
-``` json
-{
-    "require": {
-        "vich/uploader-bundle": "dev-master",
-        "knplabs/knp-gaufrette-bundle" : "dev-master"
-    }
-}
-```
-
-Or add to `deps` file:
-
-```
-[gaufrette]
-    git=http://github.com/KnpLabs/Gaufrette.git
-    version=v0.1.3
-
-[KnpGaufretteBundle]
-    git=http://github.com/KnpLabs/KnpGaufretteBundle.git
-    target=/bundles/Knp/Bundle/GaufretteBundle
-
-[VichUploaderBundle]
-    git=git://github.com/dustin10/VichUploaderBundle.git
-    target=/bundles/Vich/UploaderBundle
-```
-
-Or you may add the bundle as a git submodule:
-
-``` bash
-$ git submodule add https://github.com/dustin10/VichUploaderBundle.git vendor/bundles/Vich/UploaderBundle
+```bash
+$ php composer.phar require vich/uploader-bundle 'dev-master'
 ```
 
 **Note:**
@@ -48,6 +17,7 @@ $ git submodule add https://github.com/dustin10/VichUploaderBundle.git vendor/bu
 > to install the dependencies required by the persistence provider you want to
 > use.
 > Don't worry, they are detailed in the Doctrine or Propel sections below.
+> The same goes for storage providers.
 
 
 ### Initialize the bundle
@@ -83,7 +53,7 @@ is installed and properly registered in your application.
 
 ## Propel
 
-Two dependencies are required to enable Propel's support:
+Two additional dependencies are required to enable Propel's support:
 
 ``` json
 {
