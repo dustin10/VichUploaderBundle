@@ -50,23 +50,6 @@ $ git submodule add https://github.com/dustin10/VichUploaderBundle.git vendor/bu
 > Don't worry, they are detailed in the Doctrine or Propel sections below.
 
 
-### Add the namespace to your autoloader
-
-If you don't use Composer, you will have to update your autoloader's
-configuration:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Knp\Bundle'  => __DIR__.'/../vendor/bundles',
-    'Gaufrette'   => __DIR__.'/../vendor/gaufrette/src',
-    'Vich'        => __DIR__.'/../vendor/bundles'
-));
-```
-
 ### Initialize the bundle
 
 To start using the bundle, register the bundle in your application's kernel class:
