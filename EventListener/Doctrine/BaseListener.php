@@ -55,7 +55,7 @@ abstract class BaseListener implements EventSubscriber
     /**
      * Checks if the given object is uploadable using the current mapping.
      *
-     * @para mixed $object The object to test.
+     * @param mixed $object The object to test.
      *
      * @return bool
      */
