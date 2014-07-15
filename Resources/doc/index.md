@@ -1,27 +1,47 @@
-VichUploaderBundle
-==================
+Getting started with VichUploaderBundle
+=======================================
 
-The VichUploaderBundle is a Symfony2 bundle that attempts to ease file
-uploads that are attached to an entity. The bundle will automatically name and
-save the uploaded file according to the configuration specified on a per-property
-basis using a mix of configuration and annotations. After the entity has been created
-and the file has been saved, if configured to do so an instance of
-`Symfony\Component\HttpFoundation\File\File` will be loaded into the annotated property
-when the entity is loaded from the datastore. The bundle also provides templating helpers
-for generating URLs to the file. The file can also be configured to be removed from the
-file system upon removal of the entity.
+VichUploaderBundle provides an easy way to link file uploads with a persistence
+layer.
 
-The bundle provides different ways to interact with the filesystem; you can choose
-your preferred one by configuration. Basically, you can choose to work with the local
-filesystem or integrate gaufrette to have nice abstraction over the filesystem (for more
-info see [FileSystemStorage VS GaufretteStorage](usage.md#filesystemstorage-vs-gaufrettestorage)).
-
-You can also implement your own `StorageInterface` if you need to.
+So if you want to save file uploads to ORM entities, MongoDB ODM documents,
+PHPCR ODM documents or Propel models, you are in the right place.
 
 
-## Documentation
+## Installation
 
-  1. [Installation](installation.md)
-  2. [Usage](usage.md)
-  3. [Configuration reference](configuration_reference.md)
-  4. [Known issues](known_issues.md)
+Don't worry, it will be quick and easy (I promise!):
+
+  * [Installation procedure](installation.md)
+
+
+## Usage
+
+  * [Basic usage](usage.md)
+  * [Generating URLs](generating_urls.md)
+
+
+## Cookbooks
+
+### Namers-related
+
+  * [Working with file and directory namers](namers.md)
+  * [Writing a custom file namer](file_namer/howto/create_a_custom_file_namer.md)
+  * [Writing a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
+
+### Storage-related
+
+  * [Using Gaufrette as storage abstraction](storage/gaufrette.md)
+  * [Using Flysystem as storage abstraction](storage/flysystem.md)
+
+### Mapping-related
+
+  * [YAML](mapping/yaml.md)
+  * [XML](mapping/xml.md)
+
+## Useful resources
+
+  * [Configuration reference](configuration_reference.md)
+  * [Events](../../Event/Events.php)
+  * [Sandbox](https://github.com/K-Phoen/Vich-Uploader-Sandbox)
+  * [Known issues](known_issues.md)

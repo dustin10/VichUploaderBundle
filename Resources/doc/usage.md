@@ -1,116 +1,76 @@
 Usage
 =====
 
-VichUploaderBundle tries to handle file uploads according to a combination
-of configuration parameters and annotations. In order to have your upload
-working you have to:
+This guide will show you how to handle a file upload, store the file on the file
+system (or on some remote server if you prefer) and persist the stored filename
+to the database.
 
-* Choose which storage service you want to use (basic filesystem, Gaufrette or
-  Flysystem)
-* Define a basic configuration set
-* Annotate your Entities
-* Optionally implement namer services (see Namer later)
+Here is a summary of what you will have to do:
 
-*Please note that some bundle components have a slightly different meaning according to the
-storage service you are using. Read more about it in [Configuration reference](configuration_reference.md)*
+  * [configure an upload mapping](#step-1-configure-an-upload-mapping) ;
+  * [link the upload mapping to an entity](#step-2-link-the-upload-mapping-to-an-entity) ;
+  * [configure the lifecycle events](#step-3-configure-the-lifecycle-events-optional-step) (optional step).
 
-## FileSystemStorage VS GaufretteStorage VS FlysystemStorage
+**Note:**
 
-Gaufrette is a great piece of code and provide a great level of filesystem
-abstraction. Using Gaufrette, you will be able to store files locally, or using
-some external service without impact on your application. This means that you
-will be able to change the location of your files by changing configuration,
-rather than code.
-[Flysystem](https://github.com/thephpleague/flysystem) -despite is relative youth - is another great filesystem abstraction.
+> Throughout the guide we will use Doctrine ORM as the persistence engine on
+> the examples. Though mostly, there won't be much difference if you use a
+> different engine.
+>
 
-**For this reason GaufretteStorage or FlysystemStorage are probably the most
-flexible solutions and your best choice as storage service.**
+## Step 1: configure an upload mapping
 
-If you don't need this level of abstraction, if you prefer to
-keep things simple, or if you just don't feel comfortable working
-with gaufrette you can go with FileSystemStorage.
-
-For more information on how use one storage instead of another,
-go to [Configuration](#configuration) section
-
-## Configuration
-
-First configure the `db_driver` option. You must specify either `orm`,
-`mongodb` or `phpcr`.
+Each time you need to upload something new to your system, you'll start by
+configuring where it should be stored (`upload_destination`), the web path to
+that directory (`uri_prefix`) and give the upload mapping a name
+(`product_image`in our example).
 
 ``` yaml
 # app/config/config.yml
 vich_uploader:
-    db_driver: orm # or mongodb or propel or phpcr
-```
-
-And then add your mappings information. In order to map
-configuration options to the property of the entity you first
-need to create a mapping in the bundle configuration. You
-create these mappings under the `mappings` key. Each mapping should have a
-unique name.
-So, if you wanted to name your mapping `product_image`, the configuration
-for this mapping would be similar to:
-
-``` yaml
-vich_uploader:
     db_driver: orm
+
     mappings:
         product_image:
             uri_prefix:         /images/products
             upload_destination: %kernel.root_dir%/../web/images/products
 ```
 
-The `upload_destination` is the only required configuration option for an entity mapping.
-
-All options are listed below:
-
-- `upload_destination`: The gaufrette fs id to upload the file to
-- `namer`: The id of the file namer service for this entity (See [Namers](#namers) section below)
-- `directory_namer`: The id of the directory namer service for this entity (See Namers section below)
-- `delete_on_remove`: Set to true if the file should be deleted from the
-filesystem when the entity is removed
-- `delete_on_update`: Set to true if the file should be deleted from the
-filesystem when the file is replaced by an other one
-- `inject_on_load`: Set to true if the file should be injected into the uploadable
-field property when it is loaded from the data store. The object will be an instance
-of `Symfony\Component\HttpFoundation\File\File`
-
-**Note:**
-
-> This is the easiest configuration and will use the default
-> storage service (vich_uploader.storage.file_system).
-> If you want to use Gaufrette you will have to add some bit
-> of configuration (see [gaufrette configuration](configuration/gaufrette.md) for more help).
-
-**Note:**
-
-> A verbose configuration reference including all configuration options and their
-> default values is included at the bottom of this document.
-
-* [Flysystem configuration](configuration/flysystem.md)
-* [Gaufrette configuration](configuration/gaufrette.md)
+This is the minimal amount of configuration needed in order to describe a
+working mapping.
 
 
-## Annotate Entities
+## Step 2: link the upload mapping to an entity
 
-In order for your entity or document to work with the bundle, you need to add a
-few annotations to it. First, annotate your class with the `Uploadable` annotation.
-This lets the bundle know that it should look for files to upload in your class when
-it is saved, inject the files when it is loaded and check to see if it needs to
-remove files when it is removed. Next, you should annotate the fields which hold
-the instance of `Symfony\Component\HttpFoundation\File\UploadedFile` when the form
-is submitted with the `UploadableField` annotation. The `UploadableField` annotation
-has a few required options. They are as follows:
+The final step is to create a link between the filesystem and the entity you
+want to make uploadable.
 
-- `mapping`: The mapping specified in the bundle configuration to use
-- `fileNameProperty`: The property of the class that will be filled with the file name
-generated by the bundle
+We already created an abstract representation of the filesystem (the mapping),
+so we just have to tell the bundle which entity should use which mapping. In
+this guide we'll use annotations to achieve this but you can also use
+[YAML](Resources/doc/mapping/yaml.md) or [XML](Resources/doc/mapping/xml.md).
+
+First, annotate your class with the `Uploadable` annotation. This is really like
+a flag indicating that the entity contains uploadable fields.
+
+Next, you have to create the two fields needed for the bundle to work:
+
+  1. create a field (e.g. `imageName`) which will be stored to the database as a
+     string. This will hold the filename of the uploaded file.
+  2. create another field (e.g. `imageFile`). This will store the `UploadedFile`
+     object after the form is submitted. This should *not* be persisted to the
+     database, but you *do* need to annotate it.
+
+The `UploadableField` annotation has a few required options. They are as follows:
+
+  * `mapping`: the mapping name specified in the bundle configuration to use ;
+  * `fileNameProperty`: the property that will contained the name of the
+    uploaded file. This is the only property that is saved in the database.
 
 **Note**:
 
 > Annotations can NOT be used in conjunction with Propel. You must describe your
-> mappings in YAML or XML.
+> mappings in [YAML](Resources/doc/mapping/yaml.md) or [XML](Resources/doc/mapping/xml.md).
 
 Lets look at an example using a fictional `Product` ORM entity:
 
@@ -121,7 +81,6 @@ namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -140,15 +99,13 @@ class Product
     // ..... other fields
 
     /**
-     * @Assert\File(
-     *     maxSize="1M",
-     *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg"}
-     * )
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      *
-     * @var File $image
+     * @note This is not a mapped field of entity metadata, just a simple property.
+     *
+     * @var File $imageFile
      */
-    protected $image;
+    protected $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name")
@@ -166,17 +123,22 @@ class Product
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImage(File $image)
+    public function setImageFile(File $image)
     {
-        $this->image = $image;
+        $this->imageFile = $image;
+
+        // @note: in order to stay in a coherant state, we invalidate the filename.
+        if ($image) {
+            $this->setImageName(null);
+        }
     }
 
     /**
      * @return File
      */
-    public function getImage()
+    public function getImageFile()
     {
-        return $this->image;
+        return $this->imageFile;
     }
 
     /**
@@ -197,146 +159,48 @@ class Product
 }
 ```
 
-## YAML configuration
 
-Alternatively, you can choose to describe your entities in YAML. This bundle
-supports this format and comes with the following syntax to declare your
-uploadable fields:
+## Step 3: configure the lifecycle events (optional step)
 
-```yaml
-# src/Acme/DemoBundle/Resources/config/vich_uploader/Product.yml
-Acme\DemoBundle\Entity\Product:
-    image:
-        mapping:           product_image
-        filename_property: image_name
-```
+Even if the previous mapping is fully working, you might want to customize the
+behavior to adopt when your entities are hydrated, updated or removed. For
+instance: should the files be updated or removed accordingly?
 
-**N.B**: in order to be able to use this format, make sure that the `symfony/yaml`
-package is installed.
-
-## XML configuration
-
-The last available configuration format is XML. Here is an exemple of how to use it:
-
-```xml
-# src/Acme/DemoBundle/Resources/config/vich_uploader/Product.xml
-<vich_uploader class="Acme\DemoBundle\Entity\Product">
-  <field mapping="product_image" name="image" filename_property="image_name" />
-</vich_uploader>
-```
-
-**N.B**: in order to be able to use this format, make sure that the `simplexml`
-extension is enabled (it is by default).
-
-## Namers
-
-The bundle uses namers to name the files and directories it saves to the filesystem. A namer
-implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
-configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. If you would like to change this, you can use one of the provided namers or implement a custom one.
-
-## File Namer
-
-### Provided file namer
-
-At the moment there are two available namers:
-
-- vich_uploader.namer_uniqid
-- vich_uploader.namer_origname
-
-**vich_uploader.namer_uniqid** will rename your uploaded files using a uniqueid for the name and
-keep the extension. Using this namer, foo.jpg will be uploaded as something like 50eb3db039715.jpg.
-
-**vich_uploader.namer_origname** will rename your uploaded files using a uniqueid as the prefix of the
-filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
-something like 50eb3db039715_foo.jpg
-
-To use it, you just have to specify the service id for the `namer` configuration option of your mapping:
+Three simple configuration options allow you to fit your application's needs.
 
 ``` yaml
 vich_uploader:
-    # ...
+    db_driver: orm
     mappings:
         product_image:
-            upload_destination: product_image_fs
-            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /images/products
+            upload_destination: %kernel.root_dir%/../web/images/products
+
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
 ```
 
-If no namer is configured for a mapping, the bundle will simply use the name of the file that
-was uploaded.
+All options are listed below:
 
-### How-to
-
-* [Create a custom file namer](file_namer/howto/create_a_custom_file_namer.md)
-
-## Directory Namer
-
-Like file namers, directory namers allow you to customize the directory in which
-uploaded files will be stored.
-
-**Note**:
-
-> Directory namers are called when a file is uploaded but also later, when you
-> want to retrieve the path or URL of an already uploaded file. That's why
-> **directory namers MUST be stateless** and rely only on the data provided by
-> the mapping or the entity itself to determine the directory.
-
-To use it, you just have to specify the service id for the `directory_namer`
-configuration option of your mapping:
-
-``` yaml
-vich_uploader:
-    # ...
-    mappings:
-        product_image:
-            upload_destination: product_image
-            directory_namer:    my.directory_namer.product
-```
-
-If no directory namer is configured for a mapping, the bundle will simply use
-the `upload_destination` configuration option.
-
-### How-to
-
-* [Create a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
-
-## Generating URLs
-
-To get a url for the file you can use the `vich_uploader.templating.helper`
-service as follows:
-
-``` php
-$entity = // get the entity..
-$helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
-$path = $helper->asset($entity, 'image');
-```
-or in a Twig template you can use the `vich_uploader_asset` function:
-
-``` twig
-<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
-```
-
-You must specify the annotated property you wish to get the file path for.
+  * `delete_on_remove`: should the file be deleted when the entity is removed ;
+  * `delete_on_update`: should the file be deleted when a new file is uploaded ;
+  * `inject_on_load`: should the file be injected into the uploadable entity when it is loaded from the data store. The object will be an instance of `Symfony\Component\HttpFoundation\File\File`.
 
 **Note:**
 
-> The path returned is relative to the web directory which is specified
-> using the `uri_prefix` configuration parameter.
+> The values used for the last three configuration options are the default ones.
 
-**Note:**
 
-> If the `product` variable isn't hydrated as an object but as an array, you
-> will have to manually specify its className so that VichUploaderBundle can
-> determine the right mapping configuration to use.
-> Exemple:
+## That was it!
 
-```html+jinja
-{{ vich_uploader_asset(product, 'image', 'FooBundle\Entity\Product') }}
-```
+You're done! Now create a form with an `imageFile` field that uses the `file`
+type.
+When you submit and save, the uploaded file will automatically be moved to the
+location you configured and the `imageName` field will be set to the filename of
+the uploaded file.
 
-## Events
+Feel free to check our [sandbox application](https://github.com/K-Phoen/Vich-Uploader-Sandbox)
+if you need working examples!
 
-Several events are triggered by the bundle, allowing you to react to upload
-events in your application.
-See the [Events](https://github.com/dustin10/VichUploaderBundle/blob/master/Event/Events.php) class
-for a full list and explanation of the events.
+[Return to the index to explore the other possibilities of the bundle.](index.md)
