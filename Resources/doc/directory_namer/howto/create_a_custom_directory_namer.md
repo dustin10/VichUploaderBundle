@@ -20,3 +20,9 @@ vich_uploader:
             upload_destination: product_image
             directory_namer:    my.directory_namer.product
 ```
+
+
+## That was it!
+
+Check out the docs for information on how to use the bundle! [Return to the
+index.](Resources/doc/index.md)

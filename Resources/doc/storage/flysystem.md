@@ -1,9 +1,15 @@
-# Flysystem configuration
+Flysystem
+=========
 
-Flysystem's configuration looks a lot like Gaufrette's.
+> Flysystem is a filesystem abstraction which allows you to easily swap out a
+> local filesystem for a remote one.
+
+
+## Configuration
+
 Here is a sample configuration that stores your file in your local filesystem,
 but you can use your preferred adapters and FS (for details on this topic you
-should refer to the official documentation).
+should refer to [the official documentation](https://github.com/1up-lab/OneupFlysystemBundle/blob/master/Resources/doc/index.md)).
 
 ``` yaml
 oneup_flysystem:
@@ -18,24 +24,30 @@ oneup_flysystem:
 
 vich_uploader:
     db_driver: orm
+
     flysystem: true
     storage:   vich_uploader.storage.flysystem
+
     mappings:
         product_image:
             uri_prefix:         /images/products
             upload_destination: product_image_fs
 ```
 
-Using vich_uploader.storage.flysystem as the storage service you can still use
+Using `vich_uploader.storage.flysystem` as the storage service you can still use
 the same mappings options that you would use with default storage.
 
 **Note:**
 
-> In this case upload_destination refer to a Flysystem filesystem and
-> directory_namer should be used to generate a valid filesystem ID (and not a
-> real path). See more about this in [Namers section](../usage.md#namers)
+> In this case `upload_destination` refers to a Flysystem FS.
 
 **Note:**
 
 > [OneupFlysystemBundle](https://github.com/1up-lab/OneupFlysystemBundle) needs
 > to be installed and activated to get the FlysystemStorage to work.
+
+
+## That was it!
+
+Check out the docs for information on how to use the bundle! [Return to the
+index.](../index.md)

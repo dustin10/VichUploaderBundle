@@ -1,26 +1,17 @@
 Installation
 ============
 
-## Installation notes
+## Get the bundle using composer
 
-### Get the bundle using composer
-
-Add VichUploaderBundle by running the command:
+Add VichUploaderBundle by running this command from the terminal at the root of
+your Symfony project:
 
 ```bash
-$ php composer.phar require vich/uploader-bundle 'dev-master'
+php composer.phar require vich/uploader-bundle '~0.9.0'
 ```
 
-**Note:**
 
-> Because VichUploaderBundle supports Doctrine and Propel, you also will have
-> to install the dependencies required by the persistence provider you want to
-> use.
-> Don't worry, they are detailed in the Doctrine or Propel sections below.
-> The same goes for storage providers.
-
-
-### Initialize the bundle
+## Enable the bundle
 
 To start using the bundle, register the bundle in your application's kernel class:
 
@@ -30,66 +21,38 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(), // or new Oneup\FlysystemBundle\OneupFlysystemBundle(),
-
         new Vich\UploaderBundle\VichUploaderBundle(),
         // ...
     );
 )
 ```
 
-**Note:**
 
-> Both KnpGaufretteBundle and OneupFlysystemBundle are supported but none of
-> them is required. Require and activate one of them only if you want to
-> abstract your file storage with Gaufrette or Flysystem.
+## Choose and configure a persistence engine
 
+Four engines are currently supported:
 
-## Doctrine
+  * [orm](http://www.doctrine-project.org/projects/orm.html) ;
+  * [mongodb](http://doctrine-mongodb-odm.readthedocs.org/en/latest/) ;
+  * [phpcr](http://doctrine-phpcr-odm.readthedocs.org/en/latest/) ;
+  * [propel](http://propelorm.org/Propel/).
 
-Just make sure that `doctrine/orm`, `doctrine/mongodb-odm` or `doctrine/phpcr-odm`
-is installed and properly registered in your application.
+Once the chosen persistence engine is installed and configured, tell
+VichUploaderBundle that you want to use it.
 
-
-## Propel
-
-Two additional dependencies are required to enable Propel's support:
-
-``` json
-{
-    "require": {
-        "willdurand/propel-eventdispatcher-behavior": ">=1.2",
-        "willdurand/propel-eventdispatcher-bundle": ">=1.0",
-        "vich/uploader-bundle": "dev-master"
-    }
-}
-```
-
-``` php
-// app/AppKernel.php
-public function registerBundles()
-{
-    $bundles = array(
-        // ...
-        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(), // or new Oneup\FlysystemBundle\OneupFlysystemBundle(),
-        new Vich\UploaderBundle\VichUploaderBundle(),
-        new Bazinga\Bundle\PropelEventDispatcherBundle\BazingaPropelEventDispatcherBundle(),
-        // ..
-    );
-)
+``` yaml
+# app/config/config.yml
+vich_uploader:
+    db_driver: orm # or mongodb or propel or phpcr
 ```
 
 **Note:**
 
-> The order between VichUploaderBundle and BazingaPropelEventDispatcherBundle is
-> important.
+> Propel requires a bit more in order to work with this bundle. Check [Propel's
+> section](propel.md) to know what to configure.
 
-**Note:**
 
-> Each uploadable entity must have the `event_dispatcher` behavior.
-> To do this, add the following line in the concerned `schema.xml` files:
-> ```<behavior name="event_dispatcher" />```
+## That was it!
 
-**Note:**
-
-> Propel2 is **NOT** supported.
+Yea, the bundle is installed! Move onto the [usage section](usage.md) to find out how
+to configure and setup your first upload.

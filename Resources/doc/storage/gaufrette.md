@@ -1,9 +1,15 @@
-# Gaufrette configuration
+Gaufrette
+=========
+
+> Gaufrette is a PHP5 library that provides a filesystem abstraction layer.
+
+
+## Configuration
 
 In order to use Gaufrette you have to configure it. Here is
 a sample configuration that stores your file in your local filesystem,
 but you can use your preferred adapters and FS (for details
-on this topic you should refer to the gaufrette documentation).
+on this topic you should refer to the [gaufrette documentation](https://github.com/KnpLabs/KnpGaufretteBundle)).
 
 ``` yaml
 knp_gaufrette:
@@ -20,15 +26,17 @@ knp_gaufrette:
 
 vich_uploader:
     db_driver: orm
+
     gaufrette: true
     storage:   vich_uploader.storage.gaufrette
+
     mappings:
         product_image:
             uri_prefix:         /images/products
             upload_destination: product_image_fs
 ```
 
-Using vich_uploader.storage.gaufrette as the storage service
+Using `vich_uploader.storage.gaufrette` as the storage service
 you can still use the same mappings options that you would
 use with default storage.
 
@@ -38,10 +46,10 @@ use with default storage.
 
 **Note:**
 
-> In this case upload_destination refer to a gaufrette filesystem
-> and directory_namer should be used to generate a valid
-> filesystem ID (and not a real path). See more about this
-> in [Namers section](../usage.md#namers)
+> In this case `upload_destination` refers to a gaufrette filesystem.
 
 
+## That was it!
 
+Check out the docs for information on how to use the bundle! [Return to the
+index.](../index.md)
