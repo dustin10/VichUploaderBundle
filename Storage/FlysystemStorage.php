@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Storage;
 
 use League\Flysystem\FileNotFoundException;
-use Oneup\FlysystemBundle\Filesystem\FilesystemMap;
+use League\Flysystem\MountManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -17,19 +17,19 @@ class FlysystemStorage extends AbstractStorage
     /**
      * @var FilesystemMap
      */
-    protected $filesystemMap;
+    protected $mountManager;
 
     /**
      * Constructs a new instance of FlysystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory       The factory.
-     * @param \Oneup\FlysystemBundle\Filesystem\FilesystemMap     $filesystemMap Gaufrete filesystem factory.
+     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory      The factory.
+     * @param League\Flysystem\MountManager                       $mountManager Gaufrete filesystem factory.
      */
-    public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap)
+    public function __construct(PropertyMappingFactory $factory, MountManager $mountManager)
     {
         parent::__construct($factory);
 
-        $this->filesystemMap = $filesystemMap;
+        $this->mountManager = $mountManager;
     }
 
     /**
@@ -79,6 +79,6 @@ class FlysystemStorage extends AbstractStorage
      */
     protected function getFilesystem(PropertyMapping $mapping)
     {
-        return $this->filesystemMap->get($mapping->getUploadDestination());
+        return $this->mountManager->getFilesystem($mapping->getUploadDestination());
     }
 }

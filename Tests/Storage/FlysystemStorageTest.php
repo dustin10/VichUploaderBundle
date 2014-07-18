@@ -23,9 +23,9 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
     protected $mapping;
 
     /**
-     * @var \Oneup\FlysystemBundle\Filesystem\FilesystemMap $filesystemMap
+     * @var \League\Flysystem\MountManager $mountManager
      */
-    protected $filesystemMap;
+    protected $mountManager;
 
     /**
      * @var FlysystemStorage
@@ -47,7 +47,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
         $this->mapping = $this->getMappingMock();
         $this->object = new DummyEntity();
         $this->factory = $this->getFactoryMock();
-        $this->filesystemMap = $this->getFilesystemMapMock();
+        $this->mountManager = $this->getMountManagerMock();
 
         $this->factory
             ->expects($this->any())
@@ -55,7 +55,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->with($this->object)
             ->will($this->returnValue(array($this->mapping)));
 
-        $this->storage = new FlysystemStorage($this->factory, $this->filesystemMap);
+        $this->storage = new FlysystemStorage($this->factory, $this->mountManager);
 
         // and initialize the virtual filesystem
         $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
@@ -90,9 +90,9 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
-        $this->filesystemMap
+        $this->mountManager
             ->expects($this->once())
-            ->method('get')
+            ->method('getFilesystem')
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
@@ -116,9 +116,9 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->method('delete')
             ->with('test.txt');
 
-        $this->filesystemMap
+        $this->mountManager
             ->expects($this->once())
-            ->method('get')
+            ->method('getFilesystem')
             ->with('dir')
             ->will($this->returnValue($filesystem));
 
@@ -144,9 +144,9 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
             ->with('not_found.txt')
             ->will($this->throwException(new \League\Flysystem\FileNotFoundException('dummy path')));
 
-        $this->filesystemMap
+        $this->mountManager
             ->expects($this->once())
-            ->method('get')
+            ->method('getFilesystem')
             ->with('dir')
             ->will($this->returnValue($filesystem));
 
@@ -179,12 +179,12 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
     /**
      * Creates a filesystem map mock.
      *
-     * @return \Oneup\FlysystemBundle\Filesystem\FilesystemMap The filesystem map.
+     * @return \League\Flysystem\MountManager The mount manager.
      */
-    protected function getFilesystemMapMock()
+    protected function getMountManagerMock()
     {
         return $this
-            ->getMockBuilder('Oneup\FlysystemBundle\Filesystem\FilesystemMap')
+            ->getMockBuilder('League\Flysystem\MountManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
