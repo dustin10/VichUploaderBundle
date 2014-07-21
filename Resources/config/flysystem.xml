@@ -7,7 +7,7 @@
     <services>
         <service id="vich_uploader.storage.flysystem" class="Vich\UploaderBundle\Storage\FlysystemStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
-            <argument type="service" id="oneup_flysystem.filesystem_map" />
+            <argument type="service" id="oneup_flysystem.mount_manager" />
         </service>
     </services>
 </container>
