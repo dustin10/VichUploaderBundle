@@ -156,9 +156,9 @@ class VichUploaderExtension extends Extension
     protected function registerListeners(ContainerBuilder $container, array $config)
     {
         $servicesMap = array(
-            'inject_on_load'    => 'inject',
-            'delete_on_update'  => 'clean',
-            'delete_on_remove'  => 'remove',
+            'inject_on_load'    => array('name' => 'inject', 'priority' => 0),
+            'delete_on_update'  => array('name' => 'clean', 'priority' => 50),
+            'delete_on_remove'  => array('name' => 'remove', 'priority' => 0)
         );
 
         foreach ($config['mappings'] as $name => $mapping) {
@@ -170,7 +170,7 @@ class VichUploaderExtension extends Extension
                     continue;
                 }
 
-                $this->createListener($container, $name, $service, $driver);
+                $this->createListener($container, $name, $service['name'], $driver, $service['priority']);
             }
 
             // the upload listener is mandatory
@@ -178,7 +178,7 @@ class VichUploaderExtension extends Extension
         }
     }
 
-    protected function createListener(ContainerBuilder $container, $name, $type, $driver)
+    protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0)
     {
         $definition = $container
             ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
@@ -187,7 +187,7 @@ class VichUploaderExtension extends Extension
 
         // propel does not require tags to work
         if (isset($this->tagMap[$driver])) {
-            $definition->addTag($this->tagMap[$driver]);
+            $definition->addTag($this->tagMap[$driver], array('priority' => $priority));
         }
     }
 }
