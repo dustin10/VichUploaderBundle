@@ -81,7 +81,6 @@ namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -128,9 +127,8 @@ class Product
     {
         $this->imageFile = $image;
 
-        // @note: in order to stay in a coherent state, we invalidate the filename.
-        if ($image && $image instanceof UploadedFile) {
-            $this->setImageName(null);
+        if ($image) {
+            $this->updatedAt = new \DateTime('now');
         }
     }
 

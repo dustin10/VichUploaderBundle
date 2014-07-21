@@ -7,8 +7,7 @@ As the bundle is listening to Doctrine `prePersist` and `preUpdate` events, whic
 when there is no change on field mapped by Doctrine, the file upload is not handled if the image field
 is the only updated.
 
-A workaround to solve this issue is to manually set the file name property to
-null:
+A workaround to solve this issue is to manually generate a change:
 
 ```
 class Product
@@ -29,7 +28,7 @@ class Product
         $this->image = $image;
 
         if ($this->image) {
-            $this->setImageFileName(null);
+            $this->updatedAt = new \DateTime('now');
         }
     }
 }
