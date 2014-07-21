@@ -3,13 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use Vich\UploaderBundle\Naming\OrignameNamer;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * OrignameNamerTest.
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-class OrignameNamerTest extends \PHPUnit_Framework_TestCase
+class OrignameNamerTest extends TestCase
 {
     public function fileDataProvider()
     {
@@ -24,9 +25,7 @@ class OrignameNamerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameReturnsAnUniqueName($name, $pattern)
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')

@@ -3,13 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use Vich\UploaderBundle\Naming\UniqidNamer;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * UniqidNamerTest.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-class UniqidNamerTest extends \PHPUnit_Framework_TestCase
+class UniqidNamerTest extends TestCase
 {
     public function fileDataProvider()
     {
@@ -27,9 +28,7 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern)
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')

@@ -6,11 +6,12 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHandlerTest extends \PHPUnit_Framework_TestCase
+class UploadHandlerTest extends TestCase
 {
     protected $factory;
     protected $storage;
@@ -52,7 +53,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')->disableOriginalConstructor()->getMock()));
+            ->will($this->returnValue($this->getUploadedFileMock()));
 
         $this->storage
             ->expects($this->once())
@@ -116,7 +117,7 @@ class UploadHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')->disableOriginalConstructor()->getMock()));
+            ->will($this->returnValue($this->getUploadedFileMock()));
 
         $this->storage
             ->expects($this->once())

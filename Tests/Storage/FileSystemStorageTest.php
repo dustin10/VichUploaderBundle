@@ -3,16 +3,18 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * FileSystemStorageTest.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
+class FileSystemStorageTest extends TestCase
 {
     /**
      * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
@@ -95,9 +97,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
 
     public function invalidFileProvider()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = new File('dummy.file', false);
 
         return array(
             // skipped because null
@@ -279,9 +279,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testUploadedFileIsCorrectlyMoved()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
 
         $file
             ->expects($this->any())
@@ -313,9 +311,7 @@ class FileSystemStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($uploadDir, $dir, $filename, $expectedDir, $expectedFileName)
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
 
         $namer = $this->getMock('Vich\UploaderBundle\Naming\NamerInterface');
         $namer

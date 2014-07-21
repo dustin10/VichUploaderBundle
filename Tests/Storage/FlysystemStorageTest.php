@@ -6,11 +6,12 @@ use org\bovigo\vfs\vfsStream;
 
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */
-class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
+class FlysystemStorageTest extends TestCase
 {
     /**
      * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
@@ -67,9 +68,7 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
 
     public function testUpload()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
         $filesystem = $this->getFilesystemMock();
 
         $file

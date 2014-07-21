@@ -4,16 +4,18 @@ namespace Vich\UploaderBundle\Tests\Storage;
 
 use Gaufrette\Exception\FileNotFound;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * GaufretteStorageTest.
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
-class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
+class GaufretteStorageTest extends TestCase
 {
     /**
      * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
@@ -102,9 +104,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
 
     public function invalidFileProvider()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\File')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = new File('dummy.file', false);
 
         return array(
             // skipped because null
@@ -259,14 +259,12 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
     public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapter()
     {
         $filesystem = $this->getFilesystemMock();
+        $file = $this->getUploadedFileMock();
         $adapter = $this->getMockBuilder('\Gaufrette\Adapter\MetadataSupporter')
             ->disableOriginalConstructor()
             ->setMethods(array('setMetadata', 'getMetadata'))
             ->getMock();
 
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $file
             ->expects($this->once())
@@ -339,9 +337,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $file = $this->getUploadedFileMock();
 
         $file
             ->expects($this->once())
