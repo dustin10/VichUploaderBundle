@@ -21,6 +21,7 @@ oneup_flysystem:
     filesystems:
         product_image_fs:
             adapter:    product_adapter
+            mount:      product_image_fs
 
 vich_uploader:
     db_driver: orm
