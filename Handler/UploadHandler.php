@@ -105,6 +105,7 @@ class UploadHandler
         $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
 
         $this->storage->remove($obj, $mapping);
+        $mapping->setFileName($obj, null);
 
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
     }
