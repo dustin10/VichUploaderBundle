@@ -128,6 +128,8 @@ class Product
         $this->imageFile = $image;
 
         if ($image) {
+            // It is required that at least one field changes
+            // otherwise doctrine does not fire event listeners
             $this->updatedAt = new \DateTime('now');
         }
     }
