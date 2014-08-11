@@ -1,0 +1,14 @@
+{% block vich_file_widget %}
+{% spaceless %}
+    <div class="vich-file">
+        {{ form_row(form.file) }}
+        {% if form.delete is defined %}
+        {{ form_row(form.delete) }}
+        {% endif %}
+
+        {% if download_uri is defined %}
+        <a href="{{ download_uri }}">{{ 'download'|trans }}</a>
+        {% endif %}
+    </div>
+{% endspaceless %}
+{% endblock %}
