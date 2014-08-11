@@ -50,9 +50,9 @@ class FileSystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field, $className = null)
+    public function resolveUri($obj, $mappingName, $className = null)
     {
-        list($mapping, $name) = $this->getFilename($obj, $field, $className);
+        list($mapping, $name) = $this->getFilename($obj, $mappingName, $className);
 
         $uriPrefix = $mapping->getUriPrefix();
         $uploadDir = $mapping->getUploadDestination() . $mapping->getUploadDir($obj);

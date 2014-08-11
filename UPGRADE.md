@@ -6,6 +6,10 @@ true if you want to keep your old behavior.
 
 - the `NamerInterface` and `DirectoryNamerInterface` were modified.
 
+- the `resolvePath` and `resolveUri` Storage methods now take a mapping name
+  instead of a field name. The same goes for the UploaderExtension and
+  UploaderHelper `asset` method.
+
 Upgrading from v0.5.0 to 0.6.0
 ===============================
 

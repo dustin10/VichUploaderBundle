@@ -107,9 +107,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $field, $className = null)
+    public function resolvePath($obj, $mappingName, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $field, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $mappingName, $className);
         $dir = $mapping->getUploadDir($obj);
 
         return $this->doResolvePath($mapping, $dir, $filename);
@@ -118,9 +118,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $field, $className = null)
+    public function resolveUri($obj, $mapping, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $field, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $mapping, $className);
 
         if (!$filename) {
             return '';
@@ -129,19 +129,17 @@ abstract class AbstractStorage implements StorageInterface
         return $mapping->getUriPrefix() . '/' . $mapping->getUploadDir($obj) . $filename;
     }
 
-    protected function getFilename($obj, $field, $className = null)
+    /**
+     * @note extension point.
+     */
+    protected function getFilename($obj, $mappingName, $className = null)
     {
-        $mapping = $this->factory->fromField($obj, $field, $className);
-        if (null === $mapping) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to find uploadable field named: "%s"', $field
-            ));
-        }
-
+        $mapping = $mappingName instanceof PropertyMapping ? $mappingName : $this->factory->fromName($obj, $mappingName, $className);
         $filename = $mapping->getFileName($obj);
+
         if ($filename === null) {
             throw new \InvalidArgumentException(sprintf(
-                'Unable to get filename property value: "%s"', $field
+                'Unable to get filename value for mapping: "%s" (check that the mapping name is correct and that there is an uploaded file)', $mappingName
             ));
         }
 

@@ -49,12 +49,13 @@ class PropertyMappingFactory
      *
      * @param object $object      The object.
      * @param string $mappingName The mapping name.
+     * @param string $className   The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return PropertyMapping
      */
-    public function fromName($object, $mappingName)
+    public function fromName($object, $mappingName, $className = null)
     {
-        $mappings = $this->fromObject($object);
+        $mappings = $this->fromObject($object, $className);
 
         if (!isset($mappings[$mappingName])) {
             throw new \RuntimeException(sprintf('Mapping %s does not exist', $mappingName));

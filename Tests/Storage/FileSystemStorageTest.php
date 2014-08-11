@@ -193,11 +193,11 @@ class FileSystemStorageTest extends TestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromField')
-            ->with($this->object, 'file')
+            ->method('fromName')
+            ->with($this->object, 'file_mapping')
             ->will($this->returnValue($this->mapping));
 
-        $path = $this->storage->resolvePath($this->object, 'file');
+        $path = $this->storage->resolvePath($this->object, 'file_mapping');
 
         $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
@@ -226,11 +226,11 @@ class FileSystemStorageTest extends TestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromField')
-            ->with($this->object, 'file')
+            ->method('fromName')
+            ->with($this->object, 'file_mapping')
             ->will($this->returnValue($this->mapping));
 
-        $path = $this->storage->resolveUri($this->object, 'file');
+        $path = $this->storage->resolveUri($this->object, 'file_mapping');
 
         $this->assertEquals($uri, $path);
     }
@@ -259,19 +259,24 @@ class FileSystemStorageTest extends TestCase
 
     /**
      * Test the resolve path method throws exception
-     * when an invaid field name is specified.
+     * when the filename is empty.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testResolvePathThrowsExceptionOnInvalidFieldName()
     {
-        $this->factory
+        $this->mapping
             ->expects($this->once())
-            ->method('fromField')
-            ->with($this->object, 'oops')
+            ->method('getFileName')
             ->will($this->returnValue(null));
 
-        $this->storage->resolvePath($this->object, 'oops');
+        $this->factory
+            ->expects($this->once())
+            ->method('fromName')
+            ->with($this->object, 'file_mapping')
+            ->will($this->returnValue($this->mapping));
+
+        $this->storage->resolvePath($this->object, 'file_mapping');
     }
 
     /**
