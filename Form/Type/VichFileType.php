@@ -9,17 +9,23 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
+use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 class VichFileType extends AbstractType
 {
     private $storage;
+    private $handler;
+    private $translator;
 
-    public function __construct(StorageInterface $storage)
+    public function __construct(StorageInterface $storage, UploadHandler $handler, TranslatorInterface $translator)
     {
         $this->storage = $storage;
+        $this->handler = $handler;
+        $this->translator = $translator;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -50,12 +56,13 @@ class VichFileType extends AbstractType
     protected function buildDeleteField(FormBuilderInterface $builder, array $options)
     {
         $builder->add('delete', 'checkbox', array(
-            'label'     => 'Supprimer ?', // @todo i18n
+            'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
             'required'  => false,
             'mapped'    => false,
         ));
 
-        $builder->get('delete')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
+        $handler = $this->handler;
+        $builder->get('delete')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options, $handler) {
             $delete = $event->getForm()->getData();
             $entity = $event->getForm()->getParent()->getParent()->getData();
 
@@ -63,7 +70,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            exit('delete');
+            $handler->remove($entity, $options['mapping']);
         });
     }
 
@@ -73,14 +80,9 @@ class VichFileType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['object'] = $form->getParent()->getData();
-        //$view->vars['file_property'] = $options['file_property'];
 
         if ($options['download_link']) {
-            try {
-                $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
-            } catch (\InvalidArgumentException $e) {
-                // no file
-            }
+            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
         }
     }
 

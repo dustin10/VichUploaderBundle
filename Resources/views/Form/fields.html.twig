@@ -6,8 +6,8 @@
         {{ form_row(form.delete) }}
         {% endif %}
 
-        {% if download_uri is defined %}
-        <a href="{{ download_uri }}">{{ 'download'|trans }}</a>
+        {% if download_uri is defined and download_uri %}
+        <a href="{{ download_uri }}">{{ 'download'|trans({}, 'VichUploaderBundle') }}</a>
         {% endif %}
     </div>
 {% endspaceless %}
