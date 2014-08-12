@@ -139,7 +139,7 @@ abstract class AbstractStorage implements StorageInterface
 
         if ($filename === null) {
             throw new \InvalidArgumentException(sprintf(
-                'Unable to get filename value for mapping: "%s" (check that the mapping name is correct and that there is an uploaded file)', $mappingName
+                'Unable to get filename value for mapping: "%s" (check that the mapping name is correct and that there is an uploaded file)', $mapping->getMappingName()
             ));
         }
 
