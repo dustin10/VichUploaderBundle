@@ -39,6 +39,10 @@ Don't worry, it will be quick and easy (I promise!):
   * [YAML](mapping/yaml.md)
   * [XML](mapping/xml.md)
 
+### Forms-related
+
+  * [Using the bundled form type](form/vich_file_type.md)
+
 ## Useful resources
 
   * [Configuration reference](configuration_reference.md)
