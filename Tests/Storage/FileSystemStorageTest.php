@@ -258,28 +258,6 @@ class FileSystemStorageTest extends TestCase
     }
 
     /**
-     * Test the resolve path method throws exception
-     * when the filename is empty.
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testResolvePathThrowsExceptionOnInvalidFieldName()
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFileName')
-            ->will($this->returnValue(null));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
-            ->will($this->returnValue($this->mapping));
-
-        $this->storage->resolvePath($this->object, 'file_mapping');
-    }
-
-    /**
      *  Test that file upload moves uploaded file to correct directory and with correct filename
      */
     public function testUploadedFileIsCorrectlyMoved()

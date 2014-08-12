@@ -46,12 +46,16 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $fileMapping
             ->expects($this->once())
+            ->method('getMappingName')
+            ->will($this->returnValue('mapping_name'));
+        $fileMapping
+            ->expects($this->once())
             ->method('setFile');
 
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
-            ->with($obj, $fileMapping)
+            ->with($obj, 'mapping_name')
             ->will($this->returnValue($uploadDir));
 
         $inject = new FileInjector($this->storage);

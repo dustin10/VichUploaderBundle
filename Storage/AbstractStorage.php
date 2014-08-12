@@ -134,14 +134,8 @@ abstract class AbstractStorage implements StorageInterface
      */
     protected function getFilename($obj, $mappingName, $className = null)
     {
-        $mapping = $mappingName instanceof PropertyMapping ? $mappingName : $this->factory->fromName($obj, $mappingName, $className);
+        $mapping = $this->factory->fromName($obj, $mappingName, $className);
         $filename = $mapping->getFileName($obj);
-
-        if ($filename === null) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to get filename value for mapping: "%s" (check that the mapping name is correct and that there is an uploaded file)', $mappingName
-            ));
-        }
 
         return array($mapping, $filename);
     }

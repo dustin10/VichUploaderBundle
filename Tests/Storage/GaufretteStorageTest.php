@@ -239,28 +239,6 @@ class GaufretteStorageTest extends TestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    /**
-     * Test the resolve path method throws exception
-     * when the filename is empty.
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testResolvePathThrowsExceptionOnInvalidFieldName()
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFileName')
-            ->will($this->returnValue(null));
-
-        $this->factory
-            ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
-            ->will($this->returnValue($this->mapping));
-
-        $this->storage->resolvePath($this->object, 'file_mapping');
-    }
-
     public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapter()
     {
         $filesystem = $this->getFilesystemMock();
