@@ -130,7 +130,7 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * @note extension point.
+     *  note: extension point.
      */
     protected function getFilename($obj, $mappingName, $className = null)
     {
