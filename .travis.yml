@@ -18,7 +18,6 @@ env:
 
 before_script:
     - composer self-update
-    - sh -c "cd mongo-1.4.5 && phpize && ./configure && sudo make install"
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
     - composer require --no-update symfony/framework-bundle:${SYMFONY_VERSION}
     - composer require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"

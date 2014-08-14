@@ -28,9 +28,9 @@
         "knplabs/knp-gaufrette-bundle": "*",
         "oneup/flysystem-bundle": "dev-master",
 
-        "symfony/symfony": "@stable",
-        "doctrine/orm": "@stable",
-        "doctrine/doctrine-bundle": "@stable",
+        "symfony/symfony": "*",
+        "doctrine/orm": "*",
+        "doctrine/doctrine-bundle": "*",
 
         "phpunit/phpunit": "~4.0",
         "mikey179/vfsStream": "~1.0",
