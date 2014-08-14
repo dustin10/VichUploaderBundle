@@ -1,0 +1,5 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+{{ form(form, {'action': path('upload_send'), 'method': 'POST'}) }}
+{% endblock %}

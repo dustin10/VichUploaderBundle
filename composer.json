@@ -24,14 +24,17 @@
         "symfony/property-access": "~2.3"
     },
     "require-dev": {
-        "doctrine/orm": "@stable",
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
         "phpunit/phpunit": "~4.0",
         "mikey179/vfsStream": "~1.0",
-        "symfony/yaml": "@stable",
         "matthiasnoback/symfony-dependency-injection-test": "0.*",
-        "oneup/flysystem-bundle": "dev-master"
+        "doctrine/data-fixtures": "~1.0",
+        "liip/functional-test-bundle": "dev-master",
+        "oneup/flysystem-bundle": "dev-master",
+        "symfony/symfony": "@stable",
+        "doctrine/orm": "@stable",
+        "doctrine/doctrine-bundle": "@stable"
     },
     "suggest": {
         "doctrine/orm": "*",
@@ -43,7 +46,8 @@
         "symfony/yaml": "@stable"
     },
     "autoload": {
-        "psr-0": { "Vich\\UploaderBundle": "" }
+        "psr-0": { "Vich\\UploaderBundle": "" },
+        "psr-4": { "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/" }
     },
     "target-dir": "Vich/UploaderBundle"
 }
