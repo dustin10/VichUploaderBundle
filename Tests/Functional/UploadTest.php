@@ -2,22 +2,14 @@
 
 namespace Vich\UploaderBundle\Tests\Functional;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadTest extends WebTestCase
 {
-    /**
-     * @before
-     */
-    public function setupDatabaseSchema()
-    {
-        $this->loadFixtures(array());
-    }
-
     public function testFileIsUploaded()
     {
         $client = static::createClient();
+        $this->loadFixtures($client);
 
         $crawler = $client->request('GET', '/upload');
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -39,15 +31,5 @@ class UploadTest extends WebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertFileExists($this->getUploadsDir($client) . '/symfony_black_03.png', 'The file is uploaded');
-    }
-
-    private function getUploadsDir($client)
-    {
-        return $client->getKernel()->getCacheDir() . '/images';
-    }
-
-    private function getImagesDir($client)
-    {
-        return $client->getKernel()->getRootDir() . '/Resources/images';
     }
 }

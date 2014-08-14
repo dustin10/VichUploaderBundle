@@ -12,8 +12,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 
-            new Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
-
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Vich\TestBundle\VichTestBundle(),
         );
