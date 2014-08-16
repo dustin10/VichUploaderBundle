@@ -3,73 +3,37 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use Gaufrette\Exception\FileNotFound;
-use org\bovigo\vfs\vfsStream;
-use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Storage\GaufretteStorage;
-use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * GaufretteStorageTest.
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
-class GaufretteStorageTest extends TestCase
+class GaufretteStorageTest extends StorageTestCase
 {
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
-     */
-    protected $factory;
-
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
-
-    /**
-     * @var \Vich\UploaderBundle\Tests\DummyEntity
-     */
-    protected $object;
-
-    /**
-     * @var FileSystemStorage
-     */
-    protected $storage;
-
     /**
      * @var \Knp\Bundle\GaufretteBundle\FilesystemMap $factory
      */
     protected $filesystemMap;
 
     /**
-     * @var \org\bovigo\vfs\vfsStreamDirectory
+     * {@inheritDoc}
      */
-    protected $root;
+    protected function getStorage()
+    {
+        return new GaufretteStorage($this->factory, $this->filesystemMap);
+    }
 
     /**
      * Sets up the test.
      */
     public function setUp()
     {
-        $this->factory = $this->getFactoryMock();
-        $this->mapping = $this->getMappingMock();
-        $this->object = new DummyEntity();
         $this->filesystemMap = $this->getFilesystemMapMock();
-        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap);
 
-        $this->factory
-            ->expects($this->any())
-            ->method('fromObject')
-            ->with($this->object)
-            ->will($this->returnValue(array($this->mapping)));
-
-        // and initialize the virtual filesystem
-        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
-            'uploads' => array(
-                'test.txt' => 'some content'
-            ),
-        ));
+        parent::setUp();
     }
 
     /**
@@ -100,20 +64,6 @@ class GaufretteStorageTest extends TestCase
             ->method('getFileName');
 
         $this->storage->upload($this->object, $this->mapping);
-    }
-
-    public function invalidFileProvider()
-    {
-        $file = new File('dummy.file', false);
-
-        return array(
-            // skipped because null
-            array( null ),
-            // skipped because not even a file
-            array( new \DateTime() ),
-            // skipped because not instance of UploadedFile
-            array( $file ),
-        );
     }
 
     /**
@@ -389,19 +339,6 @@ class GaufretteStorageTest extends TestCase
     }
 
     /**
-     * Creates a mock factory.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
-     */
-    protected function getFactoryMock()
-    {
-        return $this
-            ->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
      * Creates a mock of gaufrette filesystem map.
      *
      * @return \Knp\Bundle\GaufretteBundle\FilesystemMap The filesystem map.
@@ -425,22 +362,5 @@ class GaufretteStorageTest extends TestCase
             ->getMockBuilder('\Gaufrette\Filesystem')
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    /**
-     * Creates a mapping mock.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property mapping.
-     */
-    protected function getMappingMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    protected function getValidUploadDir()
-    {
-        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
     }
 }

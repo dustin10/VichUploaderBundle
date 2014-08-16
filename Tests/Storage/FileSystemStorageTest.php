@@ -2,67 +2,21 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use org\bovigo\vfs\vfsStream;
-use Symfony\Component\HttpFoundation\File\File;
-
 use Vich\UploaderBundle\Storage\FileSystemStorage;
-use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * FileSystemStorageTest.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class FileSystemStorageTest extends TestCase
+class FileSystemStorageTest extends StorageTestCase
 {
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
+     * {@inheritDoc}
      */
-    protected $factory;
-
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
-
-    /**
-     * @var \Vich\UploaderBundle\Tests\DummyEntity
-     */
-    protected $object;
-
-    /**
-     * @var FileSystemStorage
-     */
-    protected $storage;
-
-    /**
-     * @var \org\bovigo\vfs\vfsStreamDirectory
-     */
-    protected $root;
-
-    /**
-     * Sets up the test.
-     */
-    public function setUp()
+    protected function getStorage()
     {
-        $this->factory = $this->getFactoryMock();
-        $this->mapping = $this->getMappingMock();
-        $this->object = new DummyEntity();
-        $this->storage = new FileSystemStorage($this->factory);
-
-        $this->factory
-            ->expects($this->any())
-            ->method('fromObject')
-            ->with($this->object)
-            ->will($this->returnValue(array($this->mapping)));
-
-        // and initialize the virtual filesystem
-        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
-            'uploads' => array(
-                'test.txt' => 'some content'
-            ),
-        ));
+        return new FileSystemStorage($this->factory);
     }
 
     /**
@@ -95,20 +49,6 @@ class FileSystemStorageTest extends TestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function invalidFileProvider()
-    {
-        $file = new File('dummy.file', false);
-
-        return array(
-            // skipped because null
-            array( null ),
-            // skipped because not even a file
-            array( new \DateTime() ),
-            // skipped because not instance of UploadedFile
-            array( $file ),
-        );
-    }
-
     /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
@@ -127,14 +67,6 @@ class FileSystemStorageTest extends TestCase
             ->method('getUploadDir');
 
         $this->storage->remove($this->object, $this->mapping);
-    }
-
-    public function emptyFilenameProvider()
-    {
-        return array(
-            array( null ),
-            array( '' ),
-        );
     }
 
     /**
@@ -362,34 +294,5 @@ class FileSystemStorageTest extends TestCase
                 'filename.txt'
             ),
         );
-    }
-
-    /**
-     * Creates a mock factory.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
-     */
-    protected function getFactoryMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * Creates a mapping mock.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property mapping.
-     */
-    protected function getMappingMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    protected function getValidUploadDir()
-    {
-        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
     }
 }

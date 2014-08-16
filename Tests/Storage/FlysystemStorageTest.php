@@ -2,68 +2,34 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use org\bovigo\vfs\vfsStream;
-
 use Vich\UploaderBundle\Storage\FlysystemStorage;
-use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */
-class FlysystemStorageTest extends TestCase
+class FlysystemStorageTest extends StorageTestCase
 {
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
-     */
-    protected $factory;
-
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
-
     /**
      * @var \League\Flysystem\MountManager $mountManager
      */
     protected $mountManager;
 
     /**
-     * @var FlysystemStorage
+     * {@inheritDoc}
      */
-    protected $storage;
-
-    /**
-     * @var \Vich\UploaderBundle\Tests\DummyEntity
-     */
-    protected $object;
-
-    /**
-     * @var \org\bovigo\vfs\vfsStreamDirectory
-     */
-    protected $root;
-
-    protected function setUp()
+    protected function getStorage()
     {
-        $this->mapping = $this->getMappingMock();
-        $this->object = new DummyEntity();
-        $this->factory = $this->getFactoryMock();
+        return new FlysystemStorage($this->factory, $this->mountManager);
+    }
+
+    /**
+     * Sets up the test.
+     */
+    public function setUp()
+    {
         $this->mountManager = $this->getMountManagerMock();
 
-        $this->factory
-            ->expects($this->any())
-            ->method('fromObject')
-            ->with($this->object)
-            ->will($this->returnValue(array($this->mapping)));
-
-        $this->storage = new FlysystemStorage($this->factory, $this->mountManager);
-
-        // and initialize the virtual filesystem
-        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
-            'uploads' => array(
-                'test.txt' => 'some content'
-            ),
-        ));
+        parent::setUp();
     }
 
     public function testUpload()
@@ -163,19 +129,6 @@ class FlysystemStorageTest extends TestCase
     }
 
     /**
-     * Creates a mock factory.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
-     */
-    protected function getFactoryMock()
-    {
-        return $this
-            ->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
      * Creates a filesystem map mock.
      *
      * @return \League\Flysystem\MountManager The mount manager.
@@ -197,18 +150,6 @@ class FlysystemStorageTest extends TestCase
     {
         return $this
             ->getMockBuilder('League\Flysystem\FilesystemInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * Creates a mapping mock.
-     *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property mapping.
-     */
-    protected function getMappingMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
             ->getMock();
     }
