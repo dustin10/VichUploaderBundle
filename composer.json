@@ -46,8 +46,9 @@
         "symfony/yaml": "@stable"
     },
     "autoload": {
-        "psr-0": { "Vich\\UploaderBundle": "" },
-        "psr-4": { "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/" }
-    },
-    "target-dir": "Vich/UploaderBundle"
+        "psr-4": {
+            "Vich\\UploaderBundle\\": "",
+            "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
+        }
+    }
 }
