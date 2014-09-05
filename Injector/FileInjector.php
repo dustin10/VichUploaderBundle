@@ -40,6 +40,8 @@ class FileInjector implements FileInjectorInterface
             return;
         }
 
-        $mapping->setFile($obj, new File($path, false));
+        if($path){
+            $mapping->setFile($obj, new File($path, false));
+        }
     }
 }

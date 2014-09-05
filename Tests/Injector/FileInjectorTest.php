@@ -83,7 +83,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
-            ->will($this->throwException(new \InvalidArgumentException));
+            ->will($this->returnValue(null));
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);
