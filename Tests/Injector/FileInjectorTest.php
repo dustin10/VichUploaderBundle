@@ -78,7 +78,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
 
         $fileMapping
             ->expects($this->never())
-            ->method('setValue');
+            ->method('setFile');
 
         $this->storage
             ->expects($this->once())
