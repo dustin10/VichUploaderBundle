@@ -55,21 +55,24 @@ class VichFileType extends AbstractType
 
     protected function buildDeleteField(FormBuilderInterface $builder, array $options)
     {
-        //--- Add delete only if there is a file
+        // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
-            
-            if (null ==! $object and file_exists($this->storage->resolvePath($object, $options['mapping']))) {
-                $form->add('delete', 'checkbox', array(
-                    'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
-                    'required'  => false,
-                    'mapped'    => false,
-                ));                
-            }
-        });  
 
-        //--- Delete file if needed
+            // no object or no uploaded file: no delete button
+            if (null === $object || null === $this->storage->resolvePath($object, $options['mapping'])) {
+                return;
+            }
+
+            $form->add('delete', 'checkbox', array(
+                'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
+                'required'  => false,
+                'mapped'    => false,
+            ));
+        });
+
+        // delete file if needed
         $handler = $this->handler;
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options, $handler) {
             $delete = $event->getForm()->has('delete') ? $event->getForm()->get('delete')->getData() : false;
@@ -80,7 +83,7 @@ class VichFileType extends AbstractType
             }
 
             $handler->remove($entity, $options['mapping']);
-        });      
+        });
     }
 
     /**
@@ -91,11 +94,7 @@ class VichFileType extends AbstractType
         $view->vars['object'] = $form->getParent()->getData();
 
         if ($options['download_link'] && $view->vars['object']) {
-
-            //--- Add download_uri only if file exist
-            if (file_exists($this->storage->resolvePath($view->vars['object'], $options['mapping']))) {
-                $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
-            };
+            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
         }
     }
 
