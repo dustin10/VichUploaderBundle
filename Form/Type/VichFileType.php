@@ -55,16 +55,28 @@ class VichFileType extends AbstractType
 
     protected function buildDeleteField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('delete', 'checkbox', array(
-            'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
-            'required'  => false,
-            'mapped'    => false,
-        ));
+        // add delete only if there is a file
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+            $form = $event->getForm();
+            $object = $form->getParent()->getData();
 
+            // no object or no uploaded file: no delete button
+            if (null === $object || null === $this->storage->resolvePath($object, $options['mapping'])) {
+                return;
+            }
+
+            $form->add('delete', 'checkbox', array(
+                'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
+                'required'  => false,
+                'mapped'    => false,
+            ));
+        });
+
+        // delete file if needed
         $handler = $this->handler;
-        $builder->get('delete')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options, $handler) {
-            $delete = $event->getForm()->getData();
-            $entity = $event->getForm()->getParent()->getParent()->getData();
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options, $handler) {
+            $delete = $event->getForm()->has('delete') ? $event->getForm()->get('delete')->getData() : false;
+            $entity = $event->getForm()->getParent()->getData();
 
             if (!$delete) {
                 return;
