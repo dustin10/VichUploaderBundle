@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.0",
+        "symfony/framework-bundle": "~2.3",
         "jms/metadata": "~1.5",
         "symfony/finder": ">=2.0",
         "symfony/property-access": "~2.3"
@@ -37,7 +37,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "0.*"
     },
     "suggest": {
-        "doctrine/orm": "*",
+        "doctrine/orm": ">=2.2.3",
         "doctrine/doctrine-bundle": "*",
         "doctrine/phpcr-odm": "~1.0",
         "doctrine/mongodb-odm-bundle": "*",

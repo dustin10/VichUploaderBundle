@@ -26,14 +26,6 @@ class VichUploaderExtension extends Extension
         'phpcr'     => 'doctrine_phpcr.event_subscriber'
     );
 
-    public function __construct()
-    {
-        // Set correct doctrine subscriber event for versions of symfony before 2.1
-        if (!defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') || Kernel::VERSION_ID < 20100) {
-            $this->tagMap['mongodb'] = 'doctrine.odm.mongodb.event_subscriber';
-        }
-    }
-
     /**
      * Loads the extension.
      *
