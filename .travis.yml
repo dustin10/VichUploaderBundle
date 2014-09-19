@@ -10,11 +10,11 @@ env:
     - SYMFONY_VERSION="~2.3.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.4.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.5.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="dev-master symfony/symfony:@dev" DOCTRINE_VERSION="~2.2,>=2.2.3"
+    - SYMFONY_VERSION="dev-master" DOCTRINE_VERSION="~2.2,>=2.2.3"
 
 before_script:
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-    - composer require --no-update symfony/framework-bundle:${SYMFONY_VERSION}
+    - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
     - composer require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
     - composer install --prefer-source
 
