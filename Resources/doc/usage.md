@@ -113,6 +113,13 @@ class Product
      * @var string $imageName
      */
     protected $imageName;
+    
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime $updatedAt
+     */
+    protected $updatedAt;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
