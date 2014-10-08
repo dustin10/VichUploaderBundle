@@ -9,10 +9,10 @@ service as follows:
 ``` php
 $entity = // get the entity..
 $helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
-$path = $helper->asset($entity, 'image');
+$path = $helper->asset($entity, 'product_image');
 ```
 
-Where `image` is the field name on your entity where you added the
+Where `product_image` is the mapping name used in your entity where you added the
 `UploadableField` annotation/configuration.
 
 **Note:**
@@ -26,7 +26,7 @@ Where `image` is the field name on your entity where you added the
 In a Twig template you can use the `vich_uploader_asset` function:
 
 ``` twig
-<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
+<img src="{{ vich_uploader_asset(product, 'product_image') }}" alt="{{ product.name }}" />
 ```
 
 **Note:**
