@@ -35,6 +35,13 @@ class Product
 ```
 See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
 
+## Catchable Fatal Error
+
+When you get the following error:`Catchable Fatal Error: ... must be an instance of Symfony\Component\HttpFoundation\File\UploadedFile, string given, ...` 
+you have to define   
+`{{ form_enctype(upload_form) }}` in your form. 
+
+This is needed for Symfony versions older than 2.3.
 
 ## Annotations don't work with Propel
 
