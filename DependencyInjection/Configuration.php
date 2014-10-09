@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('delete_on_update')->defaultTrue()->end()
                             ->scalarNode('inject_on_load')->defaultFalse()->end()
                             ->scalarNode('db_driver')
-                                ->defaultNUll()
+                                ->defaultNull()
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(function ($v) { return strtolower($v); })
