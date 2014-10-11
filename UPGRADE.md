@@ -1,7 +1,12 @@
-Upgrading from v0.10.0 to master
+Upgrading from v0.11.0 to master
 ================================
 
 Nothing!
+
+Upgrading from v0.10.0 to v0.11.0
+================================
+
+- Symfony versions prior to 2.3 are not supported anymore.
 
 Upgrading from v0.9.0 to v0.10.0
 ================================

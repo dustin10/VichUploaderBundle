@@ -7,7 +7,7 @@ Add VichUploaderBundle by running this command from the terminal at the root of
 your Symfony project:
 
 ```bash
-php composer.phar require vich/uploader-bundle '~0.10.0'
+php composer.phar require vich/uploader-bundle '~0.11.0'
 ```
 
 
