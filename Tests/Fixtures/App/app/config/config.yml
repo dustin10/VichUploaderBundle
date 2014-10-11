@@ -1,0 +1,41 @@
+# Symfony Configuration
+framework:
+    secret:             Hell yeah!
+    router:             { resource: "%kernel.root_dir%/config/routing.yml" }
+    form:               true
+    csrf_protection:    true
+    session:            ~
+    default_locale:     en
+    translator:         { fallback: en }
+    profiler:           { only_exceptions: false }
+    test:               ~
+    templating:
+        engines: ['twig']
+    session:
+        storage_id: session.storage.filesystem
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: "pdo_sqlite"
+        path:   %kernel.cache_dir%/database.db3
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        image_mapping:
+            uri_prefix:         /images
+            upload_destination: %kernel.cache_dir%/images
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
