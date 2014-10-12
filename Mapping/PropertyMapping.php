@@ -237,7 +237,7 @@ class PropertyMapping
 
         // append the trailing directory separator if needed
         if (!empty($dir)) {
-            $dir .= substr($dir, -1) !== DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
+            $dir .= substr($dir, -1) !== '/' ? '/' : '';
         }
 
         return $dir;
