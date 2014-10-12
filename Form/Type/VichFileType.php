@@ -44,6 +44,7 @@ class VichFileType extends AbstractType
     {
         $builder->add('file', 'file', array(
             'required' => $options['required'],
+            'label' => $options['label'],
         ));
 
         $builder->addModelTransformer(new FileTransformer());
