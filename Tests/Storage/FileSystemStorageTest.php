@@ -134,6 +134,22 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
 
+    public function testResolveUriReturnsNullIfNoFile()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue(null));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromName')
+            ->with($this->object, 'file_mapping')
+            ->will($this->returnValue($this->mapping));
+
+        $this->assertNull($this->storage->resolveUri($this->object, 'file_mapping'));
+    }
+
     /**
      * Test the resolve uri
      *
