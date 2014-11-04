@@ -57,17 +57,19 @@ class VichFileType extends AbstractType
     protected function buildDeleteField(FormBuilderInterface $builder, array $options)
     {
         // add delete only if there is a file
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+        $storage = $this->storage;
+        $translator = $this->translator;
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options, $storage, $translator) {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolvePath($object, $options['mapping'])) {
+            if (null === $object || null === $storage->resolvePath($object, $options['mapping'])) {
                 return;
             }
 
             $form->add('delete', 'checkbox', array(
-                'label'     => $this->translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
+                'label'     => $translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
                 'required'  => false,
                 'mapped'    => false,
             ));
