@@ -130,7 +130,7 @@ class Product
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(File $image)
+    public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
 
