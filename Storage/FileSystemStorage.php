@@ -54,6 +54,10 @@ class FileSystemStorage extends AbstractStorage
     {
         list($mapping, $name) = $this->getFilename($obj, $mappingName, $className);
 
+        if (empty($name)) {
+            return null;
+        }
+
         $uriPrefix = $mapping->getUriPrefix();
         $uploadDir = $mapping->getUploadDestination() . $mapping->getUploadDir($obj);
         $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($uploadDir));
