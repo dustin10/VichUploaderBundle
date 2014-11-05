@@ -25,7 +25,7 @@ class UploadTest extends WebTestCase
         $crawler = $client->submit($form, array(
             'form' => array(
                 'title'     => 'Test image',
-                'imageFile' => $image,
+                'imageFile' => array('file' => $image),
             ),
         ));
 

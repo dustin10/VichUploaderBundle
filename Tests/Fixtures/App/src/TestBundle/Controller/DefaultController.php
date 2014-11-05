@@ -40,7 +40,9 @@ class DefaultController extends Controller
     {
         return $this->createFormBuilder($image)
             ->add('title', 'text')
-            ->add('imageFile', 'file')
+            ->add('imageFile', 'vich_file', array(
+                'mapping' => 'image_mapping',
+            ))
             ->add('save', 'submit')
             ->getForm();
     }

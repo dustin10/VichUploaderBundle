@@ -44,7 +44,8 @@ class VichFileType extends AbstractType
     {
         $builder->add('file', 'file', array(
             'required' => $options['required'],
-            'label' => $options['label'],
+            'label'    => $options['label'],
+            'attr'     => $options['attr'],
         ));
 
         $builder->addModelTransformer(new FileTransformer());
@@ -97,14 +98,6 @@ class VichFileType extends AbstractType
         if ($options['download_link'] && $view->vars['object']) {
             $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'form';
     }
 
     /**
