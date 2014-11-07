@@ -57,8 +57,10 @@ class GaufretteStorage extends AbstractStorage
             $filesystem->getAdapter()->setMetadata($dir . $name, array('contentType' => $file->getMimeType()));
         }
 
+        $path = !empty($dir) ? $dir . '/' .$name : $name;
+
         $src = new LocalStream($file->getPathname());
-        $dst = $filesystem->createStream($dir . $name);
+        $dst = $filesystem->createStream($path);
 
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('wb+'));
@@ -78,9 +80,10 @@ class GaufretteStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
+        $path = !empty($dir) ? $dir . '/' .$name : $name;
 
         try {
-            return $filesystem->delete($dir . $name);
+            return $filesystem->delete($path);
         } catch (FileNotFound $e) {
             return false;
         }
@@ -92,8 +95,9 @@ class GaufretteStorage extends AbstractStorage
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
         $fsIdentifier = $mapping->getUploadDestination();
+        $path = !empty($dir) ? $dir . '/' .$name : $name;
 
-        return $this->protocol.'://' . $fsIdentifier . DIRECTORY_SEPARATOR . $dir . $name;
+        return $this->protocol.'://' . $fsIdentifier . '/' . $path;
     }
 
     /**

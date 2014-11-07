@@ -95,7 +95,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
 
         $prop->setDirectoryNamer($namer);
 
-        $this->assertEquals('/other-dir/', $prop->getUploadDir($object));
+        $this->assertEquals('/other-dir', $prop->getUploadDir($object));
         $this->assertEquals('/tmp', $prop->getUploadDestination());
     }
 }

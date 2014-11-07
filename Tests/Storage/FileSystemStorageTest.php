@@ -187,20 +187,20 @@ class FileSystemStorageTest extends StorageTestCase
     {
         return array(
             array(
-                '/abs/path/web/uploads',
+                '',
                 '/uploads/file.txt'
             ),
             array(
-                'c:\abs\path\web\uploads',
-                '/uploads/file.txt'
+                'dir',
+                '/uploads/dir/file.txt'
             ),
             array(
-                '/abs/path/web/project/web/uploads',
-                '/uploads/file.txt'
+                'dir/sub-dir',
+                '/uploads/dir/sub-dir/file.txt'
             ),
             array(
-                '/abs/path/web/project/web/uploads/custom/dir',
-                '/uploads/custom/dir/file.txt'
+                'dir\\sub-dir',
+                '/uploads/dir/sub-dir/file.txt'
             ),
         );
     }

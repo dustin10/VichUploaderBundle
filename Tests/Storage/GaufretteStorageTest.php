@@ -124,7 +124,7 @@ class GaufretteStorageTest extends StorageTestCase
             //      protocol,   fs identifier,  upload dir, full path
             array( 'gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt' ),
             array( 'data',      'filesystemKey', null,   'data://filesystemKey/file.txt' ),
-            array( 'gaufrette', 'filesystemKey', 'foo/', 'gaufrette://filesystemKey/foo/file.txt' ),
+            array( 'gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt' ),
         );
     }
 
