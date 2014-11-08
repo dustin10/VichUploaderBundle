@@ -20,17 +20,11 @@ class FileSystemStorage extends AbstractStorage
     {
         $uploadDir = $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $dir;
 
-        return $file->move($uploadDir, basename($name));
+        return $file->move($uploadDir, $name);
     }
 
     /**
-     * Do real remove
-     *
-     * @param string $dir
-     * @param string $name
-     *
-     * @internal param object $obj
-     * @return boolean
+     * {@inheritDoc}
      */
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
