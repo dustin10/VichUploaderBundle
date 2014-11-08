@@ -193,10 +193,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->getMockBuilder('\Gaufrette\Adapter\MetadataSupporter')
-            ->disableOriginalConstructor()
-            ->setMethods(array('setMetadata', 'getMetadata'))
-            ->getMock();
+        $adapter = $this->getMock('\Gaufrette\Adapter\MetadataSupporter');
 
         $file
             ->expects($this->once())
@@ -218,32 +215,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
-        $imb = $this
-            ->getMockBuilder('\Gaufrette\Stream\InMemoryBuffer')
-            ->disableOriginalConstructor()
-            ->setMethods(array('open', 'write', 'close'))
-            ->getMock();
-
-        $imb
-            ->expects($this->once())
-            ->method('open')
-            ->will($this->returnValue(true));
-
-        $imb
-            ->expects($this->once())
-            ->method('write')
-            ->will($this->returnValue(true));
-
-        $imb
-            ->expects($this->once())
-            ->method('close')
-            ->will($this->returnValue(true));
-
-        $filesystem
-            ->expects($this->once())
-            ->method('createStream')
-            ->will($this->returnValue($imb));
-
         $this->filesystemMap
             ->expects($this->once())
             ->method('get')
@@ -252,23 +223,25 @@ class GaufretteStorageTest extends StorageTestCase
 
         $adapter
             ->expects($this->once())
-            ->method('setMetadata')
-            ->will($this->returnValue(null));
+            ->method('setMetadata');
 
         $filesystem
             ->expects($this->any())
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
 
+        $filesystem
+            ->expects($this->once())
+            ->method('write')
+            ->with('filename', 'some content');
+
         $this->storage->upload($this->object, $this->mapping);
     }
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
     {
-        $adapter = $this->getMockBuilder('\Gaufrette\Adapter\Apc')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $adapter = $this->getMock('\Gaufrette\Adapter');
+        $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
 
         $file
@@ -291,34 +264,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
-        $filesystem = $this->getFilesystemMock();
-
-        $imb = $this
-            ->getMockBuilder('\Gaufrette\Stream\InMemoryBuffer')
-            ->disableOriginalConstructor()
-            ->setMethods(array('open', 'write', 'close'))
-            ->getMock();
-
-        $imb
-            ->expects($this->once())
-            ->method('open')
-            ->will($this->returnValue(true));
-
-        $imb
-            ->expects($this->once())
-            ->method('write')
-            ->will($this->returnValue(true));
-
-        $imb
-            ->expects($this->once())
-            ->method('close')
-            ->will($this->returnValue(true));
-
-        $filesystem
-            ->expects($this->once())
-            ->method('createStream')
-            ->will($this->returnValue($imb));
-
         $this->filesystemMap
             ->expects($this->once())
             ->method('get')
@@ -327,13 +272,17 @@ class GaufretteStorageTest extends StorageTestCase
 
         $adapter
             ->expects($this->never())
-            ->method('setMetadata')
-            ->will($this->returnValue(null));
+            ->method('setMetadata');
 
         $filesystem
             ->expects($this->any())
             ->method('getAdapter')
             ->will($this->returnValue($adapter));
+
+        $filesystem
+            ->expects($this->once())
+            ->method('write')
+            ->with('filename', 'some content');
 
         $this->storage->upload($this->object, $this->mapping);
     }
