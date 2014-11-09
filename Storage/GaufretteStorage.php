@@ -93,7 +93,7 @@ class GaufretteStorage extends AbstractStorage
     {
         $fsIdentifier = $mapping->getUploadDestination();
 
-        return $this->protocol.'://' . $fsIdentifier . DIRECTORY_SEPARATOR . $dir . $name;
+        return $this->protocol.'://' . $fsIdentifier . '/' . $dir . $name;
     }
 
     /**

@@ -131,7 +131,7 @@ abstract class AbstractStorage implements StorageInterface
             return null;
         }
 
-        return $mapping->getUriPrefix() . '/' . $mapping->getUploadDir($obj) . $filename;
+        return $mapping->getUriPrefix() . '/' . str_replace('\\', '/', $mapping->getUploadDir($obj)) . $filename;
     }
 
     /**
