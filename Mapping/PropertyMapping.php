@@ -235,9 +235,10 @@ class PropertyMapping
 
         $dir = $this->getDirectoryNamer()->directoryName($obj, $this);
 
-        // append the trailing directory separator if needed
+        // strip the trailing directory separator if needed
         if (!empty($dir)) {
-            $dir .= substr($dir, -1) !== DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
+            $last_char = substr($dir, -1);
+            $dir = $last_char === '/' || $last_char === '\\' ? substr($dir, 0, -1) : $dir;
         }
 
         return $dir;

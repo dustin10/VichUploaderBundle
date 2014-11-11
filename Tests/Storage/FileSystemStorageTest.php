@@ -187,28 +187,29 @@ class FileSystemStorageTest extends StorageTestCase
     {
         return array(
             array(
-                '/abs/path/web/uploads',
+                '',
                 '/uploads/file.txt'
             ),
             array(
-                'c:\abs\path\web\uploads',
-                '/uploads/file.txt'
+                'dir',
+                '/uploads/dir/file.txt'
             ),
             array(
-                '/abs/path/web/project/web/uploads',
-                '/uploads/file.txt'
+                'dir/sub-dir',
+                '/uploads/dir/sub-dir/file.txt'
             ),
             array(
-                '/abs/path/web/project/web/uploads/custom/dir',
-                '/uploads/custom/dir/file.txt'
+                'dir\\sub-dir',
+                '/uploads/dir/sub-dir/file.txt'
             ),
         );
     }
 
     /**
-     *  Test that file upload moves uploaded file to correct directory and with correct filename
+     * @dataProvider filenameWithDirectoriesDataProvider
+     * @group               upload
      */
-    public function testUploadedFileIsCorrectlyMoved()
+    public function testUploadedFileIsCorrectlyMoved($uploadDir, $dir, $expectedDir)
     {
         $file = $this->getUploadedFileMock();
 
@@ -226,55 +227,6 @@ class FileSystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDestination')
-            ->will($this->returnValue('/dir'));
-
-        $file
-            ->expects($this->once())
-            ->method('move')
-            ->with('/dir/', 'filename.txt');
-
-        $this->storage->upload($this->object, $this->mapping);
-    }
-
-    /**
-     * Test file upload when filename contains directories
-     * @dataProvider filenameWithDirectoriesDataProvider
-     */
-    public function testFilenameWithDirectoriesIsUploadedToCorrectDirectory($uploadDir, $dir, $filename, $expectedDir, $expectedFileName)
-    {
-        $file = $this->getUploadedFileMock();
-
-        $namer = $this->getMock('Vich\UploaderBundle\Naming\NamerInterface');
-        $namer
-            ->expects($this->once())
-            ->method('name')
-            ->with($this->object, $this->mapping)
-            ->will($this->returnValue($filename));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getNamer')
-            ->will($this->returnValue($namer));
-
-        $this->mapping
-            ->expects($this->any())
-            ->method('getFilePropertyName')
-            ->will($this->returnValue('file'));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->with($this->object)
-            ->will($this->returnValue($file));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('hasNamer')
-            ->will($this->returnValue(true));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDestination')
             ->will($this->returnValue($uploadDir));
 
         $this->mapping
@@ -286,28 +238,29 @@ class FileSystemStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('move')
-            ->with($expectedDir, $expectedFileName);
+            ->with($expectedDir, 'filename.txt');
 
         $this->storage->upload($this->object, $this->mapping);
-
     }
 
     public function filenameWithDirectoriesDataProvider()
     {
         return array(
+            // upload dir, dir, expected dir
             array(
                 '/root_dir',
-                'dir_1/dir_2',
-                'filename.txt',
-                '/root_dir/dir_1/dir_2',
-                'filename.txt'
+                '',
+                '/root_dir/',
+            ),
+            array(
+                '/root_dir',
+                'dir_1',
+                '/root_dir/dir_1',
             ),
             array(
                 '/root_dir',
                 'dir_1/dir_2',
-                'filename.txt',
                 '/root_dir/dir_1/dir_2',
-                'filename.txt'
             ),
         );
     }

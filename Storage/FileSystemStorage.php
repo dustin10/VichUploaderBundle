@@ -20,17 +20,11 @@ class FileSystemStorage extends AbstractStorage
     {
         $uploadDir = $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $dir;
 
-        return $file->move($uploadDir, basename($name));
+        return $file->move($uploadDir, $name);
     }
 
     /**
-     * Do real remove
-     *
-     * @param string $dir
-     * @param string $name
-     *
-     * @internal param object $obj
-     * @return boolean
+     * {@inheritDoc}
      */
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
@@ -44,7 +38,9 @@ class FileSystemStorage extends AbstractStorage
      */
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
-        return $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $dir . $name;
+        $path = !empty($dir) ? $dir . DIRECTORY_SEPARATOR . $name : $name;
+
+        return $mapping->getUploadDestination() . DIRECTORY_SEPARATOR . $path;
     }
 
     /**
@@ -58,41 +54,14 @@ class FileSystemStorage extends AbstractStorage
             return null;
         }
 
-        $uriPrefix = $mapping->getUriPrefix();
-        $uploadDir = $mapping->getUploadDestination() . $mapping->getUploadDir($obj);
-        $parts = explode($uriPrefix, $this->convertWindowsDirectorySeparator($uploadDir));
+        $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
+        $uploadDir = empty($uploadDir) ? '' : $uploadDir . '/';
 
-        return sprintf('%s/%s', $uriPrefix . array_pop($parts), $name);
+        return sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir . $name);
     }
 
-    /**
-     * @param $string
-     * @return string
-     */
-    protected function convertWindowsDirectorySeparator($string)
+    private function convertWindowsDirectorySeparator($string)
     {
         return str_replace('\\', '/', $string);
-    }
-
-    /**
-     * Returns the upload directory
-     *
-     * The method extract any directory present in $name and combine
-     * it with $dir to get the right upload directory.
-     *
-     * @param $dir
-     * @param $name
-     * @return string
-     */
-    protected function getUploadDirectory($dir, $name)
-    {
-        return rtrim(
-            str_replace(
-                DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR,
-                $dir . DIRECTORY_SEPARATOR . dirname($name)
-            ),
-            DIRECTORY_SEPARATOR . '.'
-        );
     }
 }
