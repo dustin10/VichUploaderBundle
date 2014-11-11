@@ -57,7 +57,7 @@ class GaufretteStorage extends AbstractStorage
             $filesystem->getAdapter()->setMetadata($dir . $name, array('contentType' => $file->getMimeType()));
         }
 
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? rtrim($dir, '/') . '/' .ltrim($name, '/') : $name;
 
         $src = new LocalStream($file->getPathname());
         $dst = $filesystem->createStream($path);
