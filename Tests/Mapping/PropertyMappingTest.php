@@ -78,7 +78,10 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('joe.png', $object->getFileName());
     }
 
-    public function testDirectoryNamerIsCalled()
+    /**
+     * @dataProvider directoryProvider
+     */
+    public function testDirectoryNamerIsCalled($dir, $expectedDir)
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -91,11 +94,22 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('directoryName')
             ->with($object, $prop)
-            ->will($this->returnValue('/other-dir'));
+            ->will($this->returnValue($dir));
 
         $prop->setDirectoryNamer($namer);
 
-        $this->assertEquals('/other-dir', $prop->getUploadDir($object));
+        $this->assertEquals($expectedDir, $prop->getUploadDir($object));
         $this->assertEquals('/tmp', $prop->getUploadDestination());
+    }
+
+    public function directoryProvider()
+    {
+        return array(
+            array( 'other_dir', 'other_dir' ),
+            array( 'other_dir/', 'other_dir' ),
+            array( 'other_dir\\', 'other_dir' ),
+            array( 'other_dir\\sub_dir', 'other_dir\\sub_dir' ),
+            array( 'other_dir\\sub_dir\\', 'other_dir\\sub_dir' ),
+        );
     }
 }
