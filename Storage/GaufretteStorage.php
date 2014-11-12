@@ -2,17 +2,13 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
-
-use Gaufrette\Stream\Local as LocalStream;
-use Gaufrette\StreamMode;
-use Gaufrette\Adapter\MetadataSupporter;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * GaufretteStorage.
@@ -52,26 +48,13 @@ class GaufretteStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
+        $path = !empty($dir) ? $dir . '/' .$name : $name;
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
             $filesystem->getAdapter()->setMetadata($dir . $name, array('contentType' => $file->getMimeType()));
         }
 
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
-
-        $src = new LocalStream($file->getPathname());
-        $dst = $filesystem->createStream($path);
-
-        $src->open(new StreamMode('rb+'));
-        $dst->open(new StreamMode('wb+'));
-
-        while (!$src->eof()) {
-            $data = $src->read(100000);
-            $dst->write($data);
-        }
-
-        $dst->close();
-        $src->close();
+        $filesystem->write($path, file_get_contents($file->getPathname()));
     }
 
     /**
