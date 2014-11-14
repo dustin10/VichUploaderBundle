@@ -9,7 +9,7 @@ is the only updated.
 
 A workaround to solve this issue is to manually generate a change:
 
-```
+```php
 class Product
 {
     // ...
@@ -113,3 +113,8 @@ bundle will automatically inject an instance of `File` there. However if you wer
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.
+
+## Failed to set metadata before uploading the file
+
+When using Gaufrette with some specific adapters, it's possible that metadata can't be set when uploading a file.
+For some adapters, metadata need to be defined after the upload because setting the metadata for a given file results in a separate API call. In the other hand, for other adapters setting the metadata does not result in an API call: the metadata is joined with the file during the upload.
