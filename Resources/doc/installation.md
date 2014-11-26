@@ -24,7 +24,7 @@ public function registerBundles()
         new Vich\UploaderBundle\VichUploaderBundle(),
         // ...
     );
-)
+}
 ```
 
 
