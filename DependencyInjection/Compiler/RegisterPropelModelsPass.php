@@ -25,7 +25,6 @@ class RegisterPropelModelsPass implements CompilerPassInterface
             'inject', 'clean', 'remove', 'upload',
         );
 
-        $listener = $container->getDefinition('vich_uploader.listener.uploader.propel');
         $metadata = $container->get('vich_uploader.metadata_reader');
         $mappings = $container->getParameter('vich_uploader.mappings');
 

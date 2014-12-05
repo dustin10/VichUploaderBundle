@@ -39,7 +39,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'file' => array(
                 'mapping'           => 'dummy_file',
-                'propertyName'      => null,
+                'propertyName'      => 'file',
                 'fileNameProperty'  => 'fileName',
             )
         ), $metadata->fields);
@@ -94,12 +94,12 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'file' => array(
                 'mapping'           => 'dummy_file',
-                'propertyName'      => null,
+                'propertyName'      => 'file',
                 'fileNameProperty'  => 'fileName',
             ),
             'image' => array(
                 'mapping'           => 'dummy_image',
-                'propertyName'      => null,
+                'propertyName'      => 'image',
                 'fileNameProperty'  => 'imageName',
             )
         ), $metadata->fields);

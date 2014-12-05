@@ -107,9 +107,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $mappingName, $className = null)
+    public function resolvePath($obj, $fieldName, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $mappingName, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
             return null;
@@ -121,9 +121,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $mapping, $className = null)
+    public function resolveUri($obj, $fieldName, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $mapping, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
             return null;
@@ -138,9 +138,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      *  note: extension point.
      */
-    protected function getFilename($obj, $mappingName, $className = null)
+    protected function getFilename($obj, $fieldName, $className = null)
     {
-        $mapping = $this->factory->fromName($obj, $mappingName, $className);
+        $mapping = $this->factory->fromField($obj, $fieldName, $className);
         $filename = $mapping->getFileName($obj);
 
         return array($mapping, $filename);

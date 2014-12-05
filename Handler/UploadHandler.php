@@ -57,10 +57,13 @@ class UploadHandler
 
     /**
      * Checks for file to upload.
+     *
+     * @param object $obj       The object.
+     * @param string $fieldName The name of the field containing the upload (has to be mapped).
      */
-    public function upload($obj, $mapping)
+    public function upload($obj, $fieldName)
     {
-        $mapping = $this->factory->fromName($obj, $mapping);
+        $mapping = $this->getMapping($obj, $fieldName);
 
         // nothing to upload
         if (!$this->hasUploadedFile($obj, $mapping)) {
@@ -75,9 +78,9 @@ class UploadHandler
         $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
     }
 
-    public function inject($obj, $mapping)
+    public function inject($obj, $fieldName)
     {
-        $mapping = $this->factory->fromName($obj, $mapping);
+        $mapping = $this->getMapping($obj, $fieldName);
 
         $this->dispatch(Events::PRE_INJECT, new Event($obj, $mapping));
 
@@ -86,21 +89,21 @@ class UploadHandler
         $this->dispatch(Events::POST_INJECT, new Event($obj, $mapping));
     }
 
-    public function clean($obj, $mappingName)
+    public function clean($obj, $fieldName)
     {
-        $mapping = $this->factory->fromName($obj, $mappingName);
+        $mapping = $this->getMapping($obj, $fieldName);
 
         // nothing uploaded, do not remove anything
         if (!$this->hasUploadedFile($obj, $mapping)) {
             return;
         }
 
-        $this->remove($obj, $mappingName);
+        $this->remove($obj, $fieldName);
     }
 
-    public function remove($obj, $mapping)
+    public function remove($obj, $fieldName)
     {
-        $mapping = $this->factory->fromName($obj, $mapping);
+        $mapping = $this->getMapping($obj, $fieldName);
 
         $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
 
@@ -113,6 +116,17 @@ class UploadHandler
     protected function dispatch($eventName, Event $event)
     {
         $this->dispatcher->dispatch($eventName, $event);
+    }
+
+    protected function getMapping($obj, $fieldName)
+    {
+        $mapping = $this->factory->fromField($obj, $fieldName);
+
+        if ($mapping === null) {
+            throw new \RuntimeException(sprintf('No mapping found for field "%s".', $fieldName));
+        }
+
+        return $mapping;
     }
 
     protected function hasUploadedFile($obj, PropertyMapping $mapping)

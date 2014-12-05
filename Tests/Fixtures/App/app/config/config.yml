@@ -7,12 +7,13 @@ framework:
     session:            ~
     default_locale:     en
     translator:         { fallback: en }
-    profiler:           { only_exceptions: false }
     test:               ~
     templating:
         engines: ['twig']
     session:
-        storage_id: session.storage.filesystem
+        storage_id:     session.storage.mock_file
+    profiler:
+        collect: false
 
 # Twig Configuration
 twig:

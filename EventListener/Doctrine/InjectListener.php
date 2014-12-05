@@ -32,8 +32,12 @@ class InjectListener extends BaseListener
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->isUploadable($object)) {
-            $this->handler->inject($object, $this->mapping);
+        if (!$this->isUploadable($object)) {
+            return;
+        }
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->inject($object, $field);
         }
     }
 }

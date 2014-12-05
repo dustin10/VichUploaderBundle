@@ -34,7 +34,7 @@ class FileInjector implements FileInjectorInterface
      */
     public function injectFile($obj, PropertyMapping $mapping)
     {
-        $path = $this->storage->resolvePath($obj, $mapping->getMappingName());
+        $path = $this->storage->resolvePath($obj, $mapping->getFilePropertyName());
 
         if ($path !== null) {
             $mapping->setFile($obj, new File($path, false));

@@ -92,7 +92,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($mappings));
 
-        $mapping = $mappings['dummy_file'];
+        $mapping = current($mappings);
 
         $this->assertEquals('dummy_file', $mapping->getMappingName());
         $this->assertEquals('images', $mapping->getUploadDestination());
@@ -144,7 +144,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($mappings));
 
-        $mapping = $mappings['dummy_file'];
+        $mapping = current($mappings);
 
         $this->assertEquals('dummy_file', $mapping->getMappingName());
         $this->assertEquals('images', $mapping->getUploadDestination());
@@ -262,7 +262,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($mappings));
 
-        $mapping = $mappings['dummy_file'];
+        $mapping = current($mappings);
 
         $this->assertEquals($namer, $mapping->getNamer());
         $this->assertTrue($mapping->hasNamer());
@@ -275,9 +275,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainerMock()
     {
-        return $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
     }
 
     /**

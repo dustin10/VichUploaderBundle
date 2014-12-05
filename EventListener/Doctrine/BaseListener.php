@@ -63,4 +63,20 @@ abstract class BaseListener implements EventSubscriber
     {
         return $this->metadata->isUploadable(ClassUtils::getClass($object), $this->mapping);
     }
+
+    /**
+     * Returns a list of uploadable fields for the given object and mapping.
+     *
+     * @param mixed $object The object to use.
+     *
+     * @return array<string> A list of field names.
+     */
+    protected function getUploadableFields($object)
+    {
+        $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
+
+        return array_map(function($data) {
+            return $data['propertyName'];
+        }, $fields);
+    }
 }

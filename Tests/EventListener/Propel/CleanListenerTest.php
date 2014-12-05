@@ -18,7 +18,7 @@ class CleanListenerTest extends ListenerTestCase
     {
         parent::setUp();
 
-        $this->listener = new CleanListener(self::MAPPING_NAME, $this->adapter, $this->handler);
+        $this->listener = new CleanListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -36,7 +36,7 @@ class CleanListenerTest extends ListenerTestCase
         $this->handler
             ->expects($this->once())
             ->method('clean')
-            ->with($this->object, self::MAPPING_NAME);
+            ->with($this->object, self::FIELD_NAME);
 
         $this->listener->onUpload($this->event);
     }

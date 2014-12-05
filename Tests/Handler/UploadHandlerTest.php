@@ -20,7 +20,7 @@ class UploadHandlerTest extends TestCase
 
     protected $handler;
 
-    const MAPPING_ID = 'mapping_id';
+    const FILE_FIELD = 'file_field';
 
     public function setUp()
     {
@@ -34,8 +34,8 @@ class UploadHandlerTest extends TestCase
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
         $this->factory
             ->expects($this->any())
-            ->method('fromName')
-            ->with($this->object, self::MAPPING_ID)
+            ->method('fromField')
+            ->with($this->object, self::FILE_FIELD)
             ->will($this->returnValue($this->mapping));
     }
 
@@ -65,7 +65,7 @@ class UploadHandlerTest extends TestCase
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
-        $this->handler->upload($this->object, self::MAPPING_ID);
+        $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
     public function testUploadSkipsEmptyObjects()
@@ -82,7 +82,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->never())
             ->method('injectFile');
 
-        $this->handler->upload($this->object, self::MAPPING_ID);
+        $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
     public function testInject()
@@ -100,7 +100,7 @@ class UploadHandlerTest extends TestCase
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
-        $this->handler->inject($this->object, self::MAPPING_ID);
+        $this->handler->inject($this->object, self::FILE_FIELD);
     }
 
     public function testClean()
@@ -124,7 +124,7 @@ class UploadHandlerTest extends TestCase
             ->method('remove')
             ->with($this->object, $this->mapping);
 
-        $this->handler->clean($this->object, self::MAPPING_ID);
+        $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
     public function testCleanSkipsEmptyObjects()
@@ -137,7 +137,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $this->handler->clean($this->object, self::MAPPING_ID);
+        $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
     public function testRemove()
@@ -155,7 +155,7 @@ class UploadHandlerTest extends TestCase
             ->method('remove')
             ->with($this->object, $this->mapping);
 
-        $this->handler->remove($this->object, self::MAPPING_ID);
+        $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
     protected function getStorageMock()

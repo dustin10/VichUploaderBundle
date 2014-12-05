@@ -18,7 +18,7 @@ class InjectListenerTest extends ListenerTestCase
     {
         parent::setUp();
 
-        $this->listener = new InjectListener(self::MAPPING_NAME, $this->adapter, $this->handler);
+        $this->listener = new InjectListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -36,7 +36,7 @@ class InjectListenerTest extends ListenerTestCase
         $this->handler
             ->expects($this->once())
             ->method('inject')
-            ->with($this->object, self::MAPPING_NAME);
+            ->with($this->object, self::FIELD_NAME);
 
         $this->listener->onHydrate($this->event);
     }

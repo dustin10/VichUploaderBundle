@@ -30,7 +30,6 @@ class VichFileType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('mapping'));
         $resolver->setDefaults(array(
             'allow_delete'  => true,
             'download_link' => true,
@@ -65,7 +64,7 @@ class VichFileType extends AbstractType
             $object = $form->getParent()->getData();
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $storage->resolvePath($object, $options['mapping'])) {
+            if (null === $object || null === $storage->resolvePath($object, $form->getName())) {
                 return;
             }
 
@@ -86,7 +85,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            $handler->remove($entity, $options['mapping']);
+            $handler->remove($entity, $event->getForm()->getName());
         });
     }
 
@@ -98,7 +97,7 @@ class VichFileType extends AbstractType
         $view->vars['object'] = $form->getParent()->getData();
 
         if ($options['download_link'] && $view->vars['object']) {
-            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
+            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $form->getName());
         }
     }
 

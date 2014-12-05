@@ -18,7 +18,7 @@ class RemoveListenerTest extends ListenerTestCase
     {
         parent::setUp();
 
-        $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->handler);
+        $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -36,7 +36,7 @@ class RemoveListenerTest extends ListenerTestCase
         $this->handler
             ->expects($this->once())
             ->method('remove')
-            ->with($this->object, self::MAPPING_NAME);
+            ->with($this->object, self::FIELD_NAME);
 
         $this->listener->onDelete($this->event);
     }

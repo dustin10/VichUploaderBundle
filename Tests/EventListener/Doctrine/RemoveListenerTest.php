@@ -74,10 +74,18 @@ class RemoveListenerTest extends ListenerTestCase
             ->with('Vich\UploaderBundle\Tests\DummyEntity')
             ->will($this->returnValue(true));
 
+        $this->metadata
+            ->expects($this->once())
+            ->method('getUploadableFields')
+            ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
+            ->will($this->returnValue(array(
+                array('propertyName' => 'field_name')
+            )));
+
         $this->handler
             ->expects($this->once())
             ->method('remove')
-            ->with($this->object, self::MAPPING_NAME);
+            ->with($this->object, 'field_name');
 
         $this->listener->postRemove($this->event);
     }

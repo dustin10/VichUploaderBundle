@@ -31,6 +31,9 @@ class InjectListener extends BaseListener
     public function onHydrate(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-        $this->handler->inject($object, $this->mapping);
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->inject($object, $field);
+        }
     }
 }
