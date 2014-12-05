@@ -17,9 +17,9 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 
 class VichFileType extends AbstractType
 {
-    private $storage;
-    private $handler;
-    private $translator;
+    protected $storage;
+    protected $handler;
+    protected $translator;
 
     public function __construct(StorageInterface $storage, UploadHandler $handler, TranslatorInterface $translator)
     {

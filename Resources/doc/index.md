@@ -41,7 +41,8 @@ Don't worry, it will be quick and easy (I promise!):
 
 ### Forms-related
 
-  * [Using the bundled form type](form/vich_file_type.md)
+  * [Using the bundled file form type](form/vich_file_type.md)
+  * [Using the bundled image form type](form/vich_image_type.md)
 
 ## Useful resources
 
