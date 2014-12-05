@@ -1,10 +1,17 @@
-Upgrading from v0.11.0 to master
+Upgrading from v0.12.0 to master
 ================================
 
 Nothing!
 
-Upgrading from v0.10.0 to v0.11.0
+Upgrading from v0.11.0 to v0.12.0
 ================================
+
+- the `storage` configuration paramater changed. It accepts the name of the
+  storage engine to use (file_system, gaufrette or flysystem).
+- the `gaufrette` and `flysystem` configuration parameters were deleted.
+
+Upgrading from v0.10.0 to v0.11.0
+=================================
 
 - Symfony versions prior to 2.3 are not supported anymore.
 
@@ -12,7 +19,7 @@ Upgrading from v0.9.0 to v0.10.0
 ================================
 
 - `inject_on_load` config param defaults to false. Set it to
-true if you want to keep your old behavior.
+  true if you want to keep your old behavior.
 
 - the `NamerInterface` and `DirectoryNamerInterface` were modified.
 

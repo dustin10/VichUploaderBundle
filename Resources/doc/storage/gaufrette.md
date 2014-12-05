@@ -28,9 +28,7 @@ knp_gaufrette:
 
 vich_uploader:
     db_driver: orm
-
-    gaufrette: true
-    storage:   vich_uploader.storage.gaufrette
+    storage:   gaufrette
 
     mappings:
         product_image:

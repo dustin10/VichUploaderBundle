@@ -38,13 +38,14 @@ class VichUploaderExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $config = $this->fixDbDriverConfig($config);
-        $this->loadServicesFiles($container, $config);
-        $this->registerMetadataDirectories($container, $config);
-        $this->registerCacheStrategy($container, $config);
 
         // define a few parameters
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
-        $container->setParameter('vich_uploader.storage_service', $config['storage']);
+        $container->setParameter('vich_uploader.storage_service', 'vich_uploader.storage.' . $config['storage']);
+
+        $this->loadServicesFiles($container, $config);
+        $this->registerMetadataDirectories($container, $config);
+        $this->registerCacheStrategy($container, $config);
 
         $this->registerListeners($container, $config);
     }
@@ -62,12 +63,8 @@ class VichUploaderExtension extends Extension
             $loader->load($file);
         }
 
-        if ($config['gaufrette']) {
-            $loader->load('gaufrette.xml');
-        }
-
-        if ($config['flysystem']) {
-            $loader->load('flysystem.xml');
+        if (in_array($config['storage'], array('gaufrette', 'flysystem'))) {
+            $loader->load($config['storage'] . '.xml');
         }
 
         if ($config['twig']) {

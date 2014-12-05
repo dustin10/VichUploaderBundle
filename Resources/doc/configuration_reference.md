@@ -10,9 +10,7 @@ Below is the full default configuration for the bundle:
 vich_uploader:
     db_driver:  orm # or mongodb or propel or phpcr
     twig:       true
-    gaufrette:  false # set to true to enable gaufrette support
-    flysystem:  false # set to true to enable flysystem support
-    storage:    vich_uploader.storage.file_system
+    storage:    file_system # or gaufrette or flysystem
     mappings:
         product_image:
             uri_prefix:         web   # uri prefix to resource
@@ -24,8 +22,3 @@ vich_uploader:
             inject_on_load:     false # determines whether to inject a File instance upon load
         # ... more mappings
 ```
-
-- `storage`: The id of the storage service used by the bundle to
-store files. The bundle ships with vich_uploader.storage.file_system,
-vich_uploader.storage.gaufrette (see [FileSystemStorage VS GaufretteStorage](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/usage.md#filesystemstorage-vs-gaufrettestorage-vs-flysystemstorage))
-and vich_uploader.storage.flysystem.

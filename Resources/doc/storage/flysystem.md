@@ -25,9 +25,7 @@ oneup_flysystem:
 
 vich_uploader:
     db_driver: orm
-
-    flysystem: true
-    storage:   vich_uploader.storage.flysystem
+    storage:   flysystem
 
     mappings:
         product_image:

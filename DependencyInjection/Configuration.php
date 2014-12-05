@@ -14,6 +14,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     protected $supportedDbDrivers = array('orm', 'mongodb', 'propel', 'phpcr');
+    protected $supportedStorages = array('gaufrette', 'flysystem', 'file_system');
 
     /**
      * Gets the configuration tree builder for the extension.
@@ -47,10 +48,18 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The db driver %s is not supported. Please choose one of ' . implode(', ', $this->supportedDbDrivers))
                     ->end()
                 ->end()
-                ->scalarNode('storage')->defaultValue('vich_uploader.storage.file_system')->end()
+                ->scalarNode('storage')
+                    ->defaultValue('file_system')
+                    ->beforeNormalization()
+                        ->ifString()
+                        ->then(function ($v) { return strtolower($v); })
+                    ->end()
+                    ->validate()
+                        ->ifNotInArray($this->supportedStorages)
+                        ->thenInvalid('The storage %s is not supported. Please choose one of ' . implode(', ', $this->supportedStorages))
+                    ->end()
+                ->end()
                 ->scalarNode('twig')->defaultTrue()->end()
-                ->scalarNode('gaufrette')->defaultFalse()->end()
-                ->scalarNode('flysystem')->defaultFalse()->end()
             ->end()
         ;
     }

@@ -36,17 +36,17 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'gaufrette',
         ));
 
-        $this->assertContainerBuilderHasParameter('vich_uploader.storage_service', 'gaufrette');
+        $this->assertContainerBuilderHasParameter('vich_uploader.storage_service', 'vich_uploader.storage.gaufrette');
     }
 
     public function testExtraServiceFilesAreLoaded()
     {
         $this->load(array(
-            'twig'      => true,
-            'gaufrette' => true,
+            'twig'    => true,
+            'storage' =>'flysystem'
         ));
 
-        $this->assertContainerBuilderHasService('vich_uploader.storage.gaufrette', 'Vich\UploaderBundle\Storage\GaufretteStorage');
+        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', 'Vich\UploaderBundle\Storage\FlysystemStorage');
         $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', 'Vich\UploaderBundle\Twig\Extension\UploaderExtension');
     }
 
