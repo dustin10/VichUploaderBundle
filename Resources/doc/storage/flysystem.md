@@ -33,7 +33,7 @@ vich_uploader:
             upload_destination: product_image_fs
 ```
 
-Using `vich_uploader.storage.flysystem` as the storage service you can still use
+Even when using `flysystem` as the storage engine you can still use
 the same mappings options that you would use with default storage.
 
 **Note:**
