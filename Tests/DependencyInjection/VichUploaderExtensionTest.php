@@ -36,7 +36,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'gaufrette',
         ));
 
-        $this->assertContainerBuilderHasParameter('vich_uploader.storage_service', 'vich_uploader.storage.gaufrette');
+        $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'vich_uploader.storage.gaufrette');
     }
 
     public function testExtraServiceFilesAreLoaded()

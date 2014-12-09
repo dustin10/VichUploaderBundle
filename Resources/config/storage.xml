@@ -3,19 +3,9 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <services>
-
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
-
-        <service
-            id="vich_uploader.storage"
-            class="Vich\UploaderBundle\Storage\StorageInterface"
-            factory-service="vich_uploader.storage_factory"
-            factory-method ="createStorage">
-        </service>
     </services>
-
 </container>

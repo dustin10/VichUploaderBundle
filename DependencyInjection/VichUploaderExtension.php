@@ -41,7 +41,7 @@ class VichUploaderExtension extends Extension
 
         // define a few parameters
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
-        $container->setParameter('vich_uploader.storage_service', 'vich_uploader.storage.' . $config['storage']);
+        $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.' . $config['storage']);
 
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
