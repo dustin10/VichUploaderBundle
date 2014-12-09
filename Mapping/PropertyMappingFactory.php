@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Vich\UploaderBundle\Exception\MissingMappingException;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
@@ -51,6 +52,7 @@ class PropertyMappingFactory
      * @param string $mappingName The mapping name.
      * @param string $className   The object's class. Mandatory if $obj can't be used to determine it.
      *
+     * @throws \Vich\UploaderBundle\Exception\MissingMappingException
      * @return PropertyMapping
      */
     public function fromName($object, $mappingName, $className = null)
@@ -58,7 +60,7 @@ class PropertyMappingFactory
         $mappings = $this->fromObject($object, $className);
 
         if (!isset($mappings[$mappingName])) {
-            throw new \RuntimeException(sprintf('Mapping %s does not exist', $mappingName));
+            throw new MissingMappingException(sprintf('Mapping %s does not exist', $mappingName));
         }
 
         return $mappings[$mappingName];

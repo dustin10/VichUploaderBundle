@@ -191,6 +191,51 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException Vich\UploaderBundle\Exception\MissingMappingException
+     */
+    public function testFromNameThrowsExceptionIfMappingIsMissing()
+    {
+        $mappings = array(
+            'existing_mapping_name' => array(
+                'upload_destination' => 'images',
+                'delete_on_remove' => true,
+                'delete_on_update' => true,
+                'namer' => null,
+                'inject_on_load' => true,
+                'directory_namer' => null
+            )
+        );
+
+        $obj = new DummyEntity();
+        $mappingName = 'nonexisting_mapping_name';
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->will($this->returnValue(true));
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('getUploadableFields')
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'file' => array(
+                            'mapping' => 'existing_mapping_name',
+                            'propertyName' => 'file',
+                            'fileNameProperty' => 'fileName',
+                        )
+                    )
+                )
+            );
+
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $factory->fromName($obj, $mappingName);
+    }
+
+    /**
      * Test that the fromField method returns null when an invalid
      * field name is specified.
      */
