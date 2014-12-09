@@ -51,9 +51,6 @@ abstract class AbstractStorage implements StorageInterface
             throw new \LogicException('No uploadable file found');
         }
 
-        // determine the file's directory
-        $dir = $mapping->getUploadDir($obj);
-
         // determine the file's name
         if ($mapping->hasNamer()) {
             $name = $mapping->getNamer()->name($obj, $mapping);
@@ -62,6 +59,9 @@ abstract class AbstractStorage implements StorageInterface
         }
 
         $mapping->setFileName($obj, $name);
+        
+        // determine the file's directory
+        $dir = $mapping->getUploadDir($obj);
 
         $this->doUpload($mapping, $file, $dir, $name);
     }
