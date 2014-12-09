@@ -10,8 +10,6 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 /**
  * FileInjectorTest.
  *
- * @todo use vfsStream (http://phpunit.de/manual/current/en/test-doubles.html#test-doubles.mocking-the-filesystem)
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class FileInjectorTest extends \PHPUnit_Framework_TestCase
