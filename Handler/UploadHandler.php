@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -123,7 +124,7 @@ class UploadHandler
         $mapping = $this->factory->fromField($obj, $fieldName);
 
         if ($mapping === null) {
-            throw new \RuntimeException(sprintf('No mapping found for field "%s".', $fieldName));
+            throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
         }
 
         return $mapping;
