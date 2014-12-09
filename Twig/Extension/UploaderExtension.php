@@ -59,14 +59,14 @@ class UploaderExtension extends \Twig_Extension
      * Gets the public path for the file associated with the uploadable
      * object.
      *
-     * @param object $obj         The object.
-     * @param string $mappingName The mapping name.
-     * @param string $className   The object's class. Mandatory if $obj can't be used to determine it.
+     * @param object $obj       The object.
+     * @param string $fieldName The field name.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return string The public path.
      */
-    public function asset($obj, $mappingName, $className = null)
+    public function asset($obj, $fieldName, $className = null)
     {
-        return $this->helper->asset($obj, $mappingName, $className);
+        return $this->helper->asset($obj, $fieldName, $className);
     }
 }
