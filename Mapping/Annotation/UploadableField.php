@@ -37,8 +37,6 @@ class UploadableField
 
         if (isset($options['fileNameProperty'])) {
             $this->fileNameProperty = $options['fileNameProperty'];
-        } else {
-            throw new \InvalidArgumentException('The "fileNameProperty" attribute of UploadableField is required.');
         }
     }
 

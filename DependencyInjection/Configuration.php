@@ -37,6 +37,9 @@ class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
+                ->scalarNode('default_filename_attribute_suffix')
+                    ->defaultValue('_name')
+                ->end()
                 ->scalarNode('db_driver')
                     ->isRequired()
                     ->beforeNormalization()

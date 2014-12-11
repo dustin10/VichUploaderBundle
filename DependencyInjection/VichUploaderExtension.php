@@ -40,6 +40,7 @@ class VichUploaderExtension extends Extension
         $config = $this->fixDbDriverConfig($config);
 
         // define a few parameters
+        $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
         $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.' . $config['storage']);
 
