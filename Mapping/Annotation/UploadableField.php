@@ -17,11 +17,6 @@ class UploadableField
     protected $mapping;
 
     /**
-     * @var string $name
-     */
-    protected $propertyName;
-
-    /**
      * @var string $fileNameProperty
      */
     protected $fileNameProperty;
@@ -65,26 +60,6 @@ class UploadableField
     public function setMapping($mapping)
     {
         $this->mapping = $mapping;
-    }
-
-    /**
-     * Gets the property name.
-     *
-     * @return string The property name.
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
-    }
-
-    /**
-     * Sets the property name.
-     *
-     * @param $propertyName The property name.
-     */
-    public function setPropertyName($propertyName)
-    {
-        $this->propertyName = $propertyName;
     }
 
     /**

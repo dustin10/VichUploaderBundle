@@ -22,3 +22,5 @@ vich_uploader:
             inject_on_load:     false # determines whether to inject a File instance upon load
         # ... more mappings
 ```
+
+The reference can be dumped using the following command: `php app/console config:dump-reference VichUploaderBundle`

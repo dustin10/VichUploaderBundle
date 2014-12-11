@@ -125,11 +125,11 @@ class FileSystemStorageTest extends StorageTestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
-        $path = $this->storage->resolvePath($this->object, 'file_mapping');
+        $path = $this->storage->resolvePath($this->object, 'file_field');
 
         $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
@@ -143,11 +143,11 @@ class FileSystemStorageTest extends StorageTestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
-        $this->assertNull($this->storage->resolveUri($this->object, 'file_mapping'));
+        $this->assertNull($this->storage->resolveUri($this->object, 'file_field'));
     }
 
     /**
@@ -174,11 +174,11 @@ class FileSystemStorageTest extends StorageTestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
-        $path = $this->storage->resolveUri($this->object, 'file_mapping');
+        $path = $this->storage->resolveUri($this->object, 'file_field');
 
         $this->assertEquals($uri, $path);
     }

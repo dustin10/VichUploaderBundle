@@ -14,17 +14,11 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 
     $builder->add('image', 'vich_file', array(
         'required'      => false,
-        'mapping'       => 'image_mapping', // mandatory
         'allow_delete'  => true, // not mandatory, default is true
         'download_link' => true, // not mandatory, default is true
     ));
 }
 ```
-
-**N.B**:
-
-> Don't forget to specify the right mapping name.
-
 
 For the form type to fully work, you'll also have to use the form theme bundled
 with VichUploaderBundle.

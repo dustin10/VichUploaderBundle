@@ -32,6 +32,9 @@ class UploadListener extends BaseListener
     public function onUpload(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-        $this->handler->upload($object, $this->mapping);
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->upload($object, $field);
+        }
     }
 }

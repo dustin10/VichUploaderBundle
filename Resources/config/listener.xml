@@ -14,11 +14,6 @@
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="vich_uploader.listener.uploader.propel" class="Vich\UploaderBundle\EventListener\PropelUploaderListener">
-            <argument type="service" id="vich_uploader.adapter.propel" />
-            <argument type="service" id="vich_uploader.upload_handler" />
-        </service>
-
         <!-- doctrine listeners -->
         <service id="vich_uploader.listener.doctrine.base" abstract="true" public="false">
             <argument /> <!-- will contain the mapping name -->
@@ -46,6 +41,7 @@
         <service id="vich_uploader.listener.propel.base" abstract="true" public="false">
             <argument /> <!-- will contain the mapping name -->
             <argument /> <!-- adapter -->
+            <argument type="service" id="vich_uploader.metadata_reader" />
             <argument type="service" id="vich_uploader.upload_handler" />
         </service>
 

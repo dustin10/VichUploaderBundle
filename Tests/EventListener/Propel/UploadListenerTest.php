@@ -18,7 +18,7 @@ class UploadListenerTest extends ListenerTestCase
     {
         parent::setUp();
 
-        $this->listener = new UploadListener(self::MAPPING_NAME, $this->adapter, $this->handler);
+        $this->listener = new UploadListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
     /**
@@ -37,7 +37,7 @@ class UploadListenerTest extends ListenerTestCase
         $this->handler
             ->expects($this->once())
             ->method('upload')
-            ->with($this->object, self::MAPPING_NAME);
+            ->with($this->object, self::FIELD_NAME);
 
         $this->listener->onUpload($this->event);
     }

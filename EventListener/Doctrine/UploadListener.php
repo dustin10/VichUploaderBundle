@@ -33,8 +33,12 @@ class UploadListener extends BaseListener
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->isUploadable($object)) {
-            $this->handler->upload($object, $this->mapping);
+        if (!$this->isUploadable($object)) {
+            return;
+        }
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->upload($object, $field);
         }
     }
 
@@ -45,8 +49,12 @@ class UploadListener extends BaseListener
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->isUploadable($object)) {
-            $this->handler->upload($object, $this->mapping);
+        if (!$this->isUploadable($object)) {
+            return;
+        }
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->upload($object, $field);
             $this->adapter->recomputeChangeSet($event);
         }
     }

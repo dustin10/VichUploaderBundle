@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -107,9 +108,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $mappingName, $className = null)
+    public function resolvePath($obj, $fieldName, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $mappingName, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
             return null;
@@ -121,9 +122,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveUri($obj, $mapping, $className = null)
+    public function resolveUri($obj, $fieldName, $className = null)
     {
-        list($mapping, $filename) = $this->getFilename($obj, $mapping, $className);
+        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
             return null;
@@ -138,11 +139,14 @@ abstract class AbstractStorage implements StorageInterface
     /**
      *  note: extension point.
      */
-    protected function getFilename($obj, $mappingName, $className = null)
+    protected function getFilename($obj, $fieldName, $className = null)
     {
-        $mapping = $this->factory->fromName($obj, $mappingName, $className);
-        $filename = $mapping->getFileName($obj);
+        $mapping = $this->factory->fromField($obj, $fieldName, $className);
 
-        return array($mapping, $filename);
+        if ($mapping === null) {
+            throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
+        }
+
+        return array($mapping, $mapping->getFileName($obj));
     }
 }

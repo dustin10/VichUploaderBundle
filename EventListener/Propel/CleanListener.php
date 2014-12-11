@@ -31,6 +31,9 @@ class CleanListener extends BaseListener
     public function onUpload(GenericEvent $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-        $this->handler->clean($object, $this->mapping);
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->clean($object, $field);
+        }
     }
 }

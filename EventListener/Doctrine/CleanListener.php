@@ -32,8 +32,12 @@ class CleanListener extends BaseListener
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->isUploadable($object)) {
-            $this->handler->clean($object, $this->mapping);
+        if (!$this->isUploadable($object)) {
+            return;
+        }
+
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->clean($object, $field);
             $this->adapter->recomputeChangeSet($event);
         }
     }

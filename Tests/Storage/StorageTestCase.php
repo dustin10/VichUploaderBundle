@@ -105,11 +105,11 @@ abstract class StorageTestCase extends TestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
-        $this->assertNull($this->storage->resolvePath($this->object, 'file_mapping'));
+        $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
     /**
@@ -124,11 +124,11 @@ abstract class StorageTestCase extends TestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
-        $this->assertNull($this->storage->resolvePath($this->object, 'file_mapping'));
+        $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
     /**

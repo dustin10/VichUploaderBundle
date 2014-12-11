@@ -16,7 +16,6 @@ Here is a summary of what you will have to do:
 > Throughout the guide we will use Doctrine ORM as the persistence engine on
 > the examples. Though mostly, there won't be much difference if you use a
 > different engine.
->
 
 ## Step 1: configure an upload mapping
 
@@ -113,7 +112,7 @@ class Product
      * @var string $imageName
      */
     protected $imageName;
-    
+
     /**
      * @ORM\Column(type="datetime")
      *
@@ -193,7 +192,9 @@ All options are listed below:
 
   * `delete_on_remove`: should the file be deleted when the entity is removed ;
   * `delete_on_update`: should the file be deleted when a new file is uploaded ;
-  * `inject_on_load`: should the file be injected into the uploadable entity when it is loaded from the data store. The object will be an instance of `Symfony\Component\HttpFoundation\File\File`.
+  * `inject_on_load`: should the file be injected into the uploadable entity
+    when it is loaded from the data store. The object will be an instance of
+    `Symfony\Component\HttpFoundation\File\File`.
 
 **Note:**
 

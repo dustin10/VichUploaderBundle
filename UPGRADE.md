@@ -1,7 +1,10 @@
 Upgrading from v0.12.0 to master
 ================================
 
-Nothing!
+- the `resolvePath` and `resolveUri` Storage methods now take a field name
+  instead of a mapping name. The same goes for the UploaderExtension and
+  UploaderHelper `asset` method.
+  This reverts the broken behavior introduced in v0.10.0.
 
 Upgrading from v0.11.0 to v0.12.0
 ================================

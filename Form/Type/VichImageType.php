@@ -16,7 +16,7 @@ class VichImageType extends VichFileType
         $view->vars['show_download_link'] = $options['download_link'];
 
         if ($view->vars['object']) {
-            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
+            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $builder->getName());
         }
     }
 

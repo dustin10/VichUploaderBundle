@@ -108,12 +108,12 @@ class GaufretteStorageTest extends StorageTestCase
 
         $this->factory
             ->expects($this->once())
-            ->method('fromName')
-            ->with($this->object, 'file_mapping')
+            ->method('fromField')
+            ->with($this->object, 'file_field')
             ->will($this->returnValue($this->mapping));
 
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, $protocol);
-        $path = $this->storage->resolvePath($this->object, 'file_mapping');
+        $path = $this->storage->resolvePath($this->object, 'file_field');
 
         $this->assertEquals($expectedPath, $path);
     }

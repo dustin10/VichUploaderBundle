@@ -10,8 +10,6 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 /**
  * FileInjectorTest.
  *
- * @todo use vfsStream (http://phpunit.de/manual/current/en/test-doubles.html#test-doubles.mocking-the-filesystem)
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class FileInjectorTest extends \PHPUnit_Framework_TestCase
@@ -34,11 +32,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInjectsOneFile()
     {
-        $uploadDir = __DIR__ . '/..';
-        $name = 'file.txt';
-
-        file_put_contents(sprintf('%s/%s', $uploadDir, $name), '');
-
         $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
 
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
@@ -46,8 +39,8 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $fileMapping
             ->expects($this->once())
-            ->method('getMappingName')
-            ->will($this->returnValue('mapping_name'));
+            ->method('getFilePropertyName')
+            ->will($this->returnValue('file_field'));
         $fileMapping
             ->expects($this->once())
             ->method('setFile');
@@ -55,13 +48,11 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
-            ->with($obj, 'mapping_name')
-            ->will($this->returnValue($uploadDir));
+            ->with($obj, 'file_field')
+            ->will($this->returnValue('/uploadDir/file.txt'));
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);
-
-        unlink(sprintf('%s/%s', $uploadDir, $name));
     }
 
     /**
@@ -87,8 +78,6 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);
-
-        $this->assertNull($obj->getFile());
     }
 
     /**

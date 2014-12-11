@@ -40,7 +40,7 @@ class AnnotationDriver implements DriverInterface
 
             $fieldMetadata = array(
                 'mapping'           => $uploadableField->getMapping(),
-                'propertyName'      => $uploadableField->getPropertyName(),
+                'propertyName'      => $property->getName(),
                 'fileNameProperty'  => $uploadableField->getFileNameProperty(),
             );
 
