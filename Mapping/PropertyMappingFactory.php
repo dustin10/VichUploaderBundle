@@ -31,17 +31,24 @@ class PropertyMappingFactory
     protected $mappings;
 
     /**
+     * @var string $defaultFilenameAttributeSuffix
+     */
+    protected $defaultFilenameAttributeSuffix;
+
+    /**
      * Constructs a new instance of PropertyMappingFactory.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
-     * @param \Vich\UploaderBundle\Metadata\MetadataReader              $metadata  The mapping mapping.
-     * @param array                                                     $mappings  The configured mappings.
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container                      The container.
+     * @param \Vich\UploaderBundle\Metadata\MetadataReader              $metadata                       The mapping mapping.
+     * @param array                                                     $mappings                       The configured mappings.
+     * @param string                                                    $defaultFilenameAttributeSuffix The default suffix to be used if the fileNamePropertyPath isn't given for a mapping.
      */
-    public function __construct(ContainerInterface $container, MetadataReader $metadata, array $mappings)
+    public function __construct(ContainerInterface $container, MetadataReader $metadata, array $mappings, $defaultFilenameAttributeSuffix = '_name')
     {
         $this->container = $container;
         $this->metadata = $metadata;
         $this->mappings = $mappings;
+        $this->defaultFilenameAttributeSuffix = $defaultFilenameAttributeSuffix;
     }
 
     /**
@@ -135,8 +142,10 @@ class PropertyMappingFactory
         }
 
         $config = $this->mappings[$mappingData['mapping']];
+        $fileProperty = isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName;
+        $fileNameProperty = empty($mappingData['fileNameProperty']) ? $fileProperty . '_name' : $mappingData['fileNameProperty'];
 
-        $mapping = new PropertyMapping(isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName, $mappingData['fileNameProperty']);
+        $mapping = new PropertyMapping($fileProperty, $fileNameProperty);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 

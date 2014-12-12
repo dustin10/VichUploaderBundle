@@ -10,6 +10,7 @@
             <argument type="service" id="service_container" />
             <argument type="service" id="vich_uploader.metadata_reader" />
             <argument>%vich_uploader.mappings%</argument>
+            <argument>%vich_uploader.default_filename_attribute_suffix%</argument>
         </service>
 
         <service id="vich_uploader.storage_factory" class="Vich\UploaderBundle\Storage\StorageFactory">

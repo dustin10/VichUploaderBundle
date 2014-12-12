@@ -20,14 +20,4 @@ class UploadableFieldTest extends \PHPUnit_Framework_TestCase
             'fileNameProperty' => 'fileName'
         ));
     }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionThrownWhenNoFileNamePropertyAttribute()
-    {
-        new UploadableField(array(
-            'mapping' => 'file'
-        ));
-    }
 }
