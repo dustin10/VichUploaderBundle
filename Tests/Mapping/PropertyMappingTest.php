@@ -22,18 +22,12 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping(array(
             'upload_destination'    => '/tmp',
-            'delete_on_remove'      => true,
-            'delete_on_update'      => true,
-            'inject_on_load'        => false,
         ));
 
         $this->assertEquals('', $prop->getUploadDir($object));
         $this->assertEquals('/tmp', $prop->getUploadDestination());
         $this->assertEquals('file', $prop->getFilePropertyName());
         $this->assertEquals('fileName', $prop->getFileNamePropertyName());
-        $this->assertTrue($prop->getDeleteOnRemove());
-        $this->assertTrue($prop->getDeleteOnUpdate());
-        $this->assertFalse($prop->getInjectOnLoad());
     }
 
     /**
