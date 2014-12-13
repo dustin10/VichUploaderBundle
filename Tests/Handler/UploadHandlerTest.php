@@ -41,13 +41,7 @@ class UploadHandlerTest extends TestCase
 
     public function testUpload()
     {
-        $this->dispatcher
-            ->expects($this->any())
-            ->method('dispatch')
-            ->will($this->returnValueMap(array(
-                array(Events::PRE_UPLOAD, $this->validEvent(), null),
-                array(Events::POST_UPLOAD, $this->validEvent(), null),
-            )));
+        $this->expectEvents(array(Events::PRE_UPLOAD, Events::POST_UPLOAD));
 
         $this->mapping
             ->expects($this->once())
@@ -66,6 +60,28 @@ class UploadHandlerTest extends TestCase
             ->with($this->object, $this->mapping);
 
         $this->handler->upload($this->object, self::FILE_FIELD);
+    }
+
+    /**
+     * @dataProvider methodProvider
+     * @expectedException Vich\UploaderBundle\Exception\MappingNotFoundException
+     */
+    public function testAnExceptionIsThrownIfMappingIsntFound($method)
+    {
+        $this->factory = $this->getPropertyMappingFactoryMock();
+        $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
+
+        call_user_func(array($handler, $method), $this->object, self::FILE_FIELD);
+    }
+
+    public function methodProvider()
+    {
+        return array(
+            array('upload'),
+            array('inject'),
+            array('remove'),
+            array('clean'),
+        );
     }
 
     public function testUploadSkipsEmptyObjects()
@@ -87,13 +103,7 @@ class UploadHandlerTest extends TestCase
 
     public function testInject()
     {
-        $this->dispatcher
-            ->expects($this->any())
-            ->method('dispatch')
-            ->will($this->returnValueMap(array(
-                array(Events::PRE_INJECT, $this->validEvent(), null),
-                array(Events::POST_INJECT, $this->validEvent(), null),
-            )));
+        $this->expectEvents(array(Events::PRE_INJECT, Events::POST_INJECT));
 
         $this->injector
             ->expects($this->once())
@@ -105,13 +115,7 @@ class UploadHandlerTest extends TestCase
 
     public function testClean()
     {
-        $this->dispatcher
-            ->expects($this->any())
-            ->method('dispatch')
-            ->will($this->returnValueMap(array(
-                array(Events::PRE_REMOVE, $this->validEvent(), null),
-                array(Events::POST_REMOVE, $this->validEvent(), null),
-            )));
+        $this->expectEvents(array(Events::PRE_REMOVE, Events::POST_REMOVE));
 
         $this->mapping
             ->expects($this->once())
@@ -142,13 +146,7 @@ class UploadHandlerTest extends TestCase
 
     public function testRemove()
     {
-        $this->dispatcher
-            ->expects($this->any())
-            ->method('dispatch')
-            ->will($this->returnValueMap(array(
-                array(Events::PRE_REMOVE, $this->validEvent(), null),
-                array(Events::POST_REMOVE, $this->validEvent(), null),
-            )));
+        $this->expectEvents(array(Events::PRE_REMOVE, Events::POST_REMOVE));
 
         $this->storage
             ->expects($this->once())
@@ -200,9 +198,20 @@ class UploadHandlerTest extends TestCase
     protected function validEvent()
     {
         $object = $this->object;
+        $mapping = $this->mapping;
 
-        return $this->callback(function ($event) use ($object) {
-            return $event instanceof Event && $event->getObject() === $object;
+        return $this->callback(function ($event) use ($object, $mapping) {
+            return $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping;
         });
+    }
+
+    protected function expectEvents(array $events)
+    {
+        foreach ($events as $i => $event) {
+            $this->dispatcher
+                ->expects($this->at($i))
+                ->method('dispatch')
+                ->with($event, $this->validEvent());
+        }
     }
 }
