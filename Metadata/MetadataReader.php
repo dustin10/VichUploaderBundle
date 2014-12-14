@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Metadata;
 
-use Metadata\MetadataFactoryInterface;
+use Metadata\AdvancedMetadataFactoryInterface;
 
 /**
  * MetadataReader.
@@ -14,16 +14,16 @@ use Metadata\MetadataFactoryInterface;
 class MetadataReader
 {
     /**
-     * @var MetadataFactoryInterface $reader
+     * @var AdvancedMetadataFactoryInterface $reader
      */
     protected $reader;
 
     /**
      * Constructs a new instance of the MetadataReader.
      *
-     * @param MetadataFactoryInterface $reader The "low-level" metadata reader.
+     * @param AdvancedMetadataFactoryInterface $reader The "low-level" metadata reader.
      */
-    public function __construct(MetadataFactoryInterface $reader)
+    public function __construct(AdvancedMetadataFactoryInterface $reader)
     {
         $this->reader = $reader;
     }
