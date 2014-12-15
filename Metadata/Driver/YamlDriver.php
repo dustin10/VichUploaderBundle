@@ -20,11 +20,6 @@ class YamlDriver extends AbstractFileDriver
     {
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
-
-        if (!isset($config[$className])) {
-            throw new \RuntimeException(sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
-        }
-
         $metadata = new ClassMetadata($className);
 
         foreach ($config[$className] as $field => $mappingData) {
