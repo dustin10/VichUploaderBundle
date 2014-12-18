@@ -105,6 +105,12 @@ class UploadHandler
     public function remove($obj, $fieldName)
     {
         $mapping = $this->getMapping($obj, $fieldName);
+        $oldFilename = $mapping->getFileName($obj);
+
+        // nothing to remove, avoid dispatching useless events
+        if (empty($oldFilename)) {
+            return;
+        }
 
         $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
 
