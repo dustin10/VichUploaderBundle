@@ -123,6 +123,12 @@ class UploadHandlerTest extends TestCase
             ->with($this->object)
             ->will($this->returnValue($this->getUploadedFileMock()));
 
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->will($this->returnValue('something not null'));
+
         $this->storage
             ->expects($this->once())
             ->method('remove')
@@ -133,6 +139,12 @@ class UploadHandlerTest extends TestCase
 
     public function testCleanSkipsEmptyObjects()
     {
+        $this->mapping
+            ->expects($this->any())
+            ->method('getFileName')
+            ->with($this->object)
+            ->will($this->returnValue('something not null'));
+
         $this->dispatcher
             ->expects($this->never())
             ->method('dispatch');
@@ -148,8 +160,28 @@ class UploadHandlerTest extends TestCase
     {
         $this->expectEvents(array(Events::PRE_REMOVE, Events::POST_REMOVE));
 
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->will($this->returnValue('something not null'));
+
         $this->storage
             ->expects($this->once())
+            ->method('remove')
+            ->with($this->object, $this->mapping);
+
+        $this->handler->remove($this->object, self::FILE_FIELD);
+    }
+
+    public function testRemoveWithEmptyObject()
+    {
+        $this->dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->storage
+            ->expects($this->never())
             ->method('remove')
             ->with($this->object, $this->mapping);
 
