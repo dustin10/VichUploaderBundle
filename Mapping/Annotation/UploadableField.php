@@ -51,16 +51,6 @@ class UploadableField
     }
 
     /**
-     * Sets the mapping name.
-     *
-     * @param $mapping The mapping name.
-     */
-    public function setMapping($mapping)
-    {
-        $this->mapping = $mapping;
-    }
-
-    /**
      * Gets the file name property.
      *
      * @return string The file name property.
@@ -68,15 +58,5 @@ class UploadableField
     public function getFileNameProperty()
     {
         return $this->fileNameProperty;
-    }
-
-    /**
-     * Sets the file name property.
-     *
-     * @param $fileNameProperty The file name property.
-     */
-    public function setFileNameProperty($fileNameProperty)
-    {
-        $this->fileNameProperty = $fileNameProperty;
     }
 }
