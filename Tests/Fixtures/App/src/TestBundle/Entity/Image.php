@@ -20,12 +20,12 @@ class Image
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string")
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
     protected $updatedAt;
 
@@ -37,11 +37,16 @@ class Image
     protected $imageFile;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string $imageName
      */
     protected $imageName;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -52,7 +57,7 @@ class Image
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(File $image)
+    public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
 

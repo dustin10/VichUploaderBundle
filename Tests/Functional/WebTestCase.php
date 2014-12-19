@@ -6,9 +6,20 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class WebTestCase extends BaseWebTestCase
 {
+    protected function getUploadedFile($client, $name, $mimeType = 'image/png')
+    {
+        return new UploadedFile(
+            $this->getImagesDir($client) . DIRECTORY_SEPARATOR . $name,
+            $name,
+            $mimeType,
+            123
+        );
+    }
+
     protected function getUploadsDir($client)
     {
         return $client->getKernel()->getCacheDir() . '/images';

@@ -1,9 +1,19 @@
 upload:
-    path:           /upload
+    path:           /upload/{formType}
     defaults:       { _controller: VichTestBundle:Default:upload }
     requirements:   { _method: GET }
 
+view:
+    path:           /upload/{imageId}/{formType}
+    defaults:       { _controller: VichTestBundle:Default:edit }
+    requirements:   { _method: GET }
+
 upload_send:
-    path:           /upload/send
+    path:           /upload/{formType}/send
+    defaults:       { _controller: VichTestBundle:Default:submit }
+    requirements:   { _method: POST }
+
+upload_edit:
+    path:           /upload/{formType}/send/{imageId}
     defaults:       { _controller: VichTestBundle:Default:submit }
     requirements:   { _method: POST }

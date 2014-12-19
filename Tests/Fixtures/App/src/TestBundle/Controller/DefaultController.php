@@ -9,19 +9,31 @@ use Vich\TestBundle\Entity\Image;
 
 class DefaultController extends Controller
 {
-    public function uploadAction()
+    public function uploadAction($formType)
     {
-        $form = $this->getForm(new Image());
+        $form = $this->getForm($formType, $this->getImage());
 
         return $this->render('VichTestBundle:Default:upload.html.twig', array(
-            'form' => $form->createView(),
+            'formType'  => $formType,
+            'form'      => $form->createView(),
         ));
     }
 
-    public function submitAction(Request $request)
+    public function editAction($formType, $imageId)
     {
-        $image = new Image();
-        $form = $this->getForm($image);
+        $form = $this->getForm($formType, $this->getImage($imageId));
+
+        return $this->render('VichTestBundle:Default:edit.html.twig', array(
+            'imageId'   => $imageId,
+            'formType'  => $formType,
+            'form'      => $form->createView(),
+        ));
+    }
+
+    public function submitAction(Request $request, $formType, $imageId = null)
+    {
+        $image = $this->getImage($imageId);
+        $form = $this->getForm($formType, $image);
 
         $form->submit($request);
         if ($form->isValid()) {
@@ -29,19 +41,37 @@ class DefaultController extends Controller
 
             $em->persist($image);
             $em->flush();
+
+            return $this->redirect($this->generateUrl('view', array(
+                'formType' => $formType,
+                'imageId'  => $image->getId()
+            )));
         }
 
         return $this->render('VichTestBundle:Default:upload.html.twig', array(
-            'form' => $form->createView(),
+            'formType'  => $formType,
+            'form'      => $form->createView(),
         ));
     }
 
-    private function getForm(Image $image)
+    private function getForm($fileType, Image $image)
     {
         return $this->createFormBuilder($image)
             ->add('title', 'text')
-            ->add('imageFile', 'vich_file')
+            ->add('imageFile', $fileType)
             ->add('save', 'submit')
             ->getForm();
+    }
+
+    private function getImage($imageId = null)
+    {
+        if ($imageId === null) {
+            return new Image();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $image = $em->getRepository('VichTestBundle:Image')->find($imageId);
+
+        return $image;
     }
 }
