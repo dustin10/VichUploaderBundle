@@ -80,6 +80,27 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fields, $this->reader->getUploadableFields('ClassName'));
     }
 
+    public function testGetUploadableFieldsWithInheritance()
+    {
+        $classMetadata = new \stdClass;
+        $classMetadata->fields = array('bar', 'baz');
+        $subClassMetadata = new \stdClass;
+        $subClassMetadata->fields = array('foo');
+        $metadata = new \stdClass;
+        $metadata->classMetadata = array(
+            'ClassName'     => $classMetadata,
+            'SubClassName'  => $subClassMetadata
+        );
+
+        $this->factory
+            ->expects($this->once())
+            ->method('getMetadataForClass')
+            ->with('SubClassName')
+            ->will($this->returnValue($metadata));
+
+        $this->assertSame(array('bar', 'baz', 'foo'), $this->reader->getUploadableFields('SubClassName'));
+    }
+
     /**
      * @dataProvider fieldsMetadataProvider
      */

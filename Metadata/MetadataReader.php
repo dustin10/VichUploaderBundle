@@ -75,9 +75,13 @@ class MetadataReader
     public function getUploadableFields($class)
     {
         $metadata = $this->reader->getMetadataForClass($class);
-        $classMetadata = $metadata->classMetadata[$class];
+        $uploadableFields = array();
 
-        return $classMetadata->fields;
+        foreach ($metadata->classMetadata as $classMetadata) {
+            $uploadableFields = array_merge($uploadableFields, $classMetadata->fields);
+        }
+
+        return $uploadableFields;
     }
 
     /**
