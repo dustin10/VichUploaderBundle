@@ -3,20 +3,12 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <services>
-
         <service id="vich_uploader.property_mapping_factory" class="Vich\UploaderBundle\Mapping\PropertyMappingFactory" public="false">
             <argument type="service" id="service_container" />
             <argument type="service" id="vich_uploader.metadata_reader" />
             <argument>%vich_uploader.mappings%</argument>
             <argument>%vich_uploader.default_filename_attribute_suffix%</argument>
         </service>
-
-        <service id="vich_uploader.storage_factory" class="Vich\UploaderBundle\Storage\StorageFactory">
-            <argument type="service" id="service_container" />
-        </service>
-
     </services>
-
 </container>

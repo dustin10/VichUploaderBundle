@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Storage;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
@@ -38,11 +37,11 @@ class FlysystemStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
 
         $stream = fopen($file->getRealPath(), 'r+');
         $fs->writeStream($path, $stream, array(
-            'mimetype' => $file->getMimeType()
+            'mimetype' => $file->getMimeType(),
         ));
     }
 
@@ -52,7 +51,7 @@ class FlysystemStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
 
         try {
             return $fs->delete($path);
@@ -67,10 +66,27 @@ class FlysystemStorage extends AbstractStorage
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
         $fs = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
         $file = $fs->get($path);
 
         return $file->getPath();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function resolveStream($obj, $fieldName, $className = null)
+    {
+        $path = $this->resolvePath($obj, $fieldName, $className);
+
+        if (empty($path)) {
+            return;
+        }
+
+        $mapping = $this->factory->fromField($obj, $fieldName, $className);
+        $fs = $this->getFilesystem($mapping);
+
+        return $fs->readStream($path);
     }
 
     /**

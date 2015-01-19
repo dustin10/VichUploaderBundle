@@ -32,23 +32,34 @@ interface StorageInterface
      * Resolves the path for a file based on the specified object
      * and mapping name.
      *
-     * @param object $obj         The object.
-     * @param string $mappingName The name of the mapping to use.
-     * @param string $className   The object's class. Mandatory if $obj can't be used to determine it.
+     * @param object $obj       The object.
+     * @param string $fieldName The field to use.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return string The path.
      */
-    public function resolvePath($obj, $mappingName, $className = null);
+    public function resolvePath($obj, $fieldName, $className = null);
 
     /**
-     * Resolves the uri for any based on the specified object
-     * and mapping name.
+     * Resolves the uri based on the specified object and mapping name.
      *
-     * @param object $obj         The object.
-     * @param string $mappingName The name of the mapping to use.
-     * @param string $className   The object's class. Mandatory if $obj can't be used to determine it.
+     * @param object $obj       The object.
+     * @param string $fieldName The field to use.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
      *
      * @return string The uri.
      */
-    public function resolveUri($obj, $mappingName, $className = null);
+    public function resolveUri($obj, $fieldName, $className = null);
+
+    /**
+     * Returns a read-only stream based on the specified object and mapping
+     * name.
+     *
+     * @param object $obj       The object.
+     * @param string $fieldName The field to use.
+     * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     *
+     * @return string The uri.
+     */
+    public function resolveStream($obj, $fieldName, $className = null);
 }

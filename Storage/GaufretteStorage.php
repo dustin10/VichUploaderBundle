@@ -6,7 +6,6 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
@@ -48,7 +47,7 @@ class GaufretteStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
             $filesystem->getAdapter()->setMetadata($path, array('contentType' => $file->getMimeType()));
@@ -63,7 +62,7 @@ class GaufretteStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
 
         try {
             return $filesystem->delete($path);
@@ -78,9 +77,9 @@ class GaufretteStorage extends AbstractStorage
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
     {
         $fsIdentifier = $mapping->getUploadDestination();
-        $path = !empty($dir) ? $dir . '/' .$name : $name;
+        $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        return $this->protocol.'://' . $fsIdentifier . '/' . $path;
+        return $this->protocol.'://'.$fsIdentifier.'/'.$path;
     }
 
     /**

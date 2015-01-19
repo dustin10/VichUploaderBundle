@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- download handler -->
+        <service id="vich_uploader.download_handler" class="Vich\UploaderBundle\Handler\DownloadHandler" lazy="true">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage" />
+        </service>
+
+        <!-- global handler -->
+        <service id="vich_uploader.upload_handler" class="Vich\UploaderBundle\Handler\UploadHandler" lazy="true">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage" />
+            <argument type="service" id="vich_uploader.file_injector" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+    </services>
+</container>

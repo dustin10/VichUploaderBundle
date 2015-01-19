@@ -4,10 +4,8 @@ namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
-use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -18,18 +16,8 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHandler
+class UploadHandler extends AbstractHandler
 {
-    /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory
-     */
-    protected $factory;
-
-    /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
-     */
-    protected $storage;
-
     /**
      * @var \Vich\UploaderBundle\Injector\FileInjectorInterface $injector
      */
@@ -50,8 +38,8 @@ class UploadHandler
      */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
     {
-        $this->factory = $factory;
-        $this->storage = $storage;
+        parent::__construct($factory, $storage);
+
         $this->injector = $injector;
         $this->dispatcher = $dispatcher;
     }
@@ -123,17 +111,6 @@ class UploadHandler
     protected function dispatch($eventName, Event $event)
     {
         $this->dispatcher->dispatch($eventName, $event);
-    }
-
-    protected function getMapping($obj, $fieldName)
-    {
-        $mapping = $this->factory->fromField($obj, $fieldName);
-
-        if ($mapping === null) {
-            throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
-        }
-
-        return $mapping;
     }
 
     protected function hasUploadedFile($obj, PropertyMapping $mapping)

@@ -60,7 +60,7 @@ abstract class AbstractStorage implements StorageInterface
         }
 
         $mapping->setFileName($obj, $name);
-        
+
         // determine the file's directory
         $dir = $mapping->getUploadDir($obj);
 
@@ -88,10 +88,10 @@ abstract class AbstractStorage implements StorageInterface
         // the non-strict comparison is done on purpose: we want to skip
         // null and empty filenames
         if (null == $name) {
-            return;
+            return false;
         }
 
-        $this->doRemove($mapping, $mapping->getUploadDir($obj), $name);
+        return $this->doRemove($mapping, $mapping->getUploadDir($obj), $name);
     }
 
     /**
@@ -131,9 +131,23 @@ abstract class AbstractStorage implements StorageInterface
         }
 
         $dir = $mapping->getUploadDir($obj);
-        $path = !empty($dir) ? $dir . '/' .$filename : $filename;
+        $path = !empty($dir) ? $dir.'/'.$filename : $filename;
 
-        return $mapping->getUriPrefix() . '/' . $path;
+        return $mapping->getUriPrefix().'/'.$path;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function resolveStream($obj, $fieldName, $className = null)
+    {
+        $path = $this->resolvePath($obj, $fieldName, $className);
+
+        if (empty($path)) {
+            return null;
+        }
+
+        return fopen($path, 'rb');
     }
 
     /**
