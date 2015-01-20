@@ -35,10 +35,11 @@ interface StorageInterface
      * @param object $obj       The object.
      * @param string $fieldName The field to use.
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it.
+     * @param bool   $relative  Whether the path should be relative or absolute.
      *
      * @return string The path.
      */
-    public function resolvePath($obj, $fieldName, $className = null);
+    public function resolvePath($obj, $fieldName, $className = null, $relative = false);
 
     /**
      * Resolves the uri based on the specified object and mapping name.

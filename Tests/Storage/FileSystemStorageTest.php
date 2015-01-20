@@ -134,6 +134,32 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
 
+    /**
+     * Test the resolve path method.
+     */
+    public function testResolveRelativePath()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('upload_dir'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue($this->mapping));
+
+        $path = $this->storage->resolvePath($this->object, 'file_field', null, true);
+
+        $this->assertEquals(sprintf('upload_dir%sfile.txt', DIRECTORY_SEPARATOR), $path);
+    }
+
     public function testResolveUriReturnsNullIfNoFile()
     {
         $this->mapping

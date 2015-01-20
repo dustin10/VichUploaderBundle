@@ -63,13 +63,16 @@ class FlysystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
+    protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
     {
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
-        $file = $fs->get($path);
 
-        return $file->getPath();
+        if ($relative) {
+            return $path;
+        }
+
+        return $fs->get($path)->getPath();
     }
 
     /**

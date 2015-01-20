@@ -103,12 +103,12 @@ abstract class AbstractStorage implements StorageInterface
      *
      * @return string
      */
-    abstract protected function doResolvePath(PropertyMapping $mapping, $dir, $name);
+    abstract protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false);
 
     /**
      * {@inheritDoc}
      */
-    public function resolvePath($obj, $fieldName, $className = null)
+    public function resolvePath($obj, $fieldName, $className = null, $relative = false)
     {
         list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
@@ -116,7 +116,7 @@ abstract class AbstractStorage implements StorageInterface
             return null;
         }
 
-        return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename);
+        return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename, $relative);
     }
 
     /**

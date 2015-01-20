@@ -89,10 +89,9 @@ class GaufretteStorageTest extends StorageTestCase
      *
      * @dataProvider pathProvider
      */
-    public function testResolvePath($protocol, $filesystemKey, $uploadDir, $expectedPath)
+    public function testResolvePath($protocol, $filesystemKey, $uploadDir, $expectedPath, $relative)
     {
         $this->mapping
-            ->expects($this->once())
             ->method('getUploadDestination')
             ->will($this->returnValue($filesystemKey));
 
@@ -113,7 +112,7 @@ class GaufretteStorageTest extends StorageTestCase
             ->will($this->returnValue($this->mapping));
 
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, $protocol);
-        $path = $this->storage->resolvePath($this->object, 'file_field');
+        $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 
         $this->assertEquals($expectedPath, $path);
     }
@@ -121,10 +120,12 @@ class GaufretteStorageTest extends StorageTestCase
     public function pathProvider()
     {
         return array(
-            //      protocol,   fs identifier,  upload dir, full path
-            array( 'gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt' ),
-            array( 'data',      'filesystemKey', null,   'data://filesystemKey/file.txt' ),
-            array( 'gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt' ),
+            //      protocol,   fs identifier,  upload dir, full path, relative
+            array( 'gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false ),
+            array( 'data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false ),
+            array( 'gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false ),
+            array( 'gaufrette', 'filesystemKey', null,   'file.txt', true),
+            array( 'gaufrette', 'filesystemKey', 'foo',  'foo/file.txt', true ),
         );
     }
 

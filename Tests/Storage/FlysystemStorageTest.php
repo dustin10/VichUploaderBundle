@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use League\Flysystem\File;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 
 /**
@@ -9,10 +10,17 @@ use Vich\UploaderBundle\Storage\FlysystemStorage;
  */
 class FlysystemStorageTest extends StorageTestCase
 {
+    const FS_KEY = 'filesystemKey';
+
     /**
      * @var \League\Flysystem\MountManager $mountManager
      */
     protected $mountManager;
+
+    /**
+     * @var \League\Flysystem\FilesystemInterface
+     */
+    protected $filesystem;
 
     /**
      * {@inheritDoc}
@@ -28,14 +36,25 @@ class FlysystemStorageTest extends StorageTestCase
     public function setUp()
     {
         $this->mountManager = $this->getMountManagerMock();
+        $this->filesystem = $this->getMock('League\Flysystem\FilesystemInterface');
+
+        $this->mountManager
+            ->expects($this->any())
+            ->method('getFilesystem')
+            ->with(self::FS_KEY)
+            ->will($this->returnValue($this->filesystem));
 
         parent::setUp();
+
+        $this->mapping
+            ->expects($this->any())
+            ->method('getUploadDestination')
+            ->will($this->returnValue(self::FS_KEY));
     }
 
     public function testUpload()
     {
         $file = $this->getUploadedFileMock();
-        $filesystem = $this->getFilesystemMock();
 
         $file
             ->expects($this->once())
@@ -50,18 +69,8 @@ class FlysystemStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('getFile')
             ->will($this->returnValue($file));
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDestination')
-            ->will($this->returnValue('filesystemKey'));
 
-        $this->mountManager
-            ->expects($this->once())
-            ->method('getFilesystem')
-            ->with('filesystemKey')
-            ->will($this->returnValue($filesystem));
-
-        $filesystem
+        $this->filesystem
             ->expects($this->once())
             ->method('writeStream')
             ->with(
@@ -75,22 +84,10 @@ class FlysystemStorageTest extends StorageTestCase
 
     public function testRemove()
     {
-        $filesystem = $this->getFilesystemMock();
-        $filesystem
+        $this->filesystem
             ->expects($this->once())
             ->method('delete')
             ->with('test.txt');
-
-        $this->mountManager
-            ->expects($this->once())
-            ->method('getFilesystem')
-            ->with('dir')
-            ->will($this->returnValue($filesystem));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDestination')
-            ->will($this->returnValue('dir'));
 
         $this->mapping
             ->expects($this->once())
@@ -102,23 +99,11 @@ class FlysystemStorageTest extends StorageTestCase
 
     public function testRemoveOnNonExistentFile()
     {
-        $filesystem = $this->getFilesystemMock();
-        $filesystem
+        $this->filesystem
             ->expects($this->once())
             ->method('delete')
             ->with('not_found.txt')
             ->will($this->throwException(new \League\Flysystem\FileNotFoundException('dummy path')));
-
-        $this->mountManager
-            ->expects($this->once())
-            ->method('getFilesystem')
-            ->with('dir')
-            ->will($this->returnValue($filesystem));
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getUploadDestination')
-            ->will($this->returnValue('dir'));
 
         $this->mapping
             ->expects($this->once())
@@ -126,6 +111,53 @@ class FlysystemStorageTest extends StorageTestCase
             ->will($this->returnValue('not_found.txt'));
 
         $this->storage->remove($this->object, $this->mapping);
+    }
+
+    /**
+     * @dataProvider pathProvider
+     */
+    public function testResolvePath($uploadDir, $expectedPath, $relative)
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue($uploadDir));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue($this->mapping));
+
+        $this->filesystem
+            ->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue(
+                new File(
+                    $this->filesystem,
+                    $uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt'
+                )
+            ));
+
+        $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
+
+        $this->assertEquals($expectedPath, $path);
+    }
+
+    public function pathProvider()
+    {
+        return array(
+            //     dir,   path,                     relative
+            array( null,  'file.txt',               true ),
+            array( null,  '/absolute/file.txt',     false ),
+            array( 'foo', 'foo/file.txt',           true ),
+            array( 'foo', '/absolute/foo/file.txt', false ),
+        );
     }
 
     /**
@@ -137,19 +169,6 @@ class FlysystemStorageTest extends StorageTestCase
     {
         return $this
             ->getMockBuilder('League\Flysystem\MountManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * Creates a filesystem mock.
-     *
-     * @return \League\Flysystem\FilesystemInterface The filesystem object.
-     */
-    protected function getFilesystemMock()
-    {
-        return $this
-            ->getMockBuilder('League\Flysystem\FilesystemInterface')
             ->disableOriginalConstructor()
             ->getMock();
     }

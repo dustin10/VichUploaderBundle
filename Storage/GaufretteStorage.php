@@ -74,12 +74,15 @@ class GaufretteStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
+    protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
     {
-        $fsIdentifier = $mapping->getUploadDestination();
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        return $this->protocol.'://'.$fsIdentifier.'/'.$path;
+        if ($relative) {
+            return $path;
+        }
+
+        return $this->protocol.'://'.$mapping->getUploadDestination().'/'.$path;
     }
 
     /**

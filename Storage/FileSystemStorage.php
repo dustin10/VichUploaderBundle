@@ -35,9 +35,13 @@ class FileSystemStorage extends AbstractStorage
     /**
      * {@inheritDoc}
      */
-    protected function doResolvePath(PropertyMapping $mapping, $dir, $name)
+    protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
     {
         $path = !empty($dir) ? $dir.DIRECTORY_SEPARATOR.$name : $name;
+
+        if ($relative) {
+            return $path;
+        }
 
         return $mapping->getUploadDestination().DIRECTORY_SEPARATOR.$path;
     }
