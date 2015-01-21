@@ -97,9 +97,10 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * Do resolve path
      *
-     * @param PropertyMapping $mapping
-     * @param string          $dir
-     * @param string          $name
+     * @param PropertyMapping $mapping  The mapping representing the field.
+     * @param string          $dir      The directory in which the file is uploaded.
+     * @param string          $name     The file name.
+     * @param bool            $relative Whether the path should be relative or absolute.
      *
      * @return string
      */
