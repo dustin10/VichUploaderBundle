@@ -77,7 +77,7 @@ class VichFileType extends AbstractType
 
         // delete file if needed
         $handler = $this->handler;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options, $handler) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($handler) {
             $delete = $event->getForm()->has('delete') ? $event->getForm()->get('delete')->getData() : false;
             $entity = $event->getForm()->getParent()->getData();
 
