@@ -26,16 +26,16 @@ with VichUploaderBundle.
 ```yaml
 # app/config/config.yml
 twig:
-    # ...
-    form:
-        resources:
-            # other form themes
-            - 'VichUploaderBundle:Form:fields.html.twig'
+    form_themes:
+        # other form themes
+        - 'VichUploaderBundle:Form:fields.html.twig'
 ```
+
+> **N.B:** the `form_themes` parameter is introduced in Symfony 2.5, check 
+[the documentation](http://symfony.com/doc/2.3/cookbook/form/form_customization.html#php) if you use an older version.
 
 See [Symfony's documentation on form themes](http://symfony.com/doc/current/cookbook/form/form_customization.html#form-theming)
 for more information.
-
 
 ## That was it!
 
