@@ -114,6 +114,8 @@ the image path to a new image in that instance of `File` and attempted a `flush(
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.
 
+**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/2.3/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
+
 ## Failed to set metadata before uploading the file
 
 When using Gaufrette with some specific adapters, it's possible that metadata can't be set when uploading a file.
