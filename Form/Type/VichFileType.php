@@ -108,4 +108,12 @@ class VichFileType extends AbstractType
     {
         return 'vich_file';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'file';
+    }
 }
