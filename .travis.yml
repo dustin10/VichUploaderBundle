@@ -23,7 +23,3 @@ before_script:
     - composer install --prefer-source
 
 script: vendor/bin/phpunit
-
-notifications:
-  email:
-    - tassi.francesco@gmail.com
