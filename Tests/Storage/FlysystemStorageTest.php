@@ -22,6 +22,14 @@ class FlysystemStorageTest extends StorageTestCase
      */
     protected $filesystem;
 
+    public static function setUpBeforeClass()
+    {
+        if (!class_exists('League\Flysystem\MountManager')) {
+            self::markTestSkipped('Flysystem is not installed.');
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      */
