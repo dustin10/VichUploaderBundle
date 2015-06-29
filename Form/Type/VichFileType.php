@@ -43,7 +43,7 @@ class VichFileType extends AbstractType
     {
         $builder->add('file', 'file', array(
             'required' => $options['required'],
-            'label'    => $options['label'],
+            'label'    => false,
             'attr'     => $options['attr'],
         ));
 
