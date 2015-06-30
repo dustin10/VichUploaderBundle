@@ -2,7 +2,7 @@
 #
 
 SUPPORTED_SYMFONY_VERSIONS=('~2.3.0' '~2.5.0' '~2.6.0' '~2.7.0' '2.8.x-dev')
-export DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
+DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
 
 restore_composer (){
   # Restore the composer.json file
@@ -26,12 +26,14 @@ fi
 
 # Run the tests for each supported symfony version
 for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
+  echo -e "\n\nSetting requirements version constraints: Symfony (${sf_version}) and Doctrine (${DOCTRINE_VERSION})"
   php composer.phar require --no-update "symfony/symfony":"${sf_version}"
   php composer.phar require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
 
-  php composer.phar update symfony/symfony || { restore_composer && exit 1; }
-  php composer.phar install --prefer-source || { restore_composer && exit 1; }
+  echo -e "\nInstalling dependencies"
+  php composer.phar update --prefer-source || { restore_composer && exit 1; }
 
+  echo -e "\nLaunching tests"
   vendor/bin/phpunit $@
 done
 

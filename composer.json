@@ -25,7 +25,6 @@
         "ocramius/proxy-manager": "~0.5"
     },
     "require-dev": {
-        "ext-mongo" : "*",
         "ext-sqlite3" : "*",
 
         "doctrine/mongodb-odm": "@dev",
