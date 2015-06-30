@@ -17,7 +17,7 @@ php composer.phar --version
 cp composer.json composer.json.bck
 
 # Clear temp folder before the tests run
-sudo rm -rf /tmp/VichUploaderBundle/
+rm -rf /tmp/VichUploaderBundle/
 
 # If SYMFONY_VERSION is set run the tests only for that version
 if [ "${SYMFONY_VERSION}" != "" ]; then
