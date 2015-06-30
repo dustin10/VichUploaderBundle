@@ -317,6 +317,36 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($mapping);
     }
 
+    public function testCustomFileNameProperty()
+    {
+        $mappings = array(
+            'dummy_file' => array(
+                'namer' => false,
+                'directory_namer' => false
+            )
+        );
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->will($this->returnValue(true));
+
+        $this->metadata
+            ->expects($this->once())
+            ->method('getUploadableField')
+            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->will($this->returnValue(array(
+                'mapping'           => 'dummy_file',
+                'propertyName'      => 'file'
+            )));
+
+        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings, '_suffix');
+        $mapping = $factory->fromField(new DummyEntity(), 'file');
+
+        $this->assertEquals('file_suffix', $mapping->getFileNamePropertyName());
+    }
+
     public function testConfiguredNamersAreRetrievedFromContainer()
     {
         $mappings = array(

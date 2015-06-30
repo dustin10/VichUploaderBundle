@@ -143,7 +143,7 @@ class PropertyMappingFactory
 
         $config = $this->mappings[$mappingData['mapping']];
         $fileProperty = isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName;
-        $fileNameProperty = empty($mappingData['fileNameProperty']) ? $fileProperty . '_name' : $mappingData['fileNameProperty'];
+        $fileNameProperty = empty($mappingData['fileNameProperty']) ? $fileProperty . $this->defaultFilenameAttributeSuffix : $mappingData['fileNameProperty'];
 
         $mapping = new PropertyMapping($fileProperty, $fileNameProperty);
         $mapping->setMappingName($mappingData['mapping']);
