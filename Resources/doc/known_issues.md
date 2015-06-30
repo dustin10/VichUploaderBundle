@@ -10,6 +10,9 @@ is the only updated.
 A workaround to solve this issue is to manually generate a change:
 
 ```php
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class Product
 {
     // ...
@@ -23,11 +26,13 @@ class Product
 
     // ...
 
-    public function setImage($image)
+    public function setImage(File $image)
     {
         $this->image = $image;
 
-        if ($this->image) {
+        // Only change the updated af if the file is really uploaded to avoid database updates.
+        // This is needed when the file should be set when loading the entity.
+        if ($this->image instanceof UploadedFile) {
             $this->updatedAt = new \DateTime('now');
         }
     }
