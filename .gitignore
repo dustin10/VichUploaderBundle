@@ -3,6 +3,7 @@ Tests/autoload.php
 nbproject
 catalog.xml
 .idea
+composer.phar
 composer.lock
 vendor/*
 !vendor/vendors.php

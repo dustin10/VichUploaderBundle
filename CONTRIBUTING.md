@@ -32,7 +32,19 @@ Thank you!
 ## Running the test suite
 
 Ensure that the required vendors are installed by running `composer install`.
-The test suite requires the `php5-mongo` extension to be installed.
+The test suite requires the `php5-mongo` and `php5-sqlite` extensions to be installed.
 
 PHPUnit should be installed by composer. Run the tests with the
 `./vendor/bin/phpunit` command.
+
+Alternatively you can use the `runTests.sh` bash script present at the project root.
+Default usage example:
+
+```~$ ./runTest.sh``` (This runs all tests with your current PHP version against all supported Symfony versions.)
+
+You can also set a specific Symfony version to test against and/or pass the arguments for PHPUnit
+ as arguments to the script. Usage example:
+
+```~$ SYMFONY_VERSION=2.7.1 ./runTests.sh --filter testCustomFileNameProperty```
+
+**Note:** The script was prepared to run under Ubuntu and using Bash so it might need further validation for other OS.

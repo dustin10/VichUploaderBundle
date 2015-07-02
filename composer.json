@@ -25,6 +25,8 @@
         "ocramius/proxy-manager": "~0.5"
     },
     "require-dev": {
+        "ext-sqlite3" : "*",
+
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
         "oneup/flysystem-bundle": "dev-master",
