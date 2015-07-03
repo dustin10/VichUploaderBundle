@@ -10,7 +10,7 @@ restore_composer (){
 }
 
 # Install/upgrade composer.phar
-curl -sS https://getcomposer.org/installer | php
+[ ! -e composer.phar ] && curl -sS https://getcomposer.org/installer | php
 php composer.phar --version
 
 # Save a copy of the current composer.json file so we can restore it later
