@@ -7,7 +7,7 @@ Add VichUploaderBundle by running this command from the terminal at the root of
 your Symfony project:
 
 ```bash
-php composer.phar require vich/uploader-bundle 
+php composer.phar require vich/uploader-bundle
 ```
 
 
@@ -15,7 +15,7 @@ php composer.phar require vich/uploader-bundle
 
 To start using the bundle, register the bundle in your application's kernel class:
 
-``` php
+```php
 // app/AppKernel.php
 public function registerBundles()
 {
@@ -40,7 +40,7 @@ Four engines are currently supported:
 Once the chosen persistence engine is installed and configured, tell
 VichUploaderBundle that you want to use it.
 
-``` yaml
+```yaml
 # app/config/config.yml
 vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr

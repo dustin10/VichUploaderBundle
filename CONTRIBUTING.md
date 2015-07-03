@@ -38,13 +38,18 @@ PHPUnit should be installed by composer. Run the tests with the
 `./vendor/bin/phpunit` command.
 
 Alternatively you can use the `runTests.sh` bash script present at the project root.
-Default usage example:
+Default usage example (This runs all tests with your current PHP version against
+all supported Symfony versions.):
 
-```~$ ./runTest.sh``` (This runs all tests with your current PHP version against all supported Symfony versions.)
+```bash
+./runTest.sh
+```
 
 You can also set a specific Symfony version to test against and/or pass the arguments for PHPUnit
  as arguments to the script. Usage example:
 
-```~$ SYMFONY_VERSION=2.7.1 ./runTests.sh --filter testCustomFileNameProperty```
+```bash
+SYMFONY_VERSION=2.7.1 ./runTests.sh --filter testCustomFileNameProperty
+```
 
 **Note:** The script was prepared to run under Ubuntu and using Bash so it might need further validation for other OS.
