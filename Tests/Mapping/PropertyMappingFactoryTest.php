@@ -352,7 +352,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
         $mappings = array(
             'dummy_file' => array(
                 'upload_destination' => 'images',
-                'namer'              => 'my.custom.namer',
+                'namer'              => array('service' => 'my.custom.namer'),
                 'directory_namer'    => 'my.custom.directory_namer',
             )
         );

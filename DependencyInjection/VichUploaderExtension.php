@@ -39,6 +39,7 @@ class VichUploaderExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $config = $this->fixDbDriverConfig($config);
+        $config = $this->createNamerServices($container, $config);
 
         // define a few parameters
         $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
@@ -168,6 +169,29 @@ class VichUploaderExtension extends Extension
             // the upload listener is mandatory
             $this->createListener($container, $name, 'upload', $driver);
         }
+    }
+
+    protected function createNamerServices(ContainerBuilder $container, array $config)
+    {
+        foreach ($config['mappings'] as $name => $mapping) {
+            if (!empty($mapping['namer']['service'])) {
+                $config['mappings'][$name] = $this->createNamerService($container, $name, $mapping);
+            }
+        }
+
+        return $config;
+    }
+
+    protected function createNamerService(ContainerBuilder $container, $mappingName, array $mapping)
+    {
+        $serviceId  = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
+        $definition = $container->setDefinition(
+            $serviceId, new DefinitionDecorator($mapping['namer']['service'])
+        );
+
+        $mapping['namer']['service'] = $serviceId;
+
+        return $mapping;
     }
 
     protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0)

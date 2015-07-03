@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class PropertyNamer implements NamerInterface
+class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
     private $propertyPath;
 
@@ -22,9 +22,13 @@ class PropertyNamer implements NamerInterface
      * @param string The path to the property used to name the file. Can be
      *               either an attribute or a method.
      */
-    public function __construct($propertyPath)
+    public function configure(array $options)
     {
-        $this->propertyPath = $propertyPath;
+        if (empty($options['property'])) {
+            throw new \InvalidArgumentException('Option "property" is missing or empty.');
+        }
+
+        $this->propertyPath = $options['property'];
     }
 
     /**
@@ -32,6 +36,10 @@ class PropertyNamer implements NamerInterface
      */
     public function name($object, PropertyMapping $mapping)
     {
+        if (empty($this->propertyPath)) {
+            throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');
+        }
+
         $file = $mapping->getFile($object);
 
         try {
