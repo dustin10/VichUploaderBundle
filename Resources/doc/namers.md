@@ -14,6 +14,7 @@ At the moment there are two available namers:
 
   * `vich_uploader.namer_uniqid`
   * `vich_uploader.namer_origname`
+  * `vich_uploader.namer_property`
 
 **vich_uploader.namer_uniqid** will rename your uploaded files using a uniqueid for the name and
 keep the extension. Using this namer, foo.jpg will be uploaded as something like 50eb3db039715.jpg.
@@ -21,6 +22,9 @@ keep the extension. Using this namer, foo.jpg will be uploaded as something like
 **vich_uploader.namer_origname** will rename your uploaded files using a uniqueid as the prefix of the
 filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
 something like 50eb3db039715_foo.jpg
+
+**vich_uploader.namer_property** will use a property or a method to name the
+file.
 
 To use it, you just have to specify the service id for the `namer` configuration option of your mapping:
 
@@ -38,6 +42,20 @@ was uploaded.
 
 **Warning:** it means that if two files having the same name are uploaded, one
 will override the other.
+
+**N.B:** when using the `namer_property` namer, you have to specify which
+property will be used.
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image_fs
+            namer:
+                service: vich_uploader.namer_property
+                options: { property: 'slug'} # supposing that the object contains a "slug" attribute or a "getSlug" method
+```
 
 
 ### How-to
