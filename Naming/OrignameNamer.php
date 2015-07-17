@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Vich\UploaderBundle\Mapping\PropertyMapping;
