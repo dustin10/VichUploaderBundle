@@ -107,7 +107,7 @@ class Product
     protected $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255, name="image_name")
+     * @ORM\Column(type="string", length=255)
      *
      * @var string $imageName
      */
