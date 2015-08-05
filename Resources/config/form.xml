@@ -17,6 +17,7 @@
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
             <argument type="service" id="translator" />
+            <argument type="service" id="router" />
 
             <tag name="form.type" alias="vich_image" />
         </service>
