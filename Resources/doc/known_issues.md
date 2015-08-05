@@ -20,7 +20,7 @@ class Product
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      */
     protected $updatedAt;
 
@@ -83,6 +83,13 @@ Consider the following class:
 
 ``` php
 <?php
+
+namespace Acme\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 /**
  * @ORM\Entity
  * @Vich\Uploadable
@@ -92,7 +99,7 @@ class Product
     /**
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      *
-     * @var \Symfony\Component\HttpFoundation\File\File $image
+     * @var File
      */
     protected $image;
 
@@ -103,7 +110,7 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param \Symfony\Component\HttpFoundation\File\File $image
+     * @param File $image
      */
     public function setImage(File $image = null)
     {

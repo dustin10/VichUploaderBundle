@@ -102,21 +102,21 @@ class Product
      * 
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      * 
-     * @var File $imageFile
+     * @var File
      */
     protected $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name")
      *
-     * @var string $imageName
+     * @var string
      */
     protected $imageName;
 
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      */
     protected $updatedAt;
 
