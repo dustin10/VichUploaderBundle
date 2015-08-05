@@ -93,7 +93,7 @@ class Product
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     // ..... other fields
 
@@ -104,21 +104,21 @@ class Product
      * 
      * @var File
      */
-    protected $imageFile;
+    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
      */
-    protected $imageName;
+    private $imageName;
 
     /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime
      */
-    protected $updatedAt;
+    private $updatedAt;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
