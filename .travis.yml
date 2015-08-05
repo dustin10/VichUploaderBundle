@@ -16,6 +16,7 @@ env:
     - SYMFONY_VERSION="2.8.x-dev" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
 
 before_script:
+    - composer self-update
     - phpenv config-rm xdebug.ini
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
