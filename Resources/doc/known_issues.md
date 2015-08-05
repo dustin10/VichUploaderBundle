@@ -22,7 +22,7 @@ class Product
      *
      * @var \DateTime
      */
-    protected $updatedAt;
+    private $updatedAt;
 
     // ...
 
@@ -101,7 +101,7 @@ class Product
      *
      * @var File
      */
-    protected $image;
+    private $image;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
