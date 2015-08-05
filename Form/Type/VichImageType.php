@@ -17,6 +17,11 @@ class VichImageType extends VichFileType
 
         if ($view->vars['object']) {
             $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $form->getName());
+            if (true) { /* @TODO Check whether force download. Could be use config key */
+                $view->vars['download_uri'] = $this->router->generate('vich_force_download', [
+                    'download_uri' => $view->vars['download_uri'],
+                ]);
+            }
         }
     }
 

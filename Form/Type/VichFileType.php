@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
@@ -20,12 +21,14 @@ class VichFileType extends AbstractType
     protected $storage;
     protected $handler;
     protected $translator;
+    protected $router;
 
-    public function __construct(StorageInterface $storage, UploadHandler $handler, TranslatorInterface $translator)
+    public function __construct(StorageInterface $storage, UploadHandler $handler, TranslatorInterface $translator, RouterInterface $router)
     {
         $this->storage = $storage;
         $this->handler = $handler;
         $this->translator = $translator;
+        $this->router = $router; /* @TODO Probably could breaks BC. I think would be better to inject via call setter */
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -98,6 +101,11 @@ class VichFileType extends AbstractType
 
         if ($options['download_link'] && $view->vars['object']) {
             $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $form->getName());
+            if (true) { /* @TODO Check whether force download. Could be use config key */
+                $view->vars['download_uri'] = $this->router->generate('vich_force_download', [
+                    'download_uri' => $view->vars['download_uri'],
+                ]);
+            }
         }
     }
 
