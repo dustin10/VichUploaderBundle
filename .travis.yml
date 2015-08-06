@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
@@ -20,7 +19,6 @@ before_script:
     - phpenv config-rm xdebug.ini
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
     - composer require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
-    - if [ "$TRAVIS_PHP_VERSION" = "5.3" ]; then composer remove --dev --no-update oneup/flysystem-bundle; fi
     - composer install --prefer-source --ignore-platform-reqs
 
 script: vendor/bin/phpunit
