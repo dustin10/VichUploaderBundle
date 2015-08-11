@@ -21,7 +21,7 @@ env:
 
 before_script:
     - composer self-update
-    - if [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then phpenv config-rm xdebug.ini; fi
+    - phpenv config-rm xdebug.ini || true
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
     - composer require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
     - composer install --prefer-source --ignore-platform-reqs
