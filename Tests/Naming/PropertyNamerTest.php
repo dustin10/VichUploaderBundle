@@ -18,17 +18,21 @@ class PropertyNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
 
+        $weird_entity = new DummyEntity();
+        $weird_entity->someProperty = 'Yéô';
+
         return array(
-            array('some-file-name.jpeg', 'foo.jpeg', $entity, 'someProperty'),
-            array('some-file-name', 'foo', $entity, 'someProperty'),
-            array('some-file-name.jpeg', 'generated-file-name.jpeg', $entity, 'generateFileName'), // method call
+            array('some-file-name.jpeg', 'foo.jpeg',                 $entity,       'someProperty',     false),
+            array('some-file-name',      'foo',                      $entity,       'someProperty',     false),
+            array('some-file-name.jpeg', 'generated-file-name.jpeg', $entity,       'generateFileName', false), // method call
+            array('some-file-name.jpeg', 'Yeo.jpeg',                 $weird_entity, 'someProperty',     true),  // transliteration enabled
         );
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($originalFileName, $expectedFileName, $entity, $propertyName)
+    public function testNameReturnsTheRightName($originalFileName, $expectedFileName, $entity, $propertyName, $transliterate)
     {
         $file = $this->getUploadedFileMock();
         $file
@@ -43,7 +47,7 @@ class PropertyNamerTest extends TestCase
             ->will($this->returnValue($file));
 
         $namer = new PropertyNamer();
-        $namer->configure(array('property' => $propertyName));
+        $namer->configure(array('property' => $propertyName, 'transliterate' => $transliterate));
 
         $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
     }

@@ -16,6 +16,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
+    use Polyfill\TransliterationTrait;
 
     /**
      * @var string
@@ -23,8 +24,14 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
     private $propertyPath;
 
     /**
-     * @param string The path to the property used to name the file. Can be
-     *               either an attribute or a method.
+     * @var bool
+     */
+    private $transliterate = false;
+
+    /**
+     * @param array $options Options for this namer. The following options are accepted:
+     *                         - property: path to the property used to name the file. Can be either an attribute or a method.
+     *                         - transliterate: whether the filename should be transliterated or not.
      */
     public function configure(array $options)
     {
@@ -33,6 +40,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         }
 
         $this->propertyPath = $options['property'];
+        $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
     /**
@@ -54,6 +62,10 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
 
         if (empty($name)) {
             throw new NameGenerationException(sprintf('File name could not be generated: property %s is empty.', $this->propertyPath));
+        }
+
+        if ($this->transliterate) {
+            $name = $this->transliterate($name);
         }
 
         // append the file extension if there is one

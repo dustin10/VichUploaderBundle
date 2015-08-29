@@ -11,17 +11,38 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-class OrignameNamer implements NamerInterface
+class OrignameNamer implements NamerInterface, ConfigurableInterface
 {
+    use Polyfill\TransliterationTrait;
+
+    /**
+     * @var bool
+     */
+    private $transliterate = false;
+
+    /**
+     * @param array $options Options for this namer. The following options are accepted:
+     *                         - transliterate: whether the filename should be transliterated or not.
+     */
+    public function configure(array $options)
+    {
+        $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function name($object, PropertyMapping $mapping)
     {
         $file = $mapping->getFile($object);
+        $name = $file->getClientOriginalName();
+
+        if ($this->transliterate) {
+            $name = $this->transliterate($name);
+        }
 
         /** @var $file UploadedFile */
 
-        return uniqid().'_'.$file->getClientOriginalName();
+        return uniqid().'_'.$name;
     }
 }
