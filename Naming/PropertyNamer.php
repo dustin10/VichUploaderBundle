@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -16,6 +15,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
+    use Polyfill\FileExtensionTrait;
+
     /**
      * @var string
      */
@@ -68,20 +69,5 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         $accessor = PropertyAccess::createPropertyAccessor();
 
         return $accessor->getValue($object, $propertyPath);
-    }
-
-    private function getExtension(UploadedFile $file)
-    {
-        $originalName = $file->getClientOriginalName();
-
-        if ($extension = pathinfo($originalName, PATHINFO_EXTENSION)) {
-            return $extension;
-        }
-
-        if ($extension = $file->guessExtension()) {
-            return $extension;
-        }
-
-        return null;
     }
 }
