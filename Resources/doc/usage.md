@@ -166,6 +166,10 @@ class Product
 }
 ```
 
+**Note:**
+
+> Don't forget to clear the cache once your entity is configured: `php app/console clear:cache`
+
 
 ## Step 3: configure the lifecycle events (optional step)
 
