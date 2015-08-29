@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
@@ -115,12 +116,12 @@ class PropertyMappingFactory
      *
      * @param string $class The class name (FQCN).
      *
-     * @throws \InvalidArgumentException
+     * @throws NotUploadableException
      */
     protected function checkUploadable($class)
     {
         if (!$this->metadata->isUploadable($class)) {
-            throw new \InvalidArgumentException('The object is not uploadable.');
+            throw new NotUploadableException(sprintf('The class "%s" is not uploadable. If you use annotations to configure VichUploaderBundle, you probably just forgot to add `@Vich\Uploadable` on top of your entity. If you don\'t use annotations, check that the configuration files are in the right place. In both cases, clearing the cache can also solve the issue.', $class));
         }
     }
 
@@ -132,12 +133,12 @@ class PropertyMappingFactory
      * @param array  $mappingData The mapping data.
      *
      * @return PropertyMapping           The property mapping.
-     * @throws \InvalidArgumentException
+     * @throws MappingNotFoundException
      */
     protected function createMapping($obj, $fieldName, array $mappingData)
     {
         if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
-            throw MappingNotFoundException::createNotFoundForClassAndField($mappingData['mapping'], get_class($obj), $fieldName);
+            throw MappingNotFoundException::createNotFoundForClassAndField($mappingData['mapping'], $this->getClassName($obj), $fieldName);
         }
 
         $config = $this->mappings[$mappingData['mapping']];

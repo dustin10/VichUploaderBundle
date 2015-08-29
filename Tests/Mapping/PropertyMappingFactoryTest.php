@@ -35,7 +35,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
      * Tests that an exception is thrown if a non uploadable
      * object is passed in.
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Vich\UploaderBundle\Exception\NotUploadableException
      */
     public function testFromObjectThrowsExceptionIfNotUploadable()
     {
