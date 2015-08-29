@@ -16,6 +16,9 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
+    /**
+     * @var string
+     */
     private $propertyPath;
 
     /**
@@ -45,7 +48,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         try {
             $name = $this->getPropertyValue($object, $this->propertyPath);
         } catch (NoSuchPropertyException $e) {
-            throw new NameGenerationException(sprintf('File name could not be generated: property %s does not exist.', $this->propertyPath));
+            throw new NameGenerationException(sprintf('File name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
 
         if (empty($name)) {
