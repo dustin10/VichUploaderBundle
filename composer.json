@@ -30,9 +30,7 @@
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "*",
         "oneup/flysystem-bundle": "dev-master",
-
-        "symfony/symfony": "*",
-        "doctrine/orm": "*",
+        "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "*",
 
         "phpunit/phpunit": "~4.0",

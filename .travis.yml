@@ -9,17 +9,16 @@ php:
 sudo: false
 
 env:
-    - SYMFONY_VERSION="~2.3.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="~2.5.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="~2.6.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="~2.7.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-    - SYMFONY_VERSION="2.8.x-dev" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
+    - SYMFONY_VERSION="~2.3.0"
+    - SYMFONY_VERSION="~2.5.0"
+    - SYMFONY_VERSION="~2.6.0"
+    - SYMFONY_VERSION="~2.7.0"
+    - SYMFONY_VERSION="2.8.x-dev symfony/security-acl:2.8.x-dev"
 
 before_script:
     - composer self-update
     - phpenv config-rm xdebug.ini || true
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-    - composer require --no-update "doctrine/orm":"${DOCTRINE_VERSION}"
     - composer install --prefer-source --ignore-platform-reqs
 
 script: vendor/bin/phpunit
