@@ -214,7 +214,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
      * Test that an exception is thrown when an invalid mapping name
      * is specified.
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
     public function testThrowsExceptionOnInvalidMappingName()
     {
