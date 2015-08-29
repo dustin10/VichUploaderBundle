@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Naming\ConfigurableInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
@@ -149,8 +150,17 @@ class PropertyMappingFactory
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
-        if ($config['namer']) {
-            $mapping->setNamer($this->container->get($config['namer']));
+        if ($config['namer']['service']) {
+            $namerConfig = $config['namer'];
+            $namer       = $this->container->get($namerConfig['service']);
+
+            if (!empty($namerConfig['options']) && $namer instanceof ConfigurableInterface) {
+                $namer->configure($namerConfig['options']);
+            } else if (!empty($namerConfig['options']) && !$namer instanceof ConfigurableInterface) {
+                throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
+            }
+
+            $mapping->setNamer($namer);
         }
 
         if ($config['directory_namer']) {

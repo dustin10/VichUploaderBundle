@@ -57,7 +57,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
                 'foo' => array(
                     'upload_destination'    => 'web/',
                     'uri_prefix'            => '/',
-                    'namer'                 => null,
+                    'namer'                 => array('service' => null, 'options' => null),
                     'directory_namer'       => null,
                     'delete_on_remove'      => true,
                     'delete_on_update'      => true,
@@ -80,7 +80,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
                 'foo' => array(
                     'upload_destination'    => 'web/',
                     'uri_prefix'            => '/',
-                    'namer'                 => null,
+                    'namer'                 => array('service' => null, 'options' => null),
                     'directory_namer'       => null,
                     'delete_on_remove'      => true,
                     'delete_on_update'      => true,

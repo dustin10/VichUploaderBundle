@@ -21,7 +21,7 @@
         "symfony/framework-bundle": "~2.3",
         "jms/metadata": "~1.5",
         "symfony/finder": ">=2.0",
-        "symfony/property-access": "~2.3",
+        "symfony/property-access": "~2.4",
         "ocramius/proxy-manager": "~1.0"
     },
     "require-dev": {
