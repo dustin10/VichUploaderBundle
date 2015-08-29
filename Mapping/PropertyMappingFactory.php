@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Common\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
@@ -136,9 +137,7 @@ class PropertyMappingFactory
     protected function createMapping($obj, $fieldName, array $mappingData)
     {
         if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
-            throw new \InvalidArgumentException(sprintf(
-               'No mapping named "%s" configured.', $mappingData['mapping']
-            ));
+            throw MappingNotFoundException::createNotFoundForClassAndField($mappingData['mapping'], get_class($obj), $fieldName);
         }
 
         $config = $this->mappings[$mappingData['mapping']];

@@ -33,9 +33,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
         foreach ($metadata->getUploadableClasses() as $class) {
             foreach ($metadata->getUploadableFields($class) as $field) {
                 if (empty($mappings[$field['mapping']])) {
-                    throw new MappingNotFoundException(
-                        sprintf('Mapping "%s" does not exist. The configuration for the class "%s" is probably incorrect as the mapping to use for "%s" could not be found.', $field['mapping'], $class, $field['propertyName'])
-                    );
+                    throw MappingNotFoundException::createNotFoundForClassAndField($field['mapping'], $class, $field['propertyName']);
                 }
 
                 $mapping = $mappings[$field['mapping']];
