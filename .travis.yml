@@ -13,10 +13,7 @@ env:
     - SYMFONY_VERSION="~2.5.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.6.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
     - SYMFONY_VERSION="~2.7.0" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
-
-matrix:
-    allow_failures:
-        - env: SYMFONY_VERSION="2.8.x-dev" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
+    - SYMFONY_VERSION="2.8.x-dev" DOCTRINE_VERSION=">=2.2.3,<2.5-dev"
 
 before_script:
     - composer self-update
