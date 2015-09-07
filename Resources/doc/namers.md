@@ -10,7 +10,7 @@ was uploaded. If you would like to change this, you can use one of the provided 
 
 ### Provided file namers
 
-At the moment there are two available namers:
+At the moment there are three available namers:
 
   * `vich_uploader.namer_uniqid`
   * `vich_uploader.namer_origname`
