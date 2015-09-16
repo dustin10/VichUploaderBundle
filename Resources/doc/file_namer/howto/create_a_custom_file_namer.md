@@ -31,4 +31,4 @@ Where `my.namer.product` is the configured id of the service.
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
-index.](Resources/doc/index.md)
+index.](/Resources/doc/index.md)
