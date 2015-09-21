@@ -27,7 +27,10 @@ class UploaderExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testAssetIsRegistered()
     {
-        $this->assertArrayHasKey('vich_uploader_asset', $this->extension->getFunctions());
+        $functions = $this->extension->getFunctions();
+
+        $this->assertCount(1, $functions);
+        $this->assertSame('vich_uploader_asset', $functions[0]->getName());
     }
 
     public function testAssetForwardsCallsToTheHelper()

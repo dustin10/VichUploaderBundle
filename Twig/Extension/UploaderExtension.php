@@ -43,16 +43,9 @@ class UploaderExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $names = array(
-            'vich_uploader_asset' => 'asset'
+        return array(
+            new \Twig_SimpleFunction('vich_uploader_asset', array($this, 'asset')),
         );
-
-        $funcs = array();
-        foreach ($names as $twig => $local) {
-            $funcs[$twig] = new \Twig_Function_Method($this, $local);
-        }
-
-        return $funcs;
     }
 
     /**
