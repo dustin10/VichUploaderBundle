@@ -28,7 +28,7 @@ class VichFileType extends AbstractType
         $this->translator = $translator;
     }
 
-    public function configureOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'allow_delete'  => true,
