@@ -32,7 +32,6 @@ class VichFileType extends AbstractType
     {
         $resolver->setDefaults(array(
             'allow_delete'  => true,
-            'delete_assert_file_exists' => true,
             'download_link' => true,
         ));
     }
@@ -65,10 +64,8 @@ class VichFileType extends AbstractType
             $object = $form->getParent()->getData();
 
             // no object or no uploaded file: no delete button
-            if ($options['delete_assert_file_exists']) {
-                if (null === $object || null === $storage->resolvePath($object, $form->getName())) {
-                    return;
-                }
+            if (null === $object || null === $storage->resolveUri($object, $form->getName())) {
+                return;
             }
 
             $form->add('delete', 'checkbox', array(
