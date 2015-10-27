@@ -18,13 +18,19 @@
     },
     "require": {
         "php": ">=5.4",
-        "symfony/framework-bundle": "~2.3",
+        "symfony/framework-bundle": "~2.7.5",
         "jms/metadata": "~1.5",
         "symfony/finder": ">=2.0",
         "symfony/property-access": "~2.4",
         "ocramius/proxy-manager": "~1.0"
     },
     "require-dev": {
+        "symfony/twig-bundle": "~2.7.5",
+        "symfony/form": "~2.7.5",
+        "symfony/validator": "~2.7.5",
+        "symfony/browser-kit": "~2.7.5",
+        "symfony/css-selector": "~2.7.5",
+
         "ext-sqlite3" : "*",
 
         "doctrine/mongodb-odm": "@dev",
