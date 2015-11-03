@@ -55,7 +55,8 @@ class UploadListener extends BaseListener
 
         foreach ($this->getUploadableFields($object) as $field) {
             $this->handler->upload($object, $field);
-            $this->adapter->recomputeChangeSet($event);
         }
+
+	$this->adapter->recomputeChangeSet($event);
     }
 }
