@@ -1,7 +1,8 @@
 #!/bin/bash
-#
 
 SUPPORTED_SYMFONY_VERSIONS=('~2.3.0' '~2.5.0' '~2.6.0' '~2.7.0' '2.8.x-dev')
+GREEN='\033[0;32m'
+NC='\033[0m'
 
 restore_composer () {
   # Restore the composer.json file
@@ -25,13 +26,13 @@ fi
 
 # Run the tests for each supported symfony version
 for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
-  echo -e "\n\nSetting requirements version constraints: Symfony (${sf_version})"
+  echo -e "\n${GREEN}Setting requirements version constraints: Symfony (${sf_version})${NC}"
   php composer.phar require --dev --no-update symfony/symfony:${sf_version}
 
-  echo -e "\nInstalling dependencies"
+  echo -e "\n${GREEN}Installing dependencies${NC}"
   php composer.phar update --prefer-source || { restore_composer && exit 1; }
 
-  echo -e "\nLaunching tests"
+  echo -e "\n${GREEN}Launching tests${NC}"
   vendor/bin/phpunit $@
 done
 
