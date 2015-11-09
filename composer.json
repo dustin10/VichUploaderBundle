@@ -20,7 +20,7 @@
         "php": ">=5.4",
         "symfony/framework-bundle": "~2.3|~3.0",
         "jms/metadata": "~1.5",
-        "symfony/finder": ">=2.0",
+        "symfony/finder": "~2.0|~3.0",
         "symfony/property-access": "~2.4|~3.0",
         "ocramius/proxy-manager": "~1.0"
     },
