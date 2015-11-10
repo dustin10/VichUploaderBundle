@@ -44,6 +44,10 @@ Don't worry, it will be quick and easy (I promise!):
   * [Using the bundled file form type](form/vich_file_type.md)
   * [Using the bundled image form type](form/vich_image_type.md)
 
+### Download-related
+
+  * [Serving files with a controller](downloads/serving_files_with_a_controller.md)
+
 ## Useful resources
 
   * [Configuration reference](configuration_reference.md)
