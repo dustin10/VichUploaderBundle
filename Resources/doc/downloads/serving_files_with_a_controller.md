@@ -3,9 +3,9 @@ Serving files with a controller
 
 There are a few use-cases for which serving uploaded files through a controller
 instead directly serving them from the HTTP server can be useful. It could be
-used to *check that the user has the rights* to download the file, to *serve the
-file under a different name* that the one saved in the database, to *force the
-download of the file* instead of opening it in the same browser tab, …
+used to **check that the user has the rights** to download the file, to **serve the
+file under a different name** that the one saved in the database, to **force the
+download of the file** instead of opening it in the same browser tab, …
 
 For all these reasons, the bundle provides a [`DownloadHandler`](https://github.com/dustin10/VichUploaderBundle/blob/master/Handler/DownloadHandler.php)
 that can be used in your controllers.
