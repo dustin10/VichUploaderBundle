@@ -42,7 +42,8 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
-            ->with($this->object, 'file_field');
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue('something not null'));
 
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
@@ -56,6 +57,20 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->handler = new DownloadHandler($this->factory, $this->storage);
+
+        $this->handler->downloadObject($this->object, 'file_field');
+    }
+
+    /**
+     * @expectedException Vich\UploaderBundle\Exception\NoFileFoundException
+     */
+    public function testAnExceptionIsThrownIfNoFileIsFould()
+    {
+        $this->storage
+            ->expects($this->once())
+            ->method('resolveStream')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue(null));
 
         $this->handler->downloadObject($this->object, 'file_field');
     }
