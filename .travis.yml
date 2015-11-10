@@ -29,9 +29,8 @@ matrix:
 before_install:
     - composer self-update
     - phpenv config-rm xdebug.ini || true
-    - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-    
-install: composer update --prefer-dist
+
+install: composer update --prefer-dist --ignore-platform-reqs
 
 script: vendor/bin/phpunit
