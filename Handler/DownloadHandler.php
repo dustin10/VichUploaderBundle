@@ -5,6 +5,8 @@ namespace Vich\UploaderBundle\Handler;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+use Vich\UploaderBundle\Exception\NoFileFoundException;
+
 /**
  * Download handler.
  *
@@ -12,10 +14,24 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class DownloadHandler extends AbstractHandler
 {
+    /**
+     * Create a response object that will trigger the download of a file.
+     *
+     * @param mixed  $object
+     * @param string $field
+     * @param string $className
+     * @param string $fieldName
+     *
+     * @return StreamedResponse
+     */
     public function downloadObject($object, $field, $className = null, $fileName = null)
     {
         $mapping = $this->getMapping($object, $field, $className);
-        $stream = $this->storage->resolveStream($object, $field, $className);
+        $stream  = $this->storage->resolveStream($object, $field, $className);
+
+        if ($stream === null) {
+            throw new NoFileFoundException(sprintf('No file found in field "%s".', $field));
+        }
 
         return $this->createDownloadResponse(
             $stream,
@@ -26,9 +42,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, $filename)
     {
         $response = new StreamedResponse(function () use ($stream) {
-            while (!feof($stream)) {
-                echo fread($stream, 1024);
-            }
+            echo stream_copy_to_stream($stream, fopen('php://output', 'w'));
         });
 
         $disposition = $response->headers->makeDisposition(
