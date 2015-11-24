@@ -42,7 +42,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, $filename)
     {
         $response = new StreamedResponse(function () use ($stream) {
-            echo stream_copy_to_stream($stream, fopen('php://output', 'w'));
+            stream_copy_to_stream($stream, fopen('php://output', 'w'));
         });
 
         $disposition = $response->headers->makeDisposition(
