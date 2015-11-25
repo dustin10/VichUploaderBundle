@@ -27,4 +27,12 @@ class VichImageType extends VichFileType
     {
         return 'vich_image';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'file';
+    }
 }
