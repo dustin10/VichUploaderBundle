@@ -44,7 +44,8 @@
         "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "*",
         "willdurand/propel-eventdispatcher-bundle": ">=1.2",
-        "symfony/yaml": "@stable"
+        "symfony/yaml": "@stable",
+        "fresh/vich-uploader-serialization-bundle": "Integration with JMSSerializerBundle"
     },
     "autoload": {
         "psr-4": {
