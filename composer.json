@@ -48,7 +48,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Vich\\UploaderBundle\\": "",
+            "Vich\\UploaderBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
         }
     }
