@@ -10,7 +10,7 @@ sudo: false
 
 cache:
     directories:
-      - $HOME/.composer/cache
+        - $HOME/.composer/cache
 
 env:
     - SYMFONY_VERSION="~2.7.0"
@@ -22,9 +22,11 @@ matrix:
         - php: 5.6
           env: SYMFONY_VERSION="~2.7.0"
         - php: 5.6
-          env: SYMFONY_VERSION="~2.8.0@dev"
+          env: SYMFONY_VERSION="~2.8.0"
         - php: 5.6
-          env: SYMFONY_VERSION="~3.0.0@dev"
+          env: SYMFONY_VERSION="~3.0.0"
+        - php: 7.0
+          env: SYMFONY_VERSION="~3.0.0"
 
 before_install:
     - composer self-update
