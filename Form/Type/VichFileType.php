@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
 use Vich\UploaderBundle\Handler\UploadHandler;
@@ -48,7 +50,7 @@ class VichFileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'file', array(
+        $builder->add('file', $this->getFieldType('file'), array(
             'required' => $options['required'],
             'label'    => $options['label'],
             'attr'     => $options['attr'],
@@ -75,7 +77,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            $form->add('delete', 'checkbox', array(
+            $form->add('delete', $this->getFieldType('checkbox'), array(
                 'label'     => $translator->trans('form.label.delete', array(), 'VichUploaderBundle'),
                 'required'  => false,
                 'mapped'    => false,
@@ -111,8 +113,24 @@ class VichFileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'vich_file';
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    // ugly workaround for SF < 2.8 compatibility
+    protected function getFieldType($shortType)
+    {
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            return sprintf('Symfony\Component\Form\Extension\Core\Type\%sType', ucfirst($shortType));
+        }
+
+        return $shortType;
     }
 }
