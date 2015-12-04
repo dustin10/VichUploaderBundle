@@ -13,7 +13,7 @@ cache:
         - $HOME/.composer/cache
 
 env:
-    - SYMFONY_VERSION="~2.7.0"
+    - SYMFONY_VERSION="~2.8.0"
 
 matrix:
     include:
