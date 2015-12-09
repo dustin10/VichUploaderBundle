@@ -63,7 +63,7 @@ class PropertyMapping
      * Gets the file property value for the given object.
      *
      * @param  object                                             $obj The object.
-     * @return Symfony\Component\HttpFoundation\File\UploadedFile The file.
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile The file.
      */
     public function getFile($obj)
     {
@@ -76,7 +76,7 @@ class PropertyMapping
      * Modifies the file property value for the given object.
      *
      * @param object                                             $obj  The object.
-     * @param Symfony\Component\HttpFoundation\File\UploadedFile $file The new file.
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file The new file.
      */
     public function setFile($obj, $file)
     {
