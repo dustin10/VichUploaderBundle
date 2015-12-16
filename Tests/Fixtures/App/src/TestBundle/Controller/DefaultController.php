@@ -57,9 +57,9 @@ class DefaultController extends Controller
     private function getForm($fileType, Image $image)
     {
         return $this->createFormBuilder($image)
-            ->add('title', 'text')
-            ->add('imageFile', $fileType)
-            ->add('save', 'submit')
+            ->add('title', $this->getFieldType('text'))
+            ->add('imageFile', $this->getFieldType($fileType))
+            ->add('save', $this->getFieldType('submit'))
             ->getForm();
     }
 
@@ -73,5 +73,21 @@ class DefaultController extends Controller
         $image = $em->getRepository('VichTestBundle:Image')->find($imageId);
 
         return $image;
+    }
+
+    // ugly workaround for SF < 2.8 compatibility
+    protected function getFieldType($shortType)
+    {
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            if ($shortType === 'vich_file') {
+                return 'Vich\UploaderBundle\Form\Type\VichFileType';
+            } else if ($shortType === 'vich_image') {
+                return 'Vich\UploaderBundle\Form\Type\VichImageType';
+            }
+
+            return sprintf('Symfony\Component\Form\Extension\Core\Type\%sType', ucfirst($shortType));
+        }
+
+        return $shortType;
     }
 }
