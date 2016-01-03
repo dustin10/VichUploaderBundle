@@ -35,8 +35,8 @@ class DefaultController extends Controller
         $image = $this->getImage($imageId);
         $form = $this->getForm($formType, $image);
 
-        $form->submit($request);
-        if ($form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($image);
