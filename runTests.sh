@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SUPPORTED_SYMFONY_VERSIONS=('~2.3.0' '~2.5.0' '~2.6.0' '~2.7.0' '2.8.x-dev')
+SUPPORTED_SYMFONY_VERSIONS=('~2.3.0' '~2.5.0' '~2.6.0' '~2.7.0' '~2.8.0' '~3.0.0')
 GREEN='\033[0;32m'
 NC='\033[0m'
 
@@ -30,7 +30,7 @@ for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
   php composer.phar require --dev --no-update symfony/symfony:${sf_version}
 
   echo -e "\n${GREEN}Installing dependencies${NC}"
-  php composer.phar update --prefer-source || { restore_composer && exit 1; }
+  php composer.phar update --ignore-platform-reqs || { restore_composer && exit 1; }
 
   echo -e "\n${GREEN}Launching tests${NC}"
   vendor/bin/phpunit $@
