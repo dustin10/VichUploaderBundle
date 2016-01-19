@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Gaufrette\Filesystem;
 use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
@@ -29,9 +30,9 @@ class GaufretteStorage extends AbstractStorage
     /**
      * Constructs a new instance of FileSystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory       The factory.
-     * @param \Knp\Bundle\GaufretteBundle\FilesystemMap           $filesystemMap Gaufrete filesystem factory.
-     * @param string                                              $protocol      Gaufrette stream wrapper protocol.
+     * @param PropertyMappingFactory $factory       The factory.
+     * @param FilesystemMap          $filesystemMap Gaufrete filesystem factory.
+     * @param string                 $protocol      Gaufrette stream wrapper protocol.
      */
     public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap, $protocol = 'gaufrette')
     {
@@ -90,7 +91,7 @@ class GaufretteStorage extends AbstractStorage
      *
      * @param PropertyMapping $mapping
      *
-     * @return \Gaufrette\Filesystem
+     * @return Filesystem
      */
     protected function getFilesystem(PropertyMapping $mapping)
     {

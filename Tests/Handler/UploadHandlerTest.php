@@ -5,6 +5,8 @@ namespace Vich\UploaderBundle\Tests\Handler;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -206,7 +208,7 @@ class UploadHandlerTest extends TestCase
     /**
      * Creates a mock property mapping factory
      *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory
+     * @return PropertyMappingFactory
      */
     protected function getPropertyMappingFactoryMock()
     {
@@ -218,7 +220,7 @@ class UploadHandlerTest extends TestCase
     /**
      * Gets a mock property mapping.
      *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping
+     * @return PropertyMapping
      */
     protected function getPropertyMappingMock()
     {

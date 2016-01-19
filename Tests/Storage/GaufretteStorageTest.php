@@ -2,7 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use Gaufrette\Filesystem;
 use Gaufrette\Exception\FileNotFound;
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 
@@ -14,7 +16,7 @@ use Vich\UploaderBundle\Storage\GaufretteStorage;
 class GaufretteStorageTest extends StorageTestCase
 {
     /**
-     * @var \Knp\Bundle\GaufretteBundle\FilesystemMap $factory
+     * @var FilesystemMap $factory
      */
     protected $filesystemMap;
 
@@ -291,7 +293,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Creates a mock of gaufrette filesystem map.
      *
-     * @return \Knp\Bundle\GaufretteBundle\FilesystemMap The filesystem map.
+     * @return FilesystemMap The filesystem map.
      */
     protected function getFilesystemMapMock()
     {
@@ -304,7 +306,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Creates a mock of gaufrette filesystem.
      *
-     * @return \Gaufrette\Filesystem The gaufrette filesystem object.
+     * @return Filesystem The gaufrette filesystem object.
      */
     protected function getFilesystemMock()
     {

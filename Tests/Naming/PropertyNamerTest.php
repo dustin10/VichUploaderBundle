@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\PropertyNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -103,7 +104,7 @@ class PropertyNamerTest extends TestCase
     }
 
     /**
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping
+     * @return PropertyMapping
      */
     private function getPropertyMappingMock()
     {

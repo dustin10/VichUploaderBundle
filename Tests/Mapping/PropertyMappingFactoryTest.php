@@ -2,7 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -13,12 +15,12 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @var ContainerInterface $container
      */
     protected $container;
 
     /**
-     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
+     * @var MetadataReader $metadata
      */
     protected $metadata;
 
@@ -411,7 +413,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock metadata reader.
      *
-     * @return \Vich\UploaderBundle\Metadata\MetadataReader The metadata reader.
+     * @return MetadataReader The metadata reader.
      */
     protected function getMetadataReaderMock()
     {

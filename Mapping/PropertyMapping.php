@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
@@ -62,8 +63,8 @@ class PropertyMapping
     /**
      * Gets the file property value for the given object.
      *
-     * @param  object                                             $obj The object.
-     * @return \Symfony\Component\HttpFoundation\File\UploadedFile The file.
+     * @param  object       $obj The object.
+     * @return UploadedFile The file.
      */
     public function getFile($obj)
     {
@@ -75,8 +76,8 @@ class PropertyMapping
     /**
      * Modifies the file property value for the given object.
      *
-     * @param object                                             $obj  The object.
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file The new file.
+     * @param object       $obj  The object.
+     * @param UploadedFile $file The new file.
      */
     public function setFile($obj, $file)
     {
@@ -133,7 +134,7 @@ class PropertyMapping
     /**
      * Gets the configured namer.
      *
-     * @return null|\Vich\UploaderBundle\Naming\NamerInterface The namer.
+     * @return null|NamerInterface The namer.
      */
     public function getNamer()
     {
@@ -143,7 +144,7 @@ class PropertyMapping
     /**
      * Sets the namer.
      *
-     * @param \Vich\UploaderBundle\Naming\NamerInterface $namer The namer.
+     * @param NamerInterface $namer The namer.
      */
     public function setNamer(NamerInterface $namer)
     {

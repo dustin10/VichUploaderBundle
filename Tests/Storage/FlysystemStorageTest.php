@@ -3,6 +3,9 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use League\Flysystem\File;
+use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\MountManager;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 
 /**
@@ -13,12 +16,12 @@ class FlysystemStorageTest extends StorageTestCase
     const FS_KEY = 'filesystemKey';
 
     /**
-     * @var \League\Flysystem\MountManager $mountManager
+     * @var MountManager $mountManager
      */
     protected $mountManager;
 
     /**
-     * @var \League\Flysystem\FilesystemInterface
+     * @var FilesystemInterface
      */
     protected $filesystem;
 
@@ -111,7 +114,7 @@ class FlysystemStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('delete')
             ->with('not_found.txt')
-            ->will($this->throwException(new \League\Flysystem\FileNotFoundException('dummy path')));
+            ->will($this->throwException(new FileNotFoundException('dummy path')));
 
         $this->mapping
             ->expects($this->once())
@@ -171,7 +174,7 @@ class FlysystemStorageTest extends StorageTestCase
     /**
      * Creates a filesystem map mock.
      *
-     * @return \League\Flysystem\MountManager The mount manager.
+     * @return MountManager The mount manager.
      */
     protected function getMountManagerMock()
     {
