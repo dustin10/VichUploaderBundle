@@ -36,6 +36,7 @@ class VichFileType extends AbstractType
         $resolver->setDefaults(array(
             'allow_delete'  => true,
             'download_link' => true,
+            'error_bubbling' => false,
         ));
     }
 
