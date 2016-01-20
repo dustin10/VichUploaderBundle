@@ -17,7 +17,6 @@
         }
     },
     "require": {
-        "php": "~5.5|~7.0",
         "symfony/framework-bundle": "~2.3|~3.0",
         "jms/metadata": "~1.5",
         "symfony/finder": "~2.0|~3.0",
