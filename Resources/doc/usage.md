@@ -128,6 +128,8 @@ class Product
      * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return Product
      */
     public function setImageFile(File $image = null)
     {
@@ -138,6 +140,8 @@ class Product
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTime('now');
         }
+        
+        return $this;
     }
 
     /**
@@ -150,10 +154,14 @@ class Product
 
     /**
      * @param string $imageName
+     *
+     * @return Product
      */
     public function setImageName($imageName)
     {
         $this->imageName = $imageName;
+        
+        return $this;
     }
 
     /**
