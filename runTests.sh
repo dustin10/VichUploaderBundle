@@ -30,7 +30,7 @@ for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
   php composer.phar require --dev --no-update symfony/symfony:${sf_version}
 
   echo -e "\n${GREEN}Installing dependencies${NC}"
-  php composer.phar update --ignore-platform-reqs || { restore_composer && exit 1; }
+  php composer.phar update --prefer-dist --ignore-platform-reqs || { restore_composer && exit 1; }
 
   echo -e "\n${GREEN}Launching tests${NC}"
   vendor/bin/phpunit $@
