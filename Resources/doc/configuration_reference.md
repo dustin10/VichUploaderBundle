@@ -8,7 +8,7 @@ Below is the full default configuration for the bundle:
 ``` yaml
 # app/config/config.yml
 vich_uploader:
-    db_driver:  orm # or mongodb or propel or phpcr
+    db_driver:  orm # or mongodb or propel or phpcr - default db driver
     twig:       true
     storage:    file_system # or gaufrette or flysystem
     mappings:
@@ -20,6 +20,7 @@ vich_uploader:
             delete_on_remove:   true  # determines whether to delete file upon removal of entity
             delete_on_update:   true  # determines wheter to delete the file upon update of entity
             inject_on_load:     false # determines whether to inject a File instance upon load
+            db_driver:          phpcr # overides the default db driver set above. Allows seperate driver per mapping
         # ... more mappings
 ```
 
