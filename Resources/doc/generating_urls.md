@@ -35,7 +35,7 @@ In a Twig template you can use the `vich_uploader_asset` function:
 > will need to manually specify the class name:
 
 ```html+jinja
-{{ vich_uploader_asset(product, 'image', 'FooBundle\Entity\Product') }}
+{{ vich_uploader_asset(product, 'image', 'FooBundle\\Entity\\Product') }}
 ```
 
 
