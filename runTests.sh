@@ -26,6 +26,9 @@ fi
 
 # Run the tests for each supported symfony version
 for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
+  echo -e "\n${GREEN}Removing previous composer.lock file${NC}"
+  rm composer.lock
+
   echo -e "\n${GREEN}Setting requirements version constraints: Symfony (${sf_version})${NC}"
   php composer.phar require --dev --no-update symfony/symfony:${sf_version}
 
