@@ -20,6 +20,27 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 }
 ```
 
+**Note for Symfony3 users:**
+In case you are using Symfony3, you must use the `VichFileType::class` to specify the field type:
+
+```php
+// ...
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+// ...
+
+public function buildForm(FormBuilderInterface $builder, array $options)
+{
+    // ...
+
+    $builder->add('image', VichFileType::class, array(
+        'required'      => false,
+        'allow_delete'  => true, // not mandatory, default is true
+        'download_link' => true, // not mandatory, default is true
+    ));
+}
+```
+
 For the form type to fully work, you'll also have to use the form theme bundled
 with VichUploaderBundle.
 
