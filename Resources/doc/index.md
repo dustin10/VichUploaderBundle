@@ -54,3 +54,4 @@ Don't worry, it will be quick and easy (I promise!):
   * [Events](../../Event/Events.php)
   * [Sandbox](https://github.com/K-Phoen/Vich-Uploader-Sandbox)
   * [Known issues](known_issues.md)
+  * [Symfony support policy](symfony_support_policy.md)
