@@ -63,7 +63,7 @@ Next, you have to create the two fields needed for the bundle to work:
 The `UploadableField` annotation has a few required options. They are as follows:
 
   * `mapping`: the mapping name specified in the bundle configuration to use ;
-  * `fileNameProperty`: the property that will contained the name of the
+  * `fileNameProperty`: the property that will containe the name of the
     uploaded file. This is the only property that is saved in the database.
 
 **Note**:
