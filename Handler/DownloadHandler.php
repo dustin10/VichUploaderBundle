@@ -45,9 +45,17 @@ class DownloadHandler extends AbstractHandler
             stream_copy_to_stream($stream, fopen('php://output', 'w'));
         });
 
+        $filenameFallback = '';
+        if (function_exists('iconv')) {
+            $filenameFallback = iconv('UTF-8', 'ASCII//TRANSLIT', $filename);
+        } else if (function_exists('mb_convert_encoding')) {
+            $filenameFallback = mb_convert_encoding($filename, 'ASCII');
+        }
+
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
+            $filename,
+            $filenameFallback
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'application/octet-stream');
