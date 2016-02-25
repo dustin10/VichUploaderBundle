@@ -50,6 +50,19 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceof('\Symfony\Component\HttpFoundation\StreamedResponse', $response);
     }
 
+    public function testNonAsciiFilenameIsTransliterated()
+    {
+        $this->storage
+            ->expects($this->once())
+            ->method('resolveStream')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue('something not null'));
+
+        $response = $this->handler->downloadObject($this->object, 'file_field', null, 'ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334');
+
+        $this->assertInstanceof('\Symfony\Component\HttpFoundation\StreamedResponse', $response);
+    }
+
     /**
      * @expectedException Vich\UploaderBundle\Exception\MappingNotFoundException
      */

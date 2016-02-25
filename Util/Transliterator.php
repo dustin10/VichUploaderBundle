@@ -1,12 +1,10 @@
 <?php
 
-namespace Vich\UploaderBundle\Naming\Polyfill;
+namespace Vich\UploaderBundle\Util;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-trait TransliterationTrait
+class Transliterator
 {
-    private function transliterate($string)
+    public static function transliterate($string)
     {
         // needs intl extension
         if (function_exists('transliterator_transliterate')) {

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Vich\UploaderBundle\Exception\NoFileFoundException;
+use Vich\UploaderBundle\Util\Transliterator;
 
 /**
  * Download handler.
@@ -47,7 +48,7 @@ class DownloadHandler extends AbstractHandler
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
+            Transliterator::transliterate($filename)
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'application/octet-stream');

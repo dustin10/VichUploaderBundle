@@ -7,6 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Vich\UploaderBundle\Exception\NameGenerationException;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Util\Transliterator;
 
 /**
  * PropertyNamer
@@ -16,7 +17,6 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
-    use Polyfill\TransliterationTrait;
 
     /**
      * @var string
@@ -65,7 +65,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         }
 
         if ($this->transliterate) {
-            $name = $this->transliterate($name);
+            $name = Transliterator::transliterate($name);
         }
 
         // append the file extension if there is one
