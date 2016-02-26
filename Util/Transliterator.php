@@ -13,13 +13,12 @@ class Transliterator
             $string = preg_replace('/[-\s]+/', '-', $string);
         } else {
             // uses iconv
-            $string = preg_replace('~[^\\pL0-9_]+~u', '-', $string); // substitutes anything but letters, numbers and '-' with separator
+            $string = preg_replace('~[^\\pL0-9_\.]+~u', '-', $string); // substitutes anything but letters, numbers and '-' with separator
             $string = trim($string, '-');
             if (function_exists('iconv')) {
                 $string = iconv('utf-8', 'us-ascii//TRANSLIT', $string); // TRANSLIT does the whole job
             }
-            $string = strtolower($string);
-            $string = preg_replace('~[^-a-z0-9_]+~', '', $string); // keep only letters, numbers, '_' and separator
+            $string = preg_replace('~[^-a-zA-Z0-9_\.]+~', '', $string); // keep only letters, numbers, '_' and separator
         }
 
         $string = trim($string, '-');

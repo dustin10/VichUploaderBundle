@@ -31,13 +31,26 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->mapping));
     }
 
-    public function testDownloadObject()
+    public function filenamesProvider()
+    {
+        return [
+            ['file_name', 'file_name'],
+            ['file_name.ext', 'file_name.ext'],
+            ['file-name.ext', 'file-name.ext'],
+            ['ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334', 'EAUUOPOUEUIIII-4334'],
+        ];
+    }
+
+    /**
+     * @dataProvider filenamesProvider
+     */
+    public function testDownloadObject($fileName, $expectedFileName)
     {
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('file_name'));
+            ->will($this->returnValue($fileName));
 
         $this->storage
             ->expects($this->once())
@@ -48,6 +61,7 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceof('\Symfony\Component\HttpFoundation\StreamedResponse', $response);
+        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testNonAsciiFilenameIsTransliterated()
