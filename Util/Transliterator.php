@@ -9,7 +9,7 @@ class Transliterator
         // needs intl extension
         if (function_exists('transliterator_transliterate')) {
             $string = transliterator_transliterate("Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove" , $string);
-            $string = preg_replace('/[^\\pL\d.]+/u', '-', $string);
+            $string = preg_replace('/[^\\pL\d._]+/u', '-', $string);
             $string = preg_replace('/[-\s]+/', '-', $string);
         } else {
             // uses iconv
