@@ -22,7 +22,7 @@
         "jms/metadata": "~1.5",
         "symfony/finder": "~2.0|~3.0",
         "symfony/property-access": "~2.4|~3.0",
-        "ocramius/proxy-manager": "~1.0"
+        "ocramius/proxy-manager": "~1.0|~2.0"
     },
     "require-dev": {
         "ext-sqlite3" : "*",
