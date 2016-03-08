@@ -27,6 +27,7 @@
     "require-dev": {
         "ext-sqlite3" : "*",
 
+        "alcaeus/mongo-php-adapter": "^1.0.0@beta",
         "doctrine/mongodb-odm": "@dev",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "oneup/flysystem-bundle": "dev-master",
