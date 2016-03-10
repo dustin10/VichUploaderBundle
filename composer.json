@@ -45,7 +45,7 @@
         "knplabs/knp-gaufrette-bundle": "*",
         "willdurand/propel-eventdispatcher-bundle": ">=1.2",
         "symfony/yaml": "@stable",
-        "fresh/vich-uploader-serialization-bundle": "Integration with JMSSerializerBundle"
+        "fresh/vich-uploader-serialization-bundle": "*"
     },
     "autoload": {
         "psr-4": {
