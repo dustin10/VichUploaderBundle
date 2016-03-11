@@ -32,7 +32,7 @@ abstract class BaseListener implements EventSubscriber
     protected $metadata;
 
     /**
-     * @var UploaderHandler $handler
+     * @var UploadHandler $handler
      */
     protected $handler;
 
@@ -42,7 +42,7 @@ abstract class BaseListener implements EventSubscriber
      * @param string           $mapping  The mapping name.
      * @param AdapterInterface $adapter  The adapter.
      * @param MetadataReader   $metadata The metadata reader.
-     * @param UploaderHandler  $handler  The upload handler.
+     * @param UploadHandler    $handler  The upload handler.
      */
     public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
