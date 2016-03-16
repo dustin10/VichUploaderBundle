@@ -33,16 +33,4 @@ class VichImageType extends VichFileType
     {
         return $this->getBlockPrefix();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            return 'Symfony\Component\Form\Extension\Core\Type\ImageType';
-        }
-
-        return 'image';
-    }
 }
