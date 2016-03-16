@@ -133,4 +133,12 @@ class VichFileType extends AbstractType
 
         return $shortType;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return $this->getFieldType('file');
+    }
 }
