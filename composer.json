@@ -35,7 +35,7 @@
 
         "phpunit/phpunit": "~4.0",
         "mikey179/vfsStream": "~1.0",
-        "matthiasnoback/symfony-dependency-injection-test": "0.*"
+        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
     },
     "suggest": {
         "doctrine/orm": ">=2.2.3",
