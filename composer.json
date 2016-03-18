@@ -31,7 +31,7 @@
         "knplabs/knp-gaufrette-bundle": "~0.3",
         "oneup/flysystem-bundle": "~1.0",
         "doctrine/orm": "~2.2,>=2.2.3",
-        "doctrine/doctrine-bundle": "*",
+        "doctrine/doctrine-bundle": "~1.6",
 
         "phpunit/phpunit": "~4.0",
         "mikey179/vfsStream": "~1.0",
