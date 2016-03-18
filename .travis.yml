@@ -28,8 +28,9 @@ matrix:
 before_install:
     - composer self-update
     - phpenv config-rm xdebug.ini || true
+    - composer config platform.ext-mongo 1.2.12
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
 
-install: composer update --prefer-dist --ignore-platform-reqs
+install: composer update --prefer-dist
 
 script: vendor/bin/phpunit
