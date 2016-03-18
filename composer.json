@@ -28,8 +28,8 @@
         "ext-sqlite3" : "*",
 
         "doctrine/mongodb-odm": "@dev",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
-        "oneup/flysystem-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "~0.3",
+        "oneup/flysystem-bundle": "~1.0",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "*",
 
