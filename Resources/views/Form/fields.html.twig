@@ -1,3 +1,8 @@
+{% block vich_file_row -%}
+    {% set force_error = true %}
+    {{- block('form_row') }}
+{%- endblock %}
+
 {% block vich_file_widget %}
 {% spaceless %}
     <div class="vich-file">
@@ -12,6 +17,11 @@
     </div>
 {% endspaceless %}
 {% endblock %}
+
+{% block vich_image_row -%}
+    {% set force_error = true %}
+    {{- block('form_row') }}
+{%- endblock %}
 
 {% block vich_image_widget %}
 {% spaceless %}
