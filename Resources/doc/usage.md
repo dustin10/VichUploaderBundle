@@ -38,6 +38,11 @@ vich_uploader:
 This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
+**Note:**
+> The default behaviour is using the orginal name of uploaded file and can
+> override an old file with the same name. Please user a [namer](namers.md)
+> like `vich_uploader.namer_property` to avoid this issue.
+
 
 ## Step 2: link the upload mapping to an entity
 
