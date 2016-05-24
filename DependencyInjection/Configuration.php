@@ -58,8 +58,10 @@ class Configuration implements ConfigurationInterface
                         ->then(function ($v) { return strtolower($v); })
                     ->end()
                     ->validate()
-                        ->ifNotInArray($this->supportedStorages)
-                        ->thenInvalid('The storage %s is not supported. Please choose one of ' . implode(', ', $this->supportedStorages))
+                        ->ifTrue(function ($storage) {
+                            return strpos($storage, '@') !== 0 && !in_array($storage, $this->supportedStorages, true);
+                        })
+                        ->thenInvalid('The storage %s is not supported. Please choose one of ' . implode(', ', $this->supportedStorages) . ' or provide a service name prefixed with "@".')
                     ->end()
                 ->end()
                 ->scalarNode('twig')->defaultTrue()->end()

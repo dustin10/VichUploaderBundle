@@ -39,6 +39,15 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'vich_uploader.storage.gaufrette');
     }
 
+    public function testStorageServiceCustom()
+    {
+        $this->load(array(
+            'storage' => '@acme.storage',
+        ));
+
+        $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'acme.storage');
+    }
+
     public function testExtraServiceFilesAreLoaded()
     {
         $this->load(array(
