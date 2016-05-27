@@ -42,6 +42,8 @@
 
         <service id="vich_uploader.metadata_factory" class="Metadata\MetadataFactory" public="false">
             <argument type="service" id="vich_uploader.metadata_driver" />
+            <argument>Metadata\ClassHierarchyMetadata</argument>
+            <argument>%kernel.debug%</argument>
             <call method="setCache">
                 <argument type="service" id="vich_uploader.metadata.cache" on-invalid="ignore" />
             </call>
