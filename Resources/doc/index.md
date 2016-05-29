@@ -33,6 +33,7 @@ Don't worry, it will be quick and easy (I promise!):
 
   * [Using Gaufrette as storage abstraction](storage/gaufrette.md)
   * [Using Flysystem as storage abstraction](storage/flysystem.md)
+  * [Using a custom storage](storage/custom.md)
 
 ### Mapping-related
 
