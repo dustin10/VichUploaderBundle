@@ -17,13 +17,16 @@ To start using the bundle, register the bundle in your application's kernel clas
 
 ```php
 // app/AppKernel.php
-public function registerBundles()
+class AppKernel extends Kernel
 {
-    $bundles = array(
-        // ...
-        new Vich\UploaderBundle\VichUploaderBundle(),
-        // ...
-    );
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+            new Vich\UploaderBundle\VichUploaderBundle(),
+            // ...
+        );
+    }
 }
 ```
 

@@ -18,11 +18,14 @@ name of the property containing the file, and returning a `Response` allowing to
 download the file.
 
 ```php
-public function downloadImageAction(Image $image)
+class AcmeController extends Controller
 {
-    $downloadHandler = $this->get('vich_uploader.download_handler');
+    public function downloadImageAction(Image $image)
+    {
+        $downloadHandler = $this->get('vich_uploader.download_handler');
 
-    return $downloadHandler->downloadObject($image, $fileField = 'imageFile');
+        return $downloadHandler->downloadObject($image, $fileField = 'imageFile');
+    }
 }
 ```
 
@@ -31,12 +34,15 @@ public function downloadImageAction(Image $image)
 This handler can also be used to rename the downloaded files.
 
 ```php
-public function downloadImageAction(Image $image)
+class AcmeController extends Controller
 {
-    $downloadHandler = $this->get('vich_uploader.download_handler');
-    $imageFileName   = 'foo.png';
+    public function downloadImageAction(Image $image)
+    {
+        $downloadHandler = $this->get('vich_uploader.download_handler');
+        $imageFileName   = 'foo.png';
 
-    return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $imageFileName);
+        return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $imageFileName);
+    }
 }
 ```
 

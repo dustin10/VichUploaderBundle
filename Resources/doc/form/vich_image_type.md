@@ -8,15 +8,18 @@ In order to use it, just define your field as a `vich_image` as show in the
 following example:
 
 ```php
-public function buildForm(FormBuilderInterface $builder, array $options)
+class Form extends AbstractType
 {
-    // ...
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // ...
 
-    $builder->add('image', 'vich_image', array(
-        'required'      => false,
-        'allow_delete'  => true, // not mandatory, default is true
-        'download_link' => true, // not mandatory, default is true
-    ));
+        $builder->add('image', 'vich_image', array(
+            'required'      => false,
+            'allow_delete'  => true, // not mandatory, default is true
+            'download_link' => true, // not mandatory, default is true
+        ));
+    }
 }
 ```
 
@@ -27,17 +30,18 @@ In case you are using Symfony3, you must use the `VichImageType::class` to speci
 // ...
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-// ...
-
-public function buildForm(FormBuilderInterface $builder, array $options)
+class Form extends AbstractType
 {
-    // ...
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // ...
 
-    $builder->add('image', VichImageType::class, array(
-        'required'      => false,
-        'allow_delete'  => true, // not mandatory, default is true
-        'download_link' => true, // not mandatory, default is true
-    ));
+        $builder->add('image', VichImageType::class, array(
+            'required'      => false,
+            'allow_delete'  => true, // not mandatory, default is true
+            'download_link' => true, // not mandatory, default is true
+        ));
+    }
 }
 ```
 

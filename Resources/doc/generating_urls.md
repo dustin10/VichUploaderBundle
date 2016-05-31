@@ -7,7 +7,7 @@ To get a URL for the file, you can use the `vich_uploader.templating.helper`
 service as follows:
 
 ``` php
-$entity = // get the entity..
+$entity = …; // get the entity..
 $helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
 $path = $helper->asset($entity, 'image');
 ```
