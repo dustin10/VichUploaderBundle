@@ -14,6 +14,16 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
  */
 class RegisterPropelModelsPass implements CompilerPassInterface
 {
+    protected function isDriverUsed($driver, array $mappings)
+    {
+        foreach ($mappings as $mapping) {
+            if($mapping['db_driver'] === $driver){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -23,12 +33,20 @@ class RegisterPropelModelsPass implements CompilerPassInterface
             return;
         }
 
+        $mappings = $container->getParameter('vich_uploader.mappings');
+
+        if ($this->isDriverUsed('propel', $mappings)) {
+            $this->registerBazingaEvents($mappings, $container);
+        }
+    }
+
+    protected function registerBazingaEvents(array $mappings, ContainerBuilder $container)
+    {
+        $metadata = $container->get('vich_uploader.metadata_reader');
+
         $serviceTypes = array(
             'inject', 'clean', 'remove', 'upload',
         );
-
-        $metadata = $container->get('vich_uploader.metadata_reader');
-        $mappings = $container->getParameter('vich_uploader.mappings');
 
         foreach ($metadata->getUploadableClasses() as $class) {
             foreach ($metadata->getUploadableFields($class) as $field) {

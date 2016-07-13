@@ -41,6 +41,11 @@
         <service id="vich_uploader.listener.upload.propel" class="Vich\UploaderBundle\EventListener\Propel\UploadListener" parent="vich_uploader.listener.propel.base" />
         <service id="vich_uploader.listener.clean.propel" class="Vich\UploaderBundle\EventListener\Propel\CleanListener" parent="vich_uploader.listener.propel.base" />
         <service id="vich_uploader.listener.remove.propel" class="Vich\UploaderBundle\EventListener\Propel\RemoveListener" parent="vich_uploader.listener.propel.base" />
+        
+        <service id="vich_uploader.listener.inject.propel_ge" class="Vich\UploaderBundle\EventListener\PropelGe\InjectListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.upload.propel_ge" class="Vich\UploaderBundle\EventListener\PropelGe\UploadListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.clean.propel_ge" class="Vich\UploaderBundle\EventListener\PropelGe\CleanListener" parent="vich_uploader.listener.propel.base" />
+        <service id="vich_uploader.listener.remove.propel_ge" class="Vich\UploaderBundle\EventListener\PropelGe\RemoveListener" parent="vich_uploader.listener.propel.base" />
 
     </services>
 

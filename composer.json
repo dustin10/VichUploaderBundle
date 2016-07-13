@@ -55,6 +55,7 @@
         "doctrine/phpcr-odm": "~1.0",
         "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "~0.3",
+        "glorpen/propel-bundle": ">=1.3.2",
         "willdurand/propel-eventdispatcher-bundle": "~1.2",
         "symfony/yaml": "^2.0.5"
     },

@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    protected $supportedDbDrivers = array('orm', 'mongodb', 'propel', 'phpcr');
+    protected $supportedDbDrivers = array('orm', 'mongodb', 'propel', 'propel_ge', 'phpcr');
     protected $supportedStorages = array('gaufrette', 'flysystem', 'file_system');
 
     /**
