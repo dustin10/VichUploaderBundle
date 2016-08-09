@@ -71,6 +71,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
                     'delete_on_remove'      => true,
                     'delete_on_update'      => true,
                     'inject_on_load'        => true,
+                    'db_connection'         => null,
                 )
             ),
         ));
@@ -95,6 +96,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
                     'delete_on_update'      => true,
                     'inject_on_load'        => true,
                     'db_driver'             => 'orm',
+                    'db_connection'         => null,
                 )
             ),
         ));

@@ -146,6 +146,7 @@ class VichUploaderExtension extends Extension
         // mapping with no declared db_driver use the top-level one
         foreach ($config['mappings'] as &$mapping) {
             $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
+            $mapping['db_connection'] = $mapping['db_connection'] ?: $config['db_connection'];
         }
 
         return $config;
@@ -161,6 +162,7 @@ class VichUploaderExtension extends Extension
 
         foreach ($config['mappings'] as $name => $mapping) {
             $driver = $mapping['db_driver'];
+            $connection = $mapping['db_connection'];
 
             // create optionnal listeners
             foreach ($servicesMap as $configOption => $service) {
@@ -168,11 +170,11 @@ class VichUploaderExtension extends Extension
                     continue;
                 }
 
-                $this->createListener($container, $name, $service['name'], $driver, $service['priority']);
+                $this->createListener($container, $name, $service['name'], $driver, $service['priority'], $connection);
             }
 
             // the upload listener is mandatory
-            $this->createListener($container, $name, 'upload', $driver);
+            $this->createListener($container, $name, 'upload', $driver, 0, $connection);
         }
     }
 
@@ -199,7 +201,7 @@ class VichUploaderExtension extends Extension
         return $mapping;
     }
 
-    protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0)
+    protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0, $connection = null)
     {
         $definition = $container
             ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
@@ -208,7 +210,7 @@ class VichUploaderExtension extends Extension
 
         // propel does not require tags to work
         if (isset($this->tagMap[$driver])) {
-            $definition->addTag($this->tagMap[$driver], array('priority' => $priority));
+            $definition->addTag($this->tagMap[$driver], array('priority' => $priority, 'connection' => $connection));
         }
     }
 }
