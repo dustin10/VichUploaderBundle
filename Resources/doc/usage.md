@@ -150,7 +150,7 @@ class Product
     }
 
     /**
-     * @return File
+     * @return File|null
      */
     public function getImageFile()
     {
@@ -170,7 +170,7 @@ class Product
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getImageName()
     {
