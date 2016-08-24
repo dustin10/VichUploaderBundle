@@ -7,8 +7,9 @@ class Transliterator
     public static function transliterate($string)
     {
         // needs intl extension
-        if (function_exists('transliterator_transliterate')) {
-            $string = transliterator_transliterate("Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove" , $string);
+        $transId = "Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove";
+        if (class_exists('\\Transliterator') && $transliterator = \Transliterator::create($transId)) {
+            $string = $transliterator->transliterate($string);
             $string = preg_replace('/[^\\pL\d._]+/u', '-', $string);
             $string = preg_replace('/[-\s]+/', '-', $string);
         } else {
