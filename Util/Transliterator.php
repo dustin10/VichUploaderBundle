@@ -8,7 +8,7 @@ class Transliterator
     {
         // needs intl extension
         $transId = "Any-Latin; Latin-ASCII; [\u0100-\u7fff] remove";
-        if (function_exists('transliterator_transliterate') && $transliterator = \Transliterator::create($transId)) {
+        if (class_exists('\\Transliterator') && $transliterator = \Transliterator::create($transId)) {
             $string = $transliterator->transliterate($string);
             $string = preg_replace('/[^\\pL\d._]+/u', '-', $string);
             $string = preg_replace('/[-\s]+/', '-', $string);
