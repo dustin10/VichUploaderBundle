@@ -32,7 +32,7 @@ vich_uploader:
     mappings:
         product_image:
             uri_prefix:         /images/products
-            upload_destination: %kernel.root_dir%/../web/images/products
+            upload_destination: '%kernel.root_dir%/../web/images/products'
 ```
 
 This is the minimal amount of configuration needed in order to describe a
