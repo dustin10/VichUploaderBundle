@@ -3,20 +3,19 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
+class DownloadHandlerTest extends TestCase
 {
     protected $factory;
     protected $storage;
     protected $object;
-
     protected $handler;
+    protected $mapping;
 
     public function setUp()
     {
@@ -80,7 +79,7 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Vich\UploaderBundle\Exception\MappingNotFoundException
+     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
     public function testAnExceptionIsThrownIfMappingIsntFound()
     {
@@ -91,7 +90,7 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Vich\UploaderBundle\Exception\NoFileFoundException
+     * @expectedException \Vich\UploaderBundle\Exception\NoFileFoundException
      */
     public function testAnExceptionIsThrownIfNoFileIsFould()
     {
@@ -102,29 +101,5 @@ class DownloadHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $this->handler->downloadObject($this->object, 'file_field');
-    }
-
-    /**
-     * Creates a mock property mapping factory
-     *
-     * @return PropertyMappingFactory
-     */
-    protected function getPropertyMappingFactoryMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * Gets a mock property mapping.
-     *
-     * @return PropertyMapping
-     */
-    protected function getPropertyMappingMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }
