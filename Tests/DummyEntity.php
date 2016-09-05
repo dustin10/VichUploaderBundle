@@ -18,6 +18,8 @@ class DummyEntity
 
     protected $fileName;
 
+    protected $size;
+
     public $someProperty;
 
     public function getFile()
@@ -38,6 +40,16 @@ class DummyEntity
     public function setFileName($fileName)
     {
         $this->fileName = $fileName;
+    }
+
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    public function setSize($size)
+    {
+        $this->size = $size;
     }
 
     public function generateFileName()

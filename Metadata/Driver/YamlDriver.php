@@ -6,8 +6,6 @@ use Symfony\Component\Yaml\Yaml as YmlParser;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
- * Yaml driver.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class YamlDriver extends AbstractFileDriver
@@ -26,6 +24,9 @@ class YamlDriver extends AbstractFileDriver
                 'mapping' => $mappingData['mapping'],
                 'propertyName' => $field,
                 'fileNameProperty' => isset($mappingData['filename_property']) ? $mappingData['filename_property'] : null,
+                'size' => isset($mappingData['size']) ? $mappingData['size'] : null,
+                'mimeType' => isset($mappingData['mime_type']) ? $mappingData['mime_type'] : null,
+                'originalName' => isset($mappingData['original_name']) ? $mappingData['original_name'] : null,
             ];
 
             $metadata->fields[$field] = $fieldMetadata;

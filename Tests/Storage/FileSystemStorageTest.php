@@ -261,7 +261,7 @@ class FileSystemStorageTest extends StorageTestCase
 
     /**
      * @dataProvider filenameWithDirectoriesDataProvider
-     * @group               upload
+     * @group upload
      */
     public function testUploadedFileIsCorrectlyMoved($uploadDir, $dir, $expectedDir)
     {
@@ -282,6 +282,12 @@ class FileSystemStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('getUploadDestination')
             ->will($this->returnValue($uploadDir));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->will($this->returnValue('filename.txt'));
 
         $this->mapping
             ->expects($this->once())

@@ -65,6 +65,9 @@ class YamlDriverTest extends TestCase
                 'file' => [
                     'mapping' => 'dummy_file',
                     'filename_property' => 'fileName',
+                    'size' => 'sizeField',
+                    'mime_type' => 'mimeTypeField',
+                    'original_name' => 'originalNameField',
                 ],
             ],
             'metadata' => [
@@ -72,6 +75,9 @@ class YamlDriverTest extends TestCase
                     'mapping' => 'dummy_file',
                     'propertyName' => 'file',
                     'fileNameProperty' => 'fileName',
+                    'size' => 'sizeField',
+                    'mimeType' => 'mimeTypeField',
+                    'originalName' => 'originalNameField',
                 ],
             ],
         ];
@@ -85,6 +91,9 @@ class YamlDriverTest extends TestCase
                 'image' => [
                     'mapping' => 'dummy_image',
                     'filename_property' => 'imageName',
+                    'size' => 'imageSize',
+                    'mime_type' => 'imageMimeType',
+                    'original_name' => 'imageOriginalName',
                 ],
             ],
             'metadata' => [
@@ -92,11 +101,17 @@ class YamlDriverTest extends TestCase
                     'mapping' => 'dummy_file',
                     'propertyName' => 'file',
                     'fileNameProperty' => 'fileName',
+                    'size' => null,
+                    'mimeType' => null,
+                    'originalName' => null,
                 ],
                 'image' => [
                     'mapping' => 'dummy_image',
                     'propertyName' => 'image',
                     'fileNameProperty' => 'imageName',
+                    'size' => 'imageSize',
+                    'mimeType' => 'imageMimeType',
+                    'originalName' => 'imageOriginalName',
                 ],
             ],
         ];

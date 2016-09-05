@@ -70,6 +70,7 @@ class FlysystemStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('getRealPath')
             ->will($this->returnValue($this->root->url().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'test.txt'));
+
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
@@ -79,6 +80,12 @@ class FlysystemStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('getFile')
             ->will($this->returnValue($file));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->will($this->returnValue('originalName.txt'));
 
         $this->filesystem
             ->expects($this->once())

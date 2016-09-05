@@ -35,14 +35,15 @@ class PropertyMapping
     protected $mappingName;
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $filePropertyPath;
-
-    /**
-     * @var string
-     */
-    protected $fileNamePropertyPath;
+    protected $propertyPaths = [
+        'file' => null,
+        'name' => null,
+        'size' => null,
+        'mimeType' => null,
+        'originalName' => null,
+    ];
 
     /**
      * @var PropertyAccess
@@ -50,13 +51,17 @@ class PropertyMapping
     protected $accessor;
 
     /**
-     * @param string $filePropertyPath     The path to the "file" property
-     * @param string $fileNamePropertyPath The path to the "filename" property
+     * @param string   $filePropertyPath     The path to the "file" property
+     * @param string   $fileNamePropertyPath The path to the "filename" property
+     * @param string[] $propertyPaths        The paths to the "size", "mimeType" and "originalName" properties
      */
-    public function __construct($filePropertyPath, $fileNamePropertyPath)
+    public function __construct($filePropertyPath, $fileNamePropertyPath, array $propertyPaths = [])
     {
-        $this->filePropertyPath = $filePropertyPath;
-        $this->fileNamePropertyPath = $fileNamePropertyPath;
+        $this->propertyPaths = array_merge(
+            $this->propertyPaths,
+            ['file' => $filePropertyPath, 'name' => $fileNamePropertyPath],
+            $propertyPaths
+        );
     }
 
     /**
@@ -68,9 +73,7 @@ class PropertyMapping
      */
     public function getFile($obj)
     {
-        $propertyPath = $this->fixPropertyPath($obj, $this->filePropertyPath);
-
-        return $this->getAccessor()->getValue($obj, $propertyPath);
+        return $this->readProperty($obj, 'file');
     }
 
     /**
@@ -81,8 +84,7 @@ class PropertyMapping
      */
     public function setFile($obj, $file)
     {
-        $propertyPath = $this->fixPropertyPath($obj, $this->filePropertyPath);
-        $this->getAccessor()->setValue($obj, $propertyPath, $file);
+        $this->writeProperty($obj, 'file', $file);
     }
 
     /**
@@ -94,20 +96,67 @@ class PropertyMapping
      */
     public function getFileName($obj)
     {
-        $propertyPath = $this->fixPropertyPath($obj, $this->fileNamePropertyPath);
-
-        return $this->getAccessor()->getValue($obj, $propertyPath);
+        return $this->readProperty($obj, 'name');
     }
 
     /**
      * Modifies the fileName property of the given object.
      *
-     * @param object $obj The object
-     * @param $value
+     * @param object $obj   The object
+     * @param string $value
      */
     public function setFileName($obj, $value)
     {
-        $propertyPath = $this->fixPropertyPath($obj, $this->fileNamePropertyPath);
+        $this->writeProperty($obj, 'name', $value);
+    }
+
+    /**
+     * Reads property of the given object.
+     *
+     * @internal
+     *
+     * @param object $obj      The object from which read
+     * @param string $property The property to read
+     *
+     * @return mixed
+     */
+    public function readProperty($obj, $property)
+    {
+        if (!array_key_exists($property, $this->propertyPaths)) {
+            throw new \InvalidArgumentException(sprintf('Unknown property %s', $property));
+        }
+
+        if (!$this->propertyPaths[$property]) {
+            // not configured
+            return null;
+        }
+
+        $propertyPath = $this->fixPropertyPath($obj, $this->propertyPaths[$property]);
+
+        return $this->getAccessor()->getValue($obj, $propertyPath);
+    }
+
+    /**
+     * Modifies property of the given object.
+     *
+     * @internal
+     *
+     * @param object $obj      The object to which write
+     * @param string $property The property to write
+     * @param mixed  $value    The value which should be written
+     */
+    public function writeProperty($obj, $property, $value)
+    {
+        if (!array_key_exists($property, $this->propertyPaths)) {
+            throw new \InvalidArgumentException(sprintf('Unknown property %s', $property));
+        }
+
+        if (!$this->propertyPaths[$property]) {
+            // not configured
+            return;
+        }
+
+        $propertyPath = $this->fixPropertyPath($obj, $this->propertyPaths[$property]);
         $this->getAccessor()->setValue($obj, $propertyPath, $value);
     }
 
@@ -118,7 +167,7 @@ class PropertyMapping
      */
     public function getFilePropertyName()
     {
-        return $this->filePropertyPath;
+        return $this->propertyPaths['file'];
     }
 
     /**
@@ -128,13 +177,13 @@ class PropertyMapping
      */
     public function getFileNamePropertyName()
     {
-        return $this->fileNamePropertyPath;
+        return $this->propertyPaths['name'];
     }
 
     /**
      * Gets the configured namer.
      *
-     * @return null|NamerInterface The namer
+     * @return NamerInterface|null The namer
      */
     public function getNamer()
     {
@@ -164,7 +213,7 @@ class PropertyMapping
     /**
      * Gets the configured directory namer.
      *
-     * @return null|\Vich\UploaderBundle\Naming\DirectoryNamerInterface The directory namer
+     * @return DirectoryNamerInterface|null The directory namer
      */
     public function getDirectoryNamer()
     {
@@ -174,7 +223,7 @@ class PropertyMapping
     /**
      * Sets the directory namer.
      *
-     * @param \Vich\UploaderBundle\Naming\DirectoryNamerInterface $directoryNamer The directory namer
+     * @param DirectoryNamerInterface $directoryNamer The directory namer
      */
     public function setDirectoryNamer(DirectoryNamerInterface $directoryNamer)
     {
@@ -219,6 +268,22 @@ class PropertyMapping
     public function setMappingName($mappingName)
     {
         $this->mappingName = $mappingName;
+    }
+
+    /**
+     * Gets the upload name for a given file (uses The file namers).
+     *
+     * @param object $obj
+     *
+     * @return string The upload name
+     */
+    public function getUploadName($obj)
+    {
+        if (!$this->hasNamer()) {
+            return $this->getFile($obj)->getClientOriginalName();
+        }
+
+        return $this->getNamer()->name($obj, $this);
     }
 
     /**

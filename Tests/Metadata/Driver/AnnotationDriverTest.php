@@ -42,6 +42,9 @@ class AnnotationDriverTest extends TestCase
                 'mapping' => 'dummy_file',
                 'propertyName' => 'file',
                 'fileNameProperty' => 'fileName',
+                'size' => null,
+                'mimeType' => null,
+                'originalName' => null,
             ],
         ], $metadata->fields);
     }
@@ -87,6 +90,9 @@ class AnnotationDriverTest extends TestCase
             ->will($this->returnValue(new UploadableField([
                 'mapping' => 'dummy_image',
                 'fileNameProperty' => 'imageName',
+                'size' => 'sizeField',
+                'mimeType' => 'mimeTypeField',
+                'originalName' => 'originalNameField',
             ])));
 
         $driver = new AnnotationDriver($reader);
@@ -97,11 +103,17 @@ class AnnotationDriverTest extends TestCase
                 'mapping' => 'dummy_file',
                 'propertyName' => 'file',
                 'fileNameProperty' => 'fileName',
+                'size' => null,
+                'mimeType' => null,
+                'originalName' => null,
             ],
             'image' => [
                 'mapping' => 'dummy_image',
                 'propertyName' => 'image',
                 'fileNameProperty' => 'imageName',
+                'size' => 'sizeField',
+                'mimeType' => 'mimeTypeField',
+                'originalName' => 'originalNameField',
             ],
         ], $metadata->fields);
     }

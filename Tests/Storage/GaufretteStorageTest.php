@@ -257,6 +257,12 @@ class GaufretteStorageTest extends StorageTestCase
 
         $this->mapping
             ->expects($this->once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->will($this->returnValue('filename'));
+
+        $this->mapping
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->will($this->returnValue('filesystemKey'));
 
@@ -303,6 +309,17 @@ class GaufretteStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('getFile')
             ->will($this->returnValue($file));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->will($this->returnValue('filename'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue(''));
 
         $this->mapping
             ->expects($this->once())
