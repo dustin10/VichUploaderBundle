@@ -13,41 +13,41 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1.x-dev"
+            "dev-master": "1.4.x-dev"
         }
     },
     "require": {
-        "php": "~5.5|~7.0",
-        "symfony/dependency-injection": "~2.3|~3.0",
-        "symfony/framework-bundle": "~2.3|~3.0",
-        "symfony/finder": "~2.2|~3.0",
-        "symfony/property-access": "~2.5|~3.0",
-        "ocramius/proxy-manager": "~1.0|~2.0",
-        "jms/metadata": "~1.5"
+        "php": "^5.5|^7.0",
+        "symfony/dependency-injection": "^2.3|^3.0",
+        "symfony/framework-bundle": "^2.3|^3.0",
+        "symfony/finder": "^2.2|^3.0",
+        "symfony/property-access": "^2.5|^3.0",
+        "ocramius/proxy-manager": "^1.0|^2.0",
+        "jms/metadata": "^1.5"
     },
     "require-dev": {
         "ext-sqlite3" : "*",
 
-        "doctrine/doctrine-bundle": "~1.6",
+        "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.2.3",
-        "doctrine/mongodb-odm": "~1.0",
+        "doctrine/mongodb-odm": "^1.0",
 
-        "knplabs/knp-gaufrette-bundle": "~0.3",
-        "oneup/flysystem-bundle": "~1.0",
+        "knplabs/knp-gaufrette-bundle": "^0.3",
+        "oneup/flysystem-bundle": "^1.0",
 
-        "symfony/browser-kit": "~2.3|~3.0",
-        "symfony/css-selector": "~2.3|~3.0",
-        "symfony/dom-crawler": "~2.3|~3.0",
-        "symfony/form": "~2.3|~3.0",
-        "symfony/proxy-manager-bridge": "~2.3|~3.0",
-        "symfony/twig-bridge": "~2.3.10|~3.0",
-        "symfony/twig-bundle": "~2.3|~3.0",
-        "symfony/validator": "~2.3|~3.0",
-        "symfony/yaml": "^2.0.5|~3.0",
+        "symfony/browser-kit": "^2.3|^3.0",
+        "symfony/css-selector": "^2.3|^3.0",
+        "symfony/dom-crawler": "^2.3|^3.0",
+        "symfony/form": "^2.3|^3.0",
+        "symfony/proxy-manager-bridge": "^2.3|^3.0",
+        "symfony/twig-bridge": "^2.3.10|^3.0",
+        "symfony/twig-bundle": "^2.3|^3.0",
+        "symfony/validator": "^2.3|^3.0",
+        "symfony/yaml": "^2.0.5|^3.0",
 
-        "phpunit/phpunit": "~4.0",
-        "mikey179/vfsStream": "~1.2",
-        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
+        "phpunit/phpunit": "^4.0|^5.0",
+        "mikey179/vfsStream": "^1.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^0.7"
     },
     "suggest": {
         "doctrine/orm": "^2.2.3",
