@@ -6,6 +6,7 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  * UploadableField.
  *
  * @Annotation
+ * @Target({"PROPERTY"})
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
