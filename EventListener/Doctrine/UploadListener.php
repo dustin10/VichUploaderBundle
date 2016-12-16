@@ -57,6 +57,6 @@ class UploadListener extends BaseListener
             $this->handler->upload($object, $field);
         }
 
-	$this->adapter->recomputeChangeSet($event);
+        $this->adapter->recomputeChangeSet($event);
     }
 }
