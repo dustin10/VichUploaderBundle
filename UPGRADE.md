@@ -1,7 +1,16 @@
-Upgrading from v0.13.0 to master
+Upgrading from v1.0.0 to master
+===============================
+
+
+Upgrading from v0.14.0 to v1.0.0
 ================================
 
-Nothing!
+No BC breaks. 
+
+Upgrading from v0.13.0 to v0.14.0
+=================================
+
+No BC breaks.
 
 Upgrading from v0.12.0 to v0.13.0
 ================================
