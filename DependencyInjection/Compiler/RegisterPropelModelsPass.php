@@ -23,12 +23,25 @@ class RegisterPropelModelsPass implements CompilerPassInterface
             return;
         }
 
+        $mappings = $container->getParameter('vich_uploader.mappings');
+        $hasPropelMapping = false;
+
+        foreach ($mappings as $mapping) {
+            if ($mapping['db_driver'] === 'propel') {
+                $hasPropelMapping = true;
+                break;
+            }
+        }
+
+        if (!$hasPropelMapping) {
+            return;
+        }
+
         $serviceTypes = array(
             'inject', 'clean', 'remove', 'upload',
         );
 
         $metadata = $container->get('vich_uploader.metadata_reader');
-        $mappings = $container->getParameter('vich_uploader.mappings');
 
         foreach ($metadata->getUploadableClasses() as $class) {
             foreach ($metadata->getUploadableFields($class) as $field) {
