@@ -15,14 +15,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class FileInjector implements FileInjectorInterface
 {
     /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
      * Constructs a new instance of FileInjector.
      *
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage Storage.
+     * @param StorageInterface $storage Storage.
      */
     public function __construct(StorageInterface $storage)
     {

@@ -2,6 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Common\EventArgs;
+use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -14,17 +18,17 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     const MAPPING_NAME = 'dummy_mapping';
 
     /**
-     * @var \Vich\UploaderBundle\Adapter\AdapterInterface $adapter
+     * @var AdapterInterface $adapter
      */
     protected $adapter;
 
     /**
-     * @var \Vich\UploaderBundle\Metadata\MetadataReader $metadata
+     * @var MetadataReader $metadata
      */
     protected $metadata;
 
     /**
-     * @var \Vich\UploaderBundle\Handler\UploadHandler $handler
+     * @var UploadHandler $handler
      */
     protected $handler;
 
@@ -66,7 +70,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock adapter.
      *
-     * @return \Vich\UploaderBundle\Adapter\AdapterInterface The mock adapter.
+     * @return AdapterInterface The mock adapter.
      */
     protected function getAdapterMock()
     {
@@ -76,7 +80,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock metadata reader.
      *
-     * @return \Vich\UploaderBundle\Metadata\MetadataReader The mock metadata reader.
+     * @return MetadataReader The mock metadata reader.
      */
     protected function getMetadataReaderMock()
     {
@@ -88,7 +92,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock handler.
      *
-     * @return \Vich\UploaderBundle\Handler\UploadHandler The handler mock.
+     * @return UploadHandler The handler mock.
      */
     protected function getHandlerMock()
     {
@@ -100,7 +104,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock doctrine event
      *
-     * @return \Doctrine\Common\EventArgs
+     * @return EventArgs
      */
     protected function getEventMock()
     {

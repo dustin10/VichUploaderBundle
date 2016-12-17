@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -21,8 +22,8 @@ class FlysystemStorage extends AbstractStorage
     /**
      * Constructs a new instance of FlysystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory      The factory.
-     * @param League\Flysystem\MountManager                       $mountManager Gaufrete filesystem factory.
+     * @param PropertyMappingFactory $factory      The factory.
+     * @param MountManager           $mountManager Gaufrete filesystem factory.
      */
     public function __construct(PropertyMappingFactory $factory, MountManager $mountManager)
     {
@@ -97,7 +98,7 @@ class FlysystemStorage extends AbstractStorage
      *
      * @param string $key
      *
-     * @return \League\Flysystem\FilesystemInterface
+     * @return FilesystemInterface
      */
     protected function getFilesystem(PropertyMapping $mapping)
     {

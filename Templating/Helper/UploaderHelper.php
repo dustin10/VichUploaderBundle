@@ -13,14 +13,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class UploaderHelper extends Helper
 {
     /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
+     * @var StorageInterface $storage
      */
     protected $storage;
 
     /**
      * Constructs a new instance of UploaderHelper.
      *
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage The storage.
+     * @param StorageInterface $storage The storage.
      */
     public function __construct(StorageInterface $storage)
     {

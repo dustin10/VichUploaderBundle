@@ -19,22 +19,22 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class UploadHandler extends AbstractHandler
 {
     /**
-     * @var \Vich\UploaderBundle\Injector\FileInjectorInterface $injector
+     * @var FileInjectorInterface $injector
      */
     protected $injector;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @var EventDispatcherInterface $dispatcher
      */
     protected $dispatcher;
 
     /**
      * Constructs a new instance of UploaderListener.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory         $factory    The mapping factory.
-     * @param \Vich\UploaderBundle\Storage\StorageInterface               $storage    The storage.
-     * @param \Vich\UploaderBundle\Injector\FileInjectorInterface         $injector   The injector.
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher The event dispatcher.
+     * @param PropertyMappingFactory   $factory    The mapping factory.
+     * @param StorageInterface         $storage    The storage.
+     * @param FileInjectorInterface    $injector   The injector.
+     * @param EventDispatcherInterface $dispatcher The event dispatcher.
      */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
     {

@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Util;
 
+use Doctrine\Common\Util\ClassUtils as DoctrineClassUtils;
+
 class ClassUtils
 {
     /**
@@ -14,7 +16,7 @@ class ClassUtils
     public static function getClass($object)
     {
         if (class_exists('\Doctrine\Common\Util\ClassUtils')) {
-            return \Doctrine\Common\Util\ClassUtils::getClass($object);
+            return DoctrineClassUtils::getClass($object);
         }
 
         return get_class($object);

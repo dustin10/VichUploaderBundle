@@ -3,8 +3,11 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use Symfony\Component\HttpFoundation\File\File;
 
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -16,17 +19,17 @@ use Vich\UploaderBundle\Tests\TestCase;
 abstract class StorageTestCase extends TestCase
 {
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
+     * @var PropertyMappingFactory $factory
      */
     protected $factory;
 
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMapping
+     * @var PropertyMapping
      */
     protected $mapping;
 
     /**
-     * @var \Vich\UploaderBundle\Tests\DummyEntity
+     * @var DummyEntity
      */
     protected $object;
 
@@ -36,7 +39,7 @@ abstract class StorageTestCase extends TestCase
     protected $storage;
 
     /**
-     * @var \org\bovigo\vfs\vfsStreamDirectory
+     * @var vfsStreamDirectory
      */
     protected $root;
 
@@ -134,7 +137,7 @@ abstract class StorageTestCase extends TestCase
     /**
      * Creates a mock factory.
      *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMappingFactory The factory.
+     * @return PropertyMappingFactory The factory.
      */
     protected function getFactoryMock()
     {
@@ -146,7 +149,7 @@ abstract class StorageTestCase extends TestCase
     /**
      * Creates a mapping mock.
      *
-     * @return \Vich\UploaderBundle\Mapping\PropertyMapping The property mapping.
+     * @return PropertyMapping The property mapping.
      */
     protected function getMappingMock()
     {

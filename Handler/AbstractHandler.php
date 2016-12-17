@@ -12,18 +12,18 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 abstract class AbstractHandler
 {
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory
+     * @var PropertyMappingFactory
      */
     protected $factory;
 
     /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface $storage
+     * @var StorageInterface $storage
      */
     protected $storage;
 
     /**
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory The mapping factory.
-     * @param \Vich\UploaderBundle\Storage\StorageInterface       $storage The storage.
+     * @param PropertyMappingFactory $factory The mapping factory.
+     * @param StorageInterface       $storage The storage.
      */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
     {

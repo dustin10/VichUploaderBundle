@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Common\Persistence\Proxy;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 
 /**
@@ -111,7 +112,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Creates a mock doctrine entity proxy.
      *
-     * @return \Doctrine\Common\Persistence\Proxy
+     * @return Proxy
      */
     protected function getEntityProxyMock()
     {

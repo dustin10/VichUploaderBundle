@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 abstract class AbstractStorage implements StorageInterface
 {
     /**
-     * @var \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory
+     * @var PropertyMappingFactory $factory
      */
     protected $factory;
 
     /**
      * Constructs a new instance of FileSystemStorage.
      *
-     * @param \Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory The factory.
+     * @param PropertyMappingFactory $factory The factory.
      */
     public function __construct(PropertyMappingFactory $factory)
     {
