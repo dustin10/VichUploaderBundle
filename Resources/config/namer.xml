@@ -8,6 +8,9 @@
         <service id="vich_uploader.namer_uniqid" class="Vich\UploaderBundle\Naming\UniqidNamer" />
         <service id="vich_uploader.namer_property" class="Vich\UploaderBundle\Naming\PropertyNamer" />
         <service id="vich_uploader.namer_origname" class="Vich\UploaderBundle\Naming\OrignameNamer" />
+        <service id="vich_uploader.namer_hash" class="Vich\UploaderBundle\Naming\HashNamer" />
+
+        <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" />
     </services>
 
 </container>

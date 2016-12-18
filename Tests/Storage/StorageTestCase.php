@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -55,8 +56,8 @@ abstract class StorageTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->factory = $this->getFactoryMock();
-        $this->mapping = $this->getMappingMock();
+        $this->factory = $this->getPropertyMappingFactoryMock();
+        $this->mapping = $this->getPropertyMappingMock();
         $this->object = new DummyEntity();
         $this->storage = $this->getStorage();
 
@@ -132,30 +133,6 @@ abstract class StorageTestCase extends TestCase
             ->will($this->returnValue($this->mapping));
 
         $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
-    }
-
-    /**
-     * Creates a mock factory.
-     *
-     * @return PropertyMappingFactory The factory.
-     */
-    protected function getFactoryMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMappingFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * Creates a mapping mock.
-     *
-     * @return PropertyMapping The property mapping.
-     */
-    protected function getMappingMock()
-    {
-        return $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     protected function getValidUploadDir()

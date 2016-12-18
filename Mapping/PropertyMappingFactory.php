@@ -152,19 +152,30 @@ class PropertyMappingFactory
 
         if ($config['namer']['service']) {
             $namerConfig = $config['namer'];
-            $namer       = $this->container->get($namerConfig['service']);
+            $namer = $this->container->get($namerConfig['service']);
 
-            if (!empty($namerConfig['options']) && $namer instanceof ConfigurableInterface) {
+            if (!empty($namerConfig['options'])) {
+                if (!$namer instanceof ConfigurableInterface) {
+                    throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
+                }
                 $namer->configure($namerConfig['options']);
-            } else if (!empty($namerConfig['options']) && !$namer instanceof ConfigurableInterface) {
-                throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
             }
 
             $mapping->setNamer($namer);
         }
 
-        if ($config['directory_namer']) {
-            $mapping->setDirectoryNamer($this->container->get($config['directory_namer']));
+        if ($config['directory_namer']['service']) {
+            $namerConfig = $config['directory_namer'];
+            $namer = $this->container->get($namerConfig['service']);
+
+            if (!empty($namerConfig['options'])) {
+                if (!$namer instanceof ConfigurableInterface) {
+                    throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
+                }
+                $namer->configure($namerConfig['options']);
+            }
+
+            $mapping->setDirectoryNamer($namer);
         }
 
         return $mapping;
