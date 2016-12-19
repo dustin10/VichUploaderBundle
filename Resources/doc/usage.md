@@ -179,6 +179,10 @@ class Product
 }
 ```
 
+**Important:**
+> If you use Doctrine, you need to pay attention to comment on `setImageFile` method in the above example.
+> If you miss that, you won't be able to update your file.
+
 **Note:**
 
 > Don't forget to clear the cache once your entity is configured: `php app/console cache:clear`
