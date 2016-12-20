@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * VichUploaderExtension.
@@ -133,7 +132,7 @@ class VichUploaderExtension extends Extension
             ;
 
             $dir = $container->getParameterBag()->resolveValue($config['metadata']['file_cache']['dir']);
-            if (!file_exists($dir) && !$rs = @mkdir($dir, 0777, true)) {
+            if (!file_exists($dir) && !@mkdir($dir, 0777, true)) {
                 throw new \RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
             }
         } else {
