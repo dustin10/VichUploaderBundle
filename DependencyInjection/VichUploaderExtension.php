@@ -189,7 +189,7 @@ class VichUploaderExtension extends Extension
     protected function createNamerService(ContainerBuilder $container, $mappingName, array $mapping)
     {
         $serviceId  = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
-        $definition = $container->setDefinition(
+        $container->setDefinition(
             $serviceId, new DefinitionDecorator($mapping['namer']['service'])
         );
 
