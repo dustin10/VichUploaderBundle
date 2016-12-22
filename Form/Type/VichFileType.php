@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
 use Vich\UploaderBundle\Handler\UploadHandler;

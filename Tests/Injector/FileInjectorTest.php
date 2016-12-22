@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Tests\Injector;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Vich\UploaderBundle\Injector\FileInjector;
-use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * FileInjectorTest.

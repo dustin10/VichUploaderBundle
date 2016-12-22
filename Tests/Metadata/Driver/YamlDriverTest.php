@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 /**
