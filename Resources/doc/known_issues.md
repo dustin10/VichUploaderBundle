@@ -40,14 +40,6 @@ class Product
 ```
 See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
 
-## Catchable Fatal Error
-
-When you get the following error:`Catchable Fatal Error: ... must be an instance of Symfony\Component\HttpFoundation\File\UploadedFile, string given, ...`
-you have to define
-`{{ form_enctype(upload_form) }}` in your form.
-
-This is needed for Symfony versions older than 2.3.
-
 ## Annotations don't work with Propel
 
 When Propel is the chosen database driver, the "uploadable" entities must be
@@ -126,7 +118,7 @@ the image path to a new image in that instance of `File` and attempted a `flush(
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.
 
-**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/2.3/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
+**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/2.8/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
 
 ## Failed to set metadata before uploading the file
 

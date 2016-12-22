@@ -10,7 +10,7 @@ was uploaded. If you would like to change this, you can use one of the provided 
 
 ### Provided file namers
 
-At the moment there are serveral available namers:
+At the moment there are several available namers:
 
   * `vich_uploader.namer_uniqid`
   * `vich_uploader.namer_origname`
@@ -81,7 +81,7 @@ uploaded files will be stored.
 
 ### Provided directory namers
 
-At the moment there are serveral available namers:
+At the moment there are several available namers:
 
   * `vich_uploader.directory_namer_subdir`
 
