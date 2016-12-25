@@ -83,7 +83,7 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
             'upload_destination' => '/tmp',
         ));
 
-        $namer = $this->getMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
+        $namer = $this->createMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
         $namer
             ->expects($this->once())
             ->method('directoryName')

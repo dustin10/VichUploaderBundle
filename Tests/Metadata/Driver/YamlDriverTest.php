@@ -45,7 +45,7 @@ class YamlDriverTest extends \PHPUnit_Framework_TestCase
 
     protected function getDriver(\ReflectionClass $class, $found = true)
     {
-        $fileLocator = $this->getMock('\Metadata\Driver\FileLocatorInterface');
+        $fileLocator = $this->createMock('\Metadata\Driver\FileLocatorInterface');
         $driver = new TestableYamlDriver($fileLocator);
 
         $fileLocator

@@ -74,7 +74,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getAdapterMock()
     {
-        return $this->getMock('Vich\UploaderBundle\Adapter\AdapterInterface');
+        return $this->createMock('Vich\UploaderBundle\Adapter\AdapterInterface');
     }
 
     /**

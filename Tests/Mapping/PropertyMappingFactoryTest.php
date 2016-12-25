@@ -100,7 +100,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function fromObjectProvider()
     {
         $obj = new DummyEntity();
-        $proxy = $this->getMock('Doctrine\Common\Persistence\Proxy');
+        $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
 
         return array(
             array( $obj, null, 'Vich\UploaderBundle\Tests\DummyEntity' ),
@@ -285,7 +285,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
     public function fromFieldProvider()
     {
         $obj = new DummyEntity();
-        $proxy = $this->getMock('Doctrine\Common\Persistence\Proxy');
+        $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
 
         return array(
             array( $obj, null, 'Vich\UploaderBundle\Tests\DummyEntity' ),
@@ -359,8 +359,8 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $namer = $this->getMock('Vich\UploaderBundle\Naming\NamerInterface');
-        $directoryNamer = $this->getMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
+        $namer = $this->createMock('Vich\UploaderBundle\Naming\NamerInterface');
+        $directoryNamer = $this->createMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
 
         $this->container
             ->method('get')
@@ -407,7 +407,7 @@ class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainerMock()
     {
-        return $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        return $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
     }
 
     /**

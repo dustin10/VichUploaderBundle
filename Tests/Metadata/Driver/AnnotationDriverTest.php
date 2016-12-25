@@ -18,7 +18,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->getMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -49,7 +49,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->getMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -68,7 +68,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new TwoFieldsDummyEntity();
 
-        $reader = $this->getMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -109,7 +109,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->getMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')

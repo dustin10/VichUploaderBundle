@@ -11,7 +11,7 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->factory = $this->getMock('Metadata\AdvancedMetadataFactoryInterface');
+        $this->factory = $this->createMock('Metadata\AdvancedMetadataFactoryInterface');
         $this->reader = new MetadataReader($this->factory);
     }
 

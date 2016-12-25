@@ -191,17 +191,17 @@ class UploadHandlerTest extends TestCase
 
     protected function getStorageMock()
     {
-        return $this->getMock('Vich\UploaderBundle\Storage\StorageInterface');
+        return $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
     }
 
     protected function getInjectorMock()
     {
-        return $this->getMock('Vich\UploaderBundle\Injector\FileInjectorInterface');
+        return $this->createMock('Vich\UploaderBundle\Injector\FileInjectorInterface');
     }
 
     protected function getDispatcherMock()
     {
-        return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        return $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
 
     protected function validEvent()

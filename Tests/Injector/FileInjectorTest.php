@@ -31,7 +31,7 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInjectsOneFile()
     {
-        $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
 
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
@@ -60,15 +60,11 @@ class FileInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testPropertyIsNullWhenFileNamePropertyIsNull()
     {
-        $obj = $this->getMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
 
         $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $fileMapping
-            ->expects($this->never())
-            ->method('setValue');
 
         $this->storage
             ->expects($this->once())

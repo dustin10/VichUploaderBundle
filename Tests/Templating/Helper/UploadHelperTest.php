@@ -16,7 +16,7 @@ class UploadHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->storage = $this->getMock('Vich\UploaderBundle\Storage\StorageInterface');
+        $this->storage = $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
         $this->helper = new UploaderHelper($this->storage);
     }
 

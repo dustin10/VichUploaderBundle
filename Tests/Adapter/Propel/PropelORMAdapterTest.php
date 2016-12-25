@@ -27,7 +27,7 @@ class PropelORMAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetObjectFromArgs()
     {
-        $event = $this->getMock('\Symfony\Component\EventDispatcher\GenericEvent');
+        $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
         $event
             ->expects($this->once())
             ->method('getSubject')
@@ -38,7 +38,7 @@ class PropelORMAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testRecomputeChangeset()
     {
-        $event = $this->getMock('\Symfony\Component\EventDispatcher\GenericEvent');
+        $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
 
         // does nothing but should be callable
         $this->adapter->recomputeChangeSet($event);

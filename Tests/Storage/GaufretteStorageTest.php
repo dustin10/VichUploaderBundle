@@ -196,7 +196,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->getMock('\Gaufrette\Adapter\MetadataSupporter');
+        $adapter = $this->createMock('\Gaufrette\Adapter\MetadataSupporter');
 
         $file
             ->expects($this->once())
@@ -243,7 +243,7 @@ class GaufretteStorageTest extends StorageTestCase
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
     {
-        $adapter = $this->getMock('\Gaufrette\Adapter');
+        $adapter = $this->createMock('\Gaufrette\Adapter');
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
 
