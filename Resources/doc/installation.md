@@ -21,11 +21,11 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             // ...
             new Vich\UploaderBundle\VichUploaderBundle(),
             // ...
-        );
+        ];
     }
 }
 ```

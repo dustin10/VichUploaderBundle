@@ -4,27 +4,8 @@ VichFileType
 The bundle provides a custom form type in order to ease the upload, deletion and
 download of files.
 
-In order to use it, just define your field as a `vich_file` as show in the
+In order to use it, just define your field as a `VichFileType`, as shown in the
 following example:
-
-```php
-class Form extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        // ...
-
-        $builder->add('image', 'vich_file', array(
-            'required'      => false,
-            'allow_delete'  => true, // not mandatory, default is true
-            'download_link' => true, // not mandatory, default is true
-        ));
-    }
-}
-```
-
-**Note for Symfony3 users:**
-In case you are using Symfony3, you must use the `VichFileType::class` to specify the field type:
 
 ```php
 // ...
@@ -36,11 +17,28 @@ class Form extends AbstractType
     {
         // ...
 
-        $builder->add('image', VichFileType::class, array(
-            'required'      => false,
-            'allow_delete'  => true, // not mandatory, default is true
+        $builder->add('genericFile', VichFileType::class, [
+            'required' => false,
+            'allow_delete' => true, // not mandatory, default is true
             'download_link' => true, // not mandatory, default is true
-        ));
+        ]);
+    }
+}
+```
+
+**Note for Symfony < 2.8:**
+In case you are using a version of Symfony lower than 2.8, you must use the `vich_file` to specify the field type:
+
+```php
+class Form extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // ...
+
+        $builder->add('genericFile', 'vich_file', [
+            'required' => false,
+        ]);
     }
 }
 ```
@@ -55,9 +53,6 @@ twig:
         # other form themes
         - 'VichUploaderBundle:Form:fields.html.twig'
 ```
-
-> **N.B:** the `form_themes` parameter is introduced in Symfony 2.5, check 
-[the documentation](https://symfony.com/doc/current/form/form_customization.html#php) if you use an older version.
 
 See [Symfony's documentation on form themes](https://symfony.com/doc/current/form/form_customization.html#form-theming)
 for more information.

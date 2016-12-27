@@ -1,30 +1,11 @@
 VichImageType
-============
+=============
 
 The bundle provides a custom form type in order to ease the upload, deletion and
 download of images.
 
-In order to use it, just define your field as a `vich_image` as show in the
+In order to use it, just define your field as a `VichImageType` as shown in the
 following example:
-
-```php
-class Form extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        // ...
-
-        $builder->add('imageFile', 'vich_image', array(
-            'required'      => false,
-            'allow_delete'  => true, // not mandatory, default is true
-            'download_link' => true, // not mandatory, default is true
-        ));
-    }
-}
-```
-
-**Note for Symfony3 users:**
-In case you are using Symfony3, you must use the `VichImageType::class` to specify the field type:
 
 ```php
 // ...
@@ -36,15 +17,31 @@ class Form extends AbstractType
     {
         // ...
 
-        $builder->add('imageFile', VichImageType::class, array(
-            'required'      => false,
-            'allow_delete'  => true, // not mandatory, default is true
+        $builder->add('imageFile', VichImageType::class, [
+            'required' => false,
+            'allow_delete' => true, // not mandatory, default is true
             'download_link' => true, // not mandatory, default is true
-        ));
+        ]);
     }
 }
 ```
 
+**Note for Symfony < 2.8:**
+In case you are using a version of Symfony lower than 2.8, you must use the `vich_image` to specify the field type:
+
+```php
+class Form extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // ...
+
+        $builder->add('imageFile', 'vich_image', [
+            'required' => false,
+        ]);
+    }
+}
+```
 
 For the form type to fully work, you'll also have to use the form theme bundled
 with VichUploaderBundle.
@@ -56,9 +53,6 @@ twig:
         # other form themes
         - 'VichUploaderBundle:Form:fields.html.twig'
 ```
-
-> **N.B:** the `form_themes` parameter is introduced in Symfony 2.5, check 
-[the documentation](https://symfony.com/doc/current/form/form_customization.html#php) if you use an older version.
 
 See [Symfony's documentation on form themes](https://symfony.com/doc/current/form/form_customization.html#form-theming)
 for more information.
