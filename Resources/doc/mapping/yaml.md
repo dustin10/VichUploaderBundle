@@ -12,8 +12,21 @@ Acme\DemoBundle\Entity\Product:
         filename_property: image_name
 ```
 
-To be found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
+To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
 directory of the bundle containing the entity you want to describe.
+
+If you need the mapping elsewhere, you need to add some configuration.
+In the following example, the configuration is placed in the `app/config/vich_uploader` directory:
+
+```yaml
+# app/config/config.yml
+vich_uploader:
+    # ...
+    metadata:
+        auto_detection: false
+        directories:
+            - {path: '%kernel.root_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
+```
 
 **N.B:**
 
