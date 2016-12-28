@@ -1,6 +1,4 @@
 phpunit.xml
-Tests/autoload.php
 composer.phar
 composer.lock
-vendor/*
-!vendor/vendors.php
+vendor/

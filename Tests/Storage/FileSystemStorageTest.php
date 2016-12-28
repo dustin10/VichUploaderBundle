@@ -209,6 +209,34 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertEquals($uri, $path);
     }
 
+    public function testResolveStream()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue(''));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDestination')
+            ->will($this->returnValue($this->root->url().'/uploads'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('test.txt'));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue($this->mapping));
+
+        $stream = $this->storage->resolveStream($this->object, 'file_field', null);
+
+        $this->assertNotEmpty($stream);
+    }
+
     public function resolveUriDataProvider()
     {
         return array(

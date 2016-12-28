@@ -119,6 +119,49 @@ class GaufretteStorageTest extends StorageTestCase
         $this->assertEquals($expectedPath, $path);
     }
 
+    public function testResolveUri()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUriPrefix')
+            ->will($this->returnValue('/uploads'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue('file.txt'));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue($this->mapping));
+
+        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'gaufrette');
+        $path = $this->storage->resolveUri($this->object, 'file_field');
+
+        $this->assertEquals('/uploads/file.txt', $path);
+    }
+
+    public function testResolveUriFileNull()
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue(''));
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue($this->mapping));
+
+        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'gaufrette');
+        $path = $this->storage->resolveUri($this->object, 'file_field');
+
+        $this->assertNull($path);
+    }
+
     public function pathProvider()
     {
         return array(
