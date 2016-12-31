@@ -36,7 +36,7 @@ vich_uploader:
             upload_destination: product_image_fs
 ```
 
-Using `vich_uploader.storage.gaufrette` as the storage service
+Using `vich_uploader.storage.gaufrette` as the storage service,
 you can still use the same mappings options that you would
 use with default storage.
 
