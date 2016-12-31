@@ -2,22 +2,20 @@ Symfony support policy
 ======================
 
 As indicated by the contraints defined in the `composer.json` file, this bundle
-supports Symfony ~2.3|~3.0.
+supports Symfony `^2.8|^3.2`.
 
-It means that all the version from 2.3.0 to 3.x.x can be installed. Despite that
-fact, only the versions still actively maintained by the Symfony core team or
-the LTS ones will be supported by the maintainers of this bundle.
+Only versions still actively maintained by the Symfony core team will be supported by
+the maintainers of this bundle. Older versions of Symfony can be still used, but with older
+versions of this bundle, so without active support.
+If you want to get updates on old versions, you can do a Pull Request on the `1.4` branch
+of this bundle, maybe it will be merged.
+The same policy applies to old versions of PHP, out of active support: this bundle is actively
+supporting PHP 7.0 (and newer versions).
 
 You can check if a given Symfony version is still supported by visiting [their
 Roadmap page](http://symfony.com/roadmap).
 
-To sum-up, this bundle:
-
- * supports all the LTS since 2.3 ;
- * supports all the versions still actively maintained ;
- * tolerates all the versions allowed by the constraints defined in
-   `composer.json`.
-
+You can also check [supported versions of PHP](http://php.net/supported-versions.php).
 
 ## That was it!
 
