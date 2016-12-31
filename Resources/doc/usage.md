@@ -39,8 +39,8 @@ This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
 **Note:**
-> The default behaviour is using the original name of uploaded file and can
-> override an old file with the same name. Please user a [namer](namers.md)
+> The default behaviour is using the original name of the uploaded file, it can
+> override an old file with the same name. Please use a [namer](namers.md)
 > like `vich_uploader.namer_property` to avoid this issue.
 
 
@@ -180,7 +180,7 @@ class Product
 ```
 
 **Important:**
-> If you use Doctrine, you need to pay attention to comment on `setImageFile` method in the above example.
+> If you use Doctrine, you need to pay attention to the comment on `setImageFile` method in the above example.
 > If you miss that, you won't be able to update your file.
 
 **Note:**
