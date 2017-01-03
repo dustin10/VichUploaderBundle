@@ -27,10 +27,4 @@ class VichImageType extends VichFileType
     {
         return 'vich_image';
     }
-
-    // BC for SF < 2.8
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 }

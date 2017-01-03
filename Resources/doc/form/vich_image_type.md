@@ -26,23 +26,6 @@ class Form extends AbstractType
 }
 ```
 
-**Note for Symfony < 2.8:**
-In case you are using a version of Symfony lower than 2.8, you must use the `vich_image` to specify the field type:
-
-```php
-class Form extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        // ...
-
-        $builder->add('imageFile', 'vich_image', [
-            'required' => false,
-        ]);
-    }
-}
-```
-
 For the form type to fully work, you'll also have to use the form theme bundled
 with VichUploaderBundle.
 
