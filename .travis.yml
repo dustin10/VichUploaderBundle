@@ -23,7 +23,7 @@ matrix:
 before_install:
     - composer self-update
     - phpenv config-rm xdebug.ini || true
-    - composer config platform.ext-mongo 1.2.12
+    - composer config platform.ext-mongo 1.6.14
     - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
     - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
 
