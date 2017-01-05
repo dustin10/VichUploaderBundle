@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -28,20 +27,13 @@ class VichFileType extends AbstractType
     protected $handler;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @param StorageInterface    $storage
      * @param UploadHandler       $handler
-     * @param TranslatorInterface $translator
      */
-    public function __construct(StorageInterface $storage, UploadHandler $handler, TranslatorInterface $translator)
+    public function __construct(StorageInterface $storage, UploadHandler $handler)
     {
         $this->storage = $storage;
         $this->handler = $handler;
-        $this->translator = $translator;
     }
 
     /**
@@ -82,8 +74,7 @@ class VichFileType extends AbstractType
     {
         // add delete only if there is a file
         $storage = $this->storage;
-        $translator = $this->translator;
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options, $storage, $translator) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options, $storage) {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
 
@@ -93,7 +84,8 @@ class VichFileType extends AbstractType
             }
 
             $form->add('delete', Type\CheckboxType::class, [
-                'label' => $translator->trans('form.label.delete', [], 'VichUploaderBundle'),
+                'label'     => 'form.label.delete',
+                'translation_domain' => 'VichUploaderBundle',
                 'required' => false,
                 'mapped' => false,
             ]);
