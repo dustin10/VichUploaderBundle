@@ -7,7 +7,6 @@
         <service id="vich_uploader.form.type.file" class="Vich\UploaderBundle\Form\Type\VichFileType">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
-            <argument type="service" id="translator" />
 
             <tag name="form.type" alias="vich_file" />
         </service>
@@ -15,7 +14,6 @@
         <service id="vich_uploader.form.type.image" class="Vich\UploaderBundle\Form\Type\VichImageType">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
-            <argument type="service" id="translator" />
 
             <tag name="form.type" alias="vich_image" />
         </service>
