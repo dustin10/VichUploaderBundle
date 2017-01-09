@@ -21,12 +21,12 @@ class PropertyNamerTest extends TestCase
         $weird_entity = new DummyEntity();
         $weird_entity->someProperty = 'Yéô';
 
-        return array(
-            array('some-file-name.jpeg', 'foo.jpeg',                 $entity,       'someProperty',     false),
-            array('some-file-name',      'foo',                      $entity,       'someProperty',     false),
-            array('some-file-name.jpeg', 'generated-file-name.jpeg', $entity,       'generateFileName', false), // method call
-            array('some-file-name.jpeg', 'Yeo.jpeg',                 $weird_entity, 'someProperty',     true),  // transliteration enabled
-        );
+        return [
+            ['some-file-name.jpeg', 'foo.jpeg',                 $entity,       'someProperty',     false],
+            ['some-file-name',      'foo',                      $entity,       'someProperty',     false],
+            ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,       'generateFileName', false], // method call
+            ['some-file-name.jpeg', 'Yeo.jpeg',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
+        ];
     }
 
     /**
@@ -47,7 +47,7 @@ class PropertyNamerTest extends TestCase
             ->will($this->returnValue($file));
 
         $namer = new PropertyNamer();
-        $namer->configure(array('property' => $propertyName, 'transliterate' => $transliterate));
+        $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
 
         $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
     }
@@ -57,11 +57,11 @@ class PropertyNamerTest extends TestCase
      */
     public function testNameFailsIfThePropertyDoesNotExist()
     {
-        $entity  = new DummyEntity();
+        $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
 
         $namer = new PropertyNamer();
-        $namer->configure(array('property' => 'nonExistentProperty'));
+        $namer->configure(['property' => 'nonExistentProperty']);
 
         $namer->name($entity, $mapping);
     }
@@ -72,9 +72,9 @@ class PropertyNamerTest extends TestCase
     public function testNameFailsIfThePropertyIsEmpty()
     {
         $mapping = $this->getPropertyMappingMock();
-        $namer   = new PropertyNamer();
+        $namer = new PropertyNamer();
 
-        $namer->configure(array('property' => 'someProperty'));
+        $namer->configure(['property' => 'someProperty']);
 
         $namer->name(new DummyEntity(), $mapping);
     }
@@ -86,7 +86,7 @@ class PropertyNamerTest extends TestCase
     public function testNamerNeedsToBeConfigured()
     {
         $mapping = $this->getPropertyMappingMock();
-        $namer   = new PropertyNamer();
+        $namer = new PropertyNamer();
 
         $namer->name(new DummyEntity(), $mapping);
     }
@@ -99,6 +99,6 @@ class PropertyNamerTest extends TestCase
     {
         $namer = new PropertyNamer();
 
-        $namer->configure(array('incorrect' => 'options'));
+        $namer->configure(['incorrect' => 'options']);
     }
 }

@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\EventListener\Propel;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * RemoveListener
+ * RemoveListener.
  *
  * Listen to the remove event to delete files accordingly.
  *
@@ -16,17 +16,17 @@ class RemoveListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events.
+     * @return array The array of events
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             'propel.post_delete' => 'onDelete',
-        );
+        ];
     }
 
     /**
-     * @param GenericEvent $event The event.
+     * @param GenericEvent $event The event
      */
     public function onDelete(GenericEvent $event)
     {

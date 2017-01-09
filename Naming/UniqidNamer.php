@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Naming;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
- * UniqidNamer
+ * UniqidNamer.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
@@ -14,7 +14,7 @@ class UniqidNamer implements NamerInterface
     use Polyfill\FileExtensionTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function name($object, PropertyMapping $mapping)
     {

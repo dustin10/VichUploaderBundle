@@ -21,10 +21,11 @@ class MappingDebugClassCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $metadataReader = $this->getContainer()->get('vich_uploader.metadata_reader');
-        $fqcn           = $input->getArgument('fqcn');
+        $fqcn = $input->getArgument('fqcn');
 
         if (!$metadataReader->isUploadable($fqcn)) {
             $output->writeln(sprintf('<error>"%s" is not uploadable.</error>', $fqcn));
+
             return 1;
         }
 

@@ -42,7 +42,7 @@ class UploadHandlerTest extends TestCase
 
     public function testUpload()
     {
-        $this->expectEvents(array(Events::PRE_UPLOAD, Events::POST_UPLOAD));
+        $this->expectEvents([Events::PRE_UPLOAD, Events::POST_UPLOAD]);
 
         $this->mapping
             ->expects($this->once())
@@ -72,17 +72,17 @@ class UploadHandlerTest extends TestCase
         $this->factory = $this->getPropertyMappingFactoryMock();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
 
-        call_user_func(array($handler, $method), $this->object, self::FILE_FIELD);
+        call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
     }
 
     public function methodProvider()
     {
-        return array(
-            array('upload'),
-            array('inject'),
-            array('remove'),
-            array('clean'),
-        );
+        return [
+            ['upload'],
+            ['inject'],
+            ['remove'],
+            ['clean'],
+        ];
     }
 
     public function testUploadSkipsEmptyObjects()
@@ -104,7 +104,7 @@ class UploadHandlerTest extends TestCase
 
     public function testInject()
     {
-        $this->expectEvents(array(Events::PRE_INJECT, Events::POST_INJECT));
+        $this->expectEvents([Events::PRE_INJECT, Events::POST_INJECT]);
 
         $this->injector
             ->expects($this->once())
@@ -116,7 +116,7 @@ class UploadHandlerTest extends TestCase
 
     public function testClean()
     {
-        $this->expectEvents(array(Events::PRE_REMOVE, Events::POST_REMOVE));
+        $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
         $this->mapping
             ->expects($this->once())
@@ -159,7 +159,7 @@ class UploadHandlerTest extends TestCase
 
     public function testRemove()
     {
-        $this->expectEvents(array(Events::PRE_REMOVE, Events::POST_REMOVE));
+        $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
         $this->mapping
             ->expects($this->once())

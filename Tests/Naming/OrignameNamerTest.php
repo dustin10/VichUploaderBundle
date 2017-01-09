@@ -14,11 +14,11 @@ class OrignameNamerTest extends TestCase
 {
     public function fileDataProvider()
     {
-        return array(
-            array('file.jpeg', '/[a-z0-9]{13}_file.jpeg/', false),
-            array('file',      '/[a-z0-9]{13}_file/',      false),
-            array('Yéöù.jpeg', '/[a-z0-9]{13}_Yeou.jpeg/', true),
-        );
+        return [
+            ['file.jpeg', '/[a-z0-9]{13}_file.jpeg/', false],
+            ['file',      '/[a-z0-9]{13}_file/',      false],
+            ['Yéöù.jpeg', '/[a-z0-9]{13}_Yeou.jpeg/', true],
+        ];
     }
 
     /**
@@ -43,7 +43,7 @@ class OrignameNamerTest extends TestCase
             ->will($this->returnValue($file));
 
         $namer = new OrignameNamer();
-        $namer->configure(array('transliterate' => $transliterate));
+        $namer->configure(['transliterate' => $transliterate]);
 
         $this->assertRegExp($pattern, $namer->name($entity, $mapping));
     }

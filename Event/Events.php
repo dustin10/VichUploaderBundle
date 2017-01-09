@@ -16,7 +16,7 @@ final class Events
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const PRE_UPLOAD    = 'vich_uploader.pre_upload';
+    const PRE_UPLOAD = 'vich_uploader.pre_upload';
 
     /**
      * Triggered right after a file upload is handled.
@@ -25,33 +25,33 @@ final class Events
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const POST_UPLOAD   = 'vich_uploader.post_upload';
+    const POST_UPLOAD = 'vich_uploader.post_upload';
 
     /**
      * Triggered before a file is injected into an entity.
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const PRE_INJECT    = 'vich_uploader.pre_inject';
+    const PRE_INJECT = 'vich_uploader.pre_inject';
 
     /**
      * Triggered after a file is injected into an entity.
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const POST_INJECT   = 'vich_uploader.post_inject';
+    const POST_INJECT = 'vich_uploader.post_inject';
 
     /**
      * Triggered before a file is removed.
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const PRE_REMOVE    = 'vich_uploader.pre_remove';
+    const PRE_REMOVE = 'vich_uploader.pre_remove';
 
     /**
      * Triggered after a file is removed.
      *
      * @Event("Vich\UploaderBundle\Event\Event")
      */
-    const POST_REMOVE   = 'vich_uploader.post_remove';
+    const POST_REMOVE = 'vich_uploader.post_remove';
 }

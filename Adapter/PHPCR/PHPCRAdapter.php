@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
 class PHPCRAdapter implements AdapterInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getObjectFromArgs($event)
     {
@@ -20,7 +20,7 @@ class PHPCRAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function recomputeChangeSet($event)
     {

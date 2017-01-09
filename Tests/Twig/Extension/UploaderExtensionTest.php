@@ -35,7 +35,7 @@ class UploaderExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testAssetForwardsCallsToTheHelper()
     {
-        $obj = new \stdClass;
+        $obj = new \stdClass();
 
         $this->helper
             ->expects($this->once())

@@ -3,18 +3,17 @@
 namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Symfony\Component\Yaml\Yaml as YmlParser;
-
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
- * Yaml driver
+ * Yaml driver.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class YamlDriver extends AbstractFileDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
     {
@@ -23,11 +22,11 @@ class YamlDriver extends AbstractFileDriver
         $metadata = new ClassMetadata($className);
 
         foreach ($config[$className] as $field => $mappingData) {
-            $fieldMetadata = array(
-                'mapping'           => $mappingData['mapping'],
-                'propertyName'      => $field,
-                'fileNameProperty'  => isset($mappingData['filename_property']) ? $mappingData['filename_property'] : null,
-            );
+            $fieldMetadata = [
+                'mapping' => $mappingData['mapping'],
+                'propertyName' => $field,
+                'fileNameProperty' => isset($mappingData['filename_property']) ? $mappingData['filename_property'] : null,
+            ];
 
             $metadata->fields[$field] = $fieldMetadata;
         }
@@ -46,7 +45,7 @@ class YamlDriver extends AbstractFileDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getExtension()
     {

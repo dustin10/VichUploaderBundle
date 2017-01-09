@@ -5,21 +5,21 @@ namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 /**
- * YamlDriverTest
+ * YamlDriverTest.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class YamlDriverTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testInconsistentYamlFile()
     {
         $rClass = new \ReflectionClass('\DateTime');
         $driver = $this->getDriver($rClass);
 
-        $driver->mappingContent = array();
+        $driver->mappingContent = [];
 
         $driver->loadMetadataForClass($rClass);
     }
@@ -32,9 +32,9 @@ class YamlDriverTest extends \PHPUnit_Framework_TestCase
         $rClass = new \ReflectionClass('\DateTime');
 
         $driver = $this->getDriver($rClass);
-        $driver->mappingContent = array(
-            $rClass->name => $mapping
-        );
+        $driver->mappingContent = [
+            $rClass->name => $mapping,
+        ];
 
         $metadata = $driver->loadMetadataForClass($rClass);
 
@@ -59,52 +59,52 @@ class YamlDriverTest extends \PHPUnit_Framework_TestCase
 
     public function fieldsProvider()
     {
-        $singleField = array(
-            'mapping' => array(
-                'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'filename_property' => 'fileName',
-                )
-            ),
-            'metadata' => array(
-                'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'propertyName'      => 'file',
-                    'fileNameProperty'  => 'fileName',
-                )
-            )
-        );
-
-        $severalFields = array(
-            'mapping' => array(
-                'file' => array(
+        $singleField = [
+            'mapping' => [
+                'file' => [
                     'mapping' => 'dummy_file',
                     'filename_property' => 'fileName',
-                ),
-                'image' => array(
+                ],
+            ],
+            'metadata' => [
+                'file' => [
+                    'mapping' => 'dummy_file',
+                    'propertyName' => 'file',
+                    'fileNameProperty' => 'fileName',
+                ],
+            ],
+        ];
+
+        $severalFields = [
+            'mapping' => [
+                'file' => [
+                    'mapping' => 'dummy_file',
+                    'filename_property' => 'fileName',
+                ],
+                'image' => [
                     'mapping' => 'dummy_image',
                     'filename_property' => 'imageName',
-                )
-            ),
-            'metadata' => array(
-                'file' => array(
-                    'mapping'           => 'dummy_file',
-                    'propertyName'      => 'file',
-                    'fileNameProperty'  => 'fileName',
-                ),
-                'image' => array(
-                    'mapping'           => 'dummy_image',
-                    'propertyName'      => 'image',
-                    'fileNameProperty'  => 'imageName',
-                )
-            )
-        );
+                ],
+            ],
+            'metadata' => [
+                'file' => [
+                    'mapping' => 'dummy_file',
+                    'propertyName' => 'file',
+                    'fileNameProperty' => 'fileName',
+                ],
+                'image' => [
+                    'mapping' => 'dummy_image',
+                    'propertyName' => 'image',
+                    'fileNameProperty' => 'imageName',
+                ],
+            ],
+        ];
 
-        return array(
-            array( array(), array() ),
-            array( $singleField['mapping'], $singleField['metadata'] ),
-            array( $severalFields['mapping'], $severalFields['metadata'] ),
-        );
+        return [
+            [[], []],
+            [$singleField['mapping'], $singleField['metadata']],
+            [$severalFields['mapping'], $severalFields['metadata']],
+        ];
     }
 }
 

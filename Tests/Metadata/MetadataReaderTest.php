@@ -28,11 +28,11 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsUploadableWithGivenMapping()
     {
-        $fields = array('field' => array('mapping' => 'joe'));
-        $classMetadata = new \stdClass;
+        $fields = ['field' => ['mapping' => 'joe']];
+        $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
-        $metadata = new \stdClass;
-        $metadata->classMetadata = array('ClassName' => $classMetadata);
+        $metadata = new \stdClass();
+        $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
             ->method('getMetadataForClass')
@@ -65,11 +65,11 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUploadableFields()
     {
-        $fields = array('foo', 'bar', 'baz');
-        $classMetadata = new \stdClass;
+        $fields = ['foo', 'bar', 'baz'];
+        $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
-        $metadata = new \stdClass;
-        $metadata->classMetadata = array('ClassName' => $classMetadata);
+        $metadata = new \stdClass();
+        $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
             ->expects($this->once())
@@ -82,15 +82,15 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUploadableFieldsWithInheritance()
     {
-        $classMetadata = new \stdClass;
-        $classMetadata->fields = array('bar', 'baz');
-        $subClassMetadata = new \stdClass;
-        $subClassMetadata->fields = array('foo');
-        $metadata = new \stdClass;
-        $metadata->classMetadata = array(
-            'ClassName'     => $classMetadata,
-            'SubClassName'  => $subClassMetadata
-        );
+        $classMetadata = new \stdClass();
+        $classMetadata->fields = ['bar', 'baz'];
+        $subClassMetadata = new \stdClass();
+        $subClassMetadata->fields = ['foo'];
+        $metadata = new \stdClass();
+        $metadata->classMetadata = [
+            'ClassName' => $classMetadata,
+            'SubClassName' => $subClassMetadata,
+        ];
 
         $this->factory
             ->expects($this->once())
@@ -98,7 +98,7 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
             ->with('SubClassName')
             ->will($this->returnValue($metadata));
 
-        $this->assertSame(array('bar', 'baz', 'foo'), $this->reader->getUploadableFields('SubClassName'));
+        $this->assertSame(['bar', 'baz', 'foo'], $this->reader->getUploadableFields('SubClassName'));
     }
 
     /**
@@ -106,10 +106,10 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUploadableField(array $fields, $expectedMetadata)
     {
-        $classMetadata = new \stdClass;
+        $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
-        $metadata = new \stdClass;
-        $metadata->classMetadata = array('ClassName' => $classMetadata);
+        $metadata = new \stdClass();
+        $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
             ->expects($this->once())
@@ -122,9 +122,9 @@ class MetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function fieldsMetadataProvider()
     {
-        return array(
-            array( array('field' => 'toto'), 'toto' ),
-            array( array('lala' => 'toto'), null ),
-        );
+        return [
+            [['field' => 'toto'], 'toto'],
+            [['lala' => 'toto'], null],
+        ];
     }
 }

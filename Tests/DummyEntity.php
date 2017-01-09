@@ -6,8 +6,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable
-  *
-  * @author Dustin Dobervich <ddobervich@gmail.com>
+ *
+ * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class DummyEntity
 {

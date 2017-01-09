@@ -32,14 +32,14 @@ class Image
     /**
      * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
      *
-     * @var File $imageFile
+     * @var File
      */
     protected $imageFile;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @var string $imageName
+     * @var string
      */
     protected $imageName;
 

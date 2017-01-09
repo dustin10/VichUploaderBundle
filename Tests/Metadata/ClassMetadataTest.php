@@ -8,7 +8,7 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 {
     public function testFieldsAreSerialized()
     {
-        $fields = array('foo', 'bar', 'baz');
+        $fields = ['foo', 'bar', 'baz'];
         $metadata = new ClassMetadata('DateTime');
         $metadata->fields = $fields;
 

@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TwoFieldsDummyEntity;
 
 /**
- * AnnotationDriverTest
+ * AnnotationDriverTest.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -26,23 +26,23 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $reader
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_file',
-                'fileNameProperty'  => 'fileName'
-            ))));
+            ->will($this->returnValue(new UploadableField([
+                'mapping' => 'dummy_file',
+                'fileNameProperty' => 'fileName',
+            ])));
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertInstanceOf('\Vich\UploaderBundle\Metadata\ClassMetadata', $metadata);
         $this->assertObjectHasAttribute('fields', $metadata);
-        $this->assertEquals(array(
-            'file' => array(
-                'mapping'           => 'dummy_file',
-                'propertyName'      => 'file',
-                'fileNameProperty'  => 'fileName',
-            )
-        ), $metadata->fields);
+        $this->assertEquals([
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+                'fileNameProperty' => 'fileName',
+            ],
+        ], $metadata->fields);
     }
 
     public function testReadUploadableAnnotationReturnsNullWhenNonePresent()
@@ -76,33 +76,33 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $reader
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_file',
-                'fileNameProperty'  => 'fileName'
-            ))));
+            ->will($this->returnValue(new UploadableField([
+                'mapping' => 'dummy_file',
+                'fileNameProperty' => 'fileName',
+            ])));
         $reader
             ->expects($this->at(3))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField(array(
-                'mapping'           => 'dummy_image',
-                'fileNameProperty'  => 'imageName'
-            ))));
+            ->will($this->returnValue(new UploadableField([
+                'mapping' => 'dummy_image',
+                'fileNameProperty' => 'imageName',
+            ])));
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertEquals(array(
-            'file' => array(
-                'mapping'           => 'dummy_file',
-                'propertyName'      => 'file',
-                'fileNameProperty'  => 'fileName',
-            ),
-            'image' => array(
-                'mapping'           => 'dummy_image',
-                'propertyName'      => 'image',
-                'fileNameProperty'  => 'imageName',
-            )
-        ), $metadata->fields);
+        $this->assertEquals([
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+                'fileNameProperty' => 'fileName',
+            ],
+            'image' => [
+                'mapping' => 'dummy_image',
+                'propertyName' => 'image',
+                'fileNameProperty' => 'imageName',
+            ],
+        ], $metadata->fields);
     }
 
     public function testReadNoUploadableFieldsWhenNoneExist()

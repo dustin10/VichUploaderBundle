@@ -22,8 +22,8 @@ class FlysystemStorage extends AbstractStorage
     /**
      * Constructs a new instance of FlysystemStorage.
      *
-     * @param PropertyMappingFactory $factory      The factory.
-     * @param MountManager           $mountManager Gaufrete filesystem factory.
+     * @param PropertyMappingFactory $factory      The factory
+     * @param MountManager           $mountManager Gaufrete filesystem factory
      */
     public function __construct(PropertyMappingFactory $factory, MountManager $mountManager)
     {
@@ -33,7 +33,7 @@ class FlysystemStorage extends AbstractStorage
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
     {
@@ -41,13 +41,13 @@ class FlysystemStorage extends AbstractStorage
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
         $stream = fopen($file->getRealPath(), 'r');
-        $fs->writeStream($path, $stream, array(
+        $fs->writeStream($path, $stream, [
             'mimetype' => $file->getMimeType(),
-        ));
+        ]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function doRemove(PropertyMapping $mapping, $dir, $name)
     {
@@ -62,7 +62,7 @@ class FlysystemStorage extends AbstractStorage
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
     {
@@ -77,7 +77,7 @@ class FlysystemStorage extends AbstractStorage
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolveStream($obj, $fieldName, $className = null)
     {
@@ -94,7 +94,7 @@ class FlysystemStorage extends AbstractStorage
     }
 
     /**
-     * Get filesystem adapter by key
+     * Get filesystem adapter by key.
      *
      * @param string $key
      *

@@ -16,8 +16,8 @@ class UploadableFieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionThrownWhenNoMappingAttribute()
     {
-        new UploadableField(array(
-            'fileNameProperty' => 'fileName'
-        ));
+        new UploadableField([
+            'fileNameProperty' => 'fileName',
+        ]);
     }
 }

@@ -4,18 +4,17 @@ namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Metadata\Driver\DriverInterface;
-
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
- * Annotation driver
+ * Annotation driver.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class AnnotationDriver implements DriverInterface
 {
-    const UPLOADABLE_ANNOTATION         = 'Vich\UploaderBundle\Mapping\Annotation\Uploadable';
-    const UPLOADABLE_FIELD_ANNOTATION   = 'Vich\UploaderBundle\Mapping\Annotation\UploadableField';
+    const UPLOADABLE_ANNOTATION = 'Vich\UploaderBundle\Mapping\Annotation\Uploadable';
+    const UPLOADABLE_FIELD_ANNOTATION = 'Vich\UploaderBundle\Mapping\Annotation\UploadableField';
 
     protected $reader;
 
@@ -38,11 +37,11 @@ class AnnotationDriver implements DriverInterface
                 continue;
             }
 
-            $fieldMetadata = array(
-                'mapping'           => $uploadableField->getMapping(),
-                'propertyName'      => $property->getName(),
-                'fileNameProperty'  => $uploadableField->getFileNameProperty(),
-            );
+            $fieldMetadata = [
+                'mapping' => $uploadableField->getMapping(),
+                'propertyName' => $property->getName(),
+                'fileNameProperty' => $uploadableField->getFileNameProperty(),
+            ];
 
             $metadata->fields[$property->getName()] = $fieldMetadata;
         }

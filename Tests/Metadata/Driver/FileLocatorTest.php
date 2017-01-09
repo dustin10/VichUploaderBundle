@@ -4,11 +4,10 @@ namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-
 use Vich\UploaderBundle\Metadata\Driver\FileLocator;
 
 /**
- * FileLocatorTest
+ * FileLocatorTest.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -30,18 +29,18 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         // initialize the virtual filesystem
-        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
-            'vich_uploader' => array(
-                'Foo.yml'       => 'some content',
-                'FooBaz.yml'    => 'some content',
-                'Bar.yml'       => 'some content',
-                'Baz.xml'       => 'some content',
-            ),
-        ));
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, [
+            'vich_uploader' => [
+                'Foo.yml' => 'some content',
+                'FooBaz.yml' => 'some content',
+                'Bar.yml' => 'some content',
+                'Baz.xml' => 'some content',
+            ],
+        ]);
 
-        $this->locator = new FileLocator(array(
-            '\DummyNamespace' => $this->root->url() . DIRECTORY_SEPARATOR . 'vich_uploader',
-        ));
+        $this->locator = new FileLocator([
+            '\DummyNamespace' => $this->root->url().DIRECTORY_SEPARATOR.'vich_uploader',
+        ]);
     }
 
     /**
@@ -68,12 +67,12 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function fileProvider()
     {
-        return array(
-            array( '\DummyNamespace', 'Foo', 'yml', 'vfs://vich_uploader_bundle/vich_uploader/Foo.yml' ),
-            array( '\DummyNamespace', 'FooBaz', 'yml', 'vfs://vich_uploader_bundle/vich_uploader/FooBaz.yml' ),
-            array( '\DummyNamespace', 'Baz', 'xml', 'vfs://vich_uploader_bundle/vich_uploader/Baz.xml' ),
-            array( '\DummyNamespace', 'Dummy', 'xml', null ),
-        );
+        return [
+            ['\DummyNamespace', 'Foo', 'yml', 'vfs://vich_uploader_bundle/vich_uploader/Foo.yml'],
+            ['\DummyNamespace', 'FooBaz', 'yml', 'vfs://vich_uploader_bundle/vich_uploader/FooBaz.yml'],
+            ['\DummyNamespace', 'Baz', 'xml', 'vfs://vich_uploader_bundle/vich_uploader/Baz.xml'],
+            ['\DummyNamespace', 'Dummy', 'xml', null],
+        ];
     }
 
     /**
@@ -91,10 +90,10 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function classesProvider()
     {
-        return array(
-            array( 'yml', array('Foo.yml', 'FooBaz.yml', 'Bar.yml') ),
-            array( 'xml', array('Baz.xml') ),
-            array( 'php', array() ),
-        );
+        return [
+            ['yml', ['Foo.yml', 'FooBaz.yml', 'Bar.yml']],
+            ['xml', ['Baz.xml']],
+            ['php', []],
+        ];
     }
 }

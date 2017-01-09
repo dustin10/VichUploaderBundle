@@ -13,7 +13,7 @@ use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 class RemoveListenerTest extends ListenerTestCase
 {
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {
@@ -29,7 +29,7 @@ class RemoveListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(array('preRemove', 'postRemove'), $events);
+        $this->assertSame(['preRemove', 'postRemove'], $events);
     }
 
     public function testPreRemove()
@@ -79,9 +79,9 @@ class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
-            ->will($this->returnValue(array(
-                array('propertyName' => 'field_name')
-            )));
+            ->will($this->returnValue([
+                ['propertyName' => 'field_name'],
+            ]));
 
         $this->handler
             ->expects($this->once())

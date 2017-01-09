@@ -18,17 +18,17 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     const MAPPING_NAME = 'dummy_mapping';
 
     /**
-     * @var AdapterInterface $adapter
+     * @var AdapterInterface
      */
     protected $adapter;
 
     /**
-     * @var MetadataReader $metadata
+     * @var MetadataReader
      */
     protected $metadata;
 
     /**
-     * @var UploadHandler $handler
+     * @var UploadHandler
      */
     protected $handler;
 
@@ -45,7 +45,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {
@@ -70,7 +70,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock adapter.
      *
-     * @return AdapterInterface The mock adapter.
+     * @return AdapterInterface The mock adapter
      */
     protected function getAdapterMock()
     {
@@ -80,7 +80,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock metadata reader.
      *
-     * @return MetadataReader The mock metadata reader.
+     * @return MetadataReader The mock metadata reader
      */
     protected function getMetadataReaderMock()
     {
@@ -92,7 +92,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates a mock handler.
      *
-     * @return UploadHandler The handler mock.
+     * @return UploadHandler The handler mock
      */
     protected function getHandlerMock()
     {
@@ -102,7 +102,7 @@ class ListenerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock doctrine event
+     * Creates a mock doctrine event.
      *
      * @return EventArgs
      */

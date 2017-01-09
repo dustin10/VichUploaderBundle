@@ -44,7 +44,7 @@ class DefaultController extends Controller
 
             return $this->redirect($this->generateUrl('view', [
                 'formType' => $formType,
-                'imageId' => $image->getId()
+                'imageId' => $image->getId(),
             ]));
         }
 

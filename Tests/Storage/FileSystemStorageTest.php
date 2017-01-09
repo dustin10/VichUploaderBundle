@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Storage\FileSystemStorage;
 class FileSystemStorageTest extends StorageTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getStorage()
     {
@@ -23,7 +23,7 @@ class FileSystemStorageTest extends StorageTestCase
      * Tests the upload method skips a mapping which has a non
      * uploadable property value.
      *
-     * @expectedException   LogicException
+     * @expectedException   \LogicException
      * @dataProvider        invalidFileProvider
      * @group               upload
      */
@@ -70,7 +70,7 @@ class FileSystemStorageTest extends StorageTestCase
     }
 
     /**
-     * Test the remove method skips trying to remove a file that no longer exists
+     * Test the remove method skips trying to remove a file that no longer exists.
      */
     public function testRemoveSkipsNonExistingFile()
     {
@@ -100,7 +100,7 @@ class FileSystemStorageTest extends StorageTestCase
             ->will($this->returnValue('test.txt'));
 
         $this->storage->remove($this->object, $this->mapping);
-        $this->assertFalse($this->root->hasChild('uploads' . DIRECTORY_SEPARATOR . 'test.txt'));
+        $this->assertFalse($this->root->hasChild('uploads'.DIRECTORY_SEPARATOR.'test.txt'));
     }
 
     /**
@@ -177,7 +177,7 @@ class FileSystemStorageTest extends StorageTestCase
     }
 
     /**
-     * Test the resolve uri
+     * Test the resolve uri.
      *
      * @dataProvider resolveUriDataProvider
      */
@@ -239,24 +239,24 @@ class FileSystemStorageTest extends StorageTestCase
 
     public function resolveUriDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 '',
-                '/uploads/file.txt'
-            ),
-            array(
+                '/uploads/file.txt',
+            ],
+            [
                 'dir',
-                '/uploads/dir/file.txt'
-            ),
-            array(
+                '/uploads/dir/file.txt',
+            ],
+            [
                 'dir/sub-dir',
-                '/uploads/dir/sub-dir/file.txt'
-            ),
-            array(
+                '/uploads/dir/sub-dir/file.txt',
+            ],
+            [
                 'dir\\sub-dir',
-                '/uploads/dir/sub-dir/file.txt'
-            ),
-        );
+                '/uploads/dir/sub-dir/file.txt',
+            ],
+        ];
     }
 
     /**
@@ -299,23 +299,23 @@ class FileSystemStorageTest extends StorageTestCase
 
     public function filenameWithDirectoriesDataProvider()
     {
-        return array(
+        return [
             // upload dir, dir, expected dir
-            array(
+            [
                 '/root_dir',
                 '',
                 '/root_dir/',
-            ),
-            array(
+            ],
+            [
                 '/root_dir',
                 'dir_1',
                 '/root_dir/dir_1',
-            ),
-            array(
+            ],
+            [
                 '/root_dir',
                 'dir_1/dir_2',
                 '/root_dir/dir_1/dir_2',
-            ),
-        );
+            ],
+        ];
     }
 }

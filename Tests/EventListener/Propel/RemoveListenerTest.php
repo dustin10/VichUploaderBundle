@@ -12,7 +12,7 @@ use Vich\UploaderBundle\EventListener\Propel\RemoveListener;
 class RemoveListenerTest extends ListenerTestCase
 {
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {

@@ -10,7 +10,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function getUploadedFileMock()
     {
         return $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->setConstructorArgs(array('lala', 'lala', $mimeType = null, $size = null, $error = 'other than UPLOAD_ERR_OK', $test = true))
+            ->setConstructorArgs(['lala', 'lala', $mimeType = null, $size = null, $error = 'other than UPLOAD_ERR_OK', $test = true])
             ->getMock();
     }
 
@@ -25,7 +25,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a mock property mapping factory
+     * Creates a mock property mapping factory.
      *
      * @return PropertyMappingFactory
      */

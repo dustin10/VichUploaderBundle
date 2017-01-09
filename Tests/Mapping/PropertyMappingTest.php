@@ -20,9 +20,9 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
-        $prop->setMapping(array(
-            'upload_destination'    => '/tmp',
-        ));
+        $prop->setMapping([
+            'upload_destination' => '/tmp',
+        ]);
 
         $this->assertEquals('', $prop->getUploadDir($object));
         $this->assertEquals('/tmp', $prop->getUploadDestination());
@@ -48,15 +48,15 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
         $object->setFileName('joe.png');
         $object->setFile($date);
 
-        $array = array(
-            'fileName'  => 'joe.png',
-            'file'      => $date,
-        );
+        $array = [
+            'fileName' => 'joe.png',
+            'file' => $date,
+        ];
 
-        return array(
-            array( $object, $date, 'joe.png' ),
-            array( $array,  $date, 'joe.png' ),
-        );
+        return [
+            [$object, $date, 'joe.png'],
+            [$array,  $date, 'joe.png'],
+        ];
     }
 
     public function testPropertiesAreSet()
@@ -79,9 +79,9 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
-        $prop->setMapping(array(
+        $prop->setMapping([
             'upload_destination' => '/tmp',
-        ));
+        ]);
 
         $namer = $this->createMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
         $namer
@@ -98,12 +98,12 @@ class PropertyMappingTest extends \PHPUnit_Framework_TestCase
 
     public function directoryProvider()
     {
-        return array(
-            array( 'other_dir', 'other_dir' ),
-            array( 'other_dir/', 'other_dir' ),
-            array( 'other_dir\\', 'other_dir' ),
-            array( 'other_dir\\sub_dir', 'other_dir\\sub_dir' ),
-            array( 'other_dir\\sub_dir\\', 'other_dir\\sub_dir' ),
-        );
+        return [
+            ['other_dir', 'other_dir'],
+            ['other_dir/', 'other_dir'],
+            ['other_dir\\', 'other_dir'],
+            ['other_dir\\sub_dir', 'other_dir\\sub_dir'],
+            ['other_dir\\sub_dir\\', 'other_dir\\sub_dir'],
+        ];
     }
 }

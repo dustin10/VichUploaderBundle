@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Tests\Adapter\Propel;
 use Vich\UploaderBundle\Adapter\Propel\PropelORMAdapter;
 
 /**
- * PropelORMAdapterTest
+ * PropelORMAdapterTest.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

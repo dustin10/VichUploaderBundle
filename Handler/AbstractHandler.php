@@ -17,13 +17,13 @@ abstract class AbstractHandler
     protected $factory;
 
     /**
-     * @var StorageInterface $storage
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
-     * @param PropertyMappingFactory $factory The mapping factory.
-     * @param StorageInterface       $storage The storage.
+     * @param PropertyMappingFactory $factory The mapping factory
+     * @param StorageInterface       $storage The storage
      */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
     {

@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Tests\Functional;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -13,7 +12,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getUploadedFile($client, $name, $mimeType = 'image/png')
     {
         return new UploadedFile(
-            $this->getImagesDir($client) . DIRECTORY_SEPARATOR . $name,
+            $this->getImagesDir($client).DIRECTORY_SEPARATOR.$name,
             $name,
             $mimeType,
             123
@@ -22,12 +21,12 @@ class WebTestCase extends BaseWebTestCase
 
     protected function getUploadsDir($client)
     {
-        return $client->getKernel()->getCacheDir() . '/images';
+        return $client->getKernel()->getCacheDir().'/images';
     }
 
     protected function getImagesDir($client)
     {
-        return $client->getKernel()->getRootDir() . '/Resources/images';
+        return $client->getKernel()->getRootDir().'/Resources/images';
     }
 
     protected function getContainer($client)

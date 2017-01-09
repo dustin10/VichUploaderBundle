@@ -13,13 +13,13 @@ class SubdirDirectoryNamerTest extends TestCase
 {
     public function fileDataProvider()
     {
-        return array(
-            array('0123456789.jpg', '01', 2, 1),
-            array('0123456789.jpg', '01/23', 2, 2),
-            array('0123456789.jpg', '012', 3, 1),
-            array('0123456789.jpg', '0', 1, 1),
-            array('0123456789.jpg', '0/1/2/3', 1, 4),
-        );
+        return [
+            ['0123456789.jpg', '01', 2, 1],
+            ['0123456789.jpg', '01/23', 2, 2],
+            ['0123456789.jpg', '012', 3, 1],
+            ['0123456789.jpg', '0', 1, 1],
+            ['0123456789.jpg', '0/1/2/3', 1, 4],
+        ];
     }
 
     /**
@@ -37,9 +37,8 @@ class SubdirDirectoryNamerTest extends TestCase
             ->will($this->returnValue($fileName));
 
         $namer = new SubdirDirectoryNamer();
-        $namer->configure(array('chars_per_dir' => $charsPerDir, 'dirs' => $dirs));
+        $namer->configure(['chars_per_dir' => $charsPerDir, 'dirs' => $dirs]);
 
         $this->assertSame($expectedFileName, $namer->directoryName($entity, $mapping));
     }
 }
-

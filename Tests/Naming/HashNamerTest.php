@@ -21,12 +21,12 @@ class HashNamerTest extends TestCase
 {
     public function fileDataProvider()
     {
-        return array(
-            array('81fe8bfe87576c3ecb22426f8e57847382917acf.jpg', 'jpg', 'sha1', null),
-            array('81fe8bfe87576c3ecb22426f8e57847382917acf', '', 'sha1', null),
-            array('e2fc714c4727ee9395f324cd2e7f331f.jpg', 'jpg', 'md5', null),
-            array('81fe8bfe87576c3ecb22.jpg', 'jpg', 'sha1', 20),
-        );
+        return [
+            ['81fe8bfe87576c3ecb22426f8e57847382917acf.jpg', 'jpg', 'sha1', null],
+            ['81fe8bfe87576c3ecb22426f8e57847382917acf', '', 'sha1', null],
+            ['e2fc714c4727ee9395f324cd2e7f331f.jpg', 'jpg', 'md5', null],
+            ['81fe8bfe87576c3ecb22.jpg', 'jpg', 'sha1', 20],
+        ];
     }
 
     /**
@@ -49,7 +49,7 @@ class HashNamerTest extends TestCase
             ->will($this->returnValue($file));
 
         $namer = new HashNamer();
-        $namer->configure(array('algorithm' => $algorithm, 'length' => $length));
+        $namer->configure(['algorithm' => $algorithm, 'length' => $length]);
 
         $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
     }

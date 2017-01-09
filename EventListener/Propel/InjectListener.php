@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\EventListener\Propel;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * InjectListener
+ * InjectListener.
  *
  * Listen to the load event in order to inject File objects.
  *
@@ -16,17 +16,17 @@ class InjectListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events.
+     * @return array The array of events
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             'propel.post_hydrate' => 'onHydrate',
-        );
+        ];
     }
 
     /**
-     * @param GenericEvent $event The event.
+     * @param GenericEvent $event The event
      */
     public function onHydrate(GenericEvent $event)
     {

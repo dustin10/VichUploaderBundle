@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 
 /**
- * InjectListener
+ * InjectListener.
  *
  * Listen to the load event in order to inject File objects.
  *
@@ -16,17 +16,17 @@ class InjectListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events.
+     * @return array The array of events
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'postLoad',
-        );
+        ];
     }
 
     /**
-     * @param EventArgs $event The event.
+     * @param EventArgs $event The event
      */
     public function postLoad(EventArgs $event)
     {

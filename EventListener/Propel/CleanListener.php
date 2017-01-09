@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\EventListener\Propel;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * CleanListener
+ * CleanListener.
  *
  * Listen to the update event to delete old files accordingly.
  *
@@ -16,17 +16,17 @@ class CleanListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events.
+     * @return array The array of events
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             'propel.pre_update' => 'onUpload',
-        );
+        ];
     }
 
     /**
-     * @param GenericEvent $event The event.
+     * @param GenericEvent $event The event
      */
     public function onUpload(GenericEvent $event)
     {

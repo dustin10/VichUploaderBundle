@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Mapping;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 
@@ -16,43 +15,43 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 class PropertyMapping
 {
     /**
-     * @var NamerInterface $namer
+     * @var NamerInterface
      */
     protected $namer;
 
     /**
-     * @var DirectoryNamerInterface $directoryNamer
+     * @var DirectoryNamerInterface
      */
     protected $directoryNamer;
 
     /**
-     * @var array $mapping
+     * @var array
      */
     protected $mapping;
 
     /**
-     * @var string $mappingName
+     * @var string
      */
     protected $mappingName;
 
     /**
-     * @var string $filePropertyPath
+     * @var string
      */
     protected $filePropertyPath;
 
     /**
-     * @var string $fileNamePropertyPath
+     * @var string
      */
     protected $fileNamePropertyPath;
 
     /**
-     * @var PropertyAccess $accessor
+     * @var PropertyAccess
      */
     protected $accessor;
 
     /**
-     * @param string $filePropertyPath     The path to the "file" property.
-     * @param string $fileNamePropertyPath The path to the "filename" property.
+     * @param string $filePropertyPath     The path to the "file" property
+     * @param string $fileNamePropertyPath The path to the "filename" property
      */
     public function __construct($filePropertyPath, $fileNamePropertyPath)
     {
@@ -63,8 +62,9 @@ class PropertyMapping
     /**
      * Gets the file property value for the given object.
      *
-     * @param  object       $obj The object.
-     * @return UploadedFile The file.
+     * @param object $obj The object
+     *
+     * @return UploadedFile The file
      */
     public function getFile($obj)
     {
@@ -76,8 +76,8 @@ class PropertyMapping
     /**
      * Modifies the file property value for the given object.
      *
-     * @param object       $obj  The object.
-     * @param UploadedFile $file The new file.
+     * @param object       $obj  The object
+     * @param UploadedFile $file The new file
      */
     public function setFile($obj, $file)
     {
@@ -88,9 +88,9 @@ class PropertyMapping
     /**
      * Gets the fileName property of the given object.
      *
-     * @param object $obj The object.
+     * @param object $obj The object
      *
-     * @return string The filename.
+     * @return string The filename
      */
     public function getFileName($obj)
     {
@@ -102,7 +102,7 @@ class PropertyMapping
     /**
      * Modifies the fileName property of the given object.
      *
-     * @param object $obj The object.
+     * @param object $obj The object
      * @param $value
      */
     public function setFileName($obj, $value)
@@ -114,7 +114,7 @@ class PropertyMapping
     /**
      * Gets the configured file property name.
      *
-     * @return string The name.
+     * @return string The name
      */
     public function getFilePropertyName()
     {
@@ -124,7 +124,7 @@ class PropertyMapping
     /**
      * Gets the configured filename property name.
      *
-     * @return string The name.
+     * @return string The name
      */
     public function getFileNamePropertyName()
     {
@@ -134,7 +134,7 @@ class PropertyMapping
     /**
      * Gets the configured namer.
      *
-     * @return null|NamerInterface The namer.
+     * @return null|NamerInterface The namer
      */
     public function getNamer()
     {
@@ -144,7 +144,7 @@ class PropertyMapping
     /**
      * Sets the namer.
      *
-     * @param NamerInterface $namer The namer.
+     * @param NamerInterface $namer The namer
      */
     public function setNamer(NamerInterface $namer)
     {
@@ -154,7 +154,7 @@ class PropertyMapping
     /**
      * Determines if the mapping has a custom namer configured.
      *
-     * @return bool True if has namer, false otherwise.
+     * @return bool True if has namer, false otherwise
      */
     public function hasNamer()
     {
@@ -164,7 +164,7 @@ class PropertyMapping
     /**
      * Gets the configured directory namer.
      *
-     * @return null|\Vich\UploaderBundle\Naming\DirectoryNamerInterface The directory namer.
+     * @return null|\Vich\UploaderBundle\Naming\DirectoryNamerInterface The directory namer
      */
     public function getDirectoryNamer()
     {
@@ -174,7 +174,7 @@ class PropertyMapping
     /**
      * Sets the directory namer.
      *
-     * @param \Vich\UploaderBundle\Naming\DirectoryNamerInterface $directoryNamer The directory namer.
+     * @param \Vich\UploaderBundle\Naming\DirectoryNamerInterface $directoryNamer The directory namer
      */
     public function setDirectoryNamer(DirectoryNamerInterface $directoryNamer)
     {
@@ -184,7 +184,7 @@ class PropertyMapping
     /**
      * Determines if the mapping has a custom directory namer configured.
      *
-     * @return bool True if has directory namer, false otherwise.
+     * @return bool True if has directory namer, false otherwise
      */
     public function hasDirectoryNamer()
     {
@@ -204,7 +204,7 @@ class PropertyMapping
     /**
      * Gets the configured configuration mapping name.
      *
-     * @return string The mapping name.
+     * @return string The mapping name
      */
     public function getMappingName()
     {
@@ -214,7 +214,7 @@ class PropertyMapping
     /**
      * Sets the configured configuration mapping name.
      *
-     * @param string $mappingName The mapping name.
+     * @param string $mappingName The mapping name
      */
     public function setMappingName($mappingName)
     {
@@ -226,7 +226,7 @@ class PropertyMapping
      *
      * @param object $obj
      *
-     * @return string The upload directory.
+     * @return string The upload directory
      */
     public function getUploadDir($obj)
     {
@@ -245,7 +245,7 @@ class PropertyMapping
     /**
      * Gets the base upload directory.
      *
-     * @return string The configured upload directory.
+     * @return string The configured upload directory
      */
     public function getUploadDestination()
     {
@@ -253,7 +253,7 @@ class PropertyMapping
     }
 
     /**
-     * Get uri prefix
+     * Get uri prefix.
      *
      * @return string
      */
@@ -268,10 +268,10 @@ class PropertyMapping
      * Ie: if the given object is in fact an array, the property path must
      * look like [myPath].
      *
-     * @param object|array $object       The object to inspect.
-     * @param string       $propertyPath The property path to fix.
+     * @param object|array $object       The object to inspect
+     * @param string       $propertyPath The property path to fix
      *
-     * @return string The fixed property path.
+     * @return string The fixed property path
      */
     protected function fixPropertyPath($object, $propertyPath)
     {

@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
 use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Util\Transliterator;
 
@@ -28,7 +27,7 @@ class DownloadHandler extends AbstractHandler
     public function downloadObject($object, $field, $className = null, $fileName = null)
     {
         $mapping = $this->getMapping($object, $field, $className);
-        $stream  = $this->storage->resolveStream($object, $field, $className);
+        $stream = $this->storage->resolveStream($object, $field, $className);
 
         if ($stream === null) {
             throw new NoFileFoundException(sprintf('No file found in field "%s".', $field));

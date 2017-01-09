@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Tests\Storage;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Symfony\Component\HttpFoundation\File\File;
-
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -20,7 +19,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 abstract class StorageTestCase extends TestCase
 {
     /**
-     * @var PropertyMappingFactory $factory
+     * @var PropertyMappingFactory
      */
     protected $factory;
 
@@ -65,36 +64,36 @@ abstract class StorageTestCase extends TestCase
             ->expects($this->any())
             ->method('fromObject')
             ->with($this->object)
-            ->will($this->returnValue(array($this->mapping)));
+            ->will($this->returnValue([$this->mapping]));
 
         // and initialize the virtual filesystem
-        $this->root = vfsStream::setup('vich_uploader_bundle', null, array(
-            'uploads' => array(
-                'test.txt' => 'some content'
-            ),
-        ));
+        $this->root = vfsStream::setup('vich_uploader_bundle', null, [
+            'uploads' => [
+                'test.txt' => 'some content',
+            ],
+        ]);
     }
 
     public function invalidFileProvider()
     {
         $file = new File('dummy.file', false);
 
-        return array(
+        return [
             // skipped because null
-            array( null ),
+            [null],
             // skipped because not even a file
-            array( new \DateTime() ),
+            [new \DateTime()],
             // skipped because not instance of UploadedFile
-            array( $file ),
-        );
+            [$file],
+        ];
     }
 
     public function emptyFilenameProvider()
     {
-        return array(
-            array( null ),
-            array( '' ),
-        );
+        return [
+            [null],
+            [''],
+        ];
     }
 
     /**
@@ -137,6 +136,6 @@ abstract class StorageTestCase extends TestCase
 
     protected function getValidUploadDir()
     {
-        return $this->root->url() . DIRECTORY_SEPARATOR . 'uploads';
+        return $this->root->url().DIRECTORY_SEPARATOR.'uploads';
     }
 }

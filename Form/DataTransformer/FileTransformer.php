@@ -8,9 +8,9 @@ class FileTransformer implements DataTransformerInterface
 {
     public function transform($file)
     {
-        return array(
+        return [
             'file' => $file,
-        );
+        ];
     }
 
     public function reverseTransform($data)

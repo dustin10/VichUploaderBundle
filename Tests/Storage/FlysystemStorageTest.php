@@ -16,7 +16,7 @@ class FlysystemStorageTest extends StorageTestCase
     const FS_KEY = 'filesystemKey';
 
     /**
-     * @var MountManager $mountManager
+     * @var MountManager
      */
     protected $mountManager;
 
@@ -32,9 +32,8 @@ class FlysystemStorageTest extends StorageTestCase
         }
     }
 
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getStorage()
     {
@@ -70,7 +69,7 @@ class FlysystemStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue($this->root->url() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'test.txt'));
+            ->will($this->returnValue($this->root->url().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'test.txt'));
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
@@ -162,19 +161,19 @@ class FlysystemStorageTest extends StorageTestCase
 
     public function pathProvider()
     {
-        return array(
+        return [
             //     dir,   path,                     relative
-            array( null,  'file.txt',               true ),
-            array( null,  '/absolute/file.txt',     false ),
-            array( 'foo', 'foo/file.txt',           true ),
-            array( 'foo', '/absolute/foo/file.txt', false ),
-        );
+            [null,  'file.txt',               true],
+            [null,  '/absolute/file.txt',     false],
+            ['foo', 'foo/file.txt',           true],
+            ['foo', '/absolute/foo/file.txt', false],
+        ];
     }
 
     /**
      * Creates a filesystem map mock.
      *
-     * @return MountManager The mount manager.
+     * @return MountManager The mount manager
      */
     protected function getMountManagerMock()
     {

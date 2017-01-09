@@ -27,8 +27,8 @@ class VichFileType extends AbstractType
     protected $handler;
 
     /**
-     * @param StorageInterface    $storage
-     * @param UploadHandler       $handler
+     * @param StorageInterface $storage
+     * @param UploadHandler    $handler
      */
     public function __construct(StorageInterface $storage, UploadHandler $handler)
     {
@@ -84,7 +84,7 @@ class VichFileType extends AbstractType
             }
 
             $form->add('delete', Type\CheckboxType::class, [
-                'label'     => 'form.label.delete',
+                'label' => 'form.label.delete',
                 'translation_domain' => 'VichUploaderBundle',
                 'required' => false,
                 'mapped' => false,

@@ -6,7 +6,7 @@ use Doctrine\Common\EventArgs;
 use Doctrine\Common\Persistence\Proxy;
 
 /**
- * RemoveListener
+ * RemoveListener.
  *
  * Listen to the remove event to delete files accordingly.
  *
@@ -17,32 +17,32 @@ class RemoveListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events.
+     * @return array The array of events
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'preRemove',
             'postRemove',
-        );
+        ];
     }
 
     /**
      * Ensures a proxy will be usable in the postRemove.
      *
-     * @param EventArgs $event The event.
+     * @param EventArgs $event The event
      */
     public function preRemove(EventArgs $event)
     {
-         $object = $this->adapter->getObjectFromArgs($event);
+        $object = $this->adapter->getObjectFromArgs($event);
 
-         if ($this->isUploadable($object) && $object instanceof Proxy) {
-             $object->__load();
-         }
+        if ($this->isUploadable($object) && $object instanceof Proxy) {
+            $object->__load();
+        }
     }
 
     /**
-     * @param EventArgs $event The event.
+     * @param EventArgs $event The event
      */
     public function postRemove(EventArgs $event)
     {

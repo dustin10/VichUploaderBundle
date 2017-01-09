@@ -12,7 +12,7 @@ use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 class CleanListenerTest extends ListenerTestCase
 {
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {
@@ -28,7 +28,7 @@ class CleanListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(array('preUpdate'), $events);
+        $this->assertSame(['preUpdate'], $events);
     }
 
     /**
@@ -46,9 +46,9 @@ class CleanListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
-            ->will($this->returnValue(array(
-                array('propertyName' => 'field_name')
-            )));
+            ->will($this->returnValue([
+                ['propertyName' => 'field_name'],
+            ]));
 
         $this->handler
             ->expects($this->once())

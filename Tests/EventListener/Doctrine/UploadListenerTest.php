@@ -12,7 +12,7 @@ use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
 class UploadListenerTest extends ListenerTestCase
 {
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {
@@ -28,7 +28,7 @@ class UploadListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(array('prePersist', 'preUpdate'), $events);
+        $this->assertSame(['prePersist', 'preUpdate'], $events);
     }
 
     /**
@@ -46,9 +46,9 @@ class UploadListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
-            ->will($this->returnValue(array(
-                array('propertyName' => 'field_name')
-            )));
+            ->will($this->returnValue([
+                ['propertyName' => 'field_name'],
+            ]));
 
         $this->handler
             ->expects($this->once())
@@ -96,9 +96,9 @@ class UploadListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
-            ->will($this->returnValue(array(
-                array('propertyName' => 'field_name')
-            )));
+            ->will($this->returnValue([
+                ['propertyName' => 'field_name'],
+            ]));
 
         $this->handler
             ->expects($this->once())

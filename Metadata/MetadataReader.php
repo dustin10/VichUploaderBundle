@@ -14,14 +14,14 @@ use Metadata\AdvancedMetadataFactoryInterface;
 class MetadataReader
 {
     /**
-     * @var AdvancedMetadataFactoryInterface $reader
+     * @var AdvancedMetadataFactoryInterface
      */
     protected $reader;
 
     /**
      * Constructs a new instance of the MetadataReader.
      *
-     * @param AdvancedMetadataFactoryInterface $reader The "low-level" metadata reader.
+     * @param AdvancedMetadataFactoryInterface $reader The "low-level" metadata reader
      */
     public function __construct(AdvancedMetadataFactoryInterface $reader)
     {
@@ -31,8 +31,8 @@ class MetadataReader
     /**
      * Tells if the given class is uploadable.
      *
-     * @param string $class   The class name to test (FQCN).
-     * @param string $mapping If given, also checks that the object has the given mapping.
+     * @param string $class   The class name to test (FQCN)
+     * @param string $mapping If given, also checks that the object has the given mapping
      *
      * @return bool
      */
@@ -58,7 +58,7 @@ class MetadataReader
     /**
      * Search for all uploadable classes.
      *
-     * @return array A list of uploadable class names.
+     * @return array A list of uploadable class names
      */
     public function getUploadableClasses()
     {
@@ -68,14 +68,14 @@ class MetadataReader
     /**
      * Attempts to read the uploadable fields.
      *
-     * @param string $class The class name to test (FQCN).
+     * @param string $class The class name to test (FQCN)
      *
-     * @return array A list of uploadable fields.
+     * @return array A list of uploadable fields
      */
     public function getUploadableFields($class)
     {
         $metadata = $this->reader->getMetadataForClass($class);
-        $uploadableFields = array();
+        $uploadableFields = [];
 
         foreach ($metadata->classMetadata as $classMetadata) {
             $uploadableFields = array_merge($uploadableFields, $classMetadata->fields);
@@ -87,10 +87,10 @@ class MetadataReader
     /**
      * Attempts to read the mapping of a specified property.
      *
-     * @param string $class The class name to test (FQCN).
+     * @param string $class The class name to test (FQCN)
      * @param string $field The field
      *
-     * @return null|array The field mapping.
+     * @return null|array The field mapping
      */
     public function getUploadableField($class, $field)
     {

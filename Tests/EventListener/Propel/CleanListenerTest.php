@@ -12,7 +12,7 @@ use Vich\UploaderBundle\EventListener\Propel\CleanListener;
 class CleanListenerTest extends ListenerTestCase
 {
     /**
-     * Sets up the test
+     * Sets up the test.
      */
     public function setUp()
     {

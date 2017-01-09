@@ -19,22 +19,22 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class UploadHandler extends AbstractHandler
 {
     /**
-     * @var FileInjectorInterface $injector
+     * @var FileInjectorInterface
      */
     protected $injector;
 
     /**
-     * @var EventDispatcherInterface $dispatcher
+     * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
     /**
      * Constructs a new instance of UploaderListener.
      *
-     * @param PropertyMappingFactory   $factory    The mapping factory.
-     * @param StorageInterface         $storage    The storage.
-     * @param FileInjectorInterface    $injector   The injector.
-     * @param EventDispatcherInterface $dispatcher The event dispatcher.
+     * @param PropertyMappingFactory   $factory    The mapping factory
+     * @param StorageInterface         $storage    The storage
+     * @param FileInjectorInterface    $injector   The injector
+     * @param EventDispatcherInterface $dispatcher The event dispatcher
      */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
     {
@@ -47,8 +47,8 @@ class UploadHandler extends AbstractHandler
     /**
      * Checks for file to upload.
      *
-     * @param object $obj       The object.
-     * @param string $fieldName The name of the field containing the upload (has to be mapped).
+     * @param object $obj       The object
+     * @param string $fieldName The name of the field containing the upload (has to be mapped)
      */
     public function upload($obj, $fieldName)
     {

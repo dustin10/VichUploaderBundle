@@ -14,7 +14,7 @@ interface ConfigurableInterface
     /**
      * Injects configuration options.
      *
-     * @param array $options The options.
+     * @param array $options The options
      */
     public function configure(array $options);
 }

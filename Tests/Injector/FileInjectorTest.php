@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Injector;
 
 use Symfony\Component\HttpFoundation\File\File;
-
 use Vich\UploaderBundle\Injector\FileInjector;
 
 /**
@@ -14,7 +13,7 @@ use Vich\UploaderBundle\Injector\FileInjector;
 class FileInjectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Vich\UploaderBundle\Storage\GaufretteStorage $storage
+     * @var Vich\UploaderBundle\Storage\GaufretteStorage
      */
     protected $storage;
 

@@ -33,7 +33,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllClassNames()
     {
@@ -41,7 +41,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
             throw new \RuntimeException('Locator "%s" must be an instance of "AdvancedFileLocatorInterface".');
         }
 
-        $classNames = array();
+        $classNames = [];
         foreach ($this->locator->findAllClasses($this->getExtension()) as $file) {
             $classNames[] = $this->getClassNameFromFile($file->getRealpath());
         }

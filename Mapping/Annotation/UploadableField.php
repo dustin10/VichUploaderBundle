@@ -13,19 +13,20 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
 class UploadableField
 {
     /**
-     * @var string $mapping
+     * @var string
      */
     protected $mapping;
 
     /**
-     * @var string $fileNameProperty
+     * @var string
      */
     protected $fileNameProperty;
 
     /**
      * Constructs a new instance of UploadableField.
      *
-     * @param  array                     $options The options.
+     * @param array $options The options
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct(array $options)
@@ -44,7 +45,7 @@ class UploadableField
     /**
      * Gets the mapping name.
      *
-     * @return string The mapping name.
+     * @return string The mapping name
      */
     public function getMapping()
     {
@@ -54,7 +55,7 @@ class UploadableField
     /**
      * Gets the file name property.
      *
-     * @return string The file name property.
+     * @return string The file name property
      */
     public function getFileNameProperty()
     {

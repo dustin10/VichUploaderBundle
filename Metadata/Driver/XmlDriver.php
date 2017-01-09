@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Metadata\Driver;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
- * Xml driver
+ * Xml driver.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -19,11 +19,11 @@ class XmlDriver extends AbstractFileDriver
         $metadata = new ClassMetadata($className);
 
         foreach ($elem->children() as $field) {
-            $fieldMetadata = array(
-                'mapping'           => (string) $field->attributes()->mapping,
-                'propertyName'      => (string) $field->attributes()->name,
-                'fileNameProperty'  => (string) $field->attributes()->filename_property,
-            );
+            $fieldMetadata = [
+                'mapping' => (string) $field->attributes()->mapping,
+                'propertyName' => (string) $field->attributes()->name,
+                'fileNameProperty' => (string) $field->attributes()->filename_property,
+            ];
 
             $metadata->fields[(string) $field->attributes()->name] = $fieldMetadata;
         }
@@ -50,7 +50,7 @@ class XmlDriver extends AbstractFileDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getExtension()
     {

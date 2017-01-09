@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 abstract class AbstractStorage implements StorageInterface
 {
     /**
-     * @var PropertyMappingFactory $factory
+     * @var PropertyMappingFactory
      */
     protected $factory;
 
     /**
      * Constructs a new instance of FileSystemStorage.
      *
-     * @param PropertyMappingFactory $factory The factory.
+     * @param PropertyMappingFactory $factory The factory
      */
     public function __construct(PropertyMappingFactory $factory)
     {
@@ -30,19 +30,19 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * Do real upload
+     * Do real upload.
      *
      * @param PropertyMapping $mapping
      * @param UploadedFile    $file
      * @param string          $dir
      * @param string          $name
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name);
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function upload($obj, PropertyMapping $mapping)
     {
@@ -68,18 +68,18 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * Do real remove
+     * Do real remove.
      *
      * @param PropertyMapping $mapping
      * @param string          $dir
      * @param string          $name
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function doRemove(PropertyMapping $mapping, $dir, $name);
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove($obj, PropertyMapping $mapping)
     {
@@ -93,19 +93,19 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * Do resolve path
+     * Do resolve path.
      *
-     * @param PropertyMapping $mapping  The mapping representing the field.
-     * @param string          $dir      The directory in which the file is uploaded.
-     * @param string          $name     The file name.
-     * @param bool            $relative Whether the path should be relative or absolute.
+     * @param PropertyMapping $mapping  The mapping representing the field
+     * @param string          $dir      The directory in which the file is uploaded
+     * @param string          $name     The file name
+     * @param bool            $relative Whether the path should be relative or absolute
      *
      * @return string
      */
     abstract protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false);
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolvePath($obj, $fieldName, $className = null, $relative = false)
     {
@@ -119,7 +119,7 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolveUri($obj, $fieldName, $className = null)
     {
@@ -136,7 +136,7 @@ abstract class AbstractStorage implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolveStream($obj, $fieldName, $className = null)
     {
@@ -160,6 +160,6 @@ abstract class AbstractStorage implements StorageInterface
             throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
         }
 
-        return array($mapping, $mapping->getFileName($obj));
+        return [$mapping, $mapping->getFileName($obj)];
     }
 }

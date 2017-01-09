@@ -14,10 +14,10 @@ interface NamerInterface
     /**
      * Creates a name for the file being uploaded.
      *
-     * @param object          $object  The object the upload is attached to.
-     * @param PropertyMapping $mapping The mapping to use to manipulate the given object.
+     * @param object          $object  The object the upload is attached to
+     * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
-     * @return string The file name.
+     * @return string The file name
      */
     public function name($object, PropertyMapping $mapping);
 }

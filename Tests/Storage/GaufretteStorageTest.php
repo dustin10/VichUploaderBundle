@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Tests\Storage;
 use Gaufrette\Filesystem;
 use Gaufrette\Exception\FileNotFound;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
-
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 
 /**
@@ -16,12 +15,12 @@ use Vich\UploaderBundle\Storage\GaufretteStorage;
 class GaufretteStorageTest extends StorageTestCase
 {
     /**
-     * @var FilesystemMap $factory
+     * @var FilesystemMap
      */
     protected $filesystemMap;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getStorage()
     {
@@ -42,7 +41,7 @@ class GaufretteStorageTest extends StorageTestCase
      * Tests the upload method skips a mapping which has a non
      * uploadable property value.
      *
-     * @expectedException   LogicException
+     * @expectedException   \LogicException
      * @dataProvider        invalidFileProvider
      * @group               upload
      */
@@ -164,18 +163,18 @@ class GaufretteStorageTest extends StorageTestCase
 
     public function pathProvider()
     {
-        return array(
+        return [
             //      protocol,   fs identifier,  upload dir, full path, relative
-            array( 'gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false ),
-            array( 'data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false ),
-            array( 'gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false ),
-            array( 'gaufrette', 'filesystemKey', null,   'file.txt', true),
-            array( 'gaufrette', 'filesystemKey', 'foo',  'foo/file.txt', true ),
-        );
+            ['gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false],
+            ['data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false],
+            ['gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false],
+            ['gaufrette', 'filesystemKey', null,   'file.txt', true],
+            ['gaufrette', 'filesystemKey', 'foo',  'foo/file.txt', true],
+        ];
     }
 
     /**
-     * Test the remove method does delete file from gaufrette filesystem
+     * Test the remove method does delete file from gaufrette filesystem.
      */
     public function testThatRemoveMethodDoesDeleteFile()
     {
@@ -205,7 +204,7 @@ class GaufretteStorageTest extends StorageTestCase
     }
 
     /**
-     * Test that FileNotFound exception is catched
+     * Test that FileNotFound exception is catched.
      */
     public function testRemoveNotFoundFile()
     {
@@ -249,7 +248,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir() . DIRECTORY_SEPARATOR . 'test.txt'));
+            ->will($this->returnValue($this->getValidUploadDir().DIRECTORY_SEPARATOR.'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -298,7 +297,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir() . DIRECTORY_SEPARATOR . 'test.txt'));
+            ->will($this->returnValue($this->getValidUploadDir().DIRECTORY_SEPARATOR.'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -336,7 +335,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Creates a mock of gaufrette filesystem map.
      *
-     * @return FilesystemMap The filesystem map.
+     * @return FilesystemMap The filesystem map
      */
     protected function getFilesystemMapMock()
     {
@@ -349,7 +348,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Creates a mock of gaufrette filesystem.
      *
-     * @return Filesystem The gaufrette filesystem object.
+     * @return Filesystem The gaufrette filesystem object
      */
     protected function getFilesystemMock()
     {
