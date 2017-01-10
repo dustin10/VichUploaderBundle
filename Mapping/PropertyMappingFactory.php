@@ -105,7 +105,7 @@ class PropertyMappingFactory
 
         $mappingData = $this->metadata->getUploadableField($class, $field);
         if ($mappingData === null) {
-            return null;
+            return;
         }
 
         return $this->createMapping($obj, $field, $mappingData);

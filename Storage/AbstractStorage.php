@@ -112,7 +112,7 @@ abstract class AbstractStorage implements StorageInterface
         list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
-            return null;
+            return;
         }
 
         return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename, $relative);
@@ -126,7 +126,7 @@ abstract class AbstractStorage implements StorageInterface
         list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
-            return null;
+            return;
         }
 
         $dir = $mapping->getUploadDir($obj);
@@ -143,7 +143,7 @@ abstract class AbstractStorage implements StorageInterface
         $path = $this->resolvePath($obj, $fieldName, $className);
 
         if (empty($path)) {
-            return null;
+            return;
         }
 
         return fopen($path, 'rb');

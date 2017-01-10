@@ -27,7 +27,7 @@ class ChainDriver implements AdvancedDriverInterface
             }
         }
 
-        return null;
+        return;
     }
 
     /**
