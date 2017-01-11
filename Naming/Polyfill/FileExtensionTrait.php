@@ -25,6 +25,6 @@ trait FileExtensionTrait
             return $extension;
         }
 
-        return null;
+        return;
     }
 }

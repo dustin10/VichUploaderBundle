@@ -45,7 +45,7 @@ class FileLocator implements AdvancedFileLocatorInterface
             return $file->getPathname();
         }
 
-        return null;
+        return;
     }
 
     /**
