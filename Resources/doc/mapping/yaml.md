@@ -4,10 +4,25 @@ YAML mappings
 You can choose to describe your entities in YAML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
 
+Here's how your entity could look like:
+
+```yaml
+Acme\DemoBundle\Entity\Product:
+    type: entity
+    # ...
+    fields:
+        # Product::$imageName will hold the reference to the upload
+        imageName:
+            type: string
+            column: image_name
+```
+
+And here's how you should configure the uploader:
+
 ```yaml
 # src/Acme/DemoBundle/Resources/config/vich_uploader/Product.yml
 Acme\DemoBundle\Entity\Product:
-    image:
+    imageName:
         mapping:           product_image
         filename_property: image_name
 ```
