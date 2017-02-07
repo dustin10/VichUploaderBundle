@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\Propel;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\Propel\PropelORMAdapter;
 
 /**
@@ -9,7 +10,7 @@ use Vich\UploaderBundle\Adapter\Propel\PropelORMAdapter;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class PropelORMAdapterTest extends \PHPUnit_Framework_TestCase
+class PropelORMAdapterTest extends TestCase
 {
     protected $adapter;
 

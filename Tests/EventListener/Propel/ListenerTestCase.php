@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Propel;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
@@ -13,7 +14,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class ListenerTestCase extends \PHPUnit_Framework_TestCase
+class ListenerTestCase extends TestCase
 {
     const FIELD_NAME = 'file';
     const MAPPING_NAME = 'mapping_name';

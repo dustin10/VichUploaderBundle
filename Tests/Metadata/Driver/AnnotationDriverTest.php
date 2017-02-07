@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -12,7 +13,7 @@ use Vich\UploaderBundle\Tests\TwoFieldsDummyEntity;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
+class AnnotationDriverTest extends TestCase
 {
     public function testReadUploadableAnnotation()
     {

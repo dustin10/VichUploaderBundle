@@ -2,10 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests;
 
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
     protected function getUploadedFileMock()
     {

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Templating\Helper;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
@@ -9,7 +10,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHelperTest extends \PHPUnit_Framework_TestCase
+class UploadHelperTest extends TestCase
 {
     protected $storage;
     protected $helper;

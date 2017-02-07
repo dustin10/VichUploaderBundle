@@ -2,9 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
-class ClassMetadataTest extends \PHPUnit_Framework_TestCase
+class ClassMetadataTest extends TestCase
 {
     public function testFieldsAreSerialized()
     {

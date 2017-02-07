@@ -2,9 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
-class MetadataReaderTest extends \PHPUnit_Framework_TestCase
+class MetadataReaderTest extends TestCase
 {
     protected $reader;
     protected $factory;

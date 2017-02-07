@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Vich\UploaderBundle\Metadata\Driver\FileLocator;
@@ -11,7 +12,7 @@ use Vich\UploaderBundle\Metadata\Driver\FileLocator;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class FileLocatorTest extends \PHPUnit_Framework_TestCase
+class FileLocatorTest extends TestCase
 {
     /**
      * @var vfsStreamDirectory

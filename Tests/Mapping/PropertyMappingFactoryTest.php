@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -12,7 +13,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class PropertyMappingFactoryTest extends \PHPUnit_Framework_TestCase
+class PropertyMappingFactoryTest extends TestCase
 {
     /**
      * @var ContainerInterface

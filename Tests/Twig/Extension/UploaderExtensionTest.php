@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
 /**
@@ -9,7 +10,7 @@ use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploaderExtensionTest extends \PHPUnit_Framework_TestCase
+class UploaderExtensionTest extends TestCase
 {
     protected $helper;
     protected $extension;

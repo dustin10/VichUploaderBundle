@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -13,7 +14,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class ListenerTestCase extends \PHPUnit_Framework_TestCase
+class ListenerTestCase extends TestCase
 {
     const MAPPING_NAME = 'dummy_mapping';
 

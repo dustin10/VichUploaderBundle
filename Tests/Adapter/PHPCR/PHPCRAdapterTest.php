@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
 
@@ -10,7 +11,7 @@ use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
  *
  * @author Ben Glassman <bglassman@gmail.com>
  */
-class PHPCRAdapterTest extends \PHPUnit_Framework_TestCase
+class PHPCRAdapterTest extends TestCase
 {
     public static function setUpBeforeClass()
     {

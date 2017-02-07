@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -10,7 +11,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class PropertyMappingTest extends \PHPUnit_Framework_TestCase
+class PropertyMappingTest extends TestCase
 {
     /**
      * Test that the configured mappings are accessed

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -10,7 +11,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class DoctrineORMAdapterTest extends \PHPUnit_Framework_TestCase
+class DoctrineORMAdapterTest extends TestCase
 {
     public static function setUpBeforeClass()
     {

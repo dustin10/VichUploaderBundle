@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 /**
@@ -9,7 +10,7 @@ use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class YamlDriverTest extends \PHPUnit_Framework_TestCase
+class YamlDriverTest extends TestCase
 {
     /**
      * @expectedException \RuntimeException
