@@ -48,9 +48,9 @@
         "symfony/validator": "^2.8|^3.1",
         "symfony/yaml": "^2.8|^3.1",
 
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^6.0",
         "mikey179/vfsStream": "^1.6",
-        "matthiasnoback/symfony-dependency-injection-test": "^1.1"
+        "matthiasnoback/symfony-dependency-injection-test": "^2.0"
     },
     "suggest": {
         "doctrine/orm": "^2.5",
@@ -69,6 +69,7 @@
     "autoload-dev": {
         "psr-4": {
             "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
-        }
+        },
+        "classmap": [ "Tests/phpunit-bc" ]
     }
 }
