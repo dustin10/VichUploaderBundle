@@ -43,5 +43,6 @@ class PropelORMAdapterTest extends TestCase
 
         // does nothing but should be callable
         $this->adapter->recomputeChangeSet($event);
+        $this->assertTrue(true);    // this workaround is needed to avoid Risky test
     }
 }

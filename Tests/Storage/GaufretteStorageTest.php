@@ -315,9 +315,9 @@ class GaufretteStorageTest extends StorageTestCase
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
 
-        $adapter
-            ->expects($this->never())
-            ->method('setMetadata');
+        #$adapter
+        #    ->expects($this->never())
+        #    ->method('setMetadata');
 
         $filesystem
             ->expects($this->any())
