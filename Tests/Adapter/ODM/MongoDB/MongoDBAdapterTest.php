@@ -3,8 +3,8 @@
 namespace Vich\UploaderBundle\Tests\Adapter\ODM\MongoDB;
 
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
+use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * MongoDBAdapterTest.

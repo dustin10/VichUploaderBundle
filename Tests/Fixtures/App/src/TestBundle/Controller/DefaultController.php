@@ -5,8 +5,8 @@ namespace Vich\TestBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpFoundation\Request;
-use Vich\UploaderBundle\Form\Type as VichType;
 use Vich\TestBundle\Entity\Image;
+use Vich\UploaderBundle\Form\Type as VichType;
 
 class DefaultController extends Controller
 {

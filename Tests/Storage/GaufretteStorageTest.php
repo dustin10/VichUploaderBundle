@@ -2,8 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use Gaufrette\Filesystem;
 use Gaufrette\Exception\FileNotFound;
+use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 
@@ -314,10 +314,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('get')
             ->with('filesystemKey')
             ->will($this->returnValue($filesystem));
-
-        #$adapter
-        #    ->expects($this->never())
-        #    ->method('setMetadata');
 
         $filesystem
             ->expects($this->any())

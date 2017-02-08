@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
-use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\Driver\FileLocator;
 
 /**

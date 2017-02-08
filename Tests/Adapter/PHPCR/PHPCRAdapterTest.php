@@ -3,8 +3,8 @@
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
+use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * PHPCRAdapterTest.

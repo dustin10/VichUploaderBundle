@@ -1,4 +1,3 @@
 phpunit.xml
-composer.phar
 composer.lock
 vendor/
