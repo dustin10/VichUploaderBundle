@@ -35,11 +35,19 @@ class DownloadHandler extends AbstractHandler
 
         return $this->createDownloadResponse(
             $stream,
-            $fileName ?: $mapping->getFileName($object)
+            $fileName ?: $mapping->getFileName($object),
+            $mapping->getFile($object)->getMimeType()
         );
     }
 
-    private function createDownloadResponse($stream, $filename)
+    /**
+     * @param resource $stream
+     * @param string   $filename
+     * @param string   $mimeType
+     *
+     * @return StreamedResponse
+     */
+    private function createDownloadResponse($stream, $filename, $mimeType = 'application/octet-stream')
     {
         $response = new StreamedResponse(function () use ($stream) {
             stream_copy_to_stream($stream, fopen('php://output', 'w'));
@@ -50,7 +58,7 @@ class DownloadHandler extends AbstractHandler
             Transliterator::transliterate($filename)
         );
         $response->headers->set('Content-Disposition', $disposition);
-        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Type', $mimeType);
 
         return $response;
     }

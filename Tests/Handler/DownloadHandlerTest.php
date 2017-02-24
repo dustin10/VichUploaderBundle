@@ -47,11 +47,25 @@ class DownloadHandlerTest extends TestCase
      */
     public function testDownloadObject($fileName, $expectedFileName)
     {
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()->getMock();
+
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
             ->will($this->returnValue($fileName));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($file));
+
+        $file
+            ->expects($this->once())
+            ->method('getMimeType')
+            ->will($this->returnValue(null));
 
         $this->storage
             ->expects($this->once())
@@ -67,6 +81,20 @@ class DownloadHandlerTest extends TestCase
 
     public function testNonAsciiFilenameIsTransliterated()
     {
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($file));
+
+        $file
+            ->expects($this->once())
+            ->method('getMimeType')
+            ->will($this->returnValue(null));
+
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
