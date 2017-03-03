@@ -58,7 +58,7 @@ class DownloadHandler extends AbstractHandler
             Transliterator::transliterate($filename)
         );
         $response->headers->set('Content-Disposition', $disposition);
-        $response->headers->set('Content-Type', $mimeType);
+        $response->headers->set('Content-Type', $mimeType ?: 'application/octet-stream');
 
         return $response;
     }

@@ -79,6 +79,35 @@ class DownloadHandlerTest extends TestCase
         $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
+    /**
+     * @dataProvider filenamesProvider
+     */
+    public function testDownloadObjectWithoutFile($fileName, $expectedFileName)
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->will($this->returnValue($fileName));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue(null));
+
+        $this->storage
+            ->expects($this->once())
+            ->method('resolveStream')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue('something not null'));
+
+        $response = $this->handler->downloadObject($this->object, 'file_field');
+
+        $this->assertInstanceof('\Symfony\Component\HttpFoundation\StreamedResponse', $response);
+        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
+    }
+
     public function testNonAsciiFilenameIsTransliterated()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
