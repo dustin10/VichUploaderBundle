@@ -36,7 +36,7 @@ class DownloadHandler extends AbstractHandler
         return $this->createDownloadResponse(
             $stream,
             $fileName ?: $mapping->getFileName($object),
-            $mapping->getFile($object)->getMimeType()
+            is_null($file = $mapping->getFile($object)) ? null : $file->getMimeType()
         );
     }
 
