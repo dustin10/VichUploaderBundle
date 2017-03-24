@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
-use Metadata\Driver\DriverInterface;
+use Metadata\Driver\AdvancedDriverInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class AnnotationDriver implements DriverInterface
+class AnnotationDriver implements AdvancedDriverInterface
 {
     /**
      * @deprecated
@@ -36,7 +36,7 @@ class AnnotationDriver implements DriverInterface
             return;
         }
 
-        $metadata = new ClassMetadata($class->name);
+        $classMetadata = new ClassMetadata($class->name);
 
         foreach ($class->getProperties() as $property) {
             $uploadableField = $this->reader->getPropertyAnnotation($property, UploadableField::class);
@@ -53,11 +53,17 @@ class AnnotationDriver implements DriverInterface
                 'mimeType' => $uploadableField->getMimeType(),
                 'originalName' => $uploadableField->getOriginalName(),
             ];
+
             //TODO: store UploadableField object instead of array
-            $metadata->fields[$property->getName()] = $fieldMetadata;
+            $classMetadata->fields[$property->getName()] = $fieldMetadata;
         }
 
-        return $metadata;
+        return $classMetadata;
+    }
+
+    public function getAllClassNames()
+    {
+        return [];
     }
 
     protected function isUploadable(\ReflectionClass $class)
