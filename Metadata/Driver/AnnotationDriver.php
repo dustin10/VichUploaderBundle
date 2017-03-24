@@ -37,6 +37,7 @@ class AnnotationDriver implements AdvancedDriverInterface
         }
 
         $classMetadata = new ClassMetadata($class->name);
+        $classMetadata->fileResources[] = $class->getFileName();
 
         foreach ($class->getProperties() as $property) {
             $uploadableField = $this->reader->getPropertyAnnotation($property, UploadableField::class);

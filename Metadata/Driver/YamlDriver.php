@@ -19,6 +19,8 @@ class YamlDriver extends AbstractFileDriver
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
         $classMetadata = new ClassMetadata($className);
+        $classMetadata->fileResources[] = $file;
+        $classMetadata->fileResources[] = $class->getFileName();
 
         foreach ($config[$className] as $field => $mappingData) {
             $fieldMetadata = [

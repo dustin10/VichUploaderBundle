@@ -18,6 +18,8 @@ class XmlDriver extends AbstractFileDriver
 
         $className = $this->guessClassName($file, $elem, $class);
         $classMetadata = new ClassMetadata($className);
+        $classMetadata->fileResources[] = $file;
+        $classMetadata->fileResources[] = $class->getFileName();
 
         foreach ($elem->children() as $field) {
             $fieldMetadata = [
