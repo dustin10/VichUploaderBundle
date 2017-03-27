@@ -65,11 +65,13 @@ Next, you have to create the two fields needed for the bundle to work:
      object after the form is submitted. This should *not* be persisted to the
      database, but you *do* need to annotate it.
 
-The `UploadableField` annotation has a few required options. They are as follows:
+The `UploadableField` annotation has a few options. They are as follows:
 
-  * `mapping`: the mapping name specified in the bundle configuration to use ;
-  * `fileNameProperty`: the property that will contain the name of the
-    uploaded file. This is the only property that is saved in the database.
+  * `mapping`: required, the mapping name specified in the bundle configuration to use;
+  * `fileNameProperty`: required, the property that will contain the name of the uploaded file;
+  * `size`: the property that will contain the size in bytes of the uploaded file;
+  * `mimeType`: the property that will contain the mime type of the uploaded file;
+  * `originalName`: the property that will contain the origilal name of the uploaded file.
 
 **Note**:
 
@@ -105,7 +107,7 @@ class Product
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
      * 
      * @var File
      */
@@ -117,6 +119,13 @@ class Product
      * @var string
      */
     private $imageName;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
+     */
+    private $imageSize;
 
     /**
      * @ORM\Column(type="datetime")
@@ -175,6 +184,26 @@ class Product
     public function getImageName()
     {
         return $this->imageName;
+    }
+    
+    /**
+     * @param integer $imageSize
+     *
+     * @return Product
+     */
+    public function setImageSize($imageSize)
+    {
+        $this->imagesize = $imageSize;
+        
+        return $this;
+    }
+
+    /**
+     * @return integer|null
+     */
+    public function getImageSize()
+    {
+        return $this->imageSize;
     }
 }
 ```

@@ -19,11 +19,17 @@ class TwoFieldsDummyEntity
     protected $fileName;
 
     /**
-     * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName", originalName="originalNameField", mimeType="mimeTypeField", size="sizeField")
      */
     protected $image;
 
     protected $imageName;
+
+    protected $originalNameField;
+
+    protected $mimeTypeField;
+
+    protected $sizeField;
 
     public function getFile()
     {
@@ -63,5 +69,35 @@ class TwoFieldsDummyEntity
     public function setImageName($imageName)
     {
         $this->imageName = $imageName;
+    }
+
+    public function getOriginalNameField()
+    {
+        return $this->originalNameField;
+    }
+
+    public function setOriginalNameField($originalNameField)
+    {
+        $this->originalNameField = $originalNameField;
+    }
+
+    public function getMimeTypeField()
+    {
+        return $this->mimeTypeField;
+    }
+
+    public function setMimeTypeField($mimeTypeField)
+    {
+        $this->mimeTypeField = $mimeTypeField;
+    }
+
+    public function getSizeField()
+    {
+        return $this->sizeField;
+    }
+
+    public function setSizeField($sizeField)
+    {
+        $this->sizeField = $sizeField;
     }
 }

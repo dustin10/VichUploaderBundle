@@ -61,7 +61,7 @@ class PropertyMappingFactory
      * @param object $obj       The object
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return array An array up PropertyMapping objects
+     * @return PropertyMapping[] An array up PropertyMapping objects
      */
     public function fromObject($obj, $className = null, $mappingName = null)
     {
@@ -88,11 +88,11 @@ class PropertyMappingFactory
      * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
-     * @param object $obj       The object
-     * @param string $field     The field
-     * @param string $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param object|array $obj       The object
+     * @param string       $field     The field
+     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return null|PropertyMapping The property mapping
+     * @return PropertyMapping|null The property mapping
      */
     public function fromField($obj, $field, $className = null)
     {
@@ -105,7 +105,7 @@ class PropertyMappingFactory
 
         $mappingData = $this->metadata->getUploadableField($class, $field);
         if ($mappingData === null) {
-            return;
+            return null;
         }
 
         return $this->createMapping($obj, $field, $mappingData);
@@ -146,7 +146,7 @@ class PropertyMappingFactory
         $fileProperty = isset($mappingData['propertyName']) ? $mappingData['propertyName'] : $fieldName;
         $fileNameProperty = empty($mappingData['fileNameProperty']) ? $fileProperty.$this->defaultFilenameAttributeSuffix : $mappingData['fileNameProperty'];
 
-        $mapping = new PropertyMapping($fileProperty, $fileNameProperty);
+        $mapping = new PropertyMapping($fileProperty, $fileNameProperty, $mappingData);
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
