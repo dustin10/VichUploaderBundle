@@ -1,6 +1,6 @@
 <?php
 
-namespace Vich\UploaderBundle\Tests;
+namespace Vich\TestBundle\Entity;
 
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -9,14 +9,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class TwoFieldsDummyEntity
+class Article
 {
     /**
      * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
      */
-    protected $file;
+    protected $attachment;
 
-    protected $fileName;
+    protected $attachmentName;
 
     /**
      * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName", originalName="originalNameField", mimeType="mimeTypeField", size="sizeField")
@@ -31,24 +31,24 @@ class TwoFieldsDummyEntity
 
     protected $sizeField;
 
-    public function getFile()
+    public function getAttachment()
     {
-        $this->file;
+        $this->attachment;
     }
 
-    public function setFile($file)
+    public function setAttachment($attachment)
     {
-        $this->file = $file;
+        $this->attachment = $attachment;
     }
 
-    public function getFileName()
+    public function getAttachmentName()
     {
-        return $this->fileName;
+        return $this->attachmentName;
     }
 
-    public function setFileName($fileName)
+    public function setAttachmentName($attachmentName)
     {
-        $this->fileName = $fileName;
+        $this->attachmentName = $attachmentName;
     }
 
     public function getImage()

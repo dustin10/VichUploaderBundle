@@ -1,0 +1,10 @@
+Vich\TestBundle\Entity\Article:
+    attachment:
+        mapping:           dummy_file
+        filename_property: attachmentName
+    image:
+        mapping:           dummy_image
+        filename_property: imageName
+        size:              imageSize
+        mime_type:         imageMimeType
+        original_name:     imageOriginalName

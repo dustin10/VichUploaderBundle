@@ -1,0 +1,7 @@
+Vich\TestBundle\Entity\Product:
+    image:
+        mapping:           product_image
+        filename_property: imageName
+        size:              imageSize
+        mime_type:         imageMimeType
+        original_name:     imageOriginalName
