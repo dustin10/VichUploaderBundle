@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * VichUploaderExtension.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class VichUploaderExtension extends Extension
@@ -55,6 +53,8 @@ class VichUploaderExtension extends Extension
         $this->registerCacheStrategy($container, $config);
 
         $this->registerListeners($container, $config);
+
+        $this->registerFormTheme($container);
     }
 
     protected function loadServicesFiles(ContainerBuilder $container, array $config)
@@ -161,7 +161,7 @@ class VichUploaderExtension extends Extension
         foreach ($config['mappings'] as $name => $mapping) {
             $driver = $mapping['db_driver'];
 
-            // create optionnal listeners
+            // create optional listeners
             foreach ($servicesMap as $configOption => $service) {
                 if (!$mapping[$configOption]) {
                     continue;
@@ -209,5 +209,14 @@ class VichUploaderExtension extends Extension
         if (isset($this->tagMap[$driver])) {
             $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
         }
+    }
+
+    private function registerFormTheme(ContainerBuilder $container)
+    {
+        $resources = $container->hasParameter('twig.form.resources') ?
+            $container->getParameter('twig.form.resources') : [];
+
+        $resources[] = '@VichUploader/Form/fields.html.twig';
+        $container->setParameter('twig.form.resources', $resources);
     }
 }

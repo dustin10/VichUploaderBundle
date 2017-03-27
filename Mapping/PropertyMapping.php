@@ -361,6 +361,7 @@ class PropertyMapping
 
     protected function getAccessor()
     {
+        //TODO: reuse original property accessor from forms
         if ($this->accessor !== null) {
             return $this->accessor;
         }
