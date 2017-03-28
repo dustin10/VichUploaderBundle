@@ -45,7 +45,12 @@ class VichFileType extends AbstractType
             'allow_delete' => true,
             'download_link' => true,
             'error_bubbling' => false,
+            'download_uri' => null,
         ]);
+
+        $resolver->setAllowedTypes('allow_delete', 'bool');
+        $resolver->setAllowedTypes('download_link', 'bool');
+        $resolver->setAllowedTypes('error_bubbling', 'bool');
     }
 
     /**
@@ -73,13 +78,12 @@ class VichFileType extends AbstractType
     protected function buildDeleteField(FormBuilderInterface $builder, array $options)
     {
         // add delete only if there is a file
-        $storage = $this->storage;
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options, $storage) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $storage->resolveUri($object, $form->getName())) {
+            if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
                 return;
             }
 
@@ -92,16 +96,16 @@ class VichFileType extends AbstractType
         });
 
         // delete file if needed
-        $handler = $this->handler;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($handler) {
-            $delete = $event->getForm()->has('delete') ? $event->getForm()->get('delete')->getData() : false;
-            $entity = $event->getForm()->getParent()->getData();
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
+            $object = $form->getParent()->getData();
 
             if (!$delete) {
                 return;
             }
 
-            $handler->remove($entity, $event->getForm()->getName());
+            $this->handler->remove($object, $form->getName());
         });
     }
 
@@ -110,10 +114,12 @@ class VichFileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['object'] = $form->getParent()->getData();
+        $object = $form->getParent()->getData();
+        $view->vars['object'] = $object;
 
-        if ($options['download_link'] && $view->vars['object']) {
-            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $form->getName());
+        if ($options['download_link'] && $object) {
+            $view->vars['download_uri'] = $options['download_uri']
+                ?: $this->storage->resolveUri($object, $form->getName());
         }
     }
 

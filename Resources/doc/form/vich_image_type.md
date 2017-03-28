@@ -19,8 +19,9 @@ class Form extends AbstractType
 
         $builder->add('imageFile', VichImageType::class, [
             'required' => false,
-            'allow_delete' => true, // not mandatory, default is true
-            'download_link' => true, // not mandatory, default is true
+            'allow_delete' => true, // optional, default is true
+            'download_link' => true, // optional, default is true
+            'download_uri' => '...', // optional, if not provided - will automatically resolved using storage
         ]);
     }
 }

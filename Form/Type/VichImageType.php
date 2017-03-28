@@ -12,11 +12,14 @@ class VichImageType extends VichFileType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['object'] = $form->getParent()->getData();
+        $object = $form->getParent()->getData();
+
+        $view->vars['object'] = $object;
         $view->vars['show_download_link'] = $options['download_link'];
 
-        if ($view->vars['object']) {
-            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $form->getName());
+        if ($object) {
+            $view->vars['download_uri'] = $options['download_uri']
+                ?: $this->storage->resolveUri($object, $form->getName());
         }
     }
 
