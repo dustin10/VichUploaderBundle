@@ -11,26 +11,18 @@ class ClassMetadata extends BaseClassMetadata
     public function serialize()
     {
         return serialize([
-            $this->name,
-            $this->methodMetadata,
-            $this->propertyMetadata,
-            $this->fileResources,
-            $this->createdAt,
             $this->fields,
+            parent::serialize(),
         ]);
     }
 
     public function unserialize($str)
     {
         list(
-            $this->name,
-            $this->methodMetadata,
-            $this->propertyMetadata,
-            $this->fileResources,
-            $this->createdAt,
-            $this->fields
-        ) = unserialize($str);
+            $this->fields,
+            $parentStr
+            ) = unserialize($str);
 
-        $this->reflection = new \ReflectionClass($this->name);
+        parent::unserialize($parentStr);
     }
 }

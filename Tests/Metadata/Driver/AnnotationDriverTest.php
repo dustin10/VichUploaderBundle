@@ -3,10 +3,10 @@
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use PHPUnit\Framework\TestCase;
+use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
-use Vich\UploaderBundle\Tests\TwoFieldsDummyEntity;
 
 /**
  * AnnotationDriverTest.
@@ -70,7 +70,7 @@ class AnnotationDriverTest extends TestCase
 
     public function testReadTwoUploadableFields()
     {
-        $entity = new TwoFieldsDummyEntity();
+        $entity = new Article();
 
         $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
         $reader
@@ -82,7 +82,7 @@ class AnnotationDriverTest extends TestCase
             ->method('getPropertyAnnotation')
             ->will($this->returnValue(new UploadableField([
                 'mapping' => 'dummy_file',
-                'fileNameProperty' => 'fileName',
+                'fileNameProperty' => 'attachmentName',
             ])));
         $reader
             ->expects($this->at(3))
@@ -99,10 +99,10 @@ class AnnotationDriverTest extends TestCase
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         $this->assertEquals([
-            'file' => [
+            'attachment' => [
                 'mapping' => 'dummy_file',
-                'propertyName' => 'file',
-                'fileNameProperty' => 'fileName',
+                'propertyName' => 'attachment',
+                'fileNameProperty' => 'attachmentName',
                 'size' => null,
                 'mimeType' => null,
                 'originalName' => null,

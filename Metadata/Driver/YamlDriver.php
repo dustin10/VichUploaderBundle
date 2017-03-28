@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
+use Metadata\Driver\AbstractFileDriver;
 use Symfony\Component\Yaml\Yaml as YmlParser;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
@@ -13,11 +14,13 @@ class YamlDriver extends AbstractFileDriver
     /**
      * {@inheritdoc}
      */
-    protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
+    protected function loadMetadataFromFile(\ReflectionClass $class = null, $file)
     {
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
-        $metadata = new ClassMetadata($className);
+        $classMetadata = new ClassMetadata($className);
+        $classMetadata->fileResources[] = $file;
+        $classMetadata->fileResources[] = $class->getFileName();
 
         foreach ($config[$className] as $field => $mappingData) {
             $fieldMetadata = [
@@ -29,15 +32,10 @@ class YamlDriver extends AbstractFileDriver
                 'originalName' => isset($mappingData['original_name']) ? $mappingData['original_name'] : null,
             ];
 
-            $metadata->fields[$field] = $fieldMetadata;
+            $classMetadata->fields[$field] = $fieldMetadata;
         }
 
-        return $metadata;
-    }
-
-    protected function getClassNameFromFile($file)
-    {
-        return $this->guessClassName($file, $this->loadMappingFile($file));
+        return $classMetadata;
     }
 
     protected function loadMappingFile($file)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<vich_uploader class="Vich\TestBundle\Entity\Article">
+    <field mapping="dummy_file" name="attachment" filename_property="attachmentName" />
+    <field mapping="dummy_image" name="image" filename_property="imageName"
+           size="imageSize" mime_type="imageMimeType" original_name="imageOriginalName" />
+</vich_uploader>

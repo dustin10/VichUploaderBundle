@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
+use Metadata\Driver\AbstractFileDriver;
+use Symfony\Component\Config\Util\XmlUtils;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
@@ -9,12 +11,15 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile($file, \ReflectionClass $class = null)
+    protected function loadMetadataFromFile(\ReflectionClass $class = null, $file)
     {
-        $elem = $this->loadMappingFile($file);
+        $elem = XmlUtils::loadFile($file);
+        $elem = simplexml_import_dom($elem);
 
         $className = $this->guessClassName($file, $elem, $class);
-        $metadata = new ClassMetadata($className);
+        $classMetadata = new ClassMetadata($className);
+        $classMetadata->fileResources[] = $file;
+        $classMetadata->fileResources[] = $class->getFileName();
 
         foreach ($elem->children() as $field) {
             $fieldMetadata = [
@@ -26,28 +31,10 @@ class XmlDriver extends AbstractFileDriver
                 'originalName' => (string) $field->attributes()->original_name,
             ];
 
-            $metadata->fields[(string) $field->attributes()->name] = $fieldMetadata;
+            $classMetadata->fields[(string) $field->attributes()->name] = $fieldMetadata;
         }
 
-        return $metadata;
-    }
-
-    protected function getClassNameFromFile($file)
-    {
-        return $this->guessClassName($file, $this->loadMappingFile($file));
-    }
-
-    protected function loadMappingFile($file)
-    {
-        $previous = libxml_use_internal_errors(true);
-        $elem = simplexml_load_file($file);
-        libxml_use_internal_errors($previous);
-
-        if (false === $elem) {
-            throw new \RuntimeException(libxml_get_last_error());
-        }
-
-        return $elem;
+        return $classMetadata;
     }
 
     /**

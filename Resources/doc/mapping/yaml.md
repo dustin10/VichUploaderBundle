@@ -9,10 +9,10 @@ format and comes with the following syntax to declare your uploadable fields:
 Acme\DemoBundle\Entity\Product:
     image:
         mapping:           product_image # required
-        filename_property: image_name    # required
-        size:              image_size
-        mime_type:         image_mime_type
-        original_name:     image_original_name
+        filename_property: imageName     # required
+        size:              imageSize
+        mime_type:         imageMimeType
+        original_name:     imageOriginalName
 ```
 
 To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
