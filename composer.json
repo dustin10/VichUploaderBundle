@@ -34,7 +34,7 @@
         "doctrine/orm": "^2.5",
         "doctrine/mongodb-odm": "^1.1",
 
-        "knplabs/knp-gaufrette-bundle": "^0.3",
+        "knplabs/knp-gaufrette-bundle": "^0.4",
         "oneup/flysystem-bundle": "^1.7",
 
         "symfony/browser-kit": "^2.8|^3.1",
@@ -55,7 +55,7 @@
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/phpcr-odm": "^1.0",
         "doctrine/mongodb-odm-bundle": "*",
-        "knplabs/knp-gaufrette-bundle": "^0.3",
+        "knplabs/knp-gaufrette-bundle": "^0.4",
         "willdurand/propel-eventdispatcher-bundle": "^1.2",
         "symfony/yaml": "^2.8|^3.1"
     },
@@ -67,7 +67,6 @@
     "autoload-dev": {
         "psr-4": {
             "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
-        },
-        "classmap": [ "Tests/phpunit-bc" ]
+        }
     }
 }
