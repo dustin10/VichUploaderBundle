@@ -45,6 +45,7 @@ class AnnotationDriver implements AdvancedDriverInterface
                 continue;
             }
             /* @var $uploadableField UploadableField */
+            //TODO: try automatically determinate target fields if embeddable used
 
             $fieldMetadata = [
                 'mapping' => $uploadableField->getMapping(),
