@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -180,5 +181,32 @@ class PropertyMappingTest extends TestCase
             ['other_dir\\sub_dir', 'other_dir\\sub_dir'],
             ['other_dir\\sub_dir\\', 'other_dir\\sub_dir'],
         ];
+    }
+
+    public function testErase()
+    {
+        $object = new Article();
+
+        $object->setImageName('generated.jpeg');
+        $object->setOriginalNameField('original.jpeg');
+        $object->setMimeTypeField('image/jpeg');
+        $object->setSizeField(100);
+
+        $prop = new PropertyMapping(
+            'image',
+            'imageName',
+            [
+                'size' => 'sizeField',
+                'mimeType' => 'mimeTypeField',
+                'originalName' => 'originalNameField',
+            ]
+        );
+
+        $prop->erase($object);
+
+        $this->assertNull($object->getImageName());
+        $this->assertNull($object->getOriginalNameField());
+        $this->assertNull($object->getMimeTypeField());
+        $this->assertNull($object->getSizeField());
     }
 }

@@ -111,6 +111,18 @@ class PropertyMapping
     }
 
     /**
+     * Removes value for each file-related property of the given object.
+     *
+     * @param object $obj The object
+     */
+    public function erase($obj)
+    {
+        foreach (['name', 'size', 'mimeType', 'originalName'] as $property) {
+            $this->writeProperty($obj, $property, null);
+        }
+    }
+
+    /**
      * Reads property of the given object.
      *
      * @internal
