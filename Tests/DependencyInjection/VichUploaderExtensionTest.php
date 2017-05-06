@@ -100,4 +100,26 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
+
+    public function testListenersCreation()
+    {
+        $this->load([
+            'db_driver' => 'mongodb',
+            'mappings' => $mappings = [
+                'profile_common_avatar' => [
+                    'upload_destination' => 'profile_common_user_avatar_images',
+                    'uri_prefix' => '/',
+                    'namer' => ['service' => null, 'options' => null],
+                    'directory_namer' => ['service' => null, 'options' => null],
+                    'delete_on_remove' => true,
+                    'delete_on_update' => false,
+                    'inject_on_load' => true,
+                ],
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasService('vich_uploader.listener.inject.profile_common_avatar');
+        $this->assertContainerBuilderNotHasService('vich_uploader.listener.clean.profile_common_avatar');
+        $this->assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
+    }
 }

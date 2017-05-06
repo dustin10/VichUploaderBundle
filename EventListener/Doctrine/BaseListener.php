@@ -68,7 +68,7 @@ abstract class BaseListener implements EventSubscriber
      *
      * @param mixed $object The object to use
      *
-     * @return array<string> A list of field names
+     * @return string[] A list of field names
      */
     protected function getUploadableFields($object)
     {

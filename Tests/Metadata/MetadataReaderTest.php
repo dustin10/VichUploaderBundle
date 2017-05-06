@@ -66,19 +66,26 @@ class MetadataReaderTest extends TestCase
 
     public function testGetUploadableFields()
     {
-        $fields = ['foo', 'bar', 'baz'];
+        $fields = [
+            'foo' => ['mapping' => 'foo_mapping'],
+            'bar' => ['mapping' => 'bar_mapping'],
+            'baz' => ['mapping' => 'baz_mapping'],
+        ];
         $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
         $metadata = new \stdClass();
         $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->will($this->returnValue($metadata));
 
         $this->assertSame($fields, $this->reader->getUploadableFields('ClassName'));
+
+        $barFields = ['bar' => ['mapping' => 'bar_mapping']];
+        $this->assertSame($barFields, $this->reader->getUploadableFields('ClassName', 'bar_mapping'));
     }
 
     public function testGetUploadableFieldsWithInheritance()

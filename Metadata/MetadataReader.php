@@ -40,9 +40,11 @@ class MetadataReader
     {
         $metadata = $this->reader->getMetadataForClass($class);
 
-        if ($metadata === null) {
+        if (null === $metadata) {
             return false;
-        } elseif ($mapping === null) {
+        }
+
+        if (null === $mapping) {
             return true;
         }
 
@@ -68,17 +70,24 @@ class MetadataReader
     /**
      * Attempts to read the uploadable fields.
      *
-     * @param string $class The class name to test (FQCN)
+     * @param string $class   The class name to test (FQCN)
+     * @param string $mapping If given, also checks that the object has the given mapping
      *
      * @return array A list of uploadable fields
      */
-    public function getUploadableFields($class)
+    public function getUploadableFields($class, $mapping = null)
     {
         $metadata = $this->reader->getMetadataForClass($class);
         $uploadableFields = [];
 
         foreach ($metadata->classMetadata as $classMetadata) {
             $uploadableFields = array_merge($uploadableFields, $classMetadata->fields);
+        }
+
+        if (null !== $mapping) {
+            $uploadableFields = array_filter($uploadableFields, function ($fieldMetadata) use ($mapping) {
+                return $fieldMetadata['mapping'] === $mapping;
+            });
         }
 
         return $uploadableFields;
