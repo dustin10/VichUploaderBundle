@@ -103,7 +103,7 @@ class UploadHandler extends AbstractHandler
         $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
 
         $this->storage->remove($obj, $mapping);
-        $mapping->setFileName($obj, null);
+        $mapping->erase($obj);
 
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
     }

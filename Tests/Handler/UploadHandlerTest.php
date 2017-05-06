@@ -2,10 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
@@ -18,10 +18,13 @@ class UploadHandlerTest extends TestCase
     protected $injector;
     protected $dispatcher;
     protected $mapping;
+    /**
+     * @var Article
+     */
     protected $object;
     protected $handler;
 
-    const FILE_FIELD = 'file_field';
+    const FILE_FIELD = 'image';
 
     public function setUp()
     {
@@ -30,7 +33,7 @@ class UploadHandlerTest extends TestCase
         $this->injector = $this->getInjectorMock();
         $this->dispatcher = $this->getDispatcherMock();
         $this->mapping = $this->getPropertyMappingMock();
-        $this->object = new DummyEntity();
+        $this->object = new Article();
 
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
         $this->factory
@@ -166,6 +169,12 @@ class UploadHandlerTest extends TestCase
             ->method('getFileName')
             ->with($this->object)
             ->will($this->returnValue('something not null'));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('erase')
+            ->with($this->object)
+            ->will($this->returnValue(null));
 
         $this->storage
             ->expects($this->once())
