@@ -31,7 +31,7 @@ abstract class BaseListener implements EventSubscriberInterface
     protected $metadata;
 
     /**
-     * @var UploaderHandler
+     * @var UploadHandler
      */
     protected $handler;
 
@@ -41,7 +41,7 @@ abstract class BaseListener implements EventSubscriberInterface
      * @param string           $mapping  The mapping name
      * @param AdapterInterface $adapter  The adapter
      * @param MetadataReader   $metadata The metadata reader
-     * @param UploaderHandler  $handler  The upload handler
+     * @param UploadHandler    $handler  The upload handler
      */
     public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
@@ -56,7 +56,7 @@ abstract class BaseListener implements EventSubscriberInterface
      *
      * @param mixed $object The object to use
      *
-     * @return array<string> A list of field names
+     * @return string[] A list of field names
      */
     protected function getUploadableFields($object)
     {
