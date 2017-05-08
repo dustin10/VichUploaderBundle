@@ -3,6 +3,7 @@ language: php
 php:
     - 7.0
     - 7.1
+    - nightly
 
 sudo: false
 
@@ -19,6 +20,8 @@ matrix:
           env: SYMFONY_VERSION="~2.8.0"
         - php: 7.1
           env: SYMFONY_VERSION="~3.2.0"
+    allow_failures:
+        - php: nightly
 
 before_install:
     - composer self-update
