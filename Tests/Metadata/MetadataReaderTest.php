@@ -10,7 +10,7 @@ class MetadataReaderTest extends TestCase
     protected $reader;
     protected $factory;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = $this->createMock('Metadata\AdvancedMetadataFactoryInterface');
         $this->reader = new MetadataReader($this->factory);

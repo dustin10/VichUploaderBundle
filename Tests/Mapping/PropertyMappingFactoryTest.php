@@ -28,7 +28,7 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->container = $this->getContainerMock();
         $this->metadata = $this->getMetadataReaderMock();

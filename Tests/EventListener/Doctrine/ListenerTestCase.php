@@ -48,7 +48,7 @@ class ListenerTestCase extends TestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->adapter = $this->getAdapterMock();
         $this->metadata = $this->getMetadataReaderMock();

@@ -15,7 +15,7 @@ class UploadHelperTest extends TestCase
     protected $storage;
     protected $helper;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->storage = $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
         $this->helper = new UploaderHelper($this->storage);

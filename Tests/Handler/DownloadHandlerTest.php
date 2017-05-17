@@ -17,7 +17,7 @@ class DownloadHandlerTest extends TestCase
     protected $handler;
     protected $mapping;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->storage = $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');

@@ -15,7 +15,7 @@ class UploaderExtensionTest extends TestCase
     protected $helper;
     protected $extension;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->helper = $this->getMockBuilder('Vich\UploaderBundle\Templating\Helper\UploaderHelper')->disableOriginalConstructor()->getMock();
         $this->extension = new UploaderExtension($this->helper);

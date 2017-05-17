@@ -43,7 +43,7 @@ class FlysystemStorageTest extends StorageTestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->mountManager = $this->getMountManagerMock();
         $this->filesystem = $this->createMock('League\Flysystem\FilesystemInterface');

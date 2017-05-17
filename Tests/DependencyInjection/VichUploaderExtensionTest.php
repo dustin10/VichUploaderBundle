@@ -21,7 +21,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

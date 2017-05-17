@@ -21,7 +21,7 @@ class FileInjectorTest extends TestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->storage = $this->getMockStorage();
     }

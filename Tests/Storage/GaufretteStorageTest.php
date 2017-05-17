@@ -30,7 +30,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->filesystemMap = $this->getFilesystemMapMock();
 

@@ -21,7 +21,7 @@ class PropelORMAdapterTest extends TestCase
         }
     }
 
-    public function setUp()
+    protected function setUp()
     {
         $this->adapter = new PropelORMAdapter();
     }

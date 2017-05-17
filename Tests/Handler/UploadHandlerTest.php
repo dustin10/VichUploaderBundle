@@ -26,7 +26,7 @@ class UploadHandlerTest extends TestCase
 
     const FILE_FIELD = 'image';
 
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->storage = $this->getStorageMock();

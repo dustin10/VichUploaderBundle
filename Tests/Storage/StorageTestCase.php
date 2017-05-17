@@ -53,7 +53,7 @@ abstract class StorageTestCase extends TestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->mapping = $this->getPropertyMappingMock();

@@ -15,7 +15,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Sets up the test.
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
