@@ -2,14 +2,14 @@
 
 namespace Vich\UploaderBundle\Adapter\PHPCR;
 
-use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Doctrine\Common\EventArgs;
+use Doctrine\Common\Persistence\Event\ManagerEventArgs;
+use Vich\UploaderBundle\Adapter\DoctrineAdapter;
 
 /**
- * PHPCRAdapter.
- *
  * @author Ben Glassman <bglassman@gmail.com>
  */
-class PHPCRAdapter implements AdapterInterface
+class PHPCRAdapter implements DoctrineAdapter
 {
     /**
      * {@inheritdoc}
@@ -22,12 +22,12 @@ class PHPCRAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function recomputeChangeSet($event)
+    public function getIdentityMapForEvent(EventArgs $event)
     {
-        $object = $this->getObjectFromArgs($event);
+        /* @var $event ManagerEventArgs */
+        $em = $event->getObjectManager();
+        //FIXME: fix getIdentityMap call https://github.com/doctrine/phpcr-odm/blob/master/lib/Doctrine/ODM/PHPCR/UnitOfWork.php
 
-        $dm = $event->getObjectManager();
-        $uow = $dm->getUnitOfWork();
-        $uow->computeSingleDocumentChangeSet($object);
+        return $em->getUnitOfWork()->getIdentityMap();
     }
 }

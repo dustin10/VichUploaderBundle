@@ -15,7 +15,7 @@ class ClassUtils
      */
     public static function getClass($object)
     {
-        if (class_exists('Doctrine\Common\Util\ClassUtils')) {
+        if (class_exists(DoctrineClassUtils::class)) {
             return DoctrineClassUtils::getClass($object);
         }
 

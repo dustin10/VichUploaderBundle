@@ -6,15 +6,10 @@ use Doctrine\Common\Persistence\Proxy;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 
 /**
- * Doctrine RemoveListener test.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class RemoveListenerTest extends ListenerTestCase
 {
-    /**
-     * Sets up the test.
-     */
     protected function setUp()
     {
         parent::setUp();

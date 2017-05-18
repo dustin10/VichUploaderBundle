@@ -3,8 +3,6 @@
 namespace Vich\UploaderBundle\Adapter;
 
 /**
- * AdapterInterface.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 interface AdapterInterface
@@ -17,11 +15,4 @@ interface AdapterInterface
      * @return object The mapped object
      */
     public function getObjectFromArgs($event);
-
-    /**
-     * Recomputes the change set for the object.
-     *
-     * @param object $event The event
-     */
-    public function recomputeChangeSet($event);
 }

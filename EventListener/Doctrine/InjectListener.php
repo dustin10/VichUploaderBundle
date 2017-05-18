@@ -5,18 +5,15 @@ namespace Vich\UploaderBundle\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 
 /**
- * InjectListener.
- *
  * Listen to the load event in order to inject File objects.
  *
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class InjectListener extends BaseListener
 {
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
@@ -25,19 +22,15 @@ class InjectListener extends BaseListener
         ];
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
     public function postLoad(EventArgs $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-
-        if (!$this->isUploadable($object)) {
-            return;
-        }
-
         foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->inject($object, $field);
+            if (!$this->isFlagEnabledForField('inject_on_load', $field)) {
+                continue;
+            }
+
+            $this->handler->inject($object, $field['propertyName']);
         }
     }
 }

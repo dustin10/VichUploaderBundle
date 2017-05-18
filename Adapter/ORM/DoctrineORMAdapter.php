@@ -2,14 +2,14 @@
 
 namespace Vich\UploaderBundle\Adapter\ORM;
 
-use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
+use Vich\UploaderBundle\Adapter\DoctrineAdapter;
 
 /**
- * DoctrineORMAdapter.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class DoctrineORMAdapter implements AdapterInterface
+class DoctrineORMAdapter implements DoctrineAdapter
 {
     /**
      * {@inheritdoc}
@@ -19,16 +19,11 @@ class DoctrineORMAdapter implements AdapterInterface
         return $event->getEntity();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function recomputeChangeSet($event)
+    public function getIdentityMapForEvent(EventArgs $event)
     {
-        $object = $this->getObjectFromArgs($event);
-
+        /* @var $event PreFlushEventArgs */
         $em = $event->getEntityManager();
-        $uow = $em->getUnitOfWork();
-        $metadata = $em->getClassMetadata(get_class($object));
-        $uow->recomputeSingleEntityChangeSet($metadata, $object);
+
+        return $em->getUnitOfWork()->getIdentityMap();
     }
 }

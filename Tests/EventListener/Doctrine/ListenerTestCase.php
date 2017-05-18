@@ -5,13 +5,12 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Vich\UploaderBundle\Adapter\DoctrineAdapter;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
- * Doctrine listener test case.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class ListenerTestCase extends TestCase
@@ -19,7 +18,7 @@ class ListenerTestCase extends TestCase
     const MAPPING_NAME = 'dummy_mapping';
 
     /**
-     * @var AdapterInterface
+     * @var DoctrineAdapter
      */
     protected $adapter;
 
@@ -45,9 +44,6 @@ class ListenerTestCase extends TestCase
 
     protected $listener;
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp()
     {
         $this->adapter = $this->getAdapterMock();
@@ -68,14 +64,9 @@ class ListenerTestCase extends TestCase
             }));
     }
 
-    /**
-     * Creates a mock adapter.
-     *
-     * @return AdapterInterface The mock adapter
-     */
     protected function getAdapterMock()
     {
-        return $this->createMock('Vich\UploaderBundle\Adapter\AdapterInterface');
+        return $this->createMock(AdapterInterface::class);
     }
 
     /**

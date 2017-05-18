@@ -5,15 +5,10 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
 
 /**
- * Doctrine UploadListener test.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class UploadListenerTest extends ListenerTestCase
 {
-    /**
-     * Sets up the test.
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -28,7 +23,7 @@ class UploadListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(['prePersist', 'preUpdate'], $events);
+        $this->assertSame(['prePersist', 'preFlush'], $events);
     }
 
     /**

@@ -52,7 +52,8 @@ class VichUploaderExtension extends Extension
         $this->registerMetadataDirectories($container, $config);
         $this->registerCacheStrategy($container, $config);
 
-        $this->registerListeners($container, $config);
+        $this->registerDoctrineListeners($container, $config);
+        $this->registerPropelListeners($container, $config);
 
         $this->registerFormTheme($container);
     }
@@ -150,28 +151,52 @@ class VichUploaderExtension extends Extension
         return $config;
     }
 
-    protected function registerListeners(ContainerBuilder $container, array $config)
+    protected function registerDoctrineListeners(ContainerBuilder $container, array $config)
+    {
+        $dbDrivers = [];
+        foreach ($config['mappings'] as $mapping) {
+            $dbDrivers[$mapping['db_driver']] = true;
+        }
+
+        // register propel via compiler pass
+        unset($dbDrivers['propel']);
+
+        $serviceTypes = [
+            'upload' => 0,
+            'inject' => 0,
+            'clean' => 50,
+            'remove' => 0,
+        ];
+
+        foreach (array_keys($dbDrivers) as $driver) {
+            foreach ($serviceTypes as $serviceType => $priority) {
+                $this->createDoctrineListener($container, $serviceType, $driver, $priority);
+            }
+        }
+    }
+
+    protected function registerPropelListeners(ContainerBuilder $container, array $config)
     {
         $servicesMap = [
-            'inject_on_load' => ['name' => 'inject', 'priority' => 0],
-            'delete_on_update' => ['name' => 'clean', 'priority' => 50],
-            'delete_on_remove' => ['name' => 'remove', 'priority' => 0],
+            'inject_on_load' => 'inject',
+            'delete_on_update' => 'clean',
+            'delete_on_remove' => 'remove',
         ];
 
         foreach ($config['mappings'] as $name => $mapping) {
-            $driver = $mapping['db_driver'];
+            if ('propel' !== $mapping['db_driver']) {
+                continue;
+            }
 
             // create optional listeners
-            foreach ($servicesMap as $configOption => $service) {
+            foreach ($servicesMap as $configOption => $serviceType) {
                 if (!$mapping[$configOption]) {
                     continue;
                 }
-
-                $this->createListener($container, $name, $service['name'], $driver, $service['priority']);
+                $this->createPropelListener($container, $name, $serviceType);
             }
-
             // the upload listener is mandatory
-            $this->createListener($container, $name, 'upload', $driver);
+            $this->createPropelListener($container, $name, 'upload');
         }
     }
 
@@ -198,17 +223,26 @@ class VichUploaderExtension extends Extension
         return $mapping;
     }
 
-    protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0)
+    protected function createDoctrineListener(ContainerBuilder $container, $type, $driver, $priority = 0)
     {
         $definition = $container
-            ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
-            ->replaceArgument(0, $name)
+            ->getDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $driver))
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
-        // propel does not require tags to work
-        if (isset($this->tagMap[$driver])) {
-            $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
-        }
+        $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
+    }
+
+    protected function createPropelListener(ContainerBuilder $container, $name, $type)
+    {
+        $driver = 'propel';
+
+        $container
+            ->setDefinition(
+                sprintf('vich_uploader.listener.%s.%s', $type, $name),
+                new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver))
+            )
+            ->replaceArgument(0, $name)
+            ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
     }
 
     private function registerFormTheme(ContainerBuilder $container)
