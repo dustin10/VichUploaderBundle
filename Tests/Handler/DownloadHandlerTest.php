@@ -35,10 +35,10 @@ class DownloadHandlerTest extends TestCase
     public function filenamesProvider()
     {
         return [
-            ['file_name', 'file_name'],
-            ['file_name.ext', 'file_name.ext'],
+            ['file_name', 'file-name'],
+            ['file_name.ext', 'file-name.ext'],
             ['file-name.ext', 'file-name.ext'],
-            ['ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334', 'EAUUOPOUEUIIII-4334'],
+            ['ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334', 'eauuopoueuiiii-4334'],
         ];
     }
 

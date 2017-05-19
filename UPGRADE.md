@@ -1,11 +1,13 @@
 Upgrading from v1.0.0 to master
 ===============================
 
+The transliteration is now using `behat\transliterator` instead of a custom one. Some minor
+differences are that dash is not preserved anymore and names are lowercased.
 
 Upgrading from v0.14.0 to v1.0.0
 ================================
 
-No BC breaks. 
+No BC breaks.
 
 Upgrading from v0.13.0 to v0.14.0
 =================================

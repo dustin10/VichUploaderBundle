@@ -25,7 +25,7 @@ class PropertyNamerTest extends TestCase
             ['some-file-name.jpeg', 'foo.jpeg',                 $entity,       'someProperty',     false],
             ['some-file-name',      'foo',                      $entity,       'someProperty',     false],
             ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,       'generateFileName', false], // method call
-            ['some-file-name.jpeg', 'Yeo.jpeg',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
+            ['some-file-name.jpeg', 'yeo.jpeg',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
         ];
     }
 
