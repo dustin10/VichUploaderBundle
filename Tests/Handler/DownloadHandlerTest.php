@@ -130,7 +130,7 @@ class DownloadHandlerTest extends TestCase
             ->with($this->object, 'file_field')
             ->will($this->returnValue('something not null'));
 
-        $response = $this->handler->downloadObject($this->object, 'file_field', null, 'ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334');
+        $response = $this->handler->downloadObject($this->object, 'file_field', null, 'ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334º');
 
         $this->assertInstanceof('\Symfony\Component\HttpFoundation\StreamedResponse', $response);
     }
