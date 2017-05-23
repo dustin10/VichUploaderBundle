@@ -2,10 +2,17 @@
 
 namespace Vich\UploaderBundle\Util;
 
-use Behat\Transliterator\Transliterator as BaseTransliterator;
+use Behat\Transliterator\Transliterator as BehatTransliterator;
 
-class Transliterator extends BaseTransliterator
+class Transliterator
 {
+    /**
+     * This class should not be instantiated.
+     */
+    private function __construct()
+    {
+    }
+
     /**
      * Transliterate a string. If string represents a filename, extension is kept.
      *
@@ -16,10 +23,10 @@ class Transliterator extends BaseTransliterator
      */
     public static function transliterate($string, $separator = '-')
     {
-        $extension = pathinfo($string, PATHINFO_EXTENSION);
-        $filename = pathinfo($string, PATHINFO_FILENAME);
-        $transliterated = parent::transliterate($filename, $separator);
-        if (!empty($extension)) {
+        list($filename, $extension) = FilenameUtils::spitNameByExtension($string);
+
+        $transliterated = BehatTransliterator::transliterate($filename, $separator);
+        if ('' !== $extension) {
             $transliterated .= '.'.$extension;
         }
 
