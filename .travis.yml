@@ -17,9 +17,15 @@ env:
 matrix:
     include:
         - php: 7.0
-          env: SYMFONY_VERSION="~2.8.0"
+          env: VALIDATE_DOCS=true
+        - php: 7.0
+          env: SYMFONY_VERSION="~3.2.0"
         - php: 7.1
           env: SYMFONY_VERSION="~3.2.0"
+        - php: 7.1
+          env: SYMFONY_VERSION="~2.8.0" WITH_LIIP_IMAGINE=true
+        - php: 7.1
+          env: SYMFONY_VERSION="~3.2.0" WITH_LIIP_IMAGINE=true
     allow_failures:
         - php: nightly
 
@@ -27,11 +33,12 @@ before_install:
     - composer self-update
     - phpenv config-rm xdebug.ini || true
     - composer config platform.ext-mongo 1.6.14
-    - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony:${SYMFONY_VERSION}; fi
+    - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:^1.7; fi;
+    - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
 
-install: php -d memory_limit=-1 $(phpenv which composer) update --prefer-dist
+install: php -d memory_limit=-1 $(phpenv which composer) install --no-suggest --prefer-dist
 
 script:
-    - ./vendor/bin/phpunit
-    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then php ./vendor/bin/rusty check --no-execute ./Resources/doc; fi
+    - if [ "$VALIDATE_DOCS" != true ]; then ./vendor/bin/phpunit; fi
+    - if [ "$VALIDATE_DOCS" = true ]; then php ./vendor/bin/rusty check --no-execute ./Resources/doc; fi

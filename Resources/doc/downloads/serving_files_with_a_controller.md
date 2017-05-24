@@ -39,15 +39,17 @@ class AcmeController extends Controller
     public function downloadImageAction(Image $image)
     {
         $downloadHandler = $this->get('vich_uploader.download_handler');
-        $imageFileName   = 'foo.png';
+        $fileName   = 'foo.png';
 
-        return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $imageFileName);
+        return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $fileName);
     }
 }
 ```
 
-By setting the `$imageFileName` variable to *foo.png*, I ensure that no matter
+By setting the `$fileName` variable to *foo.png*, I ensure that no matter
 the original filename of the file, it will be downloaded as *foo.png*.
+
+You can pass `true` as `$fileName` and in this case file will be served with original file name.
 
 Using this feature, using a *unique id namer* to store the file and restore
 their original name only when they are downloaded is possible (as long as you

@@ -19,6 +19,8 @@ class Product
 
     private $imageOriginalName;
 
+    private $title;
+
     /**
      * @return File
      */
@@ -73,5 +75,15 @@ class Product
     public function setImageOriginalName($imageOriginalName)
     {
         $this->imageOriginalName = $imageOriginalName;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 }

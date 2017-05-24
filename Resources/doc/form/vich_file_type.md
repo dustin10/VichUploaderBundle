@@ -1,5 +1,5 @@
-VichFileType
-============
+VichFileType Field
+==================
 
 The bundle provides a custom form type in order to ease the upload, deletion and
 download of files.
@@ -19,27 +19,87 @@ class Form extends AbstractType
 
         $builder->add('genericFile', VichFileType::class, [
             'required' => false,
-            'allow_delete' => true, // optional, default is true
-            'download_link' => true, // optional, default is true
-            'download_uri' => '...', // optional, if not provided - will automatically resolved using storage
+            'allow_delete' => true, 
+            'download_uri' => '...',
+            'download_label' => '...',
         ]);
     }
 }
 ```
 
-For the form type to fully work, you'll also have to use the form theme bundled
-with VichUploaderBundle.
+allow_delete
+------------
+**type**: `bool` **default**: `true`
 
-```yaml
-# app/config/config.yml
-twig:
-    form_themes:
-        # other form themes
-        - 'VichUploaderBundle:Form:fields.html.twig'
+download_uri
+------------
+**type**: `bool`, `string`, `callable` **default**: `true`
+
+If set to `true`, download uri will automatically resolved using storage.
+
+Can be string
+
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('genericFile', VichFileType::class, [
+    'download_uri' => $router->generateUrl('acme_download_image', $product->getId()),
+]);
+
 ```
 
-See [Symfony's documentation on form themes](https://symfony.com/doc/current/form/form_customization.html#form-theming)
-for more information.
+Can be callable
+
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('genericFile', VichFileType::class, [
+    'download_uri' => function (Product $product) use ($router) {
+        return $router->generateUrl('acme_download_image', $product->getId());
+    },
+]);
+
+```
+
+download_label
+--------------
+**type**: `bool`, `string`, `callable`, `Symfony\Component\PropertyAccess\PropertyPath` **default**: `'download'`
+
+If set to `true`, download label will use original file name.
+
+Can be string 
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('genericFile', VichFileType::class, [
+    'download_label' => 'download_file',
+]);
+
+```
+
+Can be callable
+
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('genericFile', VichFileType::class, [
+    'download_label' => function (Product $product) {
+        return $product->getTitle();
+    },
+]);
+
+```
+
+Can be property path 
+```php
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('genericFile', VichFileType::class, [
+    'download_label' => new PropertyPath('title'),
+]);
+
+```
 
 ## That was it!
 

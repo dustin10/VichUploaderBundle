@@ -2,7 +2,10 @@
     "name": "vich/uploader-bundle",
     "type": "symfony-bundle",
     "description": "Ease file uploads attached to entities",
-    "keywords": ["file uploads", "upload"],
+    "keywords": [
+        "file uploads",
+        "upload"
+    ],
     "homepage": "https://github.com/dustin10/VichUploaderBundle",
     "license": "MIT",
     "authors": [
@@ -30,15 +33,12 @@
         "jms/metadata": "^1.6"
     },
     "require-dev": {
-        "ext-sqlite3" : "*",
-
+        "ext-sqlite3": "*",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "doctrine/mongodb-odm": "^1.1",
-
         "knplabs/knp-gaufrette-bundle": "^0.4",
         "oneup/flysystem-bundle": "^1.7",
-
         "symfony/browser-kit": "^2.8|^3.1",
         "symfony/css-selector": "^2.8|^3.1",
         "symfony/dom-crawler": "^2.8|^3.1",
@@ -47,7 +47,6 @@
         "symfony/twig-bundle": "^2.8|^3.1",
         "symfony/validator": "^2.8|^3.1",
         "symfony/yaml": "^2.8|^3.1",
-
         "phpunit/phpunit": "^6.0",
         "mikey179/vfsStream": "^1.6",
         "matthiasnoback/symfony-dependency-injection-test": "^2.0"
@@ -59,7 +58,8 @@
         "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "^0.4",
         "willdurand/propel-eventdispatcher-bundle": "^1.2",
-        "symfony/yaml": "^2.8|^3.1"
+        "symfony/yaml": "^2.8|^3.1",
+        "liip/imagine-bundle": "^1.7"
     },
     "autoload": {
         "psr-4": {

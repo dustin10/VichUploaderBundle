@@ -17,9 +17,7 @@ class Configuration implements ConfigurationInterface
     protected $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
 
     /**
-     * Gets the configuration tree builder for the extension.
-     *
-     * @return Tree The configuration tree builder
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {

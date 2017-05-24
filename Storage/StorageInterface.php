@@ -5,8 +5,6 @@ namespace Vich\UploaderBundle\Storage;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
- * StorageInterface.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 interface StorageInterface
@@ -32,23 +30,25 @@ interface StorageInterface
      * Resolves the path for a file based on the specified object
      * and mapping name.
      *
-     * @param object $obj       The object
-     * @param string $fieldName The field to use
-     * @param string $className The object's class. Mandatory if $obj can't be used to determine it
-     * @param bool   $relative  Whether the path should be relative or absolute
+     * @param object|array $obj       The object
+     * @param string       $fieldName The field to use
+     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param bool         $relative  Whether the path should be relative or absolute
      *
      * @return string The path
      */
     public function resolvePath($obj, $fieldName, $className = null, $relative = false);
 
+    //TODO: inconsistency - use PropertyMapping instead of fieldName+className
+
     /**
      * Resolves the uri based on the specified object and mapping name.
      *
-     * @param object $obj       The object
-     * @param string $fieldName The field to use
-     * @param string $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param object|array $obj       The object
+     * @param string       $fieldName The field to use
+     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return string The uri
+     * @return string|null The uri or null if file not stored
      */
     public function resolveUri($obj, $fieldName, $className = null);
 
@@ -56,11 +56,11 @@ interface StorageInterface
      * Returns a read-only stream based on the specified object and mapping
      * name.
      *
-     * @param object $obj       The object
-     * @param string $fieldName The field to use
-     * @param string $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param object|array $obj       The object
+     * @param string       $fieldName The field to use
+     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return string The uri
+     * @return resource|null The resolved resource or null if file not stored
      */
     public function resolveStream($obj, $fieldName, $className = null);
 }

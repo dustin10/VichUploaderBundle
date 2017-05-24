@@ -7,14 +7,17 @@
         <service id="vich_uploader.form.type.file" class="Vich\UploaderBundle\Form\Type\VichFileType">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
-
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="form.property_accessor" />
             <tag name="form.type" alias="vich_file" />
         </service>
 
         <service id="vich_uploader.form.type.image" class="Vich\UploaderBundle\Form\Type\VichImageType">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
-
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="form.property_accessor" />
+            <argument type="service" id="liip_imagine.cache.manager" on-invalid="null" />
             <tag name="form.type" alias="vich_image" />
         </service>
     </services>

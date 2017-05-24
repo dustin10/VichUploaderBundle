@@ -8,8 +8,6 @@ use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * Download handler.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class DownloadHandler extends AbstractHandler
@@ -17,10 +15,10 @@ class DownloadHandler extends AbstractHandler
     /**
      * Create a response object that will trigger the download of a file.
      *
-     * @param mixed  $object
-     * @param string $field
-     * @param string $className
-     * @param string $fieldName
+     * @param object|array $object
+     * @param string       $field
+     * @param string       $className
+     * @param string|true  $fileName  True to return original file name
      *
      * @return StreamedResponse
      */
@@ -29,14 +27,20 @@ class DownloadHandler extends AbstractHandler
         $mapping = $this->getMapping($object, $field, $className);
         $stream = $this->storage->resolveStream($object, $field, $className);
 
-        if ($stream === null) {
+        if (null === $stream) {
             throw new NoFileFoundException(sprintf('No file found in field "%s".', $field));
         }
+
+        if (true === $fileName) {
+            $fileName = $mapping->readProperty($object, 'originalName');
+        }
+
+        $file = $mapping->getFile($object);
 
         return $this->createDownloadResponse(
             $stream,
             $fileName ?: $mapping->getFileName($object),
-            is_null($file = $mapping->getFile($object)) ? null : $file->getMimeType()
+            null === $file ? null : $file->getMimeType()
         );
     }
 
@@ -50,7 +54,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, $filename, $mimeType = 'application/octet-stream')
     {
         $response = new StreamedResponse(function () use ($stream) {
-            stream_copy_to_stream($stream, fopen('php://output', 'w'));
+            stream_copy_to_stream($stream, fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(

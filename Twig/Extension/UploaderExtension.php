@@ -56,7 +56,7 @@ class UploaderExtension extends \Twig_Extension
      * @param string $fieldName The field name
      * @param string $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return string The public path
+     * @return string|null The public path or null if file not stored
      */
     public function asset($obj, $fieldName, $className = null)
     {
