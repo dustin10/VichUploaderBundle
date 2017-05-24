@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Adapter\DoctrineAdapter;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -66,7 +65,7 @@ class ListenerTestCase extends TestCase
 
     protected function getAdapterMock()
     {
-        return $this->createMock(AdapterInterface::class);
+        return $this->createMock(DoctrineAdapter::class);
     }
 
     /**
@@ -76,7 +75,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getMetadataReaderMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
+        return $this->getMockBuilder(MetadataReader::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -88,7 +87,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getHandlerMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Handler\UploadHandler')
+        return $this->getMockBuilder(UploadHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -100,7 +99,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getEventMock()
     {
-        return $this->getMockBuilder('Doctrine\Common\EventArgs')
+        return $this->getMockBuilder(EventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
