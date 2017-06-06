@@ -105,6 +105,9 @@ class MetadataReader
     {
         $fieldsMetadata = $this->getUploadableFields($class);
 
+        // Prevents error if $field is an instance of Symfony\Component\PropertyAccess\PropertyPath
+        $field = (string) $field;
+
         return isset($fieldsMetadata[$field]) ? $fieldsMetadata[$field] : null;
     }
 }
