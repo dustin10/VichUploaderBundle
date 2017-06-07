@@ -11,6 +11,7 @@
         <service id="vich_uploader.namer_hash" class="Vich\UploaderBundle\Naming\HashNamer" />
 
         <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" />
+        <service id="vich_uploader.directory_namer_subdir_property" class="Vich\UploaderBundle\Naming\SubdirDirectoryPropertyNamer" />
     </services>
 
 </container>
