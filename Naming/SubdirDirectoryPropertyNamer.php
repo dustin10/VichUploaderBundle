@@ -18,7 +18,7 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
      * @var string
      */
     private $propertyPath;
-    
+
     /**
      * @param array $options Options for this namer. The following options are accepted:
      *                       - property: path to the property used to name the file. Can be either an attribute or a method.
@@ -28,10 +28,10 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
         if (empty($options['property'])) {
             throw new \InvalidArgumentException('Option "property" is missing or empty.');
         }
-        
+
         $this->propertyPath = $options['property'];
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -40,24 +40,24 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');
         }
-        
+
         try {
             $name = $this->getPropertyValue($object, $this->propertyPath);
         } catch (NoSuchPropertyException $e) {
             throw new NameGenerationException(sprintf('Directory name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
-        
+
         if (empty($name)) {
             throw new NameGenerationException(sprintf('Directory name could not be generated: property %s is empty.', $this->propertyPath));
         }
-        
+
         return $name;
     }
-    
+
     private function getPropertyValue($object, $propertyPath)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        
+
         return $accessor->getValue($object, $propertyPath);
     }
 }
