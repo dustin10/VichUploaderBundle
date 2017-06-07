@@ -29,7 +29,7 @@ class FileSystemStorage extends AbstractStorage
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
-        return file_exists($file) ? unlink($file) : false;
+        return is_file($file) ? unlink($file) : false;
     }
 
     /**
