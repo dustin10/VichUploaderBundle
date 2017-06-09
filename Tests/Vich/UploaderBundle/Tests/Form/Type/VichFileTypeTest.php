@@ -73,7 +73,7 @@ class VichFileTypeTest extends TestCase
     /**
      * @dataProvider buildViewDataProvider
      */
-    public function testBuildView(Product $object, array $options, array $vars)
+    public function testBuildView(Product $object = null, array $options, array $vars)
     {
         $field = 'image';
 
@@ -152,6 +152,16 @@ class VichFileTypeTest extends TestCase
                     'object' => $object,
                     'download_label' => 'custom label',
                     'download_uri' => 'resolved-uri',
+                    'value' => null,
+                    'attr' => [],
+                ],
+            ],
+            [
+                null,
+                ['download_label' => 'download', 'download_uri' => false],
+                [
+                    'object' => null,
+                    'download_uri' => null,
                     'value' => null,
                     'attr' => [],
                 ],
