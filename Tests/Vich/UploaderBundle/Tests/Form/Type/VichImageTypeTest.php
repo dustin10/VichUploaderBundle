@@ -41,6 +41,23 @@ class VichImageTypeTest extends VichFileTypeTest
                 ],
             ],
             [
+                null,
+                [
+                    'download_uri' => true,
+                    'download_label' => 'download',
+                    'image_uri' => false,
+                    'imagine_pattern' => null,
+                ],
+                [
+                    'object' => null,
+                    'download_uri' => null,
+                    'image_uri' => null,
+                    'show_download_link' => false,
+                    'value' => null,
+                    'attr' => [],
+                ],
+            ],
+            [
                 $object,
                 [
                     'download_uri' => false,
