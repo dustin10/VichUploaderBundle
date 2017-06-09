@@ -2,10 +2,11 @@
 
 namespace Vich\UploaderBundle\Naming;
 
+use Vich\UploaderBundle\Exception\NameGenerationException;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Vich\UploaderBundle\Exception\NameGenerationException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Directory namer which can create subfolder depends on property.
@@ -18,6 +19,19 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
      * @var string
      */
     private $propertyPath;
+
+    /**
+     * @var PropertyAccessorInterface
+     */
+    protected $propertyAccessor;
+
+    /**
+     * @param PropertyAccessorInterface $propertyAccessor Property accessor interface
+     */
+    public function __construct(PropertyAccessorInterface $propertyAccessor = null)
+    {
+        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+    }
 
     /**
      * @param array $options Options for this namer. The following options are accepted:
@@ -42,7 +56,7 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
         }
 
         try {
-            $name = $this->getPropertyValue($object, $this->propertyPath);
+            $name = $this->propertyAccessor->getValue($object, $this->propertyPath);
         } catch (NoSuchPropertyException $e) {
             throw new NameGenerationException(sprintf('Directory name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
@@ -52,12 +66,5 @@ class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, Configura
         }
 
         return $name;
-    }
-
-    private function getPropertyValue($object, $propertyPath)
-    {
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        return $accessor->getValue($object, $propertyPath);
     }
 }
