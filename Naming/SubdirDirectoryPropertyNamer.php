@@ -2,11 +2,11 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Exception\NameGenerationException;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Vich\UploaderBundle\Exception\NameGenerationException;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * Directory namer which can create subfolder depends on property.
