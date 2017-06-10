@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Raynald Coupé <raynald@easi-services.fr>
  */
-class SubdirDirectoryPropertyNamer implements DirectoryNamerInterface, ConfigurableInterface
+class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
     /**
      * @var string
