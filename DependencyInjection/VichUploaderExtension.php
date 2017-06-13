@@ -63,8 +63,7 @@ class VichUploaderExtension extends Extension
 
         $toLoad = [
             'adapter.xml', 'listener.xml', 'storage.xml', 'injector.xml',
-            'templating.xml', 'mapping.xml', 'factory.xml', 'namer.xml',
-            'form.xml', 'handler.xml',
+            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml',
         ];
         foreach ($toLoad as $file) {
             $loader->load($file);
@@ -74,7 +73,13 @@ class VichUploaderExtension extends Extension
             $loader->load($config['storage'].'.xml');
         }
 
-        if ($config['twig']) {
+        if ($config['form']) {
+            $loader->load('form.xml');
+        }
+        if ($config['templating']) {
+            $loader->load('templating.xml');
+        }
+        if ($config['twig'] && $config['templating']) {
             $loader->load('twig.xml');
         }
     }
