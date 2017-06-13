@@ -118,8 +118,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $this->assertContainerBuilderHasService('vich_uploader.listener.inject.profile_common_avatar');
-        $this->assertContainerBuilderNotHasService('vich_uploader.listener.clean.profile_common_avatar');
-        $this->assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
+        $this->assertContainerBuilderHasService('vich_uploader.listener.inject.mongodb');
+        $this->assertContainerBuilderNotHasService('vich_uploader.listener.clean.mongodb');
+        $this->assertContainerBuilderHasService('vich_uploader.listener.remove.mongodb');
     }
 }

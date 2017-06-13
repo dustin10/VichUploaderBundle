@@ -5,15 +5,10 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 
 /**
- * Doctrine CleanListener test.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class CleanListenerTest extends ListenerTestCase
 {
-    /**
-     * Sets up the test.
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -28,7 +23,7 @@ class CleanListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(['preUpdate'], $events);
+        $this->assertSame(['preFlush'], $events);
     }
 
     /**

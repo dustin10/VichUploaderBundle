@@ -5,15 +5,10 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Vich\UploaderBundle\EventListener\Doctrine\InjectListener;
 
 /**
- * Doctrine InjectListener test.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class InjectListenerTest extends ListenerTestCase
 {
-    /**
-     * Sets up the test.
-     */
     protected function setUp()
     {
         parent::setUp();

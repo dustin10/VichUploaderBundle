@@ -2,14 +2,14 @@
 
 namespace Vich\UploaderBundle\Adapter\ODM\MongoDB;
 
-use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Doctrine\Common\EventArgs;
+use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
+use Vich\UploaderBundle\Adapter\DoctrineAdapter;
 
 /**
- * MongoDBAdapter.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MongoDBAdapter implements AdapterInterface
+class MongoDBAdapter implements DoctrineAdapter
 {
     /**
      * {@inheritdoc}
@@ -22,13 +22,11 @@ class MongoDBAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function recomputeChangeSet($event)
+    public function getIdentityMapForEvent(EventArgs $event)
     {
-        $object = $this->getObjectFromArgs($event);
+        /* @var $event PreFlushEventArgs */
+        $em = $event->getDocumentManager();
 
-        $dm = $event->getDocumentManager();
-        $uow = $dm->getUnitOfWork();
-        $metadata = $dm->getClassMetadata(get_class($object));
-        $uow->recomputeSingleDocumentChangeSet($metadata, $object);
+        return $em->getUnitOfWork()->getIdentityMap();
     }
 }

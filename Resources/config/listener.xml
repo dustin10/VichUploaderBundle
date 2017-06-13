@@ -8,8 +8,8 @@
 
         <!-- doctrine listeners -->
         <service id="vich_uploader.listener.doctrine.base" abstract="true" public="false">
-            <argument /> <!-- will contain the mapping name -->
-            <argument /> <!-- adapter -->
+            <argument>%vich_uploader.mappings%</argument>
+            <argument /> <!-- adapter, injected by extension -->
             <argument type="service" id="vich_uploader.metadata_reader" />
             <argument type="service" id="vich_uploader.upload_handler" />
         </service>

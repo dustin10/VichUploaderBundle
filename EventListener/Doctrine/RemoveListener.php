@@ -6,18 +6,15 @@ use Doctrine\Common\EventArgs;
 use Doctrine\Common\Persistence\Proxy;
 
 /**
- * RemoveListener.
- *
  * Listen to the remove event to delete files accordingly.
  *
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class RemoveListener extends BaseListener
 {
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
@@ -27,33 +24,27 @@ class RemoveListener extends BaseListener
         ];
     }
 
-    /**
-     * Ensures a proxy will be usable in the postRemove.
-     *
-     * @param EventArgs $event The event
-     */
     public function preRemove(EventArgs $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-
-        if ($this->isUploadable($object) && $object instanceof Proxy) {
-            $object->__load();
+        // Ensures a proxy will be usable in the postRemove.
+        if ($object instanceof Proxy) {
+            $fields = $this->getUploadableFields($object);
+            if ($fields) {
+                $object->__load();
+            }
         }
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
     public function postRemove(EventArgs $event)
     {
         $object = $this->adapter->getObjectFromArgs($event);
-
-        if (!$this->isUploadable($object)) {
-            return;
-        }
-
         foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->remove($object, $field);
+            if (!$this->isFlagEnabledForField('delete_on_remove', $field)) {
+                continue;
+            }
+
+            $this->handler->remove($object, $field['propertyName']);
         }
     }
 }

@@ -36,13 +36,4 @@ class PropelORMAdapterTest extends TestCase
 
         $this->assertSame(42, $this->adapter->getObjectFromArgs($event));
     }
-
-    public function testRecomputeChangeset()
-    {
-        $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
-
-        // does nothing but should be callable
-        $this->adapter->recomputeChangeSet($event);
-        $this->assertTrue(true);    // this workaround is needed to avoid Risky test
-    }
 }

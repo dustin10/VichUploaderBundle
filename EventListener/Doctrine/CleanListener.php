@@ -5,40 +5,38 @@ namespace Vich\UploaderBundle\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 
 /**
- * CleanListener.
- *
  * Listen to the update event to delete old files accordingly.
  *
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class CleanListener extends BaseListener
 {
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
         return [
-            'preUpdate',
+            'preFlush',
         ];
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
-    public function preUpdate(EventArgs $event)
+    public function preFlush(EventArgs $event)
     {
-        $object = $this->adapter->getObjectFromArgs($event);
+        $identityMap = $this->adapter->getIdentityMapForEvent($event);
 
-        if (!$this->isUploadable($object)) {
-            return;
-        }
+        foreach ($identityMap as $class => $entities) {
+            $fields = $this->metadata->getUploadableFields($class);
+            foreach ($fields as $field) {
+                if (!$this->isFlagEnabledForField('delete_on_update', $field)) {
+                    continue;
+                }
 
-        foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->clean($object, $field);
-            $this->adapter->recomputeChangeSet($event);
+                foreach ($entities as $entity) {
+                    $this->handler->clean($entity, $field['propertyName']);
+                }
+            }
         }
     }
 }

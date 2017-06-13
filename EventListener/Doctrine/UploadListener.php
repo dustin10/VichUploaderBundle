@@ -3,60 +3,48 @@
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * UploadListener.
- *
  * Handles file uploads.
  *
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class UploadListener extends BaseListener
 {
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
         return [
+            'preFlush',
             'prePersist',
-            'preUpdate',
         ];
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
-    public function prePersist(EventArgs $event)
+    public function preFlush(EventArgs $event)
     {
-        $object = $this->adapter->getObjectFromArgs($event);
+        $identityMap = $this->adapter->getIdentityMapForEvent($event);
 
-        if (!$this->isUploadable($object)) {
-            return;
-        }
-
-        foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->upload($object, $field);
+        foreach ($identityMap as $class => $entities) {
+            $fields = $this->metadata->getUploadableFields($class);
+            foreach ($fields as $field) {
+                foreach ($entities as $entity) {
+                    $this->handler->upload($entity, $field['propertyName']);
+                }
+            }
         }
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
-    public function preUpdate(EventArgs $event)
+    public function prePersist(LifecycleEventArgs $event)
     {
-        $object = $this->adapter->getObjectFromArgs($event);
+        $object = $event->getObject();
 
-        if (!$this->isUploadable($object)) {
-            return;
+        $fields = $this->getUploadableFields($object);
+        foreach ($fields as $field) {
+            $this->handler->upload($object, $field['propertyName']);
         }
-
-        foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->upload($object, $field);
-        }
-
-        $this->adapter->recomputeChangeSet($event);
     }
 }
