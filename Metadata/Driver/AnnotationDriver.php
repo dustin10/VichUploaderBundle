@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
 class AnnotationDriver implements AdvancedDriverInterface
 {

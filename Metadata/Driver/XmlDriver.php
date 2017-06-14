@@ -8,10 +8,11 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class = null, $file)
+    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
     {
         $elem = XmlUtils::loadFile($file);
         $elem = simplexml_import_dom($elem);
