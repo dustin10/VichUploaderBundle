@@ -5,11 +5,10 @@ namespace Vich\UploaderBundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterMappingDriversPass;
 use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterPropelModelsPass;
 
 /**
- * VichUploaderBundle.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class VichUploaderBundle extends Bundle
@@ -21,6 +20,7 @@ class VichUploaderBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new RegisterMappingDriversPass());
         $container->addCompilerPass(new RegisterPropelModelsPass(), PassConfig::TYPE_BEFORE_REMOVING);
     }
 }
