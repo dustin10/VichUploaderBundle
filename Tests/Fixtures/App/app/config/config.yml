@@ -24,7 +24,7 @@ twig:
 doctrine:
     dbal:
         driver: "pdo_sqlite"
-        path:   %kernel.cache_dir%/database.db3
+        path:   "%kernel.cache_dir%/database.db3"
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
