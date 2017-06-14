@@ -4,6 +4,10 @@ Upgrading from v1.0.0 to 1.6.0
 - the transliteration is now using `behat\transliterator` instead of a custom one. Some minor
 differences are that dash is not preserved anymore and names are lowercased.
 - the form option `download_link` now is deprecated, use `download_uri` instead.
+- **BC-BREAK** in order to fixing [#704](https://github.com/dustin10/VichUploaderBundle/issues/704) for xml and yaml
+  mapping you should prepend relative from bundle sub-namespace to each mapping file.
+  For example for `Entity\Product` mapping file would be renamed from `Product.xml` to `Entity.Product.xml`,
+  for `Document\Article`: `Article.yml` -> `Document.Article.yml`.
 
 
 Upgrading from v0.14.0 to v1.0.0

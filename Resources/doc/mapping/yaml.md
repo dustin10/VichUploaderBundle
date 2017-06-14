@@ -5,7 +5,7 @@ You can choose to describe your entities in YAML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
 
 ```yaml
-# src/Acme/DemoBundle/Resources/config/vich_uploader/Product.yml
+# src/Acme/DemoBundle/Resources/config/vich_uploader/Entity.Product.yml
 Acme\DemoBundle\Entity\Product:
     image:
         mapping:           product_image # required
