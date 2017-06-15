@@ -2,20 +2,19 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
- * PHPCRAdapterTest.
- *
  * @author Ben Glassman <bglassman@gmail.com>
  */
 class PHPCRAdapterTest extends TestCase
 {
     public static function setUpBeforeClass()
     {
-        if (!class_exists('Doctrine\Common\Persistence\Event\LifecycleEventArgs')) {
+        if (!class_exists(LifecycleEventArgs::class)) {
             self::markTestSkipped('Doctrine\Common\Persistence\Event\LifecycleEventArgs does not exist.');
         }
     }
@@ -27,12 +26,10 @@ class PHPCRAdapterTest extends TestCase
     {
         $entity = new DummyEntity();
 
-        $args = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $args = $this->createMock(LifecycleEventArgs::class);
         $args
             ->expects($this->once())
-            ->method('getEntity')
+            ->method('getObject')
             ->will($this->returnValue($entity));
 
         $adapter = new PHPCRAdapter();
