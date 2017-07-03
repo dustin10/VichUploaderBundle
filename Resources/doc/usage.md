@@ -193,7 +193,7 @@ class Product
      */
     public function setImageSize($imageSize)
     {
-        $this->imagesize = $imageSize;
+        $this->imageSize = $imageSize;
         
         return $this;
     }
