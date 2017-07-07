@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
 
 class VichUploaderExtensionTest extends AbstractExtensionTestCase
@@ -26,6 +27,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         parent::setUp();
 
         $this->container->setParameter('kernel.bundles', []);
+        $this->container->setParameter('kernel.bundles_metadata', []);
+        $this->container->setParameter('kernel.root_dir', __DIR__.'/../Fixtures/App/app');
         $this->container->setParameter('kernel.cache_dir', sys_get_temp_dir());
     }
 
@@ -80,7 +83,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
-    public function testDbDriverIsntOverriden()
+    public function testDbDriverIsNotOverridden()
     {
         $this->load([
             'db_driver' => 'propel',
@@ -121,5 +124,22 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('vich_uploader.listener.inject.profile_common_avatar');
         $this->assertContainerBuilderNotHasService('vich_uploader.listener.clean.profile_common_avatar');
         $this->assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
+    }
+
+    public function testFormThemeCorrectlyOverridden()
+    {
+        $vichUploaderExtension = new VichUploaderExtension();
+        $this->container->registerExtension($vichUploaderExtension);
+
+        $twigExtension = new TwigExtension();
+        $this->container->registerExtension($twigExtension);
+
+        $twigExtension->load([['form_themes' => ['@Ololo/trololo.html.twig']]], $this->container);
+        $vichUploaderExtension->load([$this->getMinimalConfiguration()], $this->container);
+
+        $this->assertContainerBuilderHasParameter(
+            'twig.form.resources',
+            ['@VichUploader/Form/fields.html.twig', 'form_div_layout.html.twig', '@Ololo/trololo.html.twig']
+        );
     }
 }
