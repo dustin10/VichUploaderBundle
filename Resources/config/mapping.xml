@@ -8,7 +8,7 @@
 
         <!-- file locator -->
         <service id="vich_uploader.metadata.file_locator" class="Metadata\Driver\FileLocator" public="false">
-            <argument type="collection" /><!-- Namespace Prefixes mapping to Directories -->
+            <argument type="collection" /><!-- namespace prefixes mapping to directories, injected by extension -->
         </service>
 
         <!-- drivers -->
@@ -36,7 +36,7 @@
 
         <!-- metadata services -->
         <service id="vich_uploader.metadata.cache.file_cache" class="Metadata\Cache\FileCache" public="false">
-            <argument /><!-- Directory -->
+            <argument /><!-- cache directory, injected by extension -->
         </service>
         <service id="vich_uploader.metadata.cache" alias="vich_uploader.metadata.cache.file_cache" public="false" />
 
