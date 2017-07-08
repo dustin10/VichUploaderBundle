@@ -216,7 +216,7 @@ class VichUploaderExtension extends Extension
         $resources = $container->hasParameter('twig.form.resources') ?
             $container->getParameter('twig.form.resources') : [];
 
-        $resources[] = '@VichUploader/Form/fields.html.twig';
+        array_unshift($resources, '@VichUploader/Form/fields.html.twig');
         $container->setParameter('twig.form.resources', $resources);
     }
 }

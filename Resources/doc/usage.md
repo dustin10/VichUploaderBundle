@@ -71,7 +71,7 @@ The `UploadableField` annotation has a few options. They are as follows:
   * `fileNameProperty`: required, the property that will contain the name of the uploaded file;
   * `size`: the property that will contain the size in bytes of the uploaded file;
   * `mimeType`: the property that will contain the mime type of the uploaded file;
-  * `originalName`: the property that will contain the origilal name of the uploaded file.
+  * `originalName`: the property that will contain the original name of the uploaded file.
 
 **Note**:
 
