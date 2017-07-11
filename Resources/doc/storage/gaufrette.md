@@ -48,6 +48,9 @@ use with default storage.
 
 > In this case `upload_destination` refers to a gaufrette filesystem.
 
+**Note:**
+
+> When using Doctrine adapter, you need to install `ocramius/proxy-manager` to get properly working Doctrine as lazy service.
 
 ## That was it!
 
