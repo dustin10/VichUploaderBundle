@@ -25,6 +25,7 @@
         "symfony/templating": "^2.3|^3.0",
         "symfony/security": "^2.3|^3.0",
         "symfony/asset": "^2.3|^3.0",
+        "ocramius/proxy-manager": "^1.0|^2.0",
         "jms/metadata": "^1.5"
     },
     "require-dev": {
@@ -41,6 +42,7 @@
         "symfony/css-selector": "^2.3|^3.0",
         "symfony/dom-crawler": "^2.3|^3.0",
         "symfony/form": "^2.3|^3.0",
+        "symfony/proxy-manager-bridge": "^2.3|^3.0",
         "symfony/twig-bridge": "^2.3.10|^3.0",
         "symfony/twig-bundle": "^2.3|^3.0",
         "symfony/validator": "^2.3|^3.0",
