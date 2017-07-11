@@ -57,7 +57,8 @@
         "doctrine/mongodb-odm-bundle": "*",
         "knplabs/knp-gaufrette-bundle": "~0.3",
         "willdurand/propel-eventdispatcher-bundle": "~1.2",
-        "symfony/yaml": "^2.0.5"
+        "symfony/yaml": "^2.0.5",
+        "ocramius/proxy-manager": "To have the Gaufrette with Doctrine adapter"
     },
     "autoload": {
         "psr-4": {
