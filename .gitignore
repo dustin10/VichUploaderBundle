@@ -1,4 +1,4 @@
+.php_cs.cache
 phpunit.xml
-composer.phar
 composer.lock
 vendor/
