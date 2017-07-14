@@ -10,6 +10,8 @@ your Symfony project:
 composer require vich/uploader-bundle
 ```
 
+Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.6"` to your composer.json and run `composer update`.
+This could be useful when the installation of VichUploaderBundle is not compatible with some currently installed dependencies. Anyway, the previous option is the preferred way, since composer can pick the best requirement constraint for you.
 
 ## Enable the bundle
 
@@ -35,9 +37,9 @@ class AppKernel extends Kernel
 
 Four engines are currently supported:
 
-  * [orm](http://www.doctrine-project.org/projects/orm.html) ;
-  * [mongodb](http://doctrine-mongodb-odm.readthedocs.org/en/latest/) ;
-  * [phpcr](http://doctrine-phpcr-odm.readthedocs.org/en/latest/) ;
+  * [orm](http://www.doctrine-project.org/projects/orm.html)
+  * [mongodb](http://doctrine-mongodb-odm.readthedocs.org/en/latest/)
+  * [phpcr](http://doctrine-phpcr-odm.readthedocs.org/en/latest/)
   * [propel](http://propelorm.org/Propel/).
 
 Once the chosen persistence engine is installed and configured, tell
