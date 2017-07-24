@@ -65,6 +65,7 @@ class VichFileType extends AbstractType
             'download_uri' => true,
             //TODO: use 'form.label.download'
             'download_label' => 'download',
+            'delete_callback' => null,
             'delete_label' => 'form.label.delete',
             'error_bubbling' => false,
             'translation_domain' => 'VichUploaderBundle',
@@ -74,6 +75,7 @@ class VichFileType extends AbstractType
         $resolver->setAllowedTypes('download_link', ['null', 'bool']);
         $resolver->setAllowedTypes('download_uri', ['bool', 'string', 'callable']);
         $resolver->setAllowedTypes('download_label', ['bool', 'string', 'callable', PropertyPath::class]);
+        $resolver->setAllowedTypes('delete_callback', ['null', 'callable']);
         $resolver->setAllowedTypes('error_bubbling', 'bool');
 
         $downloadUriNormalizer = function (Options $options, $downloadUri) {
@@ -133,13 +135,17 @@ class VichFileType extends AbstractType
         });
 
         // delete file if needed
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
                 return;
+            }
+
+            if ($options['delete_callback']) {
+                call_user_func($options['delete_callback'], $object);
             }
 
             $this->handler->remove($object, $form->getName());

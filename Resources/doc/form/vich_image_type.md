@@ -20,6 +20,7 @@ class Form extends AbstractType
         $builder->add('imageFile', VichImageType::class, [
             'required' => false,
             'allow_delete' => true,
+            'delete_callback' => '...',
             'download_label' => '...',
             'download_uri' => true,
             'image_uri' => true,
@@ -32,6 +33,21 @@ class Form extends AbstractType
 allow_delete
 ------------
 **type**: `bool` **default**: `true`
+
+delete_callback
+---------------
+**type**: `callable` **default**: `null`
+Allow execute custom callable before file delete. Useful for cleanup related entities in one to many associations.
+
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('productPhotos', VichImageType::class, [
+    'delete_callback' => function (ProductPhoto $productPhoto) {
+        $productPhoto->getProduct()->removeProductPhoto($productPhoto);
+    },
+]);
+```
 
 download_uri
 ------------
@@ -47,7 +63,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_uri' => $router->generateUrl('acme_download_image', $product->getId()),
 ]);
-
 ```
 
 Can be callable
@@ -60,7 +75,6 @@ $builder->add('genericFile', VichImageType::class, [
         return $router->generateUrl('acme_download_image', $product->getId());
     },
 ]);
-
 ```
 
 download_label
@@ -76,7 +90,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_label' => 'download_file',
 ]);
-
 ```
 
 Can be callable
@@ -89,7 +102,6 @@ $builder->add('genericFile', VichImageType::class, [
         return $product->getTitle();
     },
 ]);
-
 ```
 
 Can be property path 
@@ -100,7 +112,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_label' => new PropertyPath('title'),
 ]);
-
 ```
 
 image_uri
@@ -117,7 +128,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'image_uri' => 'full uri for image',
 ]);
-
 ```
 
 Can be callable
@@ -135,7 +145,6 @@ $builder->add('genericFile', VichImageType::class, [
         );
     },
 ]);
-
 ```
 
 imagine_pattern
@@ -152,7 +161,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('photo', VichImageType::class, [
     'imagine_pattern' => 'product_photo_320x240',
 ]);
-
 ```
 
 ## That was it!

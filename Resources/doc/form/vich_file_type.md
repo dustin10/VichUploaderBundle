@@ -19,7 +19,8 @@ class Form extends AbstractType
 
         $builder->add('genericFile', VichFileType::class, [
             'required' => false,
-            'allow_delete' => true, 
+            'allow_delete' => true,
+            'delete_callback' => '...',
             'download_uri' => '...',
             'download_label' => '...',
         ]);
@@ -30,6 +31,22 @@ class Form extends AbstractType
 allow_delete
 ------------
 **type**: `bool` **default**: `true`
+
+
+delete_callback
+---------------
+**type**: `callable` **default**: `null`
+Allow execute custom callable before file delete. Useful for cleanup related entities in one to many associations.
+
+```php
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+$builder->add('productPhotos', VichFileType::class, [
+    'delete_callback' => function (ProductPhoto $productPhoto) {
+        $productPhoto->getProduct()->removeProductPhoto($productPhoto);
+    },
+]);
+```
 
 download_uri
 ------------
@@ -45,7 +62,6 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_uri' => $router->generateUrl('acme_download_image', $product->getId()),
 ]);
-
 ```
 
 Can be callable
@@ -58,7 +74,6 @@ $builder->add('genericFile', VichFileType::class, [
         return $router->generateUrl('acme_download_image', $product->getId());
     },
 ]);
-
 ```
 
 download_label
@@ -74,7 +89,6 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_label' => 'download_file',
 ]);
-
 ```
 
 Can be callable
@@ -87,7 +101,6 @@ $builder->add('genericFile', VichFileType::class, [
         return $product->getTitle();
     },
 ]);
-
 ```
 
 Can be property path 
@@ -98,7 +111,6 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_label' => new PropertyPath('title'),
 ]);
-
 ```
 
 ## That was it!
