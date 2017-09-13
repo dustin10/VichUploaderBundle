@@ -31,11 +31,18 @@ vich_uploader:
             - {path: '%kernel.root_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
 ```
 
+#### Naming YAML Files
+
+The `namespace_prefix` parameter, combined with the .yml file name in `config/vich_uploader` must combine to form the FQCN of your entity. For example an entity of `MyApp\MyBundle\Entity\Customer` should be configured using either of the following:
+
+`namespace_prefix: 'MyApp\MyBundle'` and then have a config file `Entity.Customer.yml`
+
+`namespace_prefix: 'MyApp\MyBundle\Entity'` and then have a config file `Customer.yml`
+
 **N.B:**
 
 > In order to be able to use this format, make sure that the `symfony/yaml`
 > package is installed.
-
 
 ## That was it!
 
