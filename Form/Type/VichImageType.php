@@ -56,6 +56,7 @@ class VichImageType extends VichFileType
         $object = $form->getParent()->getData();
         $view->vars['object'] = $object;
         $view->vars['image_uri'] = null;
+        $view->vars['download_uri'] = null;
 
         if ($object) {
             if ($options['imagine_pattern']) {
@@ -77,10 +78,10 @@ class VichImageType extends VichFileType
             );
 
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
-            // required for BC
-            //TODO: remove for 2.0
-            $view->vars['show_download_link'] = !empty($view->vars['download_uri']);
         }
+        // required for BC
+        //TODO: remove for 2.0
+        $view->vars['show_download_link'] = !empty($view->vars['download_uri']);
     }
 
     /**

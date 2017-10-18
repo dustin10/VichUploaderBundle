@@ -29,7 +29,7 @@ use Vich\UploaderBundle\Event\Event;
 
 class FooListener
 {
-    public function onPreUpload(Event $event)
+    public function onVichUploaderPreUpload(Event $event)
     {
         $object = $event->getObject();
         $mapping = $event->getMapping();

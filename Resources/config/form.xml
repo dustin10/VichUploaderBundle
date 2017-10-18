@@ -8,7 +8,7 @@
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
             <argument type="service" id="vich_uploader.property_mapping_factory" />
-            <argument type="service" id="form.property_accessor" />
+            <argument type="service" id="property_accessor" />
             <tag name="form.type" alias="vich_file" />
         </service>
 
@@ -16,7 +16,7 @@
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
             <argument type="service" id="vich_uploader.property_mapping_factory" />
-            <argument type="service" id="form.property_accessor" />
+            <argument type="service" id="property_accessor" />
             <argument type="service" id="liip_imagine.cache.manager" on-invalid="null" />
             <tag name="form.type" alias="vich_image" />
         </service>

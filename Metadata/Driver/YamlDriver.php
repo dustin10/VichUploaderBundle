@@ -8,13 +8,14 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
 class YamlDriver extends AbstractFileDriver
 {
     /**
      * {@inheritdoc}
      */
-    protected function loadMetadataFromFile(\ReflectionClass $class = null, $file)
+    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
     {
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
