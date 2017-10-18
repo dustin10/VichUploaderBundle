@@ -17,30 +17,30 @@ class PropertyDirectoryNamerTest extends TestCase
     {
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
-        
+
         $weird_entity = new DummyEntity();
         $weird_entity->someProperty = 'Yéô';
-        
+
         return [
             ['foo',                      $entity,       'someProperty',     false],
             ['generated-file-name',      $entity,       'generateFileName', false], // method call
             ['yeo',                      $weird_entity, 'someProperty',     true],  // transliteration enabled
         ];
     }
-    
+
     /**
      * @dataProvider fileDataProvider
      */
     public function testNameReturnsTheRightName($expectedDirectoryName, $entity, $propertyName, $transliterate)
     {
         $mapping = $this->getPropertyMappingMock();
-        
+
         $namer = new PropertyDirectoryNamer();
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
-        
+
         $this->assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
     }
-    
+
     /**
      * @expectedException \Vich\UploaderBundle\Exception\NameGenerationException
      */
@@ -48,13 +48,13 @@ class PropertyDirectoryNamerTest extends TestCase
     {
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
-        
+
         $namer = new PropertyDirectoryNamer();
         $namer->configure(['property' => 'nonExistentProperty']);
-        
+
         $namer->directoryName($entity, $mapping);
     }
-    
+
     /**
      * @expectedException \Vich\UploaderBundle\Exception\NameGenerationException
      */
@@ -62,12 +62,12 @@ class PropertyDirectoryNamerTest extends TestCase
     {
         $mapping = $this->getPropertyMappingMock();
         $namer = new PropertyDirectoryNamer();
-        
+
         $namer->configure(['property' => 'someProperty']);
-        
+
         $namer->directoryName(new DummyEntity(), $mapping);
     }
-    
+
     /**
      * @expectedException \LogicException
      * @expectedExceptionMessage The property to use can not be determined. Did you call the configure() method?
@@ -76,10 +76,10 @@ class PropertyDirectoryNamerTest extends TestCase
     {
         $mapping = $this->getPropertyMappingMock();
         $namer = new PropertyDirectoryNamer();
-        
+
         $namer->directoryName(new DummyEntity(), $mapping);
     }
-    
+
     /**
      * @expectedException \LogicException
      * @expectedExceptionMessage Option "property" is missing or empty.
@@ -87,7 +87,7 @@ class PropertyDirectoryNamerTest extends TestCase
     public function testConfigurationFailsIfThePropertyIsntSpecified()
     {
         $namer = new PropertyDirectoryNamer();
-        
+
         $namer->configure(['incorrect' => 'options']);
     }
 }
