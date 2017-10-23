@@ -84,6 +84,7 @@ uploaded files will be stored.
 At the moment there are several available namers:
 
   * `vich_uploader.directory_namer_subdir`
+  * `vich_uploader.namer_directory_property`
 
 **vich_uploader.directory_namer_subdir** creates subdirs depends of file name, `abcdef.jpg` will be 
 stored in as folder `ab`. It is also possible configure how many chars use per directory name and 
@@ -112,6 +113,23 @@ vich_uploader:
             directory_namer:    
                 service: vich_uploader.directory_namer_subdir
                 options: {chars_per_dir: 1, dirs: 2} # will create directory "a/b" for "abcdef.jpg"
+```
+
+**vich_uploader.namer_directory_property** will use a property or a method to name the directory. 
+
+To use it, you just have to specify the service id for the `directory_namer`
+configuration option of your mapping, and **must** set a property,
+optionally you can use the `transliterate` option to remove special char from directory name:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image
+            directory_namer:
+                service: vich_uploader.namer_directory_property
+                options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
 
 If no directory namer is configured for a mapping, the bundle will simply use
