@@ -26,7 +26,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
         $hasPropelMapping = false;
 
         foreach ($mappings as $mapping) {
-            if ($mapping['db_driver'] === 'propel') {
+            if ('propel' === $mapping['db_driver']) {
                 $hasPropelMapping = true;
                 break;
             }
@@ -50,7 +50,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
 
                 $mapping = $mappings[$field['mapping']];
 
-                if ($mapping['db_driver'] !== 'propel') {
+                if ('propel' !== $mapping['db_driver']) {
                     continue;
                 }
 

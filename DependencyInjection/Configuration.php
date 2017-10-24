@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->validate()
                         ->ifTrue(function ($storage) {
-                            return strpos($storage, '@') !== 0 && !in_array($storage, $this->supportedStorages, true);
+                            return 0 !== strpos($storage, '@') && !in_array($storage, $this->supportedStorages, true);
                         })
                         ->thenInvalid('The storage %s is not supported. Please choose one of '.implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
                     ->end()

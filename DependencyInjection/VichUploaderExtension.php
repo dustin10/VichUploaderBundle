@@ -42,7 +42,7 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
 
-        if (strpos($config['storage'], '@') === 0) {
+        if (0 === strpos($config['storage'], '@')) {
             $container->setAlias('vich_uploader.storage', substr($config['storage'], 1));
         } else {
             $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.'.$config['storage']);
