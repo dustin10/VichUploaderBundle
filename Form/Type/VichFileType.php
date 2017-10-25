@@ -60,6 +60,7 @@ class VichFileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'object' => null,
             'allow_delete' => true,
             'download_link' => null,
             'download_uri' => true,
@@ -70,6 +71,7 @@ class VichFileType extends AbstractType
             'translation_domain' => 'VichUploaderBundle',
         ]);
 
+        $resolver->setAllowedTypes('object', ['null', 'bool', 'object']);
         $resolver->setAllowedTypes('allow_delete', 'bool');
         $resolver->setAllowedTypes('download_link', ['null', 'bool']);
         $resolver->setAllowedTypes('download_uri', ['bool', 'string', 'callable']);
@@ -117,7 +119,7 @@ class VichFileType extends AbstractType
         // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $object = $options['object'] ?: $form->getParent()->getData();
 
             // no object or no uploaded file: no delete button
             if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
@@ -133,9 +135,9 @@ class VichFileType extends AbstractType
         });
 
         // delete file if needed
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $object = $options['object'] ?: $form->getParent()->getData();
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
@@ -151,7 +153,7 @@ class VichFileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $object = $form->getParent()->getData();
+        $object = $options['object'] ?: $form->getParent()->getData();
         $view->vars['object'] = $object;
 
         $view->vars['download_uri'] = null;

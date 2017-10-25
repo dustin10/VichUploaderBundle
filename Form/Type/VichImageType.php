@@ -53,7 +53,7 @@ class VichImageType extends VichFileType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $object = $form->getParent()->getData();
+        $object = $options['object'] ?: $form->getParent()->getData();
         $view->vars['object'] = $object;
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;
