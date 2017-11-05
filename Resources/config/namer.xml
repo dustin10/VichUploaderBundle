@@ -5,13 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="vich_uploader.namer_uniqid" class="Vich\UploaderBundle\Naming\UniqidNamer" />
-        <service id="vich_uploader.namer_property" class="Vich\UploaderBundle\Naming\PropertyNamer" />
-        <service id="vich_uploader.namer_origname" class="Vich\UploaderBundle\Naming\OrignameNamer" />
-        <service id="vich_uploader.namer_hash" class="Vich\UploaderBundle\Naming\HashNamer" />
+        <service id="vich_uploader.namer_uniqid" class="Vich\UploaderBundle\Naming\UniqidNamer" public="true" />
+        <service id="vich_uploader.namer_property" class="Vich\UploaderBundle\Naming\PropertyNamer" public="true" />
+        <service id="vich_uploader.namer_origname" class="Vich\UploaderBundle\Naming\OrignameNamer" public="true" />
+        <service id="vich_uploader.namer_hash" class="Vich\UploaderBundle\Naming\HashNamer" public="true" />
 
-        <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" />
-        <service id="vich_uploader.namer_directory_property" class="Vich\UploaderBundle\Naming\PropertyDirectoryNamer">
+        <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true" />
+        <service id="vich_uploader.namer_directory_property" class="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
             <argument type="service" id="form.property_accessor" />
         </service>
     </services>

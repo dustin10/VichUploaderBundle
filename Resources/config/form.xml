@@ -4,7 +4,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="vich_uploader.form.type.file" class="Vich\UploaderBundle\Form\Type\VichFileType">
+        <service id="vich_uploader.form.type.file" class="Vich\UploaderBundle\Form\Type\VichFileType" public="true">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
             <argument type="service" id="vich_uploader.property_mapping_factory" />
@@ -12,7 +12,7 @@
             <tag name="form.type" alias="vich_file" />
         </service>
 
-        <service id="vich_uploader.form.type.image" class="Vich\UploaderBundle\Form\Type\VichImageType">
+        <service id="vich_uploader.form.type.image" class="Vich\UploaderBundle\Form\Type\VichImageType" public="true">
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.upload_handler" />
             <argument type="service" id="vich_uploader.property_mapping_factory" />
