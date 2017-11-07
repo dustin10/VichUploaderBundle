@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -193,9 +194,10 @@ class VichUploaderExtension extends Extension
 
     protected function createNamerService(ContainerBuilder $container, $mappingName, array $mapping)
     {
+        $defitionClassname = $this->getDefinitionClassname();
         $serviceId = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
         $container->setDefinition(
-            $serviceId, new DefinitionDecorator($mapping['namer']['service'])
+            $serviceId, new $defitionClassname($mapping['namer']['service'])
         );
 
         $mapping['namer']['service'] = $serviceId;
@@ -223,5 +225,10 @@ class VichUploaderExtension extends Extension
 
         array_unshift($resources, '@VichUploader/Form/fields.html.twig');
         $container->setParameter('twig.form.resources', $resources);
+    }
+
+    private function getDefinitionClassname(): string
+    {
+        return class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;
     }
 }
