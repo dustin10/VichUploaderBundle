@@ -356,13 +356,13 @@ class PropertyMapping
             return $propertyPath;
         }
 
-        return $propertyPath[0] === '[' ? $propertyPath : sprintf('[%s]', $propertyPath);
+        return '[' === $propertyPath[0] ? $propertyPath : sprintf('[%s]', $propertyPath);
     }
 
     protected function getAccessor()
     {
         //TODO: reuse original property accessor from forms
-        if ($this->accessor !== null) {
+        if (null !== $this->accessor) {
             return $this->accessor;
         }
 

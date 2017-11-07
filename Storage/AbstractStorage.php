@@ -48,7 +48,7 @@ abstract class AbstractStorage implements StorageInterface
     {
         $file = $mapping->getFile($obj);
 
-        if ($file === null || !($file instanceof UploadedFile)) {
+        if (null === $file || !($file instanceof UploadedFile)) {
             throw new \LogicException('No uploadable file found');
         }
 
@@ -159,7 +159,7 @@ abstract class AbstractStorage implements StorageInterface
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 
-        if ($mapping === null) {
+        if (null === $mapping) {
             throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
         }
 

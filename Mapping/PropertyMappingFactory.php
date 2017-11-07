@@ -74,7 +74,7 @@ class PropertyMappingFactory
 
         $mappings = [];
         foreach ($this->metadata->getUploadableFields($class) as $field => $mappingData) {
-            if ($mappingName !== null && $mappingName !== $mappingData['mapping']) {
+            if (null !== $mappingName && $mappingName !== $mappingData['mapping']) {
                 continue;
             }
 
@@ -104,7 +104,7 @@ class PropertyMappingFactory
         $this->checkUploadable($class);
 
         $mappingData = $this->metadata->getUploadableField($class, $field);
-        if ($mappingData === null) {
+        if (null === $mappingData) {
             return null;
         }
 
@@ -193,7 +193,7 @@ class PropertyMappingFactory
      */
     protected function getClassName($object, $className = null)
     {
-        if ($className !== null) {
+        if (null !== $className) {
             return $className;
         }
 

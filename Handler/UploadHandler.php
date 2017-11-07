@@ -117,6 +117,6 @@ class UploadHandler extends AbstractHandler
     {
         $file = $mapping->getFile($obj);
 
-        return $file !== null && $file instanceof UploadedFile;
+        return null !== $file && $file instanceof UploadedFile;
     }
 }
