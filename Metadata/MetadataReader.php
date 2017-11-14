@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Metadata;
 
 use Metadata\AdvancedMetadataFactoryInterface;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
 /**
  * MetadataReader.
@@ -74,10 +75,14 @@ class MetadataReader
      * @param string $mapping If given, also checks that the object has the given mapping
      *
      * @return array A list of uploadable fields
+     *
+     * @throws MappingNotFoundException
      */
-    public function getUploadableFields($class, $mapping = null)
+    public function getUploadableFields(string $class, string $mapping = null): array
     {
-        $metadata = $this->reader->getMetadataForClass($class);
+        if (null === $metadata = $this->reader->getMetadataForClass($class)) {
+            throw MappingNotFoundException::createNotFoundForClass($mapping ?? '', $class);
+        }
         $uploadableFields = [];
 
         foreach ($metadata->classMetadata as $classMetadata) {
