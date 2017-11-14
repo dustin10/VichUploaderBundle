@@ -18,7 +18,7 @@ class MappingNotFoundException extends \RuntimeException
                 sprintf('Mapping not found. The configuration for the class "%s" is probably incorrect.', $class)
             );
         }
-        
+
         return new self(
             sprintf('Mapping "%s" does not exist. The configuration for the class "%s" is probably incorrect.', $mapping, $class)
         );
