@@ -16,6 +16,7 @@ At the moment there are several available namers:
   * `vich_uploader.namer_origname`
   * `vich_uploader.namer_property`
   * `vich_uploader.namer_hash`
+  * `vich_uploader.namer_base64`
 
 **vich_uploader.namer_uniqid** will rename your uploaded files using a uniqueid for the name and
 keep the extension. Using this namer, foo.jpg will be uploaded as something like 50eb3db039715.jpg.
@@ -29,6 +30,10 @@ file.
 
 **vich_uploader.namer_hash** will use a hash of random string to name the file. You also can specify
 hash `algorithm` and result `length` of the file
+
+**vich_uploader.namer_base64** will generate a URL-safe base64 decodable random string to name the file.
+You can specify the `length` of the random string. Using this namer, foo.jpg will be uploaded as something
+like 6FMNgvkdUs.jpg
 
 To use it, you just have to specify the service id for the `namer` configuration option of your mapping:
 
