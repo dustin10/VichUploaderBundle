@@ -13,7 +13,7 @@ class MappingNotFoundException extends \RuntimeException
 
     public static function createNotFoundForClass(string $mapping, string $class): self
     {
-        if ('' ==== $mapping) {
+        if ('' === $mapping) {
             return new self(
                 sprintf('Mapping not found. The configuration for the class "%s" is probably incorrect.', $class)
             );
