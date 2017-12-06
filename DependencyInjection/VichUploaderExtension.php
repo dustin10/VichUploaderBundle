@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -79,6 +80,7 @@ class VichUploaderExtension extends Extension
         }
         if ($config['templating']) {
             $loader->load('templating.xml');
+            $container->setAlias(UploaderHelper::class, new Alias('vich_uploader.templating.helper.uploader_helper', false));
         }
         if ($config['twig'] && $config['templating']) {
             $loader->load('twig.xml');
