@@ -51,15 +51,16 @@
         "symfony/yaml": "^2.8|^3.1"
     },
     "suggest": {
-        "doctrine/orm": "^2.5",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/phpcr-odm": "^1.0",
-        "doctrine/mongodb-odm-bundle": "*",
-        "knplabs/knp-gaufrette-bundle": "^0.4",
-        "oneup/flysystem-bundle": "^1.7",
-        "willdurand/propel-eventdispatcher-bundle": "^1.2",
-        "symfony/yaml": "^2.8|^3.1",
-        "liip/imagine-bundle": "^1.7"
+        "doctrine/doctrine-bundle": "For integration with Doctrine",
+        "doctrine/mongodb-odm-bundle": "For integration with Doctrine ODM",
+        "doctrine/orm": "For integration with Doctrine ORM",
+        "doctrine/phpcr-odm": "For integration with Doctrine PHPCR",
+        "knplabs/knp-gaufrette-bundle": "For integration with Gaufrette",
+        "liip/imagine-bundle": "To generate image thumbnails",
+        "ocramius/proxy-manager": "To use lazy services",
+        "oneup/flysystem-bundle": "For integration with Flysystem",
+        "symfony/yaml": "To use YAML mapping",
+        "willdurand/propel-eventdispatcher-bundle": "For integration with Propel"
     },
     "autoload": {
         "psr-4": {
