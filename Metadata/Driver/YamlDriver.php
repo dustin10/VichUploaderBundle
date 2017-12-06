@@ -54,7 +54,7 @@ class YamlDriver extends AbstractFileDriver
 
     protected function guessClassName($file, array $config, \ReflectionClass $class = null)
     {
-        if ($class === null) {
+        if (null === $class) {
             return current(array_keys($config));
         }
 

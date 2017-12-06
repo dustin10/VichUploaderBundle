@@ -43,7 +43,7 @@ abstract class AbstractHandler
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 
-        if ($mapping === null) {
+        if (null === $mapping) {
             throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
         }
 

@@ -4,11 +4,13 @@ namespace Vich\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -78,6 +80,7 @@ class VichUploaderExtension extends Extension
         }
         if ($config['templating']) {
             $loader->load('templating.xml');
+            $container->setAlias(UploaderHelper::class, new Alias('vich_uploader.templating.helper.uploader_helper', false));
         }
         if ($config['twig'] && $config['templating']) {
             $loader->load('twig.xml');
@@ -193,9 +196,10 @@ class VichUploaderExtension extends Extension
 
     protected function createNamerService(ContainerBuilder $container, $mappingName, array $mapping)
     {
+        $definitionClassname = $this->getDefinitionClassname();
         $serviceId = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
         $container->setDefinition(
-            $serviceId, new DefinitionDecorator($mapping['namer']['service'])
+            $serviceId, new $definitionClassname($mapping['namer']['service'])
         );
 
         $mapping['namer']['service'] = $serviceId;
@@ -205,8 +209,9 @@ class VichUploaderExtension extends Extension
 
     protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0)
     {
+        $definitionClassname = $this->getDefinitionClassname();
         $definition = $container
-            ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new DefinitionDecorator(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
+            ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new $definitionClassname(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
@@ -223,5 +228,10 @@ class VichUploaderExtension extends Extension
 
         array_unshift($resources, '@VichUploader/Form/fields.html.twig');
         $container->setParameter('twig.form.resources', $resources);
+    }
+
+    private function getDefinitionClassname(): string
+    {
+        return class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;
     }
 }

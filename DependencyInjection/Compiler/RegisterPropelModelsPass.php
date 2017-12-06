@@ -28,6 +28,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
         foreach ($mappings as $mapping) {
             if ('propel' === $mapping['db_driver']) {
                 $hasPropelMapping = true;
+
                 break;
             }
         }

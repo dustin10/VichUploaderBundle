@@ -128,6 +128,24 @@ class MetadataReaderTest extends TestCase
         $this->assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
     }
 
+    /**
+     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
+     * @expectedExceptionMessage Mapping not found. The configuration for the class "InvalidClassName" is probably incorrect.
+     */
+    public function testGetUploadableFieldWithInvalidClass()
+    {
+        $this->reader->getUploadableFields('InvalidClassName');
+    }
+
+    /**
+     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
+     * @expectedExceptionMessage Mapping "foo_mapping" does not exist. The configuration for the class "InvalidClassName" is probably incorrect.
+     */
+    public function testGetUploadableFieldWithInvalidClassMapping()
+    {
+        $this->reader->getUploadableFields('InvalidClassName', 'foo_mapping');
+    }
+
     public function fieldsMetadataProvider()
     {
         return [
