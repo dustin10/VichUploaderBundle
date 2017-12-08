@@ -37,7 +37,7 @@ before_install:
     - phpenv config-rm xdebug.ini || true
     - composer config platform.ext-mongo 1.6.14
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony:${SYMFONY_VERSION}; fi
-    - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:"^1.7|^2.0"; fi;
+    - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:"^1.7|^2.0@dev"; fi;
     - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
 
 install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS --no-suggest --prefer-dist
