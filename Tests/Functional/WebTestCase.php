@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class WebTestCase extends BaseWebTestCase
 {
+    protected static function getKernelClass()
+    {
+        require_once __DIR__.'/../Fixtures/App/app/AppKernel.php';
+
+        return 'AppKernel';
+    }   
+
     protected function getUploadedFile($client, $name, $mimeType = 'image/png')
     {
         return new UploadedFile(
