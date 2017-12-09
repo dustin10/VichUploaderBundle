@@ -26,7 +26,9 @@
         "jms/metadata": "^1.6",
         "symfony/dependency-injection": "^2.8|^3.3|^4.0",
         "symfony/framework-bundle": "^2.8.18|^3.3|^4.0",
-        "symfony/property-access": "^2.8|^3.3|^4.0"
+        "symfony/form": "^2.8.8|^3.3|^4.0",
+        "symfony/property-access": "^2.8|^3.3|^4.0",
+        "symfony/templating": "^2.8|^3.3|^4.0"
     },
     "require-dev": {
         "ext-sqlite3": "*",
@@ -41,10 +43,8 @@
         "symfony/browser-kit": "^2.8|^3.3|^4.0",
         "symfony/css-selector": "^2.8|^3.3|^4.0",
         "symfony/dom-crawler": "^2.8|^3.3|^4.0",
-        "symfony/form": "^2.8.8|^3.3|^4.0",
         "symfony/phpunit-bridge": "^3.3",
         "symfony/security-csrf": "^2.8|^3.3|^4.0",
-        "symfony/templating": "^2.8|^3.3|^4.0",
         "symfony/twig-bridge": "^2.8.10|^3.3|^4.0",
         "symfony/twig-bundle": "^2.8|^3.3|^4.0",
         "symfony/validator": "^2.8|^3.3|^4.0",
