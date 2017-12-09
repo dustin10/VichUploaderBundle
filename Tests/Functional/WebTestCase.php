@@ -14,7 +14,7 @@ class WebTestCase extends BaseWebTestCase
         require_once __DIR__.'/../Fixtures/App/app/AppKernel.php';
 
         return 'AppKernel';
-    }   
+    }
 
     protected function getUploadedFile($client, $name, $mimeType = 'image/png')
     {
