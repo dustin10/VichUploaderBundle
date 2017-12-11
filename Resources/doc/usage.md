@@ -72,6 +72,7 @@ The `UploadableField` annotation has a few options. They are as follows:
   * `size`: the property that will contain the size in bytes of the uploaded file;
   * `mimeType`: the property that will contain the mime type of the uploaded file;
   * `originalName`: the property that will contain the original name of the uploaded file.
+  * `dimensions`: the property that will contain the dimensions of uploaded **image file**
 
 **Note**:
 
@@ -239,7 +240,7 @@ class Product
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName")
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
      * 
      * @var File
      */

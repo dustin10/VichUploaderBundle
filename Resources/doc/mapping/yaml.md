@@ -13,6 +13,7 @@ Acme\DemoBundle\Entity\Product:
         size:              imageSize
         mime_type:         imageMimeType
         original_name:     imageOriginalName
+        dimensions:        imageDimensions
 ```
 
 To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
