@@ -43,6 +43,7 @@ class PropertyMapping
         'size' => null,
         'mimeType' => null,
         'originalName' => null,
+        'dimensions' => null,
     ];
 
     /**
@@ -117,7 +118,7 @@ class PropertyMapping
      */
     public function erase($obj)
     {
-        foreach (['name', 'size', 'mimeType', 'originalName'] as $property) {
+        foreach (['name', 'size', 'mimeType', 'originalName', 'dimensions'] as $property) {
             $this->writeProperty($obj, $property, null);
         }
     }

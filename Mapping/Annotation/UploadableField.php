@@ -39,6 +39,11 @@ class UploadableField
     protected $originalName;
 
     /**
+     * @var array
+     */
+    protected $dimensions;
+
+    /**
      * Constructs a new instance of UploadableField.
      *
      * @param array $options The options
@@ -102,5 +107,13 @@ class UploadableField
     public function getOriginalName()
     {
         return $this->originalName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
     }
 }
