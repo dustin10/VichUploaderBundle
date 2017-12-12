@@ -9,7 +9,7 @@ format and comes with the following syntax to declare your uploadable fields:
 <!-- Attributes "mapping", "name" and "filename_property" are required -->
 <vich_uploader class="Acme\DemoBundle\Entity\Product">
     <field mapping="product_image" name="image" filename_property="imageName"
-           size="imageSize", dimensions="imageDimensions" mime_type="imageMimeType" original_name="imageOriginalName" />
+           size="imageSize" dimensions="imageDimensions" mime_type="imageMimeType" original_name="imageOriginalName" />
 </vich_uploader>
 ```
 
