@@ -40,6 +40,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => 'imageSize',
                     'mimeType' => 'imageMimeType',
                     'originalName' => 'imageOriginalName',
+                    'dimensions' => null,
                 ],
             ],
         ];
@@ -55,6 +56,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => null,
                     'mimeType' => null,
                     'originalName' => null,
+                    'dimensions' => null,
                 ],
                 'image' => [
                     'mapping' => 'dummy_image',
@@ -63,6 +65,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => 'imageSize',
                     'mimeType' => 'imageMimeType',
                     'originalName' => 'imageOriginalName',
+                    'dimensions' => null,
                 ],
             ],
         ];

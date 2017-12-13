@@ -45,6 +45,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => null,
                 'mimeType' => null,
                 'originalName' => null,
+                'dimensions' => null,
             ],
         ], $metadata->fields);
     }
@@ -93,6 +94,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
+                'dimensions' => null,
             ])));
 
         $driver = new AnnotationDriver($reader);
@@ -106,6 +108,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => null,
                 'mimeType' => null,
                 'originalName' => null,
+                'dimensions' => null,
             ],
             'image' => [
                 'mapping' => 'dummy_image',
@@ -114,6 +117,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
+                'dimensions' => null,
             ],
         ], $metadata->fields);
     }

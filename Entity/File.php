@@ -30,6 +30,11 @@ class File
     protected $size;
 
     /**
+     * @ORM\Column(name="dimensions", type="simple_array", nullable=true)
+     */
+    protected $dimensions;
+
+    /**
      * @return string|null
      */
     public function getName()
@@ -91,5 +96,21 @@ class File
     public function setSize($size)
     {
         $this->size = $size;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * @param array $dimensions
+     */
+    public function setDimensions($dimensions)
+    {
+        $this->dimensions = $dimensions;
     }
 }
