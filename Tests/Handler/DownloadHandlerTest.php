@@ -14,15 +14,19 @@ use Vich\UploaderBundle\Tests\TestCase;
 class DownloadHandlerTest extends TestCase
 {
     protected $factory;
+
     protected $storage;
+
     /**
      * @var Product
      */
     protected $object;
+
     /**
      * @var DownloadHandler
      */
     protected $handler;
+
     protected $mapping;
 
     protected function setUp()

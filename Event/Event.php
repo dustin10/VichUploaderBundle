@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class Event extends BaseEvent
 {
     protected $object;
+
     protected $mapping;
 
     public function __construct($object, PropertyMapping $mapping)

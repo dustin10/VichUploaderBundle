@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 class UploadHelperTest extends TestCase
 {
     protected $storage;
+
     protected $helper;
 
     protected function setUp()

@@ -14,14 +14,20 @@ use Vich\UploaderBundle\Tests\TestCase;
 class UploadHandlerTest extends TestCase
 {
     protected $factory;
+
     protected $storage;
+
     protected $injector;
+
     protected $dispatcher;
+
     protected $mapping;
+
     /**
      * @var Article
      */
     protected $object;
+
     protected $handler;
 
     const FILE_FIELD = 'image';
