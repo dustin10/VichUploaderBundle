@@ -2,14 +2,24 @@
 
 namespace Vich\UploaderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
-class MappingDebugCommand extends ContainerAwareCommand
+class MappingDebugCommand extends Command
 {
+    protected static $defaultName = 'vich:mapping:debug';
+
+    private $mappings;
+
+    public function __construct(array $mappings)
+    {
+        parent::__construct();
+        $this->mappings = $mappings;
+    }
+
     protected function configure()
     {
         $this
@@ -21,16 +31,15 @@ class MappingDebugCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mappings = $this->getContainer()->getParameter('vich_uploader.mappings');
         $mapping = $input->getArgument('mapping');
 
-        if (!isset($mappings[$mapping])) {
+        if (!isset($this->mappings[$mapping])) {
             throw new MappingNotFoundException(sprintf('Mapping "%s" does not exist.', $mapping));
         }
 
         $output->writeln(sprintf('Debug information for mapping <info>%s</info>', $mapping));
 
-        foreach ($mappings[$mapping] as $key => $value) {
+        foreach ($this->mappings[$mapping] as $key => $value) {
             $output->writeln(sprintf('<comment>%s</comment>: %s', $key, var_export($value, true)));
         }
     }
