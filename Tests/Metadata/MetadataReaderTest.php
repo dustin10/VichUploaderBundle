@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
 class MetadataReaderTest extends TestCase
 {
     protected $reader;
+
     protected $factory;
 
     protected function setUp()
