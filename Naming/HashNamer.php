@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class HashNamer implements NamerInterface, ConfigurableInterface
 {
     private $algorithm = 'sha1';
+
     private $length;
 
     /**

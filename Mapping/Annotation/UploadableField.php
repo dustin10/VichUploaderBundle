@@ -21,6 +21,7 @@ class UploadableField
      * @var string
      */
     protected $fileNameProperty;
+
     //TODO: replace "fileNameProperty" with just "name"
 
     /**

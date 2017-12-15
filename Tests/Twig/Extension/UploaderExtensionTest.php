@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 class UploaderExtensionTest extends TestCase
 {
     protected $helper;
+
     protected $extension;
 
     protected function setUp()

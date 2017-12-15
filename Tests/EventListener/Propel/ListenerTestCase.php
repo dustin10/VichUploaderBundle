@@ -17,6 +17,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class ListenerTestCase extends TestCase
 {
     const FIELD_NAME = 'file';
+
     const MAPPING_NAME = 'mapping_name';
 
     /**
