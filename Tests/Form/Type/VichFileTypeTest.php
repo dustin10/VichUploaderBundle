@@ -24,7 +24,7 @@ class VichFileTypeTest extends TestCase
      * @group legacy
      * @expectedDeprecation The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.
      */
-    public function testConfigureOptionsBC($options, $resolvedOptions)
+    public function testConfigureOptionsBC($options, $resolvedOptions): void
     {
         $optionsResolver = new OptionsResolver();
 
@@ -43,7 +43,7 @@ class VichFileTypeTest extends TestCase
         $this->assertArraySubset($resolvedOptions, $resolved);
     }
 
-    public function configureOptionsBCDataProvider()
+    public function configureOptionsBCDataProvider(): array
     {
         return [
             [['download_link' => true], ['download_uri' => true]],
@@ -51,7 +51,7 @@ class VichFileTypeTest extends TestCase
         ];
     }
 
-    public function testEmptyDownloadLinkDoNotThrowsDeprecation()
+    public function testEmptyDownloadLinkDoNotThrowsDeprecation(): void
     {
         $optionsResolver = new OptionsResolver();
 
@@ -73,7 +73,7 @@ class VichFileTypeTest extends TestCase
     /**
      * @dataProvider buildViewDataProvider
      */
-    public function testBuildView(Product $object = null, array $options, array $vars)
+    public function testBuildView(Product $object = null, array $options, array $vars): void
     {
         $field = 'image';
 
@@ -138,7 +138,7 @@ class VichFileTypeTest extends TestCase
         $this->assertEquals($vars, $view->vars);
     }
 
-    public function buildViewDataProvider()
+    public function buildViewDataProvider(): array
     {
         $object = new Product();
         $object->setImageOriginalName('image.jpeg');

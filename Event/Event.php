@@ -25,7 +25,7 @@ class Event extends BaseEvent
     /**
      * Accessor to the object being manipulated.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {
@@ -37,7 +37,7 @@ class Event extends BaseEvent
      *
      * @return PropertyMapping
      */
-    public function getMapping()
+    public function getMapping(): PropertyMapping
     {
         return $this->mapping;
     }

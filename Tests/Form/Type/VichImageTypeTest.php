@@ -17,7 +17,7 @@ class VichImageTypeTest extends VichFileTypeTest
 {
     const TESTED_TYPE = VichImageType::class;
 
-    public function buildViewDataProvider()
+    public function buildViewDataProvider(): array
     {
         $object = new Product();
 
@@ -134,7 +134,7 @@ class VichImageTypeTest extends VichFileTypeTest
         ];
     }
 
-    public function testLiipImagineBundleIntegration()
+    public function testLiipImagineBundleIntegration(): void
     {
         if (!class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
@@ -204,12 +204,11 @@ class VichImageTypeTest extends VichFileTypeTest
         $this->assertEquals($vars, $view->vars);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage LiipImagineBundle must be installed and configured for using "imagine_pattern" option.
-     */
-    public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable()
+    public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
+
         $object = new Product();
 
         $testedType = static::TESTED_TYPE;

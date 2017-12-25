@@ -14,7 +14,7 @@ abstract class FileDriverTestCase extends TestCase
     /**
      * @dataProvider classesProvider
      */
-    public function testLoadMetadataForClass($class, $file, $expectedMetadata)
+    public function testLoadMetadataForClass($class, $file, $expectedMetadata): void
     {
         $reflectionClass = new \ReflectionClass($class);
         $driver = $this->getDriver($reflectionClass, $file);

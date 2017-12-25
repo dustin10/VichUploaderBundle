@@ -26,7 +26,7 @@ class UniqidNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern)
+    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file

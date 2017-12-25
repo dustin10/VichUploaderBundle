@@ -24,7 +24,7 @@ class OrignameNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($name, $pattern, $transliterate)
+    public function testNameReturnsAnUniqueName($name, $pattern, $transliterate): void
     {
         $file = $this->getUploadedFileMock();
         $file

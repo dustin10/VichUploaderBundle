@@ -16,18 +16,18 @@ class UploadHelperTest extends TestCase
 
     protected $helper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->storage = $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
         $this->helper = new UploaderHelper($this->storage);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('vich_uploader', $this->helper->getName());
     }
 
-    public function testAssetForwardsCallsToTheStorage()
+    public function testAssetForwardsCallsToTheStorage(): void
     {
         $obj = new \stdClass();
 

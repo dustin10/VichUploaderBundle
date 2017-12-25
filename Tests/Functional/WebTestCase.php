@@ -41,7 +41,7 @@ class WebTestCase extends BaseWebTestCase
         return $client->getKernel()->getContainer();
     }
 
-    protected function loadFixtures($client)
+    protected function loadFixtures($client): void
     {
         $container = $this->getContainer($client);
         $registry = $container->get('doctrine');

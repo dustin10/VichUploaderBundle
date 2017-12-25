@@ -15,7 +15,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class AnnotationDriverTest extends TestCase
 {
-    public function testReadUploadableAnnotation()
+    public function testReadUploadableAnnotation(): void
     {
         $entity = new DummyEntity();
 
@@ -50,7 +50,7 @@ class AnnotationDriverTest extends TestCase
         ], $metadata->fields);
     }
 
-    public function testReadUploadableAnnotationReturnsNullWhenNonePresent()
+    public function testReadUploadableAnnotationReturnsNullWhenNonePresent(): void
     {
         $entity = new DummyEntity();
 
@@ -69,7 +69,7 @@ class AnnotationDriverTest extends TestCase
         $this->assertNull($metadata);
     }
 
-    public function testReadTwoUploadableFields()
+    public function testReadTwoUploadableFields(): void
     {
         $entity = new Article();
 
@@ -122,7 +122,7 @@ class AnnotationDriverTest extends TestCase
         ], $metadata->fields);
     }
 
-    public function testReadNoUploadableFieldsWhenNoneExist()
+    public function testReadNoUploadableFieldsWhenNoneExist(): void
     {
         $entity = new DummyEntity();
 

@@ -20,7 +20,7 @@ class MappingDebugCommand extends Command
         $this->mappings = $mappings;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('vich:mapping:debug')
@@ -29,7 +29,7 @@ class MappingDebugCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $mapping = $input->getArgument('mapping');
 

@@ -14,7 +14,7 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +24,7 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Test the getSubscribedEvents method.
      */
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $events = $this->listener->getSubscribedEvents();
 
@@ -34,7 +34,7 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Test the postLoad method.
      */
-    public function testPostLoad()
+    public function testPostLoad(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -61,7 +61,7 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Test that postLoad skips non uploadable entity.
      */
-    public function testPostLoadSkipsNonUploadable()
+    public function testPostLoadSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())

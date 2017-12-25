@@ -20,7 +20,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
      *                       - algorithm: wich hash algorithm to use.
      *                       - length: limit file name length
      */
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         $options = array_merge(['algorithm' => $this->algorithm, 'length' => $this->length], $options);
 
@@ -28,10 +28,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
         $this->length = $options['length'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function name($object, PropertyMapping $mapping)
+    public function name($object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 
@@ -47,8 +44,8 @@ class HashNamer implements NamerInterface, ConfigurableInterface
         return $name;
     }
 
-    protected function getRandomString()
+    protected function getRandomString(): string
     {
-        return microtime(true).mt_rand(0, 9999999);
+        return microtime(true).random_int(0, 9999999);
     }
 }

@@ -18,7 +18,7 @@ class CleanListener extends BaseListener
      *
      * @return array The array of events
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'preUpdate',
@@ -28,7 +28,7 @@ class CleanListener extends BaseListener
     /**
      * @param EventArgs $event The event
      */
-    public function preUpdate(EventArgs $event)
+    public function preUpdate(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

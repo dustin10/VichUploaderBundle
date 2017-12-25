@@ -16,32 +16,12 @@ class UploaderExtension extends \Twig_Extension
      */
     private $helper;
 
-    /**
-     * Constructs a new instance of UploaderExtension.
-     *
-     * @param UploaderHelper $helper
-     */
     public function __construct(UploaderHelper $helper)
     {
         $this->helper = $helper;
     }
 
-    /**
-     * Returns the canonical name of this helper.
-     *
-     * @return string The canonical name
-     */
-    public function getName()
-    {
-        return 'vich_uploader';
-    }
-
-    /**
-     * Returns a list of twig functions.
-     *
-     * @return array An array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('vich_uploader_asset', [$this, 'asset']),
@@ -49,8 +29,7 @@ class UploaderExtension extends \Twig_Extension
     }
 
     /**
-     * Gets the public path for the file associated with the uploadable
-     * object.
+     * Gets the public path for the file associated with the uploadable object.
      *
      * @param object $obj       The object
      * @param string $fieldName The field name
@@ -58,7 +37,7 @@ class UploaderExtension extends \Twig_Extension
      *
      * @return string|null The public path or null if file not stored
      */
-    public function asset($obj, $fieldName, $className = null)
+    public function asset($obj, string $fieldName, string $className = null): ?string
     {
         return $this->helper->asset($obj, $fieldName, $className);
     }

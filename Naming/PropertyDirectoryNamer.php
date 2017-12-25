@@ -31,9 +31,6 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
      */
     protected $propertyAccessor;
 
-    /**
-     * @param PropertyAccessorInterface $propertyAccessor Property accessor interface
-     */
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
@@ -43,8 +40,10 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
      * @param array $options Options for this namer. The following options are accepted:
      *                       - property: path to the property used to name the file. Can be either an attribute or a method.
      *                       - transliterate: whether the filename should be transliterated or not
+     *
+     * @throws \InvalidArgumentException
      */
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         if (empty($options['property'])) {
             throw new \InvalidArgumentException('Option "property" is missing or empty.');
@@ -54,10 +53,7 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function directoryName($object, PropertyMapping $mapping)
+    public function directoryName($object, PropertyMapping $mapping): string
     {
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');

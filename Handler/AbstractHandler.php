@@ -22,10 +22,6 @@ abstract class AbstractHandler
      */
     protected $storage;
 
-    /**
-     * @param PropertyMappingFactory $factory The mapping factory
-     * @param StorageInterface       $storage The storage
-     */
     public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
     {
         $this->factory = $factory;
@@ -38,8 +34,10 @@ abstract class AbstractHandler
      * @param string|null  $className
      *
      * @return PropertyMapping|null
+     *
+     * @throws MappingNotFoundException
      */
-    protected function getMapping($obj, $fieldName, $className = null)
+    protected function getMapping($obj, string $fieldName, ?string $className = null): ?PropertyMapping
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 

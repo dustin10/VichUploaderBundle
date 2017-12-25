@@ -20,7 +20,7 @@ download the file.
 ```php
 class AcmeController extends Controller
 {
-    public function downloadImageAction(Image $image)
+    public function downloadImageAction(Image $image): Response
     {
         $downloadHandler = $this->get('vich_uploader.download_handler');
 
@@ -36,10 +36,10 @@ This handler can also be used to rename the downloaded files.
 ```php
 class AcmeController extends Controller
 {
-    public function downloadImageAction(Image $image)
+    public function downloadImageAction(Image $image): Response
     {
         $downloadHandler = $this->get('vich_uploader.download_handler');
-        $fileName   = 'foo.png';
+        $fileName = 'foo.png';
 
         return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $fileName);
     }

@@ -19,7 +19,7 @@ class MappingListClassesCommand extends Command
         $this->metadataReader = $metadataReader;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('vich:mapping:list-classes')
@@ -27,7 +27,7 @@ class MappingListClassesCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('Looking for uploadable classes.');
 

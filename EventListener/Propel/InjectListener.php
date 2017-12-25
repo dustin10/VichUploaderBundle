@@ -18,7 +18,7 @@ class InjectListener extends BaseListener
      *
      * @return array The array of events
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'propel.post_hydrate' => 'onHydrate',
@@ -27,8 +27,10 @@ class InjectListener extends BaseListener
 
     /**
      * @param GenericEvent $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function onHydrate(GenericEvent $event)
+    public function onHydrate(GenericEvent $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

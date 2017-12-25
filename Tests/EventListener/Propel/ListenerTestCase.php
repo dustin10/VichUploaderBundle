@@ -53,7 +53,7 @@ class ListenerTestCase extends TestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->adapter = $this->getAdapterMock();
         $this->handler = $this->getHandlerMock();

@@ -2,10 +2,10 @@
 
 namespace Vich\UploaderBundle\Storage;
 
-use Vich\UploaderBundle\Exception\MappingNotFoundException;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * FileSystemStorage.
@@ -19,32 +19,14 @@ abstract class AbstractStorage implements StorageInterface
      */
     protected $factory;
 
-    /**
-     * Constructs a new instance of FileSystemStorage.
-     *
-     * @param PropertyMappingFactory $factory The factory
-     */
     public function __construct(PropertyMappingFactory $factory)
     {
         $this->factory = $factory;
     }
 
-    /**
-     * Do real upload.
-     *
-     * @param PropertyMapping $mapping
-     * @param UploadedFile    $file
-     * @param string          $dir
-     * @param string          $name
-     *
-     * @return bool
-     */
-    abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name);
+    abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function upload($obj, PropertyMapping $mapping)
+    public function upload($obj, PropertyMapping $mapping): void
     {
         $file = $mapping->getFile($obj);
 
@@ -59,7 +41,7 @@ abstract class AbstractStorage implements StorageInterface
         $mapping->writeProperty($obj, 'mimeType', $file->getMimeType());
         $mapping->writeProperty($obj, 'originalName', $file->getClientOriginalName());
 
-        if (strpos($file->getMimeType(), 'image/') !== false) {
+        if (false !== strpos($file->getMimeType(), 'image/')) {
             $dimensions = getimagesize($file);
             $mapping->writeProperty($obj, 'dimensions', array_splice($dimensions, 0, 2));
         }
@@ -69,21 +51,9 @@ abstract class AbstractStorage implements StorageInterface
         $this->doUpload($mapping, $file, $dir, $name);
     }
 
-    /**
-     * Do real remove.
-     *
-     * @param PropertyMapping $mapping
-     * @param string          $dir
-     * @param string          $name
-     *
-     * @return bool
-     */
-    abstract protected function doRemove(PropertyMapping $mapping, $dir, $name);
+    abstract protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($obj, PropertyMapping $mapping)
+    public function remove($obj, PropertyMapping $mapping): ?bool
     {
         $name = $mapping->getFileName($obj);
 
@@ -104,31 +74,25 @@ abstract class AbstractStorage implements StorageInterface
      *
      * @return string
      */
-    abstract protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false);
+    abstract protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolvePath($obj, $fieldName, $className = null, $relative = false)
+    public function resolvePath($obj, string $fieldName, ?string $className = null, ?bool $relative = false): ?string
     {
-        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
+        [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
-            return;
+            return null;
         }
 
         return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename, $relative);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveUri($obj, $fieldName, $className = null)
+    public function resolveUri($obj, string $fieldName, ?string $className = null): ?string
     {
-        list($mapping, $filename) = $this->getFilename($obj, $fieldName, $className);
+        [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($filename)) {
-            return;
+            return null;
         }
 
         $dir = $mapping->getUploadDir($obj);
@@ -137,24 +101,31 @@ abstract class AbstractStorage implements StorageInterface
         return $mapping->getUriPrefix().'/'.$path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveStream($obj, $fieldName, $className = null)
+    public function resolveStream($obj, string $fieldName, ?string $className = null)
     {
         $path = $this->resolvePath($obj, $fieldName, $className);
 
         if (empty($path)) {
-            return;
+            return null;
         }
 
         return fopen($path, 'rb');
     }
 
     /**
-     *  note: extension point.
+     * note: extension point.
+     *
+     * @param             $obj
+     * @param string      $fieldName
+     * @param null|string $className
+     *
+     * @return array
+     *
+     * @throws MappingNotFoundException
+     * @throws \RuntimeException
+     * @throws \Vich\UploaderBundle\Exception\NotUploadableException
      */
-    protected function getFilename($obj, $fieldName, $className = null)
+    protected function getFilename($obj, string $fieldName, ?string $className = null): array
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 
