@@ -18,7 +18,7 @@ class UploadListener extends BaseListener
      *
      * @return array The array of events
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'prePersist',
@@ -28,8 +28,10 @@ class UploadListener extends BaseListener
 
     /**
      * @param EventArgs $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function prePersist(EventArgs $event)
+    public function prePersist(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
@@ -44,8 +46,10 @@ class UploadListener extends BaseListener
 
     /**
      * @param EventArgs $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function preUpdate(EventArgs $event)
+    public function preUpdate(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

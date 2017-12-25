@@ -12,30 +12,21 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class FileSystemStorage extends AbstractStorage
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name)
     {
         $uploadDir = $mapping->getUploadDestination().DIRECTORY_SEPARATOR.$dir;
 
         return $file->move($uploadDir, $name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doRemove(PropertyMapping $mapping, $dir, $name)
+    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
         return file_exists($file) ? unlink($file) : false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
+    protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
         $path = !empty($dir) ? $dir.DIRECTORY_SEPARATOR.$name : $name;
 
@@ -46,15 +37,12 @@ class FileSystemStorage extends AbstractStorage
         return $mapping->getUploadDestination().DIRECTORY_SEPARATOR.$path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveUri($obj, $mappingName, $className = null)
+    public function resolveUri($obj, string $mappingName, string $className = null): ?string
     {
-        list($mapping, $name) = $this->getFilename($obj, $mappingName, $className);
+        [$mapping, $name] = $this->getFilename($obj, $mappingName, $className);
 
         if (empty($name)) {
-            return;
+            return null;
         }
 
         $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
@@ -63,7 +51,7 @@ class FileSystemStorage extends AbstractStorage
         return sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
     }
 
-    private function convertWindowsDirectorySeparator($string)
+    private function convertWindowsDirectorySeparator(string $string): string
     {
         return str_replace('\\', '/', $string);
     }

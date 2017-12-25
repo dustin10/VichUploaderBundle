@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 class MappingDebugClassCommand extends Command
 {
@@ -19,7 +20,7 @@ class MappingDebugClassCommand extends Command
         $this->metadataReader = $metadataReader;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('vich:mapping:debug-class')

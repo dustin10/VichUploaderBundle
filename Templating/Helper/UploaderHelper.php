@@ -17,22 +17,12 @@ class UploaderHelper extends Helper
      */
     protected $storage;
 
-    /**
-     * Constructs a new instance of UploaderHelper.
-     *
-     * @param StorageInterface $storage The storage
-     */
     public function __construct(StorageInterface $storage)
     {
         $this->storage = $storage;
     }
 
-    /**
-     * Gets the helper name.
-     *
-     * @return string The name
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'vich_uploader';
     }
@@ -47,7 +37,7 @@ class UploaderHelper extends Helper
      *
      * @return string|null The public asset path or null if file not stored
      */
-    public function asset($obj, $fieldName, $className = null)
+    public function asset($obj, string $fieldName, ?string $className = null)
     {
         return $this->storage->resolveUri($obj, $fieldName, $className);
     }

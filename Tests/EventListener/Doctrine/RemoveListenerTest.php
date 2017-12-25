@@ -15,7 +15,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -25,14 +25,14 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Test the getSubscribedEvents method.
      */
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $events = $this->listener->getSubscribedEvents();
 
         $this->assertSame(['preRemove', 'postRemove'], $events);
     }
 
-    public function testPreRemove()
+    public function testPreRemove(): void
     {
         $this->object = $this->getEntityProxyMock();
         $this->object
@@ -48,7 +48,7 @@ class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
     }
 
-    public function testPreRemoveSkipNonUploadable()
+    public function testPreRemoveSkipNonUploadable(): void
     {
         $this->object = $this->getEntityProxyMock();
         $this->object
@@ -67,7 +67,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Test the postRemove method.
      */
-    public function testPostRemove()
+    public function testPostRemove(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -94,7 +94,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Test that postRemove skips non uploadable entity.
      */
-    public function testPostRemoveSkipsNonUploadable()
+    public function testPostRemoveSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())

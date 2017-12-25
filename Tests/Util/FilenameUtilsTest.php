@@ -10,7 +10,7 @@ class FilenameUtilsTest extends TestCase
     /**
      * @dataProvider spitNameByExtensionProvider
      */
-    public function testSpitNameByExtension($filename, $basename, $extension)
+    public function testSpitNameByExtension($filename, $basename, $extension): void
     {
         $this->assertSame([$basename, $extension], FilenameUtils::spitNameByExtension($filename));
     }

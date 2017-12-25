@@ -27,7 +27,7 @@ class DummyEntity
         return $this->file;
     }
 
-    public function setFile($file)
+    public function setFile($file): void
     {
         $this->file = $file;
     }
@@ -37,7 +37,7 @@ class DummyEntity
         return $this->fileName;
     }
 
-    public function setFileName($fileName)
+    public function setFileName($fileName): void
     {
         $this->fileName = $fileName;
     }
@@ -47,7 +47,7 @@ class DummyEntity
         return $this->size;
     }
 
-    public function setSize($size)
+    public function setSize($size): void
     {
         $this->size = $size;
     }

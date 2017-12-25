@@ -10,11 +10,10 @@ use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
  */
 class YamlDriverTest extends FileDriverTestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testInconsistentYamlFile()
+    public function testInconsistentYamlFile(): void
     {
+        $this->expectException(\RuntimeException::class);
+
         $rClass = new \ReflectionClass(\DateTime::class);
 
         $fileLocator = $this->createMock(FileLocatorInterface::class);

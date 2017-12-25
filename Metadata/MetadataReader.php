@@ -36,8 +36,10 @@ class MetadataReader
      * @param string $mapping If given, also checks that the object has the given mapping
      *
      * @return bool
+     *
+     * @throws MappingNotFoundException
      */
-    public function isUploadable($class, $mapping = null)
+    public function isUploadable(string $class, ?string $mapping = null): bool
     {
         $metadata = $this->reader->getMetadataForClass($class);
 
@@ -61,9 +63,11 @@ class MetadataReader
     /**
      * Search for all uploadable classes.
      *
-     * @return array A list of uploadable class names
+     * @return array|null A list of uploadable class names
+     *
+     * @throws \RuntimeException
      */
-    public function getUploadableClasses()
+    public function getUploadableClasses(): ?array
     {
         return $this->reader->getAllClassNames();
     }
@@ -78,7 +82,7 @@ class MetadataReader
      *
      * @throws MappingNotFoundException
      */
-    public function getUploadableFields(string $class, string $mapping = null): array
+    public function getUploadableFields(string $class, ?string $mapping = null): array
     {
         if (null === $metadata = $this->reader->getMetadataForClass($class)) {
             throw MappingNotFoundException::createNotFoundForClass($mapping ?? '', $class);
@@ -90,7 +94,7 @@ class MetadataReader
         }
 
         if (null !== $mapping) {
-            $uploadableFields = array_filter($uploadableFields, function ($fieldMetadata) use ($mapping) {
+            $uploadableFields = array_filter($uploadableFields, function (array $fieldMetadata) use ($mapping) {
                 return $fieldMetadata['mapping'] === $mapping;
             });
         }
@@ -104,12 +108,14 @@ class MetadataReader
      * @param string $class The class name to test (FQCN)
      * @param string $field The field
      *
-     * @return null|array The field mapping
+     * @return mixed The field mapping
+     *
+     * @throws MappingNotFoundException
      */
-    public function getUploadableField($class, $field)
+    public function getUploadableField(string $class, string $field)
     {
         $fieldsMetadata = $this->getUploadableFields($class);
 
-        return isset($fieldsMetadata[$field]) ? $fieldsMetadata[$field] : null;
+        return $fieldsMetadata[$field] ?? null;
     }
 }

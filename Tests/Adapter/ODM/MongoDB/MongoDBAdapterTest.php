@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class MongoDBAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')) {
             self::markTestSkipped('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs does not exist.');
@@ -23,7 +23,7 @@ class MongoDBAdapterTest extends TestCase
     /**
      * Test the getObjectFromArgs method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromArgs(): void
     {
         $entity = new DummyEntity();
 

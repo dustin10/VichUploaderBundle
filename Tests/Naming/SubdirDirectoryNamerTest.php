@@ -25,7 +25,7 @@ class SubdirDirectoryNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($fileName, $expectedFileName, $charsPerDir, $dirs)
+    public function testNameReturnsTheRightName($fileName, $expectedFileName, $charsPerDir, $dirs): void
     {
         $entity = new DummyEntity();
         $entity->setFileName($fileName);

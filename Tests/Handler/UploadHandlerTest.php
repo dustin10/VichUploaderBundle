@@ -32,7 +32,7 @@ class UploadHandlerTest extends TestCase
 
     const FILE_FIELD = 'image';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->storage = $this->getStorageMock();
@@ -49,7 +49,7 @@ class UploadHandlerTest extends TestCase
             ->will($this->returnValue($this->mapping));
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         $this->expectEvents([Events::PRE_UPLOAD, Events::POST_UPLOAD]);
 
@@ -74,10 +74,11 @@ class UploadHandlerTest extends TestCase
 
     /**
      * @dataProvider methodProvider
-     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function testAnExceptionIsThrownIfMappingIsntFound($method)
+    public function testAnExceptionIsThrownIfMappingIsntFound($method): void
     {
+        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+
         $this->factory = $this->getPropertyMappingFactoryMock();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
 
@@ -94,7 +95,7 @@ class UploadHandlerTest extends TestCase
         ];
     }
 
-    public function testUploadSkipsEmptyObjects()
+    public function testUploadSkipsEmptyObjects(): void
     {
         $this->dispatcher
             ->expects($this->never())
@@ -111,7 +112,7 @@ class UploadHandlerTest extends TestCase
         $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
-    public function testInject()
+    public function testInject(): void
     {
         $this->expectEvents([Events::PRE_INJECT, Events::POST_INJECT]);
 
@@ -123,7 +124,7 @@ class UploadHandlerTest extends TestCase
         $this->handler->inject($this->object, self::FILE_FIELD);
     }
 
-    public function testClean()
+    public function testClean(): void
     {
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
@@ -147,7 +148,7 @@ class UploadHandlerTest extends TestCase
         $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
-    public function testCleanSkipsEmptyObjects()
+    public function testCleanSkipsEmptyObjects(): void
     {
         $this->mapping
             ->expects($this->any())
@@ -166,7 +167,7 @@ class UploadHandlerTest extends TestCase
         $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
@@ -190,7 +191,7 @@ class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testRemoveWithEmptyObject()
+    public function testRemoveWithEmptyObject(): void
     {
         $this->dispatcher
             ->expects($this->never())
@@ -229,7 +230,7 @@ class UploadHandlerTest extends TestCase
         });
     }
 
-    protected function expectEvents(array $events)
+    protected function expectEvents(array $events): void
     {
         foreach ($events as $i => $event) {
             $this->dispatcher

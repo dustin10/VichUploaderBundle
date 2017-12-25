@@ -34,82 +34,52 @@ class File
      */
     protected $dimensions;
 
-    /**
-     * @return string|null
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getOriginalName()
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
 
-    /**
-     * @param string|null $originalName
-     */
-    public function setOriginalName($originalName)
+    public function setOriginalName(?string $originalName): void
     {
         $this->originalName = $originalName;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
-    /**
-     * @param string|null $mimeType
-     */
-    public function setMimeType($mimeType)
+    public function setMimeType(?string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     */
-    public function setSize($size)
+    public function setSize(?int $size): void
     {
         $this->size = $size;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getDimensions()
+    public function getDimensions(): ?array
     {
         return $this->dimensions;
     }
 
-    /**
-     * @param array $dimensions
-     */
-    public function setDimensions($dimensions)
+    public function setDimensions(?array $dimensions): void
     {
         $this->dimensions = $dimensions;
     }

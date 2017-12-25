@@ -17,10 +17,7 @@ class Configuration implements ConfigurationInterface
 
     protected $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $tb = new TreeBuilder();
         $root = $tb->root('vich_uploader');
@@ -32,7 +29,7 @@ class Configuration implements ConfigurationInterface
         return $tb;
     }
 
-    protected function addGeneralSection(ArrayNodeDefinition $node)
+    protected function addGeneralSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -74,7 +71,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    protected function addMetadataSection(ArrayNodeDefinition $node)
+    protected function addMetadataSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -103,7 +100,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    protected function addMappingsSection(ArrayNodeDefinition $node)
+    protected function addMappingsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

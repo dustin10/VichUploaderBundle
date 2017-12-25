@@ -20,7 +20,7 @@ class ClassUtils
      *
      * @return string The FQCN of the given object
      */
-    public static function getClass($object)
+    public static function getClass($object): string
     {
         if (class_exists(DoctrineClassUtils::class)) {
             return DoctrineClassUtils::getClass($object);

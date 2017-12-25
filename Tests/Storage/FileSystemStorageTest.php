@@ -20,42 +20,12 @@ class FileSystemStorageTest extends StorageTestCase
     }
 
     /**
-     * Tests the upload method skips a mapping which has a non
-     * uploadable property value.
-     *
-     * @expectedException   \LogicException
-     * @dataProvider        invalidFileProvider
-     * @group               upload
-     */
-    public function testUploadSkipsMappingOnInvalid($file)
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->will($this->returnValue($file));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('hasNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->upload($this->object, $this->mapping);
-    }
-
-    /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
      *
      * @dataProvider emptyFilenameProvider
      */
-    public function testRemoveSkipsEmptyFilenameProperties($propertyValue)
+    public function testRemoveSkipsEmptyFilenameProperties($propertyValue): void
     {
         $this->mapping
             ->expects($this->once())
@@ -72,7 +42,7 @@ class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the remove method skips trying to remove a file that no longer exists.
      */
-    public function testRemoveSkipsNonExistingFile()
+    public function testRemoveSkipsNonExistingFile(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -87,7 +57,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -106,7 +76,7 @@ class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the resolve path method.
      */
-    public function testResolvePath()
+    public function testResolvePath(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -137,7 +107,7 @@ class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the resolve path method.
      */
-    public function testResolveRelativePath()
+    public function testResolveRelativePath(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -160,7 +130,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertEquals(sprintf('upload_dir%sfile.txt', DIRECTORY_SEPARATOR), $path);
     }
 
-    public function testResolveUriReturnsNullIfNoFile()
+    public function testResolveUriReturnsNullIfNoFile(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -181,7 +151,7 @@ class FileSystemStorageTest extends StorageTestCase
      *
      * @dataProvider resolveUriDataProvider
      */
-    public function testResolveUri($uploadDir, $uri)
+    public function testResolveUri($uploadDir, $uri): void
     {
         $this->mapping
             ->expects($this->once())
@@ -209,7 +179,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertEquals($uri, $path);
     }
 
-    public function testResolveStream()
+    public function testResolveStream(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -263,7 +233,7 @@ class FileSystemStorageTest extends StorageTestCase
      * @dataProvider filenameWithDirectoriesDataProvider
      * @group upload
      */
-    public function testUploadedFileIsCorrectlyMoved($uploadDir, $dir, $expectedDir)
+    public function testUploadedFileIsCorrectlyMoved($uploadDir, $dir, $expectedDir): void
     {
         $file = $this->getUploadedFileMock();
 

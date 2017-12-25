@@ -16,18 +16,13 @@ class UploaderExtensionTest extends TestCase
 
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->helper = $this->getMockBuilder('Vich\UploaderBundle\Templating\Helper\UploaderHelper')->disableOriginalConstructor()->getMock();
         $this->extension = new UploaderExtension($this->helper);
     }
 
-    public function testGetName()
-    {
-        $this->assertSame('vich_uploader', $this->extension->getName());
-    }
-
-    public function testAssetIsRegistered()
+    public function testAssetIsRegistered(): void
     {
         $functions = $this->extension->getFunctions();
 
@@ -35,7 +30,7 @@ class UploaderExtensionTest extends TestCase
         $this->assertSame('vich_uploader_asset', $functions[0]->getName());
     }
 
-    public function testAssetForwardsCallsToTheHelper()
+    public function testAssetForwardsCallsToTheHelper(): void
     {
         $obj = new \stdClass();
 

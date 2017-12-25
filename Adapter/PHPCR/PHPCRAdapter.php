@@ -20,7 +20,7 @@ class PHPCRAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function recomputeChangeSet($event)
+    public function recomputeChangeSet($event): void
     {
         $object = $this->getObjectFromArgs($event);
 
