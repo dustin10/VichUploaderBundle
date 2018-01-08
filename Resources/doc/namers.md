@@ -43,7 +43,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image_fs
-            namer:              vich_uploader.namer_uniqid
+            namer: vich_uploader.namer_uniqid
 ```
 
 If no namer is configured for a mapping, the bundle will simply use the name of the file that
@@ -104,7 +104,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            directory_namer:    vich_uploader.directory_namer_subdir
+            directory_namer: vich_uploader.directory_namer_subdir
 ```
 
 Or provide configuration:

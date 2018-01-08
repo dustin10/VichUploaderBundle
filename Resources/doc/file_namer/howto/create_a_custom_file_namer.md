@@ -22,10 +22,16 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            namer:              my.namer.product
+            namer: my.namer.product
 ```
 
 Where `my.namer.product` is the configured id of the service.
+
+**Note**:
+
+> The namer service must be public.
+> If you're using default configuration, make sure to explicit public visibility
+> for your namer service
 
 
 ## That was it!
