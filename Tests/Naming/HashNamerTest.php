@@ -36,6 +36,9 @@ class HashNamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
         $file->expects($this->once())
+            ->method('getClientOriginalName');
+
+        $file->expects($this->once())
             ->method('guessExtension')
             ->will($this->returnValue($extension));
 

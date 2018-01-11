@@ -35,7 +35,10 @@ class Base64NamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
         $file->expects($this->once())
-            ->method('getClientOriginalExtension')
+            ->method('getClientOriginalName');
+
+        $file->expects($this->once())
+            ->method('guessExtension')
             ->will($this->returnValue($extension));
 
         $entity = new DummyEntity();

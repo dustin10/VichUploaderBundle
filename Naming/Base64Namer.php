@@ -12,6 +12,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class Base64Namer implements NamerInterface, ConfigurableInterface
 {
+    use Polyfill\FileExtensionTrait;
+
     protected const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 
     /** @var int Length of the resulting name. 10 can be decoded to a 64-bit integer. */
@@ -39,7 +41,7 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
             $name .= $this->getRandomChar();
         }
 
-        if ($extension = $file->getClientOriginalExtension()) {
+        if ($extension = $this->getExtension($file)) {
             $name = "$name.$extension";
         }
 
