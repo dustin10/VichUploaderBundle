@@ -11,6 +11,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class HashNamer implements NamerInterface, ConfigurableInterface
 {
+    use Polyfill\FileExtensionTrait;
+
     private $algorithm = 'sha1';
 
     private $length;
@@ -37,7 +39,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
             $name = substr($name, 0, $this->length);
         }
 
-        if ($extension = $file->guessExtension()) {
+        if ($extension = $this->getExtension($file)) {
             $name = sprintf('%s.%s', $name, $extension);
         }
 
