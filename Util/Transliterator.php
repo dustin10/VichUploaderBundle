@@ -23,7 +23,7 @@ class Transliterator
      */
     public static function transliterate(string $string, string $separator = '-'): string
     {
-        [$filename, $extension] = FilenameUtils::spitNameByExtension($string);
+        [$filename, $extension] = FilenameUtils::splitNameByExtension($string);
 
         $transliterated = BehatTransliterator::transliterate($filename, $separator);
         if ('' !== $extension) {
