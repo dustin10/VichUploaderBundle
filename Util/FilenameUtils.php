@@ -18,12 +18,10 @@ final class FilenameUtils
      *
      * @return array An array of basename and extension
      */
-    public static function spitNameByExtension(string $filename): array
+    public static function splitNameByExtension(string $filename): array
     {
-        if (false === $pos = strrpos($filename, '.')) {
-            return [$filename, ''];
-        }
+        $pathInfo = pathinfo($filename);
 
-        return [substr($filename, 0, $pos), substr($filename, $pos + 1)];
+        return [$pathInfo['filename'], $pathInfo['extension'] ?? ''];
     }
 }
