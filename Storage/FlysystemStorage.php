@@ -64,9 +64,9 @@ class FlysystemStorage extends AbstractStorage
         return (string) $fs->get($path)->getPath();
     }
 
-    public function resolveStream($obj, string $fieldName, string $className = null): ?string
+    public function resolveStream($obj, string $fieldName, ?string $className = null)
     {
-        $path = $this->resolvePath($obj, $fieldName, $className);
+        $path = $this->resolvePath($obj, $fieldName, $className, true);
 
         if (empty($path)) {
             return null;
@@ -75,7 +75,7 @@ class FlysystemStorage extends AbstractStorage
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
         $fs = $this->getFilesystem($mapping);
 
-        return (string) $fs->readStream($path);
+        return $fs->readStream($path);
     }
 
     protected function getFilesystem(PropertyMapping $mapping): FilesystemInterface
