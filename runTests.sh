@@ -6,7 +6,7 @@ NC='\033[0m'
 
 restore_composer () {
   # Restore the composer.json file
-  rm composer.json && mv composer.json.bck composer.json
+  rm composer.json && mv composer.json.bck composer.json && rm composer.phar
 }
 
 # Install/upgrade composer.phar
