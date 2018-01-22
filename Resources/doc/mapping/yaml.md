@@ -29,7 +29,7 @@ vich_uploader:
     metadata:
         auto_detection: false
         directories:
-            - {path: '%kernel.root_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
+            - {path: '%kernel.project_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
 ```
 
 #### Naming YAML Files

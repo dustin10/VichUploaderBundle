@@ -8,6 +8,6 @@
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
 
-        <service id="Vich\UploaderBundle\Storage\StorageInterface" alias="vich_uploader.storage.file_system" public="false"/>
+        <service id="Vich\UploaderBundle\Storage\FileSystemStorage" alias="vich_uploader.storage.file_system" public="false"/>
     </services>
 </container>
