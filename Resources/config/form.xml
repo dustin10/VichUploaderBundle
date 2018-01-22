@@ -20,5 +20,8 @@
             <argument type="service" id="liip_imagine.cache.manager" on-invalid="null" />
             <tag name="form.type" alias="vich_image" />
         </service>
+
+        <service id="Vich\UploaderBundle\Form\Type\VichFileType" alias="vich_uploader.form.type.file" public="false"/>
+        <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     </services>
 </container>

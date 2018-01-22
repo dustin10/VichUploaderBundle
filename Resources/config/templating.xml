@@ -11,6 +11,7 @@
             <argument type="service" id="vich_uploader.storage" />
         </service>
 
+        <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     </services>
 
 </container>
