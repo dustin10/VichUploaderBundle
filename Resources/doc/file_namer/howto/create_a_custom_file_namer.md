@@ -14,7 +14,7 @@ service you require.
 > depending on what version of PHP you are running.
 
 After you have created your namer and configured it as a service, you simply specify
-the service id for the `namer` configuration option of your mapping. An example:
+the service for the `namer` configuration option of your mapping. An example:
 
 ``` yaml
 vich_uploader:
@@ -22,10 +22,10 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            namer: my.namer.product
+            namer: App\Naming\MyNamer
 ```
 
-Where `my.namer.product` is the configured id of the service.
+Where `App\Naming\MyNamer` is the configured service class.
 
 **Note**:
 

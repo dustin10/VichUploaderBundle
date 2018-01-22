@@ -3,12 +3,12 @@ Generating URLs
 
 ## Generating a URL in a Controller
 
-To get a URL for the file, you can use the `vich_uploader.templating.helper`
+To get a URL for the file, you can use the `Vich\UploaderBundle\Templating\Helper\UploaderHelper`
 service as follows:
 
 ``` php
-$entity = …; // get the entity..
-$helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
+$entity = …; // get the entity...
+// get the UploaderHelper service...
 $path = $helper->asset($entity, 'image');
 ```
 

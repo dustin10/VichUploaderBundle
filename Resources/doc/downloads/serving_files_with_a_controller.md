@@ -12,18 +12,16 @@ that can be used in your controllers.
 
 ### Usage
 
-This handler is exposed in the container as a service named `vich_uploader.download_handler`.
+This handler is exposed in the container as a service named `Vich\UploaderBundle\Handler\DownloadHandler`.
 The entry point will be the `downloadObject` method, taking an object and the
 name of the property containing the file, and returning a `Response` allowing to
 download the file.
 
 ```php
-class AcmeController extends Controller
+class AcmeController extends AbstractController
 {
-    public function downloadImageAction(Image $image): Response
+    public function downloadImageAction(Image $image, DownloadHandler $downloadHandler): Response
     {
-        $downloadHandler = $this->get('vich_uploader.download_handler');
-
         return $downloadHandler->downloadObject($image, $fileField = 'imageFile');
     }
 }
@@ -34,11 +32,10 @@ class AcmeController extends Controller
 This handler can also be used to rename the downloaded files.
 
 ```php
-class AcmeController extends Controller
+class AcmeController extends AbstractController
 {
-    public function downloadImageAction(Image $image): Response
+    public function downloadImageAction(Image $image, DownloadHandler $downloadHandler): Response
     {
-        $downloadHandler = $this->get('vich_uploader.download_handler');
         $fileName = 'foo.png';
 
         return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $fileName);
