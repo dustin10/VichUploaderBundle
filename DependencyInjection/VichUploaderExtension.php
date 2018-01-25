@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
@@ -42,6 +43,7 @@ class VichUploaderExtension extends Extension
         } else {
             $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.'.$config['storage']);
         }
+        $container->setAlias(StorageInterface::class, new Alias('vich_uploader.storage', false));
 
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
