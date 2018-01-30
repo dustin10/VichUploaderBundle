@@ -146,9 +146,9 @@ class VichImageTypeTest extends VichFileTypeTest
         $storage = $this->createMock(StorageInterface::class);
         $storage
             ->expects($this->any())
-            ->method('resolveUri')
-            ->with($object, $field)
-            ->will($this->returnValue('resolved-uri'));
+            ->method('resolvePath')
+            ->with($object, $field, null, true)
+            ->will($this->returnValue('resolved-path'));
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
@@ -175,7 +175,7 @@ class VichImageTypeTest extends VichFileTypeTest
         $cacheManager
             ->expects($this->once())
             ->method('getBrowserPath')
-            ->with('resolved-uri', 'product_sq200')
+            ->with('resolved-path', 'product_sq200')
             ->will($this->returnValue('product_sq200/resolved-uri'));
 
         $testedType = static::TESTED_TYPE;
