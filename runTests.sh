@@ -1,12 +1,12 @@
 #!/bin/bash
 
-SUPPORTED_SYMFONY_VERSIONS=('~2.8.0' '~3.2.0' '~3.3.0')
+SUPPORTED_SYMFONY_VERSIONS=('~3.4.0' '~4.0.0')
 GREEN='\033[0;32m'
 NC='\033[0m'
 
 restore_composer () {
   # Restore the composer.json file
-  rm composer.json && mv composer.json.bck composer.json
+  rm composer.json && mv composer.json.bck composer.json && rm composer.phar
 }
 
 # Install/upgrade composer.phar

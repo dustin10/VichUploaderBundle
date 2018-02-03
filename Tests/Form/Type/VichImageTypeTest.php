@@ -17,7 +17,7 @@ class VichImageTypeTest extends VichFileTypeTest
 {
     const TESTED_TYPE = VichImageType::class;
 
-    public function buildViewDataProvider()
+    public function buildViewDataProvider(): array
     {
         $object = new Product();
 
@@ -134,7 +134,7 @@ class VichImageTypeTest extends VichFileTypeTest
         ];
     }
 
-    public function testLiipImagineBundleIntegration()
+    public function testLiipImagineBundleIntegration(): void
     {
         if (!class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
@@ -146,9 +146,9 @@ class VichImageTypeTest extends VichFileTypeTest
         $storage = $this->createMock(StorageInterface::class);
         $storage
             ->expects($this->any())
-            ->method('resolveUri')
-            ->with($object, $field)
-            ->will($this->returnValue('resolved-uri'));
+            ->method('resolvePath')
+            ->with($object, $field, null, true)
+            ->will($this->returnValue('resolved-path'));
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
@@ -175,7 +175,7 @@ class VichImageTypeTest extends VichFileTypeTest
         $cacheManager
             ->expects($this->once())
             ->method('getBrowserPath')
-            ->with('resolved-uri', 'product_sq200')
+            ->with('resolved-path', 'product_sq200')
             ->will($this->returnValue('product_sq200/resolved-uri'));
 
         $testedType = static::TESTED_TYPE;
@@ -204,12 +204,11 @@ class VichImageTypeTest extends VichFileTypeTest
         $this->assertEquals($vars, $view->vars);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage LiipImagineBundle must be installed and configured for using "imagine_pattern" option.
-     */
-    public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable()
+    public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
+
         $object = new Product();
 
         $testedType = static::TESTED_TYPE;

@@ -15,6 +15,14 @@
         <service id="vich_uploader.namer_directory_property" class="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
             <argument type="service" id="form.property_accessor" />
         </service>
+
+        <service id="Vich\UploaderBundle\Naming\UniqidNamer" alias="vich_uploader.namer_uniqid" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyNamer" alias="vich_uploader.namer_property" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\OrignameNamer" alias="vich_uploader.namer_origname" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\HashNamer" alias="vich_uploader.namer_hash" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\Base64Namer" alias="vich_uploader.namer_base64" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" alias="vich_uploader.namer_subdir" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" alias="vich_uploader.namer_property" public="false"/>
     </services>
 
 </container>

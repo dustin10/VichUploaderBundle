@@ -11,6 +11,7 @@
             <argument type="service" id="vich_uploader.templating.helper.uploader_helper" />
         </service>
 
+        <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
     </services>
 
 </container>

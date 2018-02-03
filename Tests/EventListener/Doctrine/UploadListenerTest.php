@@ -14,7 +14,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +24,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Test the getSubscribedEvents method.
      */
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $events = $this->listener->getSubscribedEvents();
 
@@ -34,7 +34,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Tests the prePersist method.
      */
-    public function testPrePersist()
+    public function testPrePersist(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -61,7 +61,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Tests that prePersist skips non-uploadable entity.
      */
-    public function testPrePersistSkipsNonUploadable()
+    public function testPrePersistSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -79,7 +79,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Test the preUpdate method.
      */
-    public function testPreUpdate()
+    public function testPreUpdate(): void
     {
         $this->adapter
             ->expects($this->once())
@@ -111,7 +111,7 @@ class UploadListenerTest extends ListenerTestCase
     /**
      * Test that preUpdate skips non uploadable entity.
      */
-    public function testPreUpdateSkipsNonUploadable()
+    public function testPreUpdateSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())

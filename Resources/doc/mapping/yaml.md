@@ -13,6 +13,7 @@ Acme\DemoBundle\Entity\Product:
         size:              imageSize
         mime_type:         imageMimeType
         original_name:     imageOriginalName
+        dimensions:        imageDimensions
 ```
 
 To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
@@ -28,7 +29,7 @@ vich_uploader:
     metadata:
         auto_detection: false
         directories:
-            - {path: '%kernel.root_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
+            - {path: '%kernel.project_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
 ```
 
 #### Naming YAML Files

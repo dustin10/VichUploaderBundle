@@ -16,20 +16,20 @@ oneup_flysystem:
     adapters:
         product_adapter:
             local:
-                directory: %kernel.root_dir%/../web/images/products
+                directory: '%kernel.project_dir%/public/images/products'
 
     filesystems:
         product_image_fs:
-            adapter:    product_adapter
-            mount:      product_image_fs
+            adapter: product_adapter
+            mount: product_image_fs
 
 vich_uploader:
     db_driver: orm
-    storage:   flysystem
+    storage: flysystem
 
     mappings:
         product_image:
-            uri_prefix:         /images/products
+            uri_prefix: /images/products
             upload_destination: product_image_fs
 ```
 

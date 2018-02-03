@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Tests\Functional;
 
 class UploadTest extends WebTestCase
 {
-    public function testFileIsUploadedWithFileType()
+    public function testFileIsUploadedWithFileType(): void
     {
         $client = static::createClient();
         $this->loadFixtures($client);
@@ -42,7 +42,7 @@ class UploadTest extends WebTestCase
         $this->assertFileNotExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
     }
 
-    public function testFileIsUploadedWithImageType()
+    public function testFileIsUploadedWithImageType(): void
     {
         $client = static::createClient();
         $this->loadFixtures($client);

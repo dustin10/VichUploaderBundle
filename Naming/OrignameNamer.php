@@ -22,7 +22,7 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
      * @param array $options Options for this namer. The following options are accepted:
      *                       - transliterate: whether the filename should be transliterated or not
      */
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
@@ -30,16 +30,15 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function name($object, PropertyMapping $mapping)
+    public function name($object, PropertyMapping $mapping): string
     {
+        /* @var $file UploadedFile */
         $file = $mapping->getFile($object);
         $name = $file->getClientOriginalName();
 
         if ($this->transliterate) {
             $name = Transliterator::transliterate($name);
         }
-
-        /* @var $file UploadedFile */
 
         return uniqid().'_'.$name;
     }

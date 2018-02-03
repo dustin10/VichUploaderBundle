@@ -8,7 +8,7 @@ class ClassMetadata extends BaseClassMetadata
 {
     public $fields = [];
 
-    public function serialize()
+    public function serialize(): string
     {
         return serialize([
             $this->fields,
@@ -16,12 +16,12 @@ class ClassMetadata extends BaseClassMetadata
         ]);
     }
 
-    public function unserialize($str)
+    public function unserialize($str): void
     {
-        list(
+        [
             $this->fields,
             $parentStr
-            ) = unserialize($str);
+            ] = unserialize($str);
 
         parent::unserialize($parentStr);
     }

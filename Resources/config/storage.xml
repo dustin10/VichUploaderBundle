@@ -7,5 +7,7 @@
         <service id="vich_uploader.storage.file_system" class="Vich\UploaderBundle\Storage\FileSystemStorage" public="false">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
         </service>
+
+        <service id="Vich\UploaderBundle\Storage\FileSystemStorage" alias="vich_uploader.storage.file_system" public="false"/>
     </services>
 </container>

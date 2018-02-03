@@ -21,8 +21,12 @@ class DownloadHandler extends AbstractHandler
      * @param string|true  $fileName  True to return original file name
      *
      * @return StreamedResponse
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
+     * @throws NoFileFoundException
+     * @throws \InvalidArgumentException
      */
-    public function downloadObject($object, $field, $className = null, $fileName = null)
+    public function downloadObject($object, string $field, ?string $className = null, $fileName = null): StreamedResponse
     {
         $mapping = $this->getMapping($object, $field, $className);
         $stream = $this->storage->resolveStream($object, $field, $className);
@@ -45,15 +49,17 @@ class DownloadHandler extends AbstractHandler
     }
 
     /**
-     * @param resource $stream
-     * @param string   $filename
-     * @param string   $mimeType
+     * @param resource    $stream
+     * @param string      $filename
+     * @param string|null $mimeType
      *
      * @return StreamedResponse
+     *
+     * @throws \InvalidArgumentException
      */
-    private function createDownloadResponse($stream, $filename, $mimeType = 'application/octet-stream')
+    private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream'): StreamedResponse
     {
-        $response = new StreamedResponse(function () use ($stream) {
+        $response = new StreamedResponse(function () use ($stream): void {
             stream_copy_to_stream($stream, fopen('php://output', 'wb'));
         });
 

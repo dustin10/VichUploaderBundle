@@ -16,5 +16,8 @@
             <argument type="service" id="vich_uploader.file_injector" />
             <argument type="service" id="event_dispatcher" />
         </service>
+
+        <service id="Vich\UploaderBundle\Handler\DownloadHandler" alias="vich_uploader.download_handler" public="false"/>
+        <service id="Vich\UploaderBundle\Handler\UploadHandler" alias="vich_uploader.upload_handler" public="false"/>
     </services>
 </container>

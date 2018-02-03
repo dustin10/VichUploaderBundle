@@ -55,6 +55,7 @@ class AnnotationDriver implements AdvancedDriverInterface
                 'size' => $uploadableField->getSize(),
                 'mimeType' => $uploadableField->getMimeType(),
                 'originalName' => $uploadableField->getOriginalName(),
+                'dimensions' => $uploadableField->getDimensions(),
             ];
 
             //TODO: store UploadableField object instead of array

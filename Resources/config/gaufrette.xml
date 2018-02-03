@@ -10,5 +10,6 @@
             <argument type="service" id="knp_gaufrette.filesystem_map" />
             <argument>%knp_gaufrette.stream_wrapper.protocol%</argument>
         </service>
+        <service id="Vich\UploaderBundle\Storage\GaufretteStorage" alias="vich_uploader.storage.gaufrette" public="false"/>
     </services>
 </container>

@@ -21,7 +21,7 @@ class FileInjectorTest extends TestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->storage = $this->getMockStorage();
     }
@@ -29,7 +29,7 @@ class FileInjectorTest extends TestCase
     /**
      * Test inject one file.
      */
-    public function testInjectsOneFile()
+    public function testInjectsOneFile(): void
     {
         $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
 
@@ -58,7 +58,7 @@ class FileInjectorTest extends TestCase
      * Test that if the file name property returns a null value
      * then no file is injected.
      */
-    public function testPropertyIsNullWhenFileNamePropertyIsNull()
+    public function testPropertyIsNullWhenFileNamePropertyIsNull(): void
     {
         $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
 

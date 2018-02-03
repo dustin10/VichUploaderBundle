@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 
 class Base64Namer extends \Vich\UploaderBundle\Naming\Base64Namer
 {
-    protected function getRandomChar()
+    protected function getRandomChar(): string
     {
         return 'a';
     }
@@ -18,7 +18,7 @@ class Base64Namer extends \Vich\UploaderBundle\Naming\Base64Namer
  */
 class Base64NamerTest extends TestCase
 {
-    public function fileDataProvider()
+    public function fileDataProvider(): array
     {
         return [
             ['aaaaaaaaaa.jpg', 'jpg', null],
@@ -31,11 +31,14 @@ class Base64NamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($expectedFileName, $extension, $length)
+    public function testNameReturnsTheRightName(string $expectedFileName, string $extension, ?int $length): void
     {
         $file = $this->getUploadedFileMock();
         $file->expects($this->once())
-            ->method('getClientOriginalExtension')
+            ->method('getClientOriginalName');
+
+        $file->expects($this->once())
+            ->method('guessExtension')
             ->will($this->returnValue($extension));
 
         $entity = new DummyEntity();

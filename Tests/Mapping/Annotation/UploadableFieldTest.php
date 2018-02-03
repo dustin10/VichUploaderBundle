@@ -12,11 +12,10 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
  */
 class UploadableFieldTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionThrownWhenNoMappingAttribute()
+    public function testExceptionThrownWhenNoMappingAttribute(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         new UploadableField([
             'fileNameProperty' => 'fileName',
         ]);
