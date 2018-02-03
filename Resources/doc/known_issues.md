@@ -93,7 +93,7 @@ class Product
      *
      * @var File
      */
-    private $image;
+    private $imageFile;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -102,16 +102,16 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File $image
+     * @param File $imageFile
      */
-    public function setImage(File $image = null)
+    public function setImageFile(File $imageFile = null)
     {
-        $this->image = $image;
+        $this->imageFile = $imageFile;
     }
 }
 ```
 
-If the bundle's configuration parameter `inject_on_load` is set to `true` the `Product::setImage()`
+If the bundle's configuration parameter `inject_on_load` is set to `true` the `Product::setImageFile()`
 method above must take an instance of `File` as when this class is hydrated by Doctrine this
 bundle will automatically inject an instance of `File` there. However if you were to change
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing
