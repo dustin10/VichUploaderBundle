@@ -15,7 +15,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 class FlysystemStorage extends AbstractStorage
 {
     /**
-     * @var FilesystemMap Gaufrette filesystem factory
+     * @var MountManager Flysystem mount manager
      */
     protected $mountManager;
 
