@@ -189,7 +189,7 @@ class VichUploaderExtension extends Extension
         return $config;
     }
 
-    protected function createNamerService(ContainerBuilder $container, $mappingName, array $mapping): array
+    protected function createNamerService(ContainerBuilder $container, string $mappingName, array $mapping): array
     {
         $serviceId = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
         $container->setDefinition(
@@ -201,8 +201,13 @@ class VichUploaderExtension extends Extension
         return $mapping;
     }
 
-    protected function createListener(ContainerBuilder $container, $name, $type, $driver, $priority = 0): void
-    {
+    protected function createListener(
+        ContainerBuilder $container,
+        string $name,
+        string $type,
+        string $driver,
+        int $priority = 0
+    ): void {
         $definition = $container
             ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
             ->replaceArgument(0, $name)
