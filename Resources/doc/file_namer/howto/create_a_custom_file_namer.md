@@ -27,6 +27,13 @@ vich_uploader:
 
 Where `App\Naming\MyNamer` is the configured service class.
 
+**Note**:
+
+> The namer service must be public.
+> If you're using default configuration, make sure to explicit public visibility
+> for your namer service
+
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
