@@ -46,8 +46,12 @@ class VichFileType extends AbstractType
      */
     protected $propertyAccessor;
 
-    public function __construct(StorageInterface $storage, UploadHandler $handler, PropertyMappingFactory $factory, PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        UploadHandler $handler, 
+        PropertyMappingFactory $factory,
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->storage = $storage;
         $this->handler = $handler;
         $this->factory = $factory;

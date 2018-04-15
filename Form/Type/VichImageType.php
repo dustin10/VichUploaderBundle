@@ -20,12 +20,17 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class VichImageType extends VichFileType
 {
     /**
-     * @var CacheManager
+     * @var CacheManager|null
      */
     private $cacheManager;
 
-    public function __construct(StorageInterface $storage, UploadHandler $handler, PropertyMappingFactory $factory, PropertyAccessorInterface $propertyAccessor = null, CacheManager $cacheManager = null)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        UploadHandler $handler,
+        PropertyMappingFactory $factory,
+        PropertyAccessorInterface $propertyAccessor = null,
+        CacheManager $cacheManager = null
+    ) {
         parent::__construct($storage, $handler, $factory, $propertyAccessor);
         $this->cacheManager = $cacheManager;
     }
@@ -55,9 +60,9 @@ class VichImageType extends VichFileType
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;
 
-        if ($object) {
+        if (null !== $object) {
             if ($options['imagine_pattern']) {
-                if (!$this->cacheManager) {
+                if (null === $this->cacheManager) {
                     throw new \RuntimeException('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
                 }
 
