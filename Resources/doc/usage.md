@@ -25,7 +25,7 @@ that directory (`uri_prefix`) and give the upload mapping a name
 (`product_image` in our example).
 
 ``` yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
 
@@ -293,6 +293,7 @@ instance: should the files be updated or removed accordingly?
 Three simple configuration options allow you to fit your application's needs.
 
 ``` yaml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
     mappings:

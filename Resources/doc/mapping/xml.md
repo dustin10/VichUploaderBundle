@@ -20,7 +20,7 @@ If you need the mapping elsewhere, you need to add some configuration.
 In the following example, the configuration is placed in the `app/config/vich_uploader` directory:
 
 ```yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     # ...
     metadata:

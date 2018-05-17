@@ -115,7 +115,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            directory_namer:    
+            directory_namer:
                 service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
                 options: {chars_per_dir: 1, dirs: 2} # will create directory "a/b" for "abcdef.jpg"
 ```
