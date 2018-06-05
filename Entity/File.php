@@ -30,66 +30,57 @@ class File
     protected $size;
 
     /**
-     * @return string|null
+     * @ORM\Column(name="dimensions", type="simple_array", nullable=true)
      */
-    public function getName()
+    protected $dimensions;
+
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getOriginalName()
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
 
-    /**
-     * @param string|null $originalName
-     */
-    public function setOriginalName($originalName)
+    public function setOriginalName(?string $originalName): void
     {
         $this->originalName = $originalName;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
-    /**
-     * @param string|null $mimeType
-     */
-    public function setMimeType($mimeType)
+    public function setMimeType(?string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     */
-    public function setSize($size)
+    public function setSize(?int $size): void
     {
         $this->size = $size;
+    }
+
+    public function getDimensions(): ?array
+    {
+        return $this->dimensions;
+    }
+
+    public function setDimensions(?array $dimensions): void
+    {
+        $this->dimensions = $dimensions;
     }
 }

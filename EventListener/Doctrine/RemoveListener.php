@@ -19,7 +19,7 @@ class RemoveListener extends BaseListener
      *
      * @return array The array of events
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'preRemove',
@@ -32,7 +32,7 @@ class RemoveListener extends BaseListener
      *
      * @param EventArgs $event The event
      */
-    public function preRemove(EventArgs $event)
+    public function preRemove(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
@@ -43,8 +43,10 @@ class RemoveListener extends BaseListener
 
     /**
      * @param EventArgs $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function postRemove(EventArgs $event)
+    public function postRemove(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

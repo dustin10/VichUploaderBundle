@@ -9,7 +9,7 @@ format and comes with the following syntax to declare your uploadable fields:
 <!-- Attributes "mapping", "name" and "filename_property" are required -->
 <vich_uploader class="Acme\DemoBundle\Entity\Product">
     <field mapping="product_image" name="image" filename_property="imageName"
-           size="imageSize" mime_type="imageMimeType" original_name="imageOriginalName" />
+           size="imageSize" dimensions="imageDimensions" mime_type="imageMimeType" original_name="imageOriginalName" />
 </vich_uploader>
 ```
 
@@ -20,13 +20,13 @@ If you need the mapping elsewhere, you need to add some configuration.
 In the following example, the configuration is placed in the `app/config/vich_uploader` directory:
 
 ```yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     # ...
     metadata:
         auto_detection: false
         directories:
-            - {path: '%kernel.root_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
+            - {path: '%kernel.project_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
 ```
 
 **N.B:**

@@ -13,7 +13,7 @@ trait FileExtensionTrait
      *
      * @return string|null
      */
-    private function getExtension(UploadedFile $file)
+    private function getExtension(UploadedFile $file): ?string
     {
         $originalName = $file->getClientOriginalName();
 
@@ -25,6 +25,6 @@ trait FileExtensionTrait
             return $extension;
         }
 
-        return;
+        return null;
     }
 }

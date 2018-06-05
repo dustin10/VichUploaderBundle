@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class PHPCRAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists(LifecycleEventArgs::class)) {
             self::markTestSkipped('Doctrine\Common\Persistence\Event\LifecycleEventArgs does not exist.');
@@ -22,7 +22,7 @@ class PHPCRAdapterTest extends TestCase
     /**
      * Test the getObjectFromArgs method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromArgs(): void
     {
         $entity = new DummyEntity();
 

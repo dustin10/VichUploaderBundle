@@ -30,7 +30,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystemMap = $this->getFilesystemMapMock();
 
@@ -38,40 +38,10 @@ class GaufretteStorageTest extends StorageTestCase
     }
 
     /**
-     * Tests the upload method skips a mapping which has a non
-     * uploadable property value.
-     *
-     * @expectedException   \LogicException
-     * @dataProvider        invalidFileProvider
-     * @group               upload
-     */
-    public function testUploadSkipsMappingOnInvalid($file)
-    {
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->will($this->returnValue($file));
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('hasNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getNamer');
-
-        $this->mapping
-            ->expects($this->never())
-            ->method('getFileName');
-
-        $this->storage->upload($this->object, $this->mapping);
-    }
-
-    /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
      */
-    public function testRemoveSkipsNullFileNameProperty()
+    public function testRemoveSkipsNullFileNameProperty(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -90,7 +60,7 @@ class GaufretteStorageTest extends StorageTestCase
      *
      * @dataProvider pathProvider
      */
-    public function testResolvePath($protocol, $filesystemKey, $uploadDir, $expectedPath, $relative)
+    public function testResolvePath($protocol, $filesystemKey, $uploadDir, $expectedPath, $relative): void
     {
         $this->mapping
             ->method('getUploadDestination')
@@ -118,7 +88,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->assertEquals($expectedPath, $path);
     }
 
-    public function testResolveUri()
+    public function testResolveUri(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -142,7 +112,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->assertEquals('/uploads/file.txt', $path);
     }
 
-    public function testResolveUriFileNull()
+    public function testResolveUriFileNull(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -176,7 +146,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Test the remove method does delete file from gaufrette filesystem.
      */
-    public function testThatRemoveMethodDoesDeleteFile()
+    public function testThatRemoveMethodDoesDeleteFile(): void
     {
         $this->mapping
             ->expects($this->any())
@@ -206,7 +176,7 @@ class GaufretteStorageTest extends StorageTestCase
     /**
      * Test that FileNotFound exception is catched.
      */
-    public function testRemoveNotFoundFile()
+    public function testRemoveNotFoundFile(): void
     {
         $this->mapping
             ->expects($this->any())
@@ -234,7 +204,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapter()
+    public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapter(): void
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
@@ -289,7 +259,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter()
+    public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter(): void
     {
         $adapter = $this->createMock('\Gaufrette\Adapter');
         $filesystem = $this->getFilesystemMock();

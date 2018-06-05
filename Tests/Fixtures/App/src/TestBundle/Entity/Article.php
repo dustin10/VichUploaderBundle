@@ -31,12 +31,12 @@ class Article
 
     protected $sizeField;
 
-    public function getAttachment()
+    public function getAttachment(): void
     {
         $this->attachment;
     }
 
-    public function setAttachment($attachment)
+    public function setAttachment($attachment): void
     {
         $this->attachment = $attachment;
     }
@@ -46,17 +46,17 @@ class Article
         return $this->attachmentName;
     }
 
-    public function setAttachmentName($attachmentName)
+    public function setAttachmentName($attachmentName): void
     {
         $this->attachmentName = $attachmentName;
     }
 
-    public function getImage()
+    public function getImage(): void
     {
         $this->image;
     }
 
-    public function setImage($image)
+    public function setImage($image): void
     {
         $this->image = $image;
     }
@@ -66,7 +66,7 @@ class Article
         return $this->imageName;
     }
 
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -76,7 +76,7 @@ class Article
         return $this->originalNameField;
     }
 
-    public function setOriginalNameField($originalNameField)
+    public function setOriginalNameField($originalNameField): void
     {
         $this->originalNameField = $originalNameField;
     }
@@ -86,7 +86,7 @@ class Article
         return $this->mimeTypeField;
     }
 
-    public function setMimeTypeField($mimeTypeField)
+    public function setMimeTypeField($mimeTypeField): void
     {
         $this->mimeTypeField = $mimeTypeField;
     }
@@ -96,7 +96,7 @@ class Article
         return $this->sizeField;
     }
 
-    public function setSizeField($sizeField)
+    public function setSizeField($sizeField): void
     {
         $this->sizeField = $sizeField;
     }

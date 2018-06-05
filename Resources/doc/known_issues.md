@@ -20,13 +20,13 @@ class Product
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime
+     * @var \DateTime|null
      */
     private $updatedAt;
 
     // ...
 
-    public function setImage(File $image = null)
+    public function setImage(?File $image = null): void
     {
         $this->image = $image;
 
@@ -52,16 +52,16 @@ Just check the following options: ```cascade={"remove"}``` and ```orphanRemoval=
 
 ```yaml
 Vendor\Bundle\CoolBundle\Entity\CoolEntity:
-    type:   entity
+    type: entity
 
     fields: ...
 
     oneToMany:
         images:
-           targetEntity:   CoolEntityImage
-           mappedBy:       bike
-           cascade:        [persist, merge, remove]
-           orphanRemoval:  true
+           targetEntity: CoolEntityImage
+           mappedBy: bike
+           cascade: [persist, merge, remove]
+           orphanRemoval: true
 ```
 
 ## No Upload is triggered when manually injecting an instance of Symfony\Component\HttpFoundation\File\File
@@ -102,9 +102,9 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File $image
+     * @param File|null $image
      */
-    public function setImage(File $image = null)
+    public function setImage(?File $image = null): void
     {
         $this->image = $image;
     }
@@ -118,7 +118,7 @@ the image path to a new image in that instance of `File` and attempted a `flush(
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.
 
-**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/2.8/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
+**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/3.4/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
 
 ## Failed to set metadata before uploading the file
 

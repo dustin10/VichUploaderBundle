@@ -16,7 +16,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('vich_uploader.mappings')) {
             return;
@@ -26,8 +26,9 @@ class RegisterPropelModelsPass implements CompilerPassInterface
         $hasPropelMapping = false;
 
         foreach ($mappings as $mapping) {
-            if ($mapping['db_driver'] === 'propel') {
+            if ('propel' === $mapping['db_driver']) {
                 $hasPropelMapping = true;
+
                 break;
             }
         }
@@ -50,7 +51,7 @@ class RegisterPropelModelsPass implements CompilerPassInterface
 
                 $mapping = $mappings[$field['mapping']];
 
-                if ($mapping['db_driver'] !== 'propel') {
+                if ('propel' !== $mapping['db_driver']) {
                     continue;
                 }
 

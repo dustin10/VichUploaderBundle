@@ -21,6 +21,7 @@ class UploadableField
      * @var string
      */
     protected $fileNameProperty;
+
     //TODO: replace "fileNameProperty" with just "name"
 
     /**
@@ -37,6 +38,11 @@ class UploadableField
      * @var string
      */
     protected $originalName;
+
+    /**
+     * @var array
+     */
+    protected $dimensions;
 
     /**
      * Constructs a new instance of UploadableField.
@@ -102,5 +108,13 @@ class UploadableField
     public function getOriginalName()
     {
         return $this->originalName;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
     }
 }

@@ -22,7 +22,7 @@ class PropelORMAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function recomputeChangeSet($event)
+    public function recomputeChangeSet($event): void
     {
     }
 }

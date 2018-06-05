@@ -22,17 +22,17 @@ Here is a summary of what you will have to do:
 Each time you need to upload something new to your system, you'll start by
 configuring where it should be stored (`upload_destination`), the web path to
 that directory (`uri_prefix`) and give the upload mapping a name
-(`product_image`in our example).
+(`product_image` in our example).
 
 ``` yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
 
     mappings:
         product_image:
-            uri_prefix:         /images/products
-            upload_destination: '%kernel.root_dir%/../web/images/products'
+            uri_prefix: /images/products
+            upload_destination: '%kernel.project_dir%/public/images/products'
 ```
 
 This is the minimal amount of configuration needed in order to describe a
@@ -72,6 +72,7 @@ The `UploadableField` annotation has a few options. They are as follows:
   * `size`: the property that will contain the size in bytes of the uploaded file;
   * `mimeType`: the property that will contain the mime type of the uploaded file;
   * `originalName`: the property that will contain the original name of the uploaded file.
+  * `dimensions`: the property that will contain the dimensions of uploaded **image file**
 
 **Note**:
 
@@ -102,7 +103,7 @@ class Product
      */
     private $id;
 
-    // ..... other fields
+    // ... other fields
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -142,66 +143,39 @@ class Product
      * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
-     *
-     * @return Product
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(?File $image = null): void
     {
         $this->imageFile = $image;
 
-        if ($image) {
+        if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
-        
-        return $this;
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    /**
-     * @param string $imageName
-     *
-     * @return Product
-     */
-    public function setImageName($imageName)
+    public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
-        
-        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImageName()
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
     
-    /**
-     * @param integer $imageSize
-     *
-     * @return Product
-     */
-    public function setImageSize($imageSize)
+    public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
-        
-        return $this;
     }
 
-    /**
-     * @return integer|null
-     */
-    public function getImageSize()
+    public function getImageSize(): ?int
     {
         return $this->imageSize;
     }
@@ -234,12 +208,12 @@ class Product
      */
     private $id;
 
-    // ..... other fields
+    // ... other fields
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName")
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
      * 
      * @var File
      */
@@ -273,37 +247,28 @@ class Product
      *
      * @param File|UploadedFile $image
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(?File $image = null)
     {
         $this->imageFile = $image;
 
-        if ($image) {
+        if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    /**
-     * @param EmbeddedFile $image
-     */
     public function setImage(EmbeddedFile $image)
     {
         $this->image = $image;
     }
 
-    /**
-     * @return EmbeddedFile
-     */
-    public function getImage()
+    public function getImage(): ?EmbeddedFile
     {
         return $this->image;
     }
@@ -316,7 +281,7 @@ class Product
 
 **Note:**
 
-> Don't forget to clear the cache once your entity is configured: `php app/console cache:clear`
+> Don't forget to clear the cache once your entity is configured: `php bin/console cache:clear`
 
 
 ## Step 3: configure the lifecycle events (optional step)
@@ -328,16 +293,17 @@ instance: should the files be updated or removed accordingly?
 Three simple configuration options allow you to fit your application's needs.
 
 ``` yaml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
     mappings:
         product_image:
-            uri_prefix:         /images/products
-            upload_destination: %kernel.root_dir%/../web/images/products
+            uri_prefix: /images/products
+            upload_destination: '%kernel.project_dir%/public/images/products'
 
-            inject_on_load:     false
-            delete_on_update:   true
-            delete_on_remove:   true
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
 ```
 
 All options are listed below:

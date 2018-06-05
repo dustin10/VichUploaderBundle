@@ -8,15 +8,16 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
 class MetadataReaderTest extends TestCase
 {
     protected $reader;
+
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock('Metadata\AdvancedMetadataFactoryInterface');
         $this->reader = new MetadataReader($this->factory);
     }
 
-    public function testIsUploadable()
+    public function testIsUploadable(): void
     {
         $this->factory
             ->expects($this->once())
@@ -27,7 +28,7 @@ class MetadataReaderTest extends TestCase
         $this->assertTrue($this->reader->isUploadable('ClassName'));
     }
 
-    public function testIsUploadableWithGivenMapping()
+    public function testIsUploadableWithGivenMapping(): void
     {
         $fields = ['field' => ['mapping' => 'joe']];
         $classMetadata = new \stdClass();
@@ -44,7 +45,7 @@ class MetadataReaderTest extends TestCase
         $this->assertFalse($this->reader->isUploadable('ClassName', 'foo'));
     }
 
-    public function testIsUploadableForNotUploadable()
+    public function testIsUploadableForNotUploadable(): void
     {
         $this->factory
             ->expects($this->once())
@@ -55,7 +56,7 @@ class MetadataReaderTest extends TestCase
         $this->assertFalse($this->reader->isUploadable('ClassName'));
     }
 
-    public function testGetUploadableClassesForwardsCallsToTheFactory()
+    public function testGetUploadableClassesForwardsCallsToTheFactory(): void
     {
         $this->factory
             ->expects($this->once())
@@ -64,7 +65,7 @@ class MetadataReaderTest extends TestCase
         $this->reader->getUploadableClasses();
     }
 
-    public function testGetUploadableFields()
+    public function testGetUploadableFields(): void
     {
         $fields = [
             'foo' => ['mapping' => 'foo_mapping'],
@@ -88,7 +89,7 @@ class MetadataReaderTest extends TestCase
         $this->assertSame($barFields, $this->reader->getUploadableFields('ClassName', 'bar_mapping'));
     }
 
-    public function testGetUploadableFieldsWithInheritance()
+    public function testGetUploadableFieldsWithInheritance(): void
     {
         $classMetadata = new \stdClass();
         $classMetadata->fields = ['bar', 'baz'];
@@ -112,7 +113,7 @@ class MetadataReaderTest extends TestCase
     /**
      * @dataProvider fieldsMetadataProvider
      */
-    public function testGetUploadableField(array $fields, $expectedMetadata)
+    public function testGetUploadableField(array $fields, $expectedMetadata): void
     {
         $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
@@ -126,6 +127,22 @@ class MetadataReaderTest extends TestCase
             ->will($this->returnValue($metadata));
 
         $this->assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
+    }
+
+    public function testGetUploadableFieldWithInvalidClass(): void
+    {
+        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+        $this->expectExceptionMessage('Mapping not found. The configuration for the class "InvalidClassName" is probably incorrect.');
+
+        $this->reader->getUploadableFields('InvalidClassName');
+    }
+
+    public function testGetUploadableFieldWithInvalidClassMapping(): void
+    {
+        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+        $this->expectExceptionMessage('Mapping "foo_mapping" does not exist. The configuration for the class "InvalidClassName" is probably incorrect.');
+
+        $this->reader->getUploadableFields('InvalidClassName', 'foo_mapping');
     }
 
     public function fieldsMetadataProvider()

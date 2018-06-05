@@ -14,18 +14,22 @@ use Vich\UploaderBundle\Tests\TestCase;
 class DownloadHandlerTest extends TestCase
 {
     protected $factory;
+
     protected $storage;
+
     /**
      * @var Product
      */
     protected $object;
+
     /**
      * @var DownloadHandler
      */
     protected $handler;
+
     protected $mapping;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->storage = $this->createMock(StorageInterface::class);
@@ -53,7 +57,7 @@ class DownloadHandlerTest extends TestCase
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObject($fileName, $expectedFileName)
+    public function testDownloadObject($fileName, $expectedFileName): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -89,7 +93,7 @@ class DownloadHandlerTest extends TestCase
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObjectWithoutFile($fileName, $expectedFileName)
+    public function testDownloadObjectWithoutFile($fileName, $expectedFileName): void
     {
         $this->mapping
             ->expects($this->once())
@@ -115,7 +119,7 @@ class DownloadHandlerTest extends TestCase
         $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
-    public function testDownloadObjectCallOriginalName()
+    public function testDownloadObjectCallOriginalName(): void
     {
         $this->object->setImageOriginalName('original-name.jpeg');
 
@@ -153,7 +157,7 @@ class DownloadHandlerTest extends TestCase
         );
     }
 
-    public function testNonAsciiFilenameIsTransliterated()
+    public function testNonAsciiFilenameIsTransliterated(): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -179,22 +183,20 @@ class DownloadHandlerTest extends TestCase
         $this->assertInstanceOf(StreamedResponse::class, $response);
     }
 
-    /**
-     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
-     */
-    public function testAnExceptionIsThrownIfMappingIsNotFound()
+    public function testAnExceptionIsThrownIfMappingIsNotFound(): void
     {
+        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->handler = new DownloadHandler($this->factory, $this->storage);
 
         $this->handler->downloadObject($this->object, 'file_field');
     }
 
-    /**
-     * @expectedException \Vich\UploaderBundle\Exception\NoFileFoundException
-     */
-    public function testAnExceptionIsThrownIfNoFileIsFound()
+    public function testAnExceptionIsThrownIfNoFileIsFound(): void
     {
+        $this->expectException(\Vich\UploaderBundle\Exception\NoFileFoundException::class);
+
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')

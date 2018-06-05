@@ -45,8 +45,7 @@ Configure it in your configuration:
 ```yaml
 # app/config/services.yml
 services:
-    app.foo_listener:
-        class: AppBundle\EventListener\FooListener
+    AppBundle\EventListener\FooListener:
         tags:
             - { name: kernel.event_listener, event: vich_uploader.pre_upload }
 ```

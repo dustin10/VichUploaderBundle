@@ -18,7 +18,7 @@ class InjectListener extends BaseListener
      *
      * @return array The array of events
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'postLoad',
@@ -27,8 +27,10 @@ class InjectListener extends BaseListener
 
     /**
      * @param EventArgs $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function postLoad(EventArgs $event)
+    public function postLoad(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

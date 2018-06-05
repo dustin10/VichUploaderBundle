@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 
 class HashNamer extends BaseHashNamer
 {
-    protected function getRandomString()
+    protected function getRandomString(): string
     {
         return 'abcd';
     }
@@ -32,9 +32,12 @@ class HashNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($expectedFileName, $extension, $algorithm, $length)
+    public function testNameReturnsTheRightName($expectedFileName, $extension, $algorithm, $length): void
     {
         $file = $this->getUploadedFileMock();
+        $file->expects($this->once())
+            ->method('getClientOriginalName');
+
         $file->expects($this->once())
             ->method('guessExtension')
             ->will($this->returnValue($extension));

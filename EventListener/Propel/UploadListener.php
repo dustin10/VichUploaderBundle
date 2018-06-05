@@ -18,7 +18,7 @@ class UploadListener extends BaseListener
      *
      * @return array The array of events
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'propel.pre_insert' => 'onUpload',
@@ -28,8 +28,10 @@ class UploadListener extends BaseListener
 
     /**
      * @param GenericEvent $event The event
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function onUpload(GenericEvent $event)
+    public function onUpload(GenericEvent $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
 

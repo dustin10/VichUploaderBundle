@@ -14,7 +14,7 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,14 +24,14 @@ class RemoveListenerTest extends ListenerTestCase
     /**
      * Test the getSubscribedEvents method.
      */
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $events = $this->listener->getSubscribedEvents();
 
         $this->assertArrayHasKey('propel.post_delete', $events);
     }
 
-    public function testOnDelete()
+    public function testOnDelete(): void
     {
         $this->handler
             ->expects($this->once())

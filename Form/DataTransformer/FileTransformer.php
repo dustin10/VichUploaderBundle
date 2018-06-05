@@ -6,7 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class FileTransformer implements DataTransformerInterface
 {
-    public function transform($file)
+    public function transform($file): array
     {
         return [
             'file' => $file,

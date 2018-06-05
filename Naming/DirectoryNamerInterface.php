@@ -19,5 +19,5 @@ interface DirectoryNamerInterface
      *
      * @return string The directory name
      */
-    public function directoryName($object, PropertyMapping $mapping);
+    public function directoryName($object, PropertyMapping $mapping): string;
 }
