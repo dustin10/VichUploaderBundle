@@ -87,7 +87,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertSame(sprintf('attachment; filename=%s', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -116,7 +116,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertSame(sprintf('attachment; filename=%s', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testDownloadObjectCallOriginalName(): void
@@ -152,7 +152,7 @@ class DownloadHandlerTest extends TestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $this->assertSame(
-            sprintf('attachment; filename="%s"', $this->object->getImageOriginalName()),
+            sprintf('attachment; filename=%s', $this->object->getImageOriginalName()),
             $response->headers->get('Content-Disposition')
         );
     }
