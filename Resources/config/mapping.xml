@@ -25,11 +25,7 @@
         </service>
 
         <service id="vich_uploader.metadata_driver.chain" class="Metadata\Driver\DriverChain" public="false">
-            <argument type="collection">
-                <argument type="service" id="vich_uploader.metadata_driver.annotation" />
-                <argument type="service" id="vich_uploader.metadata_driver.yaml" />
-                <argument type="service" id="vich_uploader.metadata_driver.xml" />
-            </argument>
+            <argument /> <!-- injected by compiler pass -->
         </service>
 
         <service id="vich_uploader.metadata_driver" alias="vich_uploader.metadata_driver.chain" public="false" />
