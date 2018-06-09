@@ -48,7 +48,7 @@ class VichFileType extends AbstractType
 
     public function __construct(
         StorageInterface $storage,
-        UploadHandler $handler, 
+        UploadHandler $handler,
         PropertyMappingFactory $factory,
         PropertyAccessorInterface $propertyAccessor = null
     ) {

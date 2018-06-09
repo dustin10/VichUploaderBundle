@@ -7,6 +7,7 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -32,17 +33,11 @@ class FlysystemStorageTest extends StorageTestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getStorage()
+    protected function getStorage(): StorageInterface
     {
         return new FlysystemStorage($this->factory, $this->mountManager);
     }
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp(): void
     {
         $this->mountManager = $this->getMountManagerMock();
@@ -69,7 +64,7 @@ class FlysystemStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue($this->root->url().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'test.txt'));
+            ->will($this->returnValue($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt'));
 
         $file
             ->expects($this->once())
@@ -166,7 +161,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->assertEquals($expectedPath, $path);
     }
 
-    public function pathProvider()
+    public function pathProvider(): array
     {
         return [
             //     dir,   path,                     relative

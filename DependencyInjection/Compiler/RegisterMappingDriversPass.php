@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class RegisterMappingDriversPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $drivers = [
             new Reference('vich_uploader.metadata_driver.xml'),

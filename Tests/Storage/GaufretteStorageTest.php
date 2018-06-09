@@ -6,6 +6,7 @@ use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * GaufretteStorageTest.
@@ -19,17 +20,11 @@ class GaufretteStorageTest extends StorageTestCase
      */
     protected $filesystemMap;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getStorage()
+    protected function getStorage(): StorageInterface
     {
         return new GaufretteStorage($this->factory, $this->filesystemMap);
     }
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp(): void
     {
         $this->filesystemMap = $this->getFilesystemMapMock();
@@ -131,10 +126,10 @@ class GaufretteStorageTest extends StorageTestCase
         $this->assertNull($path);
     }
 
-    public function pathProvider()
+    public function pathProvider(): array
     {
         return [
-            //      protocol,   fs identifier,  upload dir, full path, relative
+            // protocol, fs identifier, upload dir, full path, relative
             ['gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false],
             ['data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false],
             ['gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false],
@@ -218,7 +213,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir().DIRECTORY_SEPARATOR.'test.txt'));
+            ->will($this->returnValue($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -273,7 +268,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir().DIRECTORY_SEPARATOR.'test.txt'));
+            ->will($this->returnValue($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt'));
 
         $this->mapping
             ->expects($this->once())
@@ -315,28 +310,18 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    /**
-     * Creates a mock of gaufrette filesystem map.
-     *
-     * @return FilesystemMap The filesystem map
-     */
-    protected function getFilesystemMapMock()
+    protected function getFilesystemMapMock(): FilesystemMap
     {
         return $this
-            ->getMockBuilder('Knp\Bundle\GaufretteBundle\FilesystemMap')
+            ->getMockBuilder(FilesystemMap::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    /**
-     * Creates a mock of gaufrette filesystem.
-     *
-     * @return Filesystem The gaufrette filesystem object
-     */
-    protected function getFilesystemMock()
+    protected function getFilesystemMock(): Filesystem
     {
         return $this
-            ->getMockBuilder('\Gaufrette\Filesystem')
+            ->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

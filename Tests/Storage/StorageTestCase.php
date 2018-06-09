@@ -47,7 +47,7 @@ abstract class StorageTestCase extends TestCase
      *
      * @return StorageInterface
      */
-    abstract protected function getStorage();
+    abstract protected function getStorage(): StorageInterface;
 
     /**
      * Sets up the test.
@@ -73,7 +73,7 @@ abstract class StorageTestCase extends TestCase
         ]);
     }
 
-    public function emptyFilenameProvider()
+    public function emptyFilenameProvider(): array
     {
         return [
             [null],
@@ -119,8 +119,8 @@ abstract class StorageTestCase extends TestCase
         $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
-    protected function getValidUploadDir()
+    protected function getValidUploadDir(): string
     {
-        return $this->root->url().DIRECTORY_SEPARATOR.'uploads';
+        return $this->root->url().\DIRECTORY_SEPARATOR.'uploads';
     }
 }

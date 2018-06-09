@@ -15,7 +15,7 @@ class FilenameUtilsTest extends TestCase
         $this->assertSame([$basename, $extension], FilenameUtils::spitNameByExtension($filename));
     }
 
-    public function spitNameByExtensionProvider()
+    public function spitNameByExtensionProvider(): array
     {
         return [
             'simple filename with extension' => ['filename.extension', 'filename', 'extension'],
