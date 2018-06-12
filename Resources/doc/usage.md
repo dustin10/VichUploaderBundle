@@ -321,7 +321,7 @@ All options are listed below:
 
 ## That was it!
 
-You're done! Now create a form with an `imageFile` field that uses the `file`
+You're done! Now create a form with an `imageFile` field that uses the `VichImageType`
 type.
 When you submit and save, the uploaded file will automatically be moved to the
 location you configured and the `imageName` field will be set to the filename of
