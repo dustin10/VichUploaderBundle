@@ -39,8 +39,7 @@ class UploadHandler extends AbstractHandler
         FileInjectorInterface $injector,
         EventDispatcherInterface $dispatcher,
         RemoveHandler $removeHandler
-    )
-    {
+    ) {
         parent::__construct($factory, $storage);
 
         $this->injector = $injector;
@@ -97,7 +96,7 @@ class UploadHandler extends AbstractHandler
     }
 
     /**
-     * Removes file from filesystem and objects mapping
+     * Removes file from filesystem and objects mapping.
      *
      * @param $obj
      * @param string $fieldName
@@ -108,7 +107,7 @@ class UploadHandler extends AbstractHandler
     }
 
     /**
-     * Adds file to queue to be removed from filesystem during postFlush event
+     * Adds file to queue to be removed from filesystem during postFlush event.
      *
      * @param $obj
      * @param string $fieldName
@@ -119,7 +118,7 @@ class UploadHandler extends AbstractHandler
     }
 
     /**
-     * Removes all files in queue. Will return array of updated entities to be persisted
+     * Removes all files in queue. Will return array of updated entities to be persisted.
      *
      * @return array list of updated entities
      */

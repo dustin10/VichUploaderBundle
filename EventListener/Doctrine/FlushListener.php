@@ -21,7 +21,7 @@ class FlushListener extends BaseListener
     public function getSubscribedEvents(): array
     {
         return [
-            'postFlush'
+            'postFlush',
         ];
     }
 

@@ -43,7 +43,7 @@ class RemoveHandler extends AbstractHandler
     }
 
     /**
-     * Adds file to queue which will be removed during postFlush event
+     * Adds file to queue which will be removed during postFlush event.
      *
      * @param $obj
      * @param string $fieldName
@@ -61,7 +61,7 @@ class RemoveHandler extends AbstractHandler
     }
 
     /**
-     * Removes all files in queue. Will return array of updated entities to be persisted
+     * Removes all files in queue. Will return array of updated entities to be persisted.
      *
      * @return array list of updated entities
      */
@@ -84,7 +84,7 @@ class RemoveHandler extends AbstractHandler
     }
 
     /**
-     * Removes file from filesystem and objects mapping
+     * Removes file from filesystem and objects mapping.
      *
      * @param $obj
      * @param string $fieldName
