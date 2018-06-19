@@ -28,12 +28,24 @@ class UploadHandler extends AbstractHandler
      */
     protected $dispatcher;
 
-    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
+    /**
+     * @var RemoveHandler
+     */
+    protected $removeHandler;
+
+    public function __construct(
+        PropertyMappingFactory $factory,
+        StorageInterface $storage,
+        FileInjectorInterface $injector,
+        EventDispatcherInterface $dispatcher,
+        RemoveHandler $removeHandler
+    )
     {
         parent::__construct($factory, $storage);
 
         $this->injector = $injector;
         $this->dispatcher = $dispatcher;
+        $this->removeHandler = $removeHandler;
     }
 
     /**
@@ -81,25 +93,39 @@ class UploadHandler extends AbstractHandler
             return;
         }
 
-        $this->remove($obj, $fieldName);
+        $this->removeHandler->remove($obj, $fieldName);
     }
 
+    /**
+     * Removes file from filesystem and objects mapping
+     *
+     * @param $obj
+     * @param string $fieldName
+     */
     public function remove($obj, string $fieldName): void
     {
-        $mapping = $this->getMapping($obj, $fieldName);
-        $oldFilename = $mapping->getFileName($obj);
+        $this->removeHandler->remove($obj, $fieldName);
+    }
 
-        // nothing to remove, avoid dispatching useless events
-        if (empty($oldFilename)) {
-            return;
-        }
+    /**
+     * Adds file to queue to be removed from filesystem during postFlush event
+     *
+     * @param $obj
+     * @param string $fieldName
+     */
+    public function removeQueued($obj, string $fieldName): void
+    {
+        $this->removeHandler->addToQueue($obj, $fieldName);
+    }
 
-        $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
-
-        $this->storage->remove($obj, $mapping);
-        $mapping->erase($obj);
-
-        $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
+    /**
+     * Removes all files in queue. Will return array of updated entities to be persisted
+     *
+     * @return array list of updated entities
+     */
+    public function removeFilesInQueue(): array
+    {
+        return $this->removeHandler->removeFilesInQueue();
     }
 
     protected function dispatch(string $eventName, Event $event): void

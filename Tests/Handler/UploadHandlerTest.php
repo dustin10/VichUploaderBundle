@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Handler;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
+use Vich\UploaderBundle\Handler\RemoveHandler;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -30,6 +31,8 @@ class UploadHandlerTest extends TestCase
 
     protected $handler;
 
+    protected $removeHandler;
+
     const FILE_FIELD = 'image';
 
     protected function setUp(): void
@@ -39,9 +42,10 @@ class UploadHandlerTest extends TestCase
         $this->injector = $this->getInjectorMock();
         $this->dispatcher = $this->getDispatcherMock();
         $this->mapping = $this->getPropertyMappingMock();
+        $this->removeHandler = $this->getRemoveHandlerMock();
         $this->object = new Article();
 
-        $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
+        $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher, $this->removeHandler);
         $this->factory
             ->expects($this->any())
             ->method('fromField')
@@ -80,7 +84,8 @@ class UploadHandlerTest extends TestCase
         $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
 
         $this->factory = $this->getPropertyMappingFactoryMock();
-        $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
+        $removeHandler = $this->getRemoveHandlerMock();
+        $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher, $removeHandler);
 
         call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
     }
@@ -218,6 +223,11 @@ class UploadHandlerTest extends TestCase
     protected function getDispatcherMock()
     {
         return $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+    }
+
+    protected function getRemoveHandlerMock()
+    {
+        return new RemoveHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
     }
 
     protected function validEvent()

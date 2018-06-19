@@ -15,9 +15,19 @@
             <argument type="service" id="vich_uploader.storage" />
             <argument type="service" id="vich_uploader.file_injector" />
             <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="vich_uploader.remove_handler" />
+        </service>
+
+        <!-- remove handler -->
+        <service id="vich_uploader.remove_handler" class="Vich\UploaderBundle\Handler\RemoveHandler" public="true">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.storage" />
+            <argument type="service" id="vich_uploader.file_injector" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <service id="Vich\UploaderBundle\Handler\DownloadHandler" alias="vich_uploader.download_handler" public="false"/>
         <service id="Vich\UploaderBundle\Handler\UploadHandler" alias="vich_uploader.upload_handler" public="false"/>
+        <service id="Vich\UploaderBundle\Handler\RemoveHandler" alias="vich_uploader.remove_handler" public="false"/>
     </services>
 </container>

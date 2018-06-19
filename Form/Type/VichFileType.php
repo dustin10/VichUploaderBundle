@@ -48,7 +48,7 @@ class VichFileType extends AbstractType
 
     public function __construct(
         StorageInterface $storage,
-        UploadHandler $handler, 
+        UploadHandler $handler,
         PropertyMappingFactory $factory,
         PropertyAccessorInterface $propertyAccessor = null
     ) {
@@ -136,7 +136,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            $this->handler->remove($object, $form->getName());
+            $this->handler->removeQueued($object, $form->getName());
         });
     }
 
