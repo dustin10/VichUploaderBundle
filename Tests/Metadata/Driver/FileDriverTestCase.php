@@ -26,7 +26,7 @@ abstract class FileDriverTestCase extends TestCase
         $this->assertEquals($expectedMetadata, $metadata->fields);
     }
 
-    public function classesProvider()
+    public function classesProvider(): array
     {
         $metadatas = [];
         $metadatas[] = [

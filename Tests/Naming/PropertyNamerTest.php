@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 class PropertyNamerTest extends TestCase
 {
-    public function fileDataProvider()
+    public function fileDataProvider(): array
     {
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';

@@ -44,7 +44,7 @@ class DownloadHandlerTest extends TestCase
             ->will($this->returnValue($this->mapping));
     }
 
-    public function filenamesProvider()
+    public function filenamesProvider(): array
     {
         return [
             ['file_name', 'file-name'],
@@ -87,7 +87,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -116,7 +116,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(sprintf('attachment; filename="%s"', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testDownloadObjectCallOriginalName(): void
@@ -151,10 +151,8 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field', null, true);
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(
-            sprintf('attachment; filename="%s"', $this->object->getImageOriginalName()),
-            $response->headers->get('Content-Disposition')
-        );
+        $expectedFileName = $this->object->getImageOriginalName();
+        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testNonAsciiFilenameIsTransliterated(): void

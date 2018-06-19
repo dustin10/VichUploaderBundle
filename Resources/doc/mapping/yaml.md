@@ -8,12 +8,12 @@ format and comes with the following syntax to declare your uploadable fields:
 # src/Acme/DemoBundle/Resources/config/vich_uploader/Entity.Product.yml
 Acme\DemoBundle\Entity\Product:
     image:
-        mapping:           product_image # required
-        filename_property: imageName     # required
-        size:              imageSize
-        mime_type:         imageMimeType
-        original_name:     imageOriginalName
-        dimensions:        imageDimensions
+        mapping: product_image        # required
+        filename_property: imageName  # required
+        size: imageSize
+        mime_type: imageMimeType
+        original_name: imageOriginalName
+        dimensions: imageDimensions
 ```
 
 To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
@@ -23,7 +23,7 @@ If you need the mapping elsewhere, you need to add some configuration.
 In the following example, the configuration is placed in the `app/config/vich_uploader` directory:
 
 ```yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     # ...
     metadata:
@@ -34,7 +34,9 @@ vich_uploader:
 
 #### Naming YAML Files
 
-The `namespace_prefix` parameter, combined with the .yml file name in `config/vich_uploader` must combine to form the FQCN of your entity. For example an entity of `MyApp\MyBundle\Entity\Customer` should be configured using either of the following:
+The `namespace_prefix` parameter, combined with the .yml file name in `config/vich_uploader` must
+combine to form the FQCN of your entity. For example an entity of `MyApp\MyBundle\Entity\Customer`
+should be configured using either of the following:
 
 `namespace_prefix: 'MyApp\MyBundle'` and then have a config file `Entity.Customer.yml`
 

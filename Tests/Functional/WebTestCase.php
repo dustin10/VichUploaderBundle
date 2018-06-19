@@ -19,7 +19,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getUploadedFile($client, $name, $mimeType = 'image/png')
     {
         return new UploadedFile(
-            $this->getImagesDir($client).DIRECTORY_SEPARATOR.$name,
+            $this->getImagesDir($client).\DIRECTORY_SEPARATOR.$name,
             $name,
             $mimeType,
             123

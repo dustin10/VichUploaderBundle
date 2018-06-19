@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use Vich\UploaderBundle\Storage\FileSystemStorage;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * FileSystemStorageTest.
@@ -11,10 +12,7 @@ use Vich\UploaderBundle\Storage\FileSystemStorage;
  */
 class FileSystemStorageTest extends StorageTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getStorage()
+    protected function getStorage(): StorageInterface
     {
         return new FileSystemStorage($this->factory);
     }
@@ -70,7 +68,7 @@ class FileSystemStorageTest extends StorageTestCase
             ->will($this->returnValue('test.txt'));
 
         $this->storage->remove($this->object, $this->mapping);
-        $this->assertFalse($this->root->hasChild('uploads'.DIRECTORY_SEPARATOR.'test.txt'));
+        $this->assertFalse($this->root->hasChild('uploads'.\DIRECTORY_SEPARATOR.'test.txt'));
     }
 
     /**
@@ -101,7 +99,7 @@ class FileSystemStorageTest extends StorageTestCase
 
         $path = $this->storage->resolvePath($this->object, 'file_field');
 
-        $this->assertEquals(sprintf('/tmp%sfile.txt', DIRECTORY_SEPARATOR), $path);
+        $this->assertEquals(sprintf('/tmp%sfile.txt', \DIRECTORY_SEPARATOR), $path);
     }
 
     /**
@@ -127,7 +125,7 @@ class FileSystemStorageTest extends StorageTestCase
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, true);
 
-        $this->assertEquals(sprintf('upload_dir%sfile.txt', DIRECTORY_SEPARATOR), $path);
+        $this->assertEquals(sprintf('upload_dir%sfile.txt', \DIRECTORY_SEPARATOR), $path);
     }
 
     public function testResolveUriReturnsNullIfNoFile(): void
@@ -207,7 +205,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->assertNotEmpty($stream);
     }
 
-    public function resolveUriDataProvider()
+    public function resolveUriDataProvider(): array
     {
         return [
             [
@@ -273,7 +271,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function filenameWithDirectoriesDataProvider()
+    public function filenameWithDirectoriesDataProvider(): array
     {
         return [
             // upload dir, dir, expected dir

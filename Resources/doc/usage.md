@@ -25,7 +25,7 @@ that directory (`uri_prefix`) and give the upload mapping a name
 (`product_image` in our example).
 
 ``` yaml
-# app/config/config.yml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
 
@@ -293,6 +293,7 @@ instance: should the files be updated or removed accordingly?
 Three simple configuration options allow you to fit your application's needs.
 
 ``` yaml
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
     mappings:
@@ -320,7 +321,7 @@ All options are listed below:
 
 ## That was it!
 
-You're done! Now create a form with an `imageFile` field that uses the `file`
+You're done! Now create a form with an `imageFile` field that uses the `VichImageType`
 type.
 When you submit and save, the uploaded file will automatically be moved to the
 location you configured and the `imageName` field will be set to the filename of

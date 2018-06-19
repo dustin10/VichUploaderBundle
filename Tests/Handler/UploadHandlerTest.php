@@ -90,7 +90,7 @@ class UploadHandlerTest extends TestCase
         call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
     }
 
-    public function methodProvider()
+    public function methodProvider(): array
     {
         return [
             ['upload'],

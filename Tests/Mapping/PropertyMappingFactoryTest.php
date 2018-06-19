@@ -25,9 +25,6 @@ class PropertyMappingFactoryTest extends TestCase
      */
     protected $metadata;
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp(): void
     {
         $this->container = $this->getContainerMock();
@@ -88,7 +85,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($object, $givenClassName);
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -98,7 +95,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertFalse($mapping->hasNamer());
     }
 
-    public function fromObjectProvider()
+    public function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
         $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
@@ -151,7 +148,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($obj);
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -205,7 +202,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -282,7 +279,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertEquals('dummy_file', $mapping->getMappingName());
     }
 
-    public function fromFieldProvider()
+    public function fromFieldProvider(): array
     {
         $obj = new DummyEntity();
         $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
@@ -390,7 +387,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity());
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
