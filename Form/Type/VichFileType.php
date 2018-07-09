@@ -113,7 +113,7 @@ class VichFileType extends AbstractType
             $form = $event->getForm();
             $parent = $form->getParent();
             // no object: no delete button
-            if(null === $parent) {
+            if (null === $parent) {
                 return;
             }
             $object = $parent->getData();
