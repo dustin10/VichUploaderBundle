@@ -111,7 +111,12 @@ class VichFileType extends AbstractType
         // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $parent = $form->getParent();
+            // no object: no delete button
+            if (null === $parent) {
+                return;
+            }
+            $object = $parent->getData();
 
             // no object or no uploaded file: no delete button
             if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
