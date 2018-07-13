@@ -15,7 +15,7 @@ This could be useful when the installation of VichUploaderBundle is not compatib
 
 ## Enable the bundle
 
-If you use Flex (you should!), bundle is automatically enabled and no furhter action is required.
+If you use Flex (you should!), the bundle is automatically enabled and no further action is required.
 Otherwise, to start using the bundle, register it in your application's kernel class:
 
 ```php
