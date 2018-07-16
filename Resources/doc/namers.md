@@ -133,7 +133,7 @@ vich_uploader:
         product_image:
             upload_destination: product_image
             directory_namer:
-                service: Vich\UploaderBundle\Naming\PropertyDirectoryNamer
+                service: vich_uploader.namer_directory_property
                 options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
 
