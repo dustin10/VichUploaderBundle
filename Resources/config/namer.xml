@@ -13,7 +13,7 @@
 
         <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true" />
         <service id="vich_uploader.namer_directory_property" class="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
-            <argument type="service" id="form.property_accessor" />
+            <argument type="service" id="form.property_accessor" on-invalid="null" />
         </service>
 
         <service id="Vich\UploaderBundle\Naming\UniqidNamer" alias="vich_uploader.namer_uniqid" public="false"/>
