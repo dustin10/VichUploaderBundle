@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 class OrignameNamerTest extends TestCase
 {
-    public function fileDataProvider()
+    public function fileDataProvider(): array
     {
         return [
             ['file.jpeg', '/[a-z0-9]{13}_file.jpeg/', false],
@@ -24,7 +24,7 @@ class OrignameNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($name, $pattern, $transliterate)
+    public function testNameReturnsAnUniqueName($name, $pattern, $transliterate): void
     {
         $file = $this->getUploadedFileMock();
         $file

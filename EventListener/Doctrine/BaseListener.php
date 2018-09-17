@@ -35,15 +35,7 @@ abstract class BaseListener implements EventSubscriber
      */
     protected $handler;
 
-    /**
-     * Constructs a new instance of UploaderListener.
-     *
-     * @param string           $mapping  The mapping name
-     * @param AdapterInterface $adapter  The adapter
-     * @param MetadataReader   $metadata The metadata reader
-     * @param UploadHandler    $handler  The upload handler
-     */
-    public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
+    public function __construct(string $mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
         $this->mapping = $mapping;
         $this->adapter = $adapter;
@@ -54,11 +46,11 @@ abstract class BaseListener implements EventSubscriber
     /**
      * Checks if the given object is uploadable using the current mapping.
      *
-     * @param mixed $object The object to test
+     * @param object $object The object to test
      *
      * @return bool
      */
-    protected function isUploadable($object)
+    protected function isUploadable($object): bool
     {
         return $this->metadata->isUploadable(ClassUtils::getClass($object), $this->mapping);
     }
@@ -66,11 +58,13 @@ abstract class BaseListener implements EventSubscriber
     /**
      * Returns a list of uploadable fields for the given object and mapping.
      *
-     * @param mixed $object The object to use
+     * @param object $object The object to use
      *
-     * @return string[] A list of field names
+     * @return array|string[] A list of field names
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    protected function getUploadableFields($object)
+    protected function getUploadableFields($object): array
     {
         $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
 

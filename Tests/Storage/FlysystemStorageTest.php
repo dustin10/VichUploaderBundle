@@ -7,6 +7,7 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -25,25 +26,19 @@ class FlysystemStorageTest extends StorageTestCase
      */
     protected $filesystem;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('League\Flysystem\MountManager')) {
             self::markTestSkipped('Flysystem is not installed.');
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getStorage()
+    protected function getStorage(): StorageInterface
     {
         return new FlysystemStorage($this->factory, $this->mountManager);
     }
 
-    /**
-     * Sets up the test.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mountManager = $this->getMountManagerMock();
         $this->filesystem = $this->createMock('League\Flysystem\FilesystemInterface');
@@ -62,14 +57,14 @@ class FlysystemStorageTest extends StorageTestCase
             ->will($this->returnValue(self::FS_KEY));
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         $file = $this->getUploadedFileMock();
 
         $file
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue($this->root->url().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'test.txt'));
+            ->will($this->returnValue($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt'));
 
         $file
             ->expects($this->once())
@@ -99,7 +94,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -114,7 +109,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    public function testRemoveOnNonExistentFile()
+    public function testRemoveOnNonExistentFile(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -133,7 +128,7 @@ class FlysystemStorageTest extends StorageTestCase
     /**
      * @dataProvider pathProvider
      */
-    public function testResolvePath($uploadDir, $expectedPath, $relative)
+    public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
             ->expects($this->once())
@@ -166,7 +161,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->assertEquals($expectedPath, $path);
     }
 
-    public function pathProvider()
+    public function pathProvider(): array
     {
         return [
             //     dir,   path,                     relative

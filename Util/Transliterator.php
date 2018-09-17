@@ -21,9 +21,9 @@ class Transliterator
      *
      * @return string
      */
-    public static function transliterate($string, $separator = '-')
+    public static function transliterate(string $string, string $separator = '-'): string
     {
-        list($filename, $extension) = FilenameUtils::spitNameByExtension($string);
+        [$filename, $extension] = FilenameUtils::spitNameByExtension($string);
 
         $transliterated = BehatTransliterator::transliterate($filename, $separator);
         if ('' !== $extension) {

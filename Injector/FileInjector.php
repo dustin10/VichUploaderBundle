@@ -18,24 +18,16 @@ class FileInjector implements FileInjectorInterface
      */
     protected $storage;
 
-    /**
-     * Constructs a new instance of FileInjector.
-     *
-     * @param StorageInterface $storage Storage
-     */
     public function __construct(StorageInterface $storage)
     {
         $this->storage = $storage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function injectFile($obj, PropertyMapping $mapping)
+    public function injectFile($obj, PropertyMapping $mapping): void
     {
         $path = $this->storage->resolvePath($obj, $mapping->getFilePropertyName());
 
-        if ($path !== null) {
+        if (null !== $path) {
             $mapping->setFile($obj, new File($path, false));
         }
     }

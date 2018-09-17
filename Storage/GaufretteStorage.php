@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Storage;
 
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
+use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -34,7 +34,7 @@ class GaufretteStorage extends AbstractStorage
      * @param FilesystemMap          $filesystemMap Gaufrete filesystem factory
      * @param string                 $protocol      Gaufrette stream wrapper protocol
      */
-    public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap, $protocol = 'gaufrette')
+    public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap, string $protocol = 'gaufrette')
     {
         parent::__construct($factory);
 
@@ -42,10 +42,7 @@ class GaufretteStorage extends AbstractStorage
         $this->protocol = $protocol;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, $dir, $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): void
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
@@ -57,10 +54,7 @@ class GaufretteStorage extends AbstractStorage
         $filesystem->write($path, file_get_contents($file->getPathname()), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doRemove(PropertyMapping $mapping, $dir, $name)
+    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
@@ -72,10 +66,7 @@ class GaufretteStorage extends AbstractStorage
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doResolvePath(PropertyMapping $mapping, $dir, $name, $relative = false)
+    protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
@@ -93,7 +84,7 @@ class GaufretteStorage extends AbstractStorage
      *
      * @return Filesystem
      */
-    protected function getFilesystem(PropertyMapping $mapping)
+    protected function getFilesystem(PropertyMapping $mapping): Filesystem
     {
         return $this->filesystemMap->get($mapping->getUploadDestination());
     }

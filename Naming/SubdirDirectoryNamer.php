@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
     private $charsPerDir = 2;
+
     private $dirs = 1;
 
     /**
@@ -19,7 +20,7 @@ class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInter
      *                       - chars_per_dir: how many chars use for each dir.
      *                       - dirs: how many dirs create
      */
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         $options = array_merge(['chars_per_dir' => $this->charsPerDir, 'dirs' => $this->dirs], $options);
 
@@ -27,10 +28,7 @@ class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInter
         $this->dirs = $options['dirs'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function directoryName($object, PropertyMapping $mapping)
+    public function directoryName($object, PropertyMapping $mapping): string
     {
         $fileName = $mapping->getFileName($object);
 

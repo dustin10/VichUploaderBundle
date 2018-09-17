@@ -35,15 +35,7 @@ abstract class BaseListener implements EventSubscriberInterface
      */
     protected $handler;
 
-    /**
-     * Constructs a new instance of BaseListener.
-     *
-     * @param string           $mapping  The mapping name
-     * @param AdapterInterface $adapter  The adapter
-     * @param MetadataReader   $metadata The metadata reader
-     * @param UploadHandler    $handler  The upload handler
-     */
-    public function __construct($mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
+    public function __construct(string $mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
     {
         $this->mapping = $mapping;
         $this->adapter = $adapter;
@@ -56,9 +48,11 @@ abstract class BaseListener implements EventSubscriberInterface
      *
      * @param mixed $object The object to use
      *
-     * @return string[] A list of field names
+     * @return array|string[] A list of field names
+     *
+     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    protected function getUploadableFields($object)
+    protected function getUploadableFields($object): array
     {
         $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
 

@@ -2,14 +2,25 @@
 
 namespace Vich\UploaderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
-class MappingDebugClassCommand extends ContainerAwareCommand
+class MappingDebugClassCommand extends Command
 {
-    protected function configure()
+    protected static $defaultName = 'vich:mapping:debug-class';
+
+    private $metadataReader;
+
+    public function __construct(MetadataReader $metadataReader)
+    {
+        parent::__construct();
+        $this->metadataReader = $metadataReader;
+    }
+
+    protected function configure(): void
     {
         $this
             ->setName('vich:mapping:debug-class')
@@ -18,22 +29,23 @@ class MappingDebugClassCommand extends ContainerAwareCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $metadataReader = $this->getContainer()->get('vich_uploader.metadata_reader');
         $fqcn = $input->getArgument('fqcn');
 
-        if (!$metadataReader->isUploadable($fqcn)) {
+        if (!$this->metadataReader->isUploadable($fqcn)) {
             $output->writeln(sprintf('<error>"%s" is not uploadable.</error>', $fqcn));
 
             return 1;
         }
 
-        $uploadableFields = $metadataReader->getUploadableFields($fqcn);
+        $uploadableFields = $this->metadataReader->getUploadableFields($fqcn);
 
         $output->writeln(sprintf('Introspecting class <info>%s</info>:', $fqcn));
         foreach ($uploadableFields as $data) {
             $output->writeln(sprintf('Found field "<comment>%s</comment>", storing file name in <comment>"%s</comment>" and using mapping "<comment>%s</comment>"', $data['propertyName'], $data['fileNameProperty'], $data['mapping']));
         }
+
+        return 0;
     }
 }

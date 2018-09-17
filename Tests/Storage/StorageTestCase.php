@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Tests\Storage;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -48,12 +47,12 @@ abstract class StorageTestCase extends TestCase
      *
      * @return StorageInterface
      */
-    abstract protected function getStorage();
+    abstract protected function getStorage(): StorageInterface;
 
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->mapping = $this->getPropertyMappingMock();
@@ -74,21 +73,7 @@ abstract class StorageTestCase extends TestCase
         ]);
     }
 
-    public function invalidFileProvider()
-    {
-        $file = new File('dummy.file', false);
-
-        return [
-            // skipped because null
-            [null],
-            // skipped because not even a file
-            [new \DateTime()],
-            // skipped because not instance of UploadedFile
-            [$file],
-        ];
-    }
-
-    public function emptyFilenameProvider()
+    public function emptyFilenameProvider(): array
     {
         return [
             [null],
@@ -99,7 +84,7 @@ abstract class StorageTestCase extends TestCase
     /**
      * @dataProvider emptyFilenameProvider
      */
-    public function testResolvePathWithEmptyFile($filename)
+    public function testResolvePathWithEmptyFile($filename): void
     {
         $this->mapping
             ->expects($this->once())
@@ -118,7 +103,7 @@ abstract class StorageTestCase extends TestCase
     /**
      * @dataProvider emptyFilenameProvider
      */
-    public function testResolveUriWithEmptyFile($filename)
+    public function testResolveUriWithEmptyFile($filename): void
     {
         $this->mapping
             ->expects($this->once())
@@ -134,8 +119,8 @@ abstract class StorageTestCase extends TestCase
         $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
-    protected function getValidUploadDir()
+    protected function getValidUploadDir(): string
     {
-        return $this->root->url().DIRECTORY_SEPARATOR.'uploads';
+        return $this->root->url().\DIRECTORY_SEPARATOR.'uploads';
     }
 }

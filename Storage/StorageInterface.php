@@ -16,7 +16,7 @@ interface StorageInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to upload
      */
-    public function upload($obj, PropertyMapping $mapping);
+    public function upload($obj, PropertyMapping $mapping): void;
 
     /**
      * Removes the files associated with the given mapping.
@@ -24,7 +24,7 @@ interface StorageInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
      */
-    public function remove($obj, PropertyMapping $mapping);
+    public function remove($obj, PropertyMapping $mapping): ?bool;
 
     /**
      * Resolves the path for a file based on the specified object
@@ -37,7 +37,7 @@ interface StorageInterface
      *
      * @return string The path
      */
-    public function resolvePath($obj, $fieldName, $className = null, $relative = false);
+    public function resolvePath($obj, string $fieldName, ?string $className = null, ?bool $relative = false): ?string;
 
     //TODO: inconsistency - use PropertyMapping instead of fieldName+className
 
@@ -50,11 +50,10 @@ interface StorageInterface
      *
      * @return string|null The uri or null if file not stored
      */
-    public function resolveUri($obj, $fieldName, $className = null);
+    public function resolveUri($obj, string $fieldName, ?string $className = null): ?string;
 
     /**
-     * Returns a read-only stream based on the specified object and mapping
-     * name.
+     * Returns a read-only stream based on the specified object and mapping name.
      *
      * @param object|array $obj       The object
      * @param string       $fieldName The field to use
@@ -62,5 +61,5 @@ interface StorageInterface
      *
      * @return resource|null The resolved resource or null if file not stored
      */
-    public function resolveStream($obj, $fieldName, $className = null);
+    public function resolveStream($obj, string $fieldName, ?string $className = null);
 }

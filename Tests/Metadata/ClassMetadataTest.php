@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 class ClassMetadataTest extends TestCase
 {
-    public function testFieldsAreSerialized()
+    public function testFieldsAreSerialized(): void
     {
         $fields = ['foo', 'bar', 'baz'];
         $metadata = new ClassMetadata('DateTime');

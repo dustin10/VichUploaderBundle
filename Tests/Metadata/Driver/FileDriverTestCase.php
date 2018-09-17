@@ -14,7 +14,7 @@ abstract class FileDriverTestCase extends TestCase
     /**
      * @dataProvider classesProvider
      */
-    public function testLoadMetadataForClass($class, $file, $expectedMetadata)
+    public function testLoadMetadataForClass($class, $file, $expectedMetadata): void
     {
         $reflectionClass = new \ReflectionClass($class);
         $driver = $this->getDriver($reflectionClass, $file);
@@ -26,7 +26,7 @@ abstract class FileDriverTestCase extends TestCase
         $this->assertEquals($expectedMetadata, $metadata->fields);
     }
 
-    public function classesProvider()
+    public function classesProvider(): array
     {
         $metadatas = [];
         $metadatas[] = [
@@ -40,6 +40,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => 'imageSize',
                     'mimeType' => 'imageMimeType',
                     'originalName' => 'imageOriginalName',
+                    'dimensions' => null,
                 ],
             ],
         ];
@@ -55,6 +56,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => null,
                     'mimeType' => null,
                     'originalName' => null,
+                    'dimensions' => null,
                 ],
                 'image' => [
                     'mapping' => 'dummy_image',
@@ -63,6 +65,7 @@ abstract class FileDriverTestCase extends TestCase
                     'size' => 'imageSize',
                     'mimeType' => 'imageMimeType',
                     'originalName' => 'imageOriginalName',
+                    'dimensions' => null,
                 ],
             ],
         ];

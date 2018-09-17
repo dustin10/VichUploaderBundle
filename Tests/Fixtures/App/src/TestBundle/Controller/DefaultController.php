@@ -66,7 +66,7 @@ class DefaultController extends Controller
 
     private function getImage($imageId = null)
     {
-        if ($imageId === null) {
+        if (null === $imageId) {
             return new Image();
         }
         $image = $this->getDoctrine()->getRepository('VichTestBundle:Image')->find($imageId);

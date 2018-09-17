@@ -14,19 +14,19 @@ class PropelORMAdapterTest extends TestCase
 {
     protected $adapter;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('Symfony\Component\EventDispatcher\GenericEvent')) {
             self::markTestSkipped('Symfony\Component\EventDispatcher\GenericEvent does not exist.');
         }
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->adapter = new PropelORMAdapter();
     }
 
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromArgs(): void
     {
         $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
         $event
@@ -37,7 +37,7 @@ class PropelORMAdapterTest extends TestCase
         $this->assertSame(42, $this->adapter->getObjectFromArgs($event));
     }
 
-    public function testRecomputeChangeset()
+    public function testRecomputeChangeset(): void
     {
         $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
 

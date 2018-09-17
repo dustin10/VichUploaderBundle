@@ -14,12 +14,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     protected $supportedDbDrivers = ['orm', 'mongodb', 'propel', 'phpcr'];
+
     protected $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $tb = new TreeBuilder();
         $root = $tb->root('vich_uploader');
@@ -31,7 +29,7 @@ class Configuration implements ConfigurationInterface
         return $tb;
     }
 
-    protected function addGeneralSection(ArrayNodeDefinition $node)
+    protected function addGeneralSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -61,7 +59,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->validate()
                         ->ifTrue(function ($storage) {
-                            return strpos($storage, '@') !== 0 && !in_array($storage, $this->supportedStorages, true);
+                            return 0 !== strpos($storage, '@') && !in_array($storage, $this->supportedStorages, true);
                         })
                         ->thenInvalid('The storage %s is not supported. Please choose one of '.implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
                     ->end()
@@ -73,7 +71,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    protected function addMetadataSection(ArrayNodeDefinition $node)
+    protected function addMetadataSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -102,7 +100,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    protected function addMappingsSection(ArrayNodeDefinition $node)
+    protected function addMappingsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

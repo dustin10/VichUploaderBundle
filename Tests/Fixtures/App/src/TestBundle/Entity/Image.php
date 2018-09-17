@@ -57,7 +57,7 @@ class Image
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(File $image = null): void
     {
         $this->imageFile = $image;
 
@@ -77,7 +77,7 @@ class Image
     /**
      * @param string $imageName
      */
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -93,7 +93,7 @@ class Image
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }

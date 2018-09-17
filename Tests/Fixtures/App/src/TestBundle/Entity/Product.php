@@ -32,7 +32,7 @@ class Product
     /**
      * @param File $image
      */
-    public function setImage($image)
+    public function setImage($image): void
     {
         $this->image = $image;
     }
@@ -42,7 +42,7 @@ class Product
         return $this->imageName;
     }
 
-    public function setImageName($imageName)
+    public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -52,7 +52,7 @@ class Product
         return $this->imageSize;
     }
 
-    public function setImageSize($imageSize)
+    public function setImageSize($imageSize): void
     {
         $this->imageSize = $imageSize;
     }
@@ -62,7 +62,7 @@ class Product
         return $this->imageMimeType;
     }
 
-    public function setImageMimeType($imageMimeType)
+    public function setImageMimeType($imageMimeType): void
     {
         $this->imageMimeType = $imageMimeType;
     }
@@ -72,7 +72,7 @@ class Product
         return $this->imageOriginalName;
     }
 
-    public function setImageOriginalName($imageOriginalName)
+    public function setImageOriginalName($imageOriginalName): void
     {
         $this->imageOriginalName = $imageOriginalName;
     }
@@ -82,7 +82,7 @@ class Product
         return $this->title;
     }
 
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }

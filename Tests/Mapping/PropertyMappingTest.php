@@ -19,7 +19,7 @@ class PropertyMappingTest extends TestCase
      * Test that the configured mappings are accessed
      * correctly.
      */
-    public function testConfiguredMappingAccess()
+    public function testConfiguredMappingAccess(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -34,51 +34,9 @@ class PropertyMappingTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesAccessProvider
-     */
-    public function testPropertiesAreAccessed($object, $file, $fileName)
-    {
-        $prop = new PropertyMapping('file', 'fileName');
-
-        $this->assertSame($file, $prop->getFile($object));
-        $this->assertSame($fileName, $prop->getFileName($object));
-    }
-
-    public function propertiesAccessProvider()
-    {
-        $date = new \DateTime();
-        $object = new DummyEntity();
-        $object->setFileName('joe.png');
-        $object->setFile($date);
-
-        $array = [
-            'fileName' => 'joe.png',
-            'file' => $date,
-        ];
-
-        return [
-            [$object, $date, 'joe.png'],
-            [$array, $date, 'joe.png'],
-        ];
-    }
-
-    public function testPropertiesAreSet()
-    {
-        $date = new \DateTime();
-        $object = new DummyEntity();
-
-        $prop = new PropertyMapping('file', 'fileName');
-        $prop->setFile($object, $date);
-        $prop->setFileName($object, 'joe.png');
-
-        $this->assertSame($date, $object->getFile());
-        $this->assertSame('joe.png', $object->getFileName());
-    }
-
-    /**
      * @dataProvider directoryProvider
      */
-    public function testDirectoryNamerIsCalled($dir, $expectedDir)
+    public function testDirectoryNamerIsCalled($dir, $expectedDir): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -99,7 +57,7 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals('/tmp', $prop->getUploadDestination());
     }
 
-    public function testReadProperty()
+    public function testReadProperty(): void
     {
         $object = new DummyEntity();
         $object->setSize(100);
@@ -108,18 +66,17 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals(100, $prop->readProperty($object, 'size'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testReadUnknownProperty()
+    public function testReadUnknownProperty(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
 
         $prop->readProperty($object, 'unused');
     }
 
-    public function testWriteProperty()
+    public function testWriteProperty(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName', ['size' => 'size']);
@@ -128,18 +85,17 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals(100, $object->getSize());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testWriteUnknownProperty()
+    public function testWriteUnknownProperty(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
 
         $prop->writeProperty($object, 'unused', null);
     }
 
-    public function testGetUploadNameWithNamer()
+    public function testGetUploadNameWithNamer(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -156,7 +112,7 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals('123', $prop->getUploadName($object));
     }
 
-    public function testGetUploadNameWithoutNamer()
+    public function testGetUploadNameWithoutNamer(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -172,7 +128,7 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals('filename', $prop->getUploadName($object));
     }
 
-    public function directoryProvider()
+    public function directoryProvider(): array
     {
         return [
             ['other_dir', 'other_dir'],
@@ -183,7 +139,7 @@ class PropertyMappingTest extends TestCase
         ];
     }
 
-    public function testErase()
+    public function testErase(): void
     {
         $object = new Article();
 

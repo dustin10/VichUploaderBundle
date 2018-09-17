@@ -46,18 +46,19 @@ class VichFileType extends AbstractType
      */
     protected $propertyAccessor;
 
-    public function __construct(StorageInterface $storage, UploadHandler $handler, PropertyMappingFactory $factory, PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        UploadHandler $handler,
+        PropertyMappingFactory $factory,
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->storage = $storage;
         $this->handler = $handler;
         $this->factory = $factory;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'allow_delete' => true,
@@ -89,10 +90,7 @@ class VichFileType extends AbstractType
         $resolver->setNormalizer('download_uri', $downloadUriNormalizer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('file', Type\FileType::class, [
             'required' => $options['required'],
@@ -108,16 +106,17 @@ class VichFileType extends AbstractType
         }
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
-    protected function buildDeleteField(FormBuilderInterface $builder, array $options)
+    protected function buildDeleteField(FormBuilderInterface $builder, array $options): void
     {
         // add delete only if there is a file
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $parent = $form->getParent();
+            // no object: no delete button
+            if (null === $parent) {
+                return;
+            }
+            $object = $parent->getData();
 
             // no object or no uploaded file: no delete button
             if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
@@ -133,7 +132,7 @@ class VichFileType extends AbstractType
         });
 
         // delete file if needed
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $object = $form->getParent()->getData();
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
@@ -146,10 +145,7 @@ class VichFileType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $object = $form->getParent()->getData();
         $view->vars['object'] = $object;
@@ -164,10 +160,7 @@ class VichFileType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'vich_file';
     }
@@ -185,7 +178,7 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    protected function resolveDownloadLabel($downloadLabel, $object, FormInterface $form)
+    protected function resolveDownloadLabel($downloadLabel, $object, FormInterface $form): array
     {
         if (true === $downloadLabel) {
             $mapping = $this->factory->fromField($object, $form->getName());
@@ -197,8 +190,8 @@ class VichFileType extends AbstractType
             $result = $downloadLabel($object);
 
             return [
-                'download_label' => isset($result['download_label']) ? $result['download_label'] : $result,
-                'translation_domain' => isset($result['translation_domain']) ? $result['translation_domain'] : false,
+                'download_label' => $result['download_label'] ?? $result,
+                'translation_domain' => $result['translation_domain'] ?? false,
             ];
         }
 

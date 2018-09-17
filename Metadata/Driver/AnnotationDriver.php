@@ -42,7 +42,7 @@ class AnnotationDriver implements AdvancedDriverInterface
 
         foreach ($class->getProperties() as $property) {
             $uploadableField = $this->reader->getPropertyAnnotation($property, UploadableField::class);
-            if ($uploadableField === null) {
+            if (null === $uploadableField) {
                 continue;
             }
             /* @var $uploadableField UploadableField */
@@ -55,6 +55,7 @@ class AnnotationDriver implements AdvancedDriverInterface
                 'size' => $uploadableField->getSize(),
                 'mimeType' => $uploadableField->getMimeType(),
                 'originalName' => $uploadableField->getOriginalName(),
+                'dimensions' => $uploadableField->getDimensions(),
             ];
 
             //TODO: store UploadableField object instead of array
@@ -71,6 +72,6 @@ class AnnotationDriver implements AdvancedDriverInterface
 
     protected function isUploadable(\ReflectionClass $class)
     {
-        return $this->reader->getClassAnnotation($class, Uploadable::class) !== null;
+        return null !== $this->reader->getClassAnnotation($class, Uploadable::class);
     }
 }

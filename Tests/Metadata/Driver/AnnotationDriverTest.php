@@ -15,7 +15,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class AnnotationDriverTest extends TestCase
 {
-    public function testReadUploadableAnnotation()
+    public function testReadUploadableAnnotation(): void
     {
         $entity = new DummyEntity();
 
@@ -45,11 +45,12 @@ class AnnotationDriverTest extends TestCase
                 'size' => null,
                 'mimeType' => null,
                 'originalName' => null,
+                'dimensions' => null,
             ],
         ], $metadata->fields);
     }
 
-    public function testReadUploadableAnnotationReturnsNullWhenNonePresent()
+    public function testReadUploadableAnnotationReturnsNullWhenNonePresent(): void
     {
         $entity = new DummyEntity();
 
@@ -68,7 +69,7 @@ class AnnotationDriverTest extends TestCase
         $this->assertNull($metadata);
     }
 
-    public function testReadTwoUploadableFields()
+    public function testReadTwoUploadableFields(): void
     {
         $entity = new Article();
 
@@ -93,6 +94,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
+                'dimensions' => null,
             ])));
 
         $driver = new AnnotationDriver($reader);
@@ -106,6 +108,7 @@ class AnnotationDriverTest extends TestCase
                 'size' => null,
                 'mimeType' => null,
                 'originalName' => null,
+                'dimensions' => null,
             ],
             'image' => [
                 'mapping' => 'dummy_image',
@@ -114,11 +117,12 @@ class AnnotationDriverTest extends TestCase
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
+                'dimensions' => null,
             ],
         ], $metadata->fields);
     }
 
-    public function testReadNoUploadableFieldsWhenNoneExist()
+    public function testReadNoUploadableFieldsWhenNoneExist(): void
     {
         $entity = new DummyEntity();
 

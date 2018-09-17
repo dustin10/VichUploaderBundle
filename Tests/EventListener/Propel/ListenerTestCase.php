@@ -17,6 +17,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class ListenerTestCase extends TestCase
 {
     const FIELD_NAME = 'file';
+
     const MAPPING_NAME = 'mapping_name';
 
     /**
@@ -52,7 +53,7 @@ class ListenerTestCase extends TestCase
     /**
      * Sets up the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->adapter = $this->getAdapterMock();
         $this->handler = $this->getHandlerMock();

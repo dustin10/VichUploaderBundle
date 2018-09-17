@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class DoctrineORMAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('Doctrine\ORM\Event\LifecycleEventArgs')) {
             self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
@@ -23,7 +23,7 @@ class DoctrineORMAdapterTest extends TestCase
     /**
      * Test the getObjectFromArgs method.
      */
-    public function testGetObjectFromArgs()
+    public function testGetObjectFromArgs(): void
     {
         $entity = new DummyEntity();
 

@@ -2,15 +2,17 @@ Symfony support policy
 ======================
 
 As indicated by the contraints defined in the `composer.json` file, this bundle
-supports Symfony `^2.8|^3.2`.
+supports Symfony `^3.4|^4.0` in its latest version (`1.8.*`).
+
+Older Symfony versions that are still supported in previous bundle versions (`1.5.*`/`1.7.*`).
 
 Only versions still actively maintained by the Symfony core team will be supported by
-the maintainers of this bundle. Older versions of Symfony can be still used, but with older
-versions of this bundle, so without active support.
-If you want to get updates on old versions, you can do a Pull Request on the `1.4` branch
+the maintainers of this bundle. Older versions of Symfony can be still used with previous
+versions of this bundle, but there's no active support here.
+If you want to get updates on old versions, you can do a Pull Request on older branches
 of this bundle, maybe it will be merged.
 The same policy applies to old versions of PHP, out of active support: this bundle is actively
-supporting PHP 7.0 (and newer versions).
+supporting PHP 7.1 and 7.2.
 
 You can check if a given Symfony version is still supported by visiting [their
 Roadmap page](http://symfony.com/roadmap).

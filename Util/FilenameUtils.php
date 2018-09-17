@@ -18,7 +18,7 @@ final class FilenameUtils
      *
      * @return array An array of basename and extension
      */
-    public static function spitNameByExtension($filename)
+    public static function spitNameByExtension(string $filename): array
     {
         if (false === $pos = strrpos($filename, '.')) {
             return [$filename, ''];

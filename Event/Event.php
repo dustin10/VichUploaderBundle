@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 class Event extends BaseEvent
 {
     protected $object;
+
     protected $mapping;
 
     public function __construct($object, PropertyMapping $mapping)
@@ -24,7 +25,7 @@ class Event extends BaseEvent
     /**
      * Accessor to the object being manipulated.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {
@@ -36,7 +37,7 @@ class Event extends BaseEvent
      *
      * @return PropertyMapping
      */
-    public function getMapping()
+    public function getMapping(): PropertyMapping
     {
         return $this->mapping;
     }

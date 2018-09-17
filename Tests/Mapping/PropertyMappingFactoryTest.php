@@ -25,10 +25,7 @@ class PropertyMappingFactoryTest extends TestCase
      */
     protected $metadata;
 
-    /**
-     * Sets up the test.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->getContainerMock();
         $this->metadata = $this->getMetadataReaderMock();
@@ -37,11 +34,11 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * Tests that an exception is thrown if a non uploadable
      * object is passed in.
-     *
-     * @expectedException \Vich\UploaderBundle\Exception\NotUploadableException
      */
-    public function testFromObjectThrowsExceptionIfNotUploadable()
+    public function testFromObjectThrowsExceptionIfNotUploadable(): void
     {
+        $this->expectException(\Vich\UploaderBundle\Exception\NotUploadableException::class);
+
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -57,7 +54,7 @@ class PropertyMappingFactoryTest extends TestCase
      *
      * @dataProvider fromObjectProvider
      */
-    public function testFromObjectOneField($object, $givenClassName, $expectedClassName)
+    public function testFromObjectOneField($object, $givenClassName, $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -88,7 +85,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($object, $givenClassName);
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -98,7 +95,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertFalse($mapping->hasNamer());
     }
 
-    public function fromObjectProvider()
+    public function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
         $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
@@ -111,16 +108,15 @@ class PropertyMappingFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testMappingCreationFailsIfTheClassNameCannotBeDetermined()
+    public function testMappingCreationFailsIfTheClassNameCannotBeDetermined(): void
     {
+        $this->expectException(\RuntimeException::class);
+
         $factory = new PropertyMappingFactory($this->container, $this->metadata, []);
         $factory->fromObject([]);
     }
 
-    public function testFromObjectOneFieldWithNoExplicitFilenameProperty()
+    public function testFromObjectOneFieldWithNoExplicitFilenameProperty(): void
     {
         $obj = new DummyEntity();
 
@@ -152,7 +148,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($obj);
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -163,7 +159,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertEquals('file_name', $mapping->getFileNamePropertyName());
     }
 
-    public function testFromObjectWithExplicitMapping()
+    public function testFromObjectWithExplicitMapping(): void
     {
         $mappings = [
             'dummy_mapping' => [
@@ -206,7 +202,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 
@@ -216,11 +212,11 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * Test that an exception is thrown when an invalid mapping name
      * is specified.
-     *
-     * @expectedException \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function testThrowsExceptionOnInvalidMappingName()
+    public function testThrowsExceptionOnInvalidMappingName(): void
     {
+        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+
         $mappings = [
             'bad_name' => [],
         ];
@@ -250,7 +246,7 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * @dataProvider fromFieldProvider
      */
-    public function testFromField($object, $className, $expectedClassName)
+    public function testFromField($object, $className, $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -283,7 +279,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertEquals('dummy_file', $mapping->getMappingName());
     }
 
-    public function fromFieldProvider()
+    public function fromFieldProvider(): array
     {
         $obj = new DummyEntity();
         $proxy = $this->createMock('Doctrine\Common\Persistence\Proxy');
@@ -300,7 +296,7 @@ class PropertyMappingFactoryTest extends TestCase
      * Test that the fromField method returns null when an invalid
      * field name is specified.
      */
-    public function testFromFieldReturnsNullOnInvalidFieldName()
+    public function testFromFieldReturnsNullOnInvalidFieldName(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -320,7 +316,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertNull($mapping);
     }
 
-    public function testCustomFileNameProperty()
+    public function testCustomFileNameProperty(): void
     {
         $mappings = [
             'dummy_file' => [
@@ -350,7 +346,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->assertEquals('file_suffix', $mapping->getFileNamePropertyName());
     }
 
-    public function testConfiguredNamersAreRetrievedFromContainer()
+    public function testConfiguredNamersAreRetrievedFromContainer(): void
     {
         $mappings = [
             'dummy_file' => [
@@ -391,7 +387,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity());
 
-        $this->assertEquals(1, count($mappings));
+        $this->assertCount(1, $mappings);
 
         $mapping = current($mappings);
 

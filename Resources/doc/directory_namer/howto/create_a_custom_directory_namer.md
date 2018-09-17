@@ -18,7 +18,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image
-            directory_namer:    my.directory_namer.product
+            directory_namer: my.directory_namer.product
 ```
 
 

@@ -19,5 +19,5 @@ interface NamerInterface
      *
      * @return string The file name
      */
-    public function name($object, PropertyMapping $mapping);
+    public function name($object, PropertyMapping $mapping): string;
 }

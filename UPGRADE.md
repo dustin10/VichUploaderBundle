@@ -1,3 +1,11 @@
+Upgrading from v1.6.0 to 1.8.0
+==============================
+
+- we enforced, via type-hinting, as many parameters and return values as we can.
+  This is _formally_ a BC break, but likely you don't need to change anything in
+  your code. Anyway, if you implemented an interface or extended a bundle class
+  with your custom class, you need to check to be consistent with such type hinting.
+
 Upgrading from v1.0.0 to 1.6.0
 ==============================
 

@@ -12,21 +12,21 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 class UniqidNamerTest extends TestCase
 {
-    public function fileDataProvider()
+    public function fileDataProvider(): array
     {
         return [
-            //    original_name,    guessed_extension,  pattern
-            ['lala.jpeg',      null,               '/[a-z0-9]{13}.jpeg/'],
-            ['lala.mp3',       'mpga',             '/[a-z0-9]{13}.mp3/'],
-            ['lala',           'mpga',             '/[a-z0-9]{13}.mpga/'],
-            ['lala',           null,               '/[a-z0-9]{13}/'],
+            // original_name, guessed_extension, pattern
+            ['lala.jpeg',     null,              '/[a-z0-9]{13}.jpeg/'],
+            ['lala.mp3',      'mpga',            '/[a-z0-9]{13}.mp3/'],
+            ['lala',          'mpga',            '/[a-z0-9]{13}.mpga/'],
+            ['lala',          null,              '/[a-z0-9]{13}/'],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern)
+    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file
