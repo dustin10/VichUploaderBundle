@@ -90,6 +90,7 @@ At the moment there are several available namers:
 
   * `Vich\UploaderBundle\Naming\SubdirDirectoryNamer`
   * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
+  * `Vich\UploaderBundle\Naming\CurrenDateTimeDirectoryNamer`
 
 **SubdirDirectoryNamer** creates subdirs depends of file name, `abcdef.jpg` will be 
 stored in as folder `ab`. It is also possible configure how many chars use per directory name and 
@@ -135,6 +136,35 @@ vich_uploader:
             directory_namer:
                 service: vich_uploader.namer_directory_property
                 options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
+```
+
+**CurrentDateTimeDirectoryNamer** creates subdirs depends on current locale datetime. By default will be 
+created by format `Y/m/d`. It is also possible configure how datetime format use to create directories.
+For details of datetime formats see <http://php.net/manual/en/function.date.php> 
+
+To use it, you just have to specify the service for the `directory_namer`
+configuration option of your mapping:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image
+            directory_namer: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
+```
+
+Or provide configuration:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image
+            directory_namer:
+                service: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
+                options: {date_time_format: 'Y/d/m'} # will create directory "2018/23/09" for curent date "2018-09-23"
 ```
 
 If no directory namer is configured for a mapping, the bundle will simply use
