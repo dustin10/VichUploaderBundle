@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Naming;
 
 /**
- * Class CurrentDateTimeHelper
+ * Class CurrentDateTimeHelper.
  *
  * @author Vyacheslav Startsev <vyacheslav.startsev@gmail.com>
  */

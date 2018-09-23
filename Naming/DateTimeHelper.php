@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Naming;
 
 /**
- * Interface DateTimeHelper
+ * Interface DateTimeHelper.
  *
  * @author Vyacheslav Startsev <vyacheslav.startsev@gmail.com>
  */
