@@ -30,7 +30,7 @@ class CurrentDateDirectoryNamer implements DirectoryNamerInterface, Configurable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function directoryName($object, PropertyMapping $mapping): string
     {
