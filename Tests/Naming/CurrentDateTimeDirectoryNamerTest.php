@@ -28,9 +28,9 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
     /**
      * @dataProvider directoryNameDataProvider
      *
-     * @param int           $timestamp
-     * @param null|string   $dateTimeFormat
-     * @param string        $expectedName
+     * @param int         $timestamp
+     * @param null|string $dateTimeFormat
+     * @param string      $expectedName
      */
     public function testNameReturnsTheRightName(int $timestamp, ?string $dateTimeFormat, string $expectedName): void
     {
