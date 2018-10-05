@@ -93,6 +93,42 @@ class DownloadHandlerTest extends TestCase
     /**
      * @dataProvider filenamesProvider
      */
+    public function testDisplayObject($fileName, $expectedFileName): void
+    {
+        $file = $this->getUploadedFileMock();
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->will($this->returnValue($fileName));
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFile')
+            ->with($this->object)
+            ->will($this->returnValue($file));
+
+        $file
+            ->expects($this->once())
+            ->method('getMimeType')
+            ->will($this->returnValue('application/pdf'));
+
+        $this->storage
+            ->expects($this->once())
+            ->method('resolveStream')
+            ->with($this->object, 'file_field')
+            ->will($this->returnValue('something not null'));
+
+        $response = $this->handler->downloadObject($this->object, 'file_field', null, null, false);
+
+        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertRegexp(sprintf('/inline; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+    }
+
+    /**
+     * @dataProvider filenamesProvider
+     */
     public function testDownloadObjectWithoutFile($fileName, $expectedFileName): void
     {
         $this->mapping
