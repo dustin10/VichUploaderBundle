@@ -48,7 +48,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
 
         $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock);
 
-        if (!is_null($dateTimeFormat)) {
+        if (null !== $dateTimeFormat) {
             $namer->configure(['date_time_format' => $dateTimeFormat]);
         }
 

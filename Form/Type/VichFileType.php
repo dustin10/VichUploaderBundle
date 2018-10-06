@@ -171,7 +171,7 @@ class VichFileType extends AbstractType
             return $this->storage->resolveUri($object, $form->getName());
         }
 
-        if (is_callable($uriOption)) {
+        if (\is_callable($uriOption)) {
             return $uriOption($object, $this->storage->resolveUri($object, $form->getName()));
         }
 
@@ -186,7 +186,7 @@ class VichFileType extends AbstractType
             return ['download_label' => $mapping->readProperty($object, 'originalName'), 'translation_domain' => false];
         }
 
-        if (is_callable($downloadLabel)) {
+        if (\is_callable($downloadLabel)) {
             $result = $downloadLabel($object);
 
             return [

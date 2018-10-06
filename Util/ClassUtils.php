@@ -26,6 +26,6 @@ class ClassUtils
             return DoctrineClassUtils::getClass($object);
         }
 
-        return get_class($object);
+        return \get_class($object);
     }
 }
