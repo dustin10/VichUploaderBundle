@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
@@ -111,6 +111,6 @@ class UploadHandler extends AbstractHandler
     {
         $file = $mapping->getFile($obj);
 
-        return null !== $file && $file instanceof UploadedFile;
+        return null !== $file && $file instanceof File;
     }
 }
