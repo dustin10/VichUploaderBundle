@@ -90,7 +90,7 @@ At the moment there are several available namers:
 
   * `Vich\UploaderBundle\Naming\SubdirDirectoryNamer`
   * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
-  * `Vich\UploaderBundle\Naming\CurrenDateTimeDirectoryNamer`
+  * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
 
 **SubdirDirectoryNamer** creates subdirs depends of file name, `abcdef.jpg` will be 
 stored in as folder `ab`. It is also possible configure how many chars use per directory name and 
