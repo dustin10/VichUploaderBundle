@@ -2,8 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata;
 
+use Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 class ClassMetadataTest extends TestCase
 {

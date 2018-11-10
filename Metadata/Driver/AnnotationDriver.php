@@ -3,10 +3,10 @@
 namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Metadata\ClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -31,10 +31,10 @@ class AnnotationDriver implements AdvancedDriverInterface
         $this->reader = $reader;
     }
 
-    public function loadMetadataForClass(\ReflectionClass $class)
+    public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
         if (!$this->isUploadable($class)) {
-            return;
+            return null;
         }
 
         $classMetadata = new ClassMetadata($class->name);
@@ -65,7 +65,7 @@ class AnnotationDriver implements AdvancedDriverInterface
         return $classMetadata;
     }
 
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         return [];
     }

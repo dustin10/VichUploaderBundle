@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.1",
         "behat/transliterator": "^1.2",
-        "jms/metadata": "^1.6",
+        "jms/metadata": "^1.6|^2.0",
         "symfony/config": "^3.4|^4.0",
         "symfony/dependency-injection": "^3.4|^4.0",
         "symfony/event-dispatcher": "^3.4|^4.0",
@@ -30,7 +30,8 @@
         "symfony/http-foundation": "^3.4|^4.0",
         "symfony/http-kernel": "^3.4|^4.0",
         "symfony/property-access": "^3.4|^4.0",
-        "symfony/templating": "^3.4|^4.0"
+        "symfony/templating": "^3.4|^4.0",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "ext-sqlite3": "*",
@@ -50,6 +51,7 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/phpunit-bridge": "^3.3",
         "symfony/security-csrf": "^3.4|^4.0",
+        "symfony/symfony": "~4.0.0",
         "symfony/twig-bridge": "^3.4|^4.0",
         "symfony/twig-bundle": "^3.4|^4.0",
         "symfony/validator": "^3.4|^4.0",

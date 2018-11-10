@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
+use Metadata\ClassMetadata;
 use Metadata\Driver\AbstractFileDriver;
 use Symfony\Component\Config\Util\XmlUtils;
-use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
+    protected function loadMetadataFromFile(\ReflectionClass $class, $file): ?ClassMetadata
     {
         $elem = XmlUtils::loadFile($file);
         $elem = simplexml_import_dom($elem);
@@ -42,7 +42,7 @@ class XmlDriver extends AbstractFileDriver
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'xml';
     }
