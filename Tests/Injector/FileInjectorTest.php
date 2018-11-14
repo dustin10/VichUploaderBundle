@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Injector;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Injector\FileInjector;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
