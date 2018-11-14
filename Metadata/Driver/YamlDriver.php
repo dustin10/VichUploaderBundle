@@ -27,11 +27,11 @@ class YamlDriver extends AbstractFileDriver
             $fieldMetadata = [
                 'mapping' => $mappingData['mapping'],
                 'propertyName' => $field,
-                'fileNameProperty' => isset($mappingData['filename_property']) ? $mappingData['filename_property'] : null,
-                'size' => isset($mappingData['size']) ? $mappingData['size'] : null,
-                'mimeType' => isset($mappingData['mime_type']) ? $mappingData['mime_type'] : null,
-                'originalName' => isset($mappingData['original_name']) ? $mappingData['original_name'] : null,
-                'dimensions' => isset($mappingData['dimensions']) ? $mappingData['dimensions'] : null,
+                'fileNameProperty' => $mappingData['filename_property'] ?? null,
+                'size' => $mappingData['size'] ?? null,
+                'mimeType' => $mappingData['mime_type'] ?? null,
+                'originalName' => $mappingData['original_name'] ?? null,
+                'dimensions' => $mappingData['dimensions'] ?? null,
             ];
 
             $classMetadata->fields[$field] = $fieldMetadata;
