@@ -36,7 +36,7 @@ for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
   php composer.phar update --prefer-dist --ignore-platform-reqs || { restore_composer && exit 1; }
 
   echo -e "\n${GREEN}Launching tests${NC}"
-  vendor/bin/phpunit $@
+  php -d date.timezone='UTC' vendor/bin/phpunit $@
 done
 
 restore_composer
