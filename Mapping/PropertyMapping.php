@@ -376,7 +376,7 @@ class PropertyMapping
             return $propertyPath;
         }
 
-        return '[' === $propertyPath[0] ? $propertyPath : sprintf('[%s]', $propertyPath);
+        return strpos( $propertyPath, '[' ) === 0 ? $propertyPath : sprintf('[%s]', $propertyPath);
     }
 
     protected function getAccessor(): PropertyAccessor
