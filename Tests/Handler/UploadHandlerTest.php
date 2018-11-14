@@ -7,6 +7,9 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Tests\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -207,17 +210,17 @@ class UploadHandlerTest extends TestCase
 
     protected function getStorageMock()
     {
-        return $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
+        return $this->createMock( StorageInterface::class );
     }
 
     protected function getInjectorMock()
     {
-        return $this->createMock('Vich\UploaderBundle\Injector\FileInjectorInterface');
+        return $this->createMock( FileInjectorInterface::class );
     }
 
     protected function getDispatcherMock()
     {
-        return $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        return $this->createMock( EventDispatcherInterface::class );
     }
 
     protected function validEvent()

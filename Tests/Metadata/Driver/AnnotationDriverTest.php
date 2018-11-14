@@ -8,6 +8,7 @@ use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Doctrine\Common\Annotations\Reader;
 
 /**
  * AnnotationDriverTest.
@@ -20,7 +21,7 @@ class AnnotationDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock( Reader::class );
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -55,7 +56,7 @@ class AnnotationDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock( Reader::class );
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -74,7 +75,7 @@ class AnnotationDriverTest extends TestCase
     {
         $entity = new Article();
 
-        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock( Reader::class );
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
@@ -127,7 +128,7 @@ class AnnotationDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
-        $reader = $this->createMock('Doctrine\Common\Annotations\Reader');
+        $reader = $this->createMock( Reader::class );
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')

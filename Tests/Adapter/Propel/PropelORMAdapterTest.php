@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Adapter\Propel;
 
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\Propel\PropelORMAdapter;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * PropelORMAdapterTest.
@@ -16,7 +17,7 @@ class PropelORMAdapterTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        if (!class_exists('Symfony\Component\EventDispatcher\GenericEvent')) {
+        if (!class_exists( GenericEvent::class )) {
             self::markTestSkipped('Symfony\Component\EventDispatcher\GenericEvent does not exist.');
         }
     }
@@ -28,7 +29,7 @@ class PropelORMAdapterTest extends TestCase
 
     public function testGetObjectFromArgs(): void
     {
-        $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
+        $event = $this->createMock( GenericEvent::class );
         $event
             ->expects($this->once())
             ->method('getSubject')
@@ -39,7 +40,7 @@ class PropelORMAdapterTest extends TestCase
 
     public function testRecomputeChangeset(): void
     {
-        $event = $this->createMock('\Symfony\Component\EventDispatcher\GenericEvent');
+        $event = $this->createMock( GenericEvent::class );
 
         // does nothing but should be callable
         $this->adapter->recomputeChangeSet($event);

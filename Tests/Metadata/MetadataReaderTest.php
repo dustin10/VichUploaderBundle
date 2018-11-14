@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Metadata;
 
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Metadata\AdvancedMetadataFactoryInterface;
 
 class MetadataReaderTest extends TestCase
 {
@@ -13,7 +14,7 @@ class MetadataReaderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->factory = $this->createMock('Metadata\AdvancedMetadataFactoryInterface');
+        $this->factory = $this->createMock( AdvancedMetadataFactoryInterface::class );
         $this->reader = new MetadataReader($this->factory);
     }
 

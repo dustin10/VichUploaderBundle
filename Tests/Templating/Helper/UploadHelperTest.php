@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Templating\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * FileInjectorTest.
@@ -18,7 +19,7 @@ class UploadHelperTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->storage = $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
+        $this->storage = $this->createMock( StorageInterface::class );
         $this->helper = new UploaderHelper($this->storage);
     }
 

@@ -7,6 +7,8 @@ use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Gaufrette\Adapter;
+use Gaufrette\Adapter\MetadataSupporter;
 
 /**
  * GaufretteStorageTest.
@@ -203,7 +205,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->createMock('\Gaufrette\Adapter\MetadataSupporter');
+        $adapter = $this->createMock( MetadataSupporter::class );
 
         $file
             ->expects($this->once())
@@ -256,7 +258,7 @@ class GaufretteStorageTest extends StorageTestCase
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter(): void
     {
-        $adapter = $this->createMock('\Gaufrette\Adapter');
+        $adapter = $this->createMock( Adapter::class );
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
 

@@ -5,6 +5,8 @@ namespace Vich\UploaderBundle\Tests\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
+use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
+use Vich\UploaderBundle\Storage\FlysystemStorage;
 
 class VichUploaderExtensionTest extends AbstractExtensionTestCase
 {
@@ -58,8 +60,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'flysystem',
         ]);
 
-        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', 'Vich\UploaderBundle\Storage\FlysystemStorage');
-        $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', 'Vich\UploaderBundle\Twig\Extension\UploaderExtension');
+        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', FlysystemStorage::class );
+        $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', UploaderExtension::class );
     }
 
     public function testMappingsServiceParameterIsSet(): void

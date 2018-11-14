@@ -71,7 +71,7 @@ class ListenerTestCase extends TestCase
         $this->metadata
             ->expects($this->any())
             ->method('getUploadableFields')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
+            ->with( DummyEntity::class, self::MAPPING_NAME)
             ->will($this->returnValue([
                 ['propertyName' => self::FIELD_NAME],
             ]));
@@ -84,7 +84,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getAdapterMock()
     {
-        return $this->createMock('Vich\UploaderBundle\Adapter\AdapterInterface');
+        return $this->createMock( AdapterInterface::class );
     }
 
     /**
@@ -94,7 +94,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getHandlerMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Handler\UploadHandler')
+        return $this->getMockBuilder( UploadHandler::class )
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -106,7 +106,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getEventMock()
     {
-        return $this->getMockBuilder('\Symfony\Component\EventDispatcher\GenericEvent')
+        return $this->getMockBuilder( GenericEvent::class )
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -118,7 +118,7 @@ class ListenerTestCase extends TestCase
      */
     protected function getMetadataReaderMock()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Metadata\MetadataReader')
+        return $this->getMockBuilder( MetadataReader::class )
             ->disableOriginalConstructor()
             ->getMock();
     }
