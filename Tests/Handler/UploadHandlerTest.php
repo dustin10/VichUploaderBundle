@@ -87,7 +87,7 @@ class UploadHandlerTest extends TestCase
         $removeHandler = $this->getRemoveHandlerMock();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher, $removeHandler);
 
-        call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
+        \call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
     }
 
     public function methodProvider(): array

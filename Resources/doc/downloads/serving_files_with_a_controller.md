@@ -27,6 +27,25 @@ class AcmeController extends AbstractController
 }
 ```
 
+### Displaying inline
+
+Instead of forcing the file to be downloaded by you browser, you can set it as an **inline** content.
+Depending on the capabilities of the browser, the file should be displayed inside the browser.
+You can use it to keep the file non publicly accessible (with access checks for exemple) but still
+displayable inside HTML (for images) or directly previewable (like PDFs).
+
+Set the `forceDownload` argument to `false` to disable the forced download behaviour.
+
+```php
+class AcmeController extends AbstractController
+{
+    public function downloadImageAction(Image $image, DownloadHandler $downloadHandler): Response
+    {
+        return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $fileName = null, $forceDownload = false);
+    }
+}
+```
+
 ### Renaming files
 
 This handler can also be used to rename the downloaded files.

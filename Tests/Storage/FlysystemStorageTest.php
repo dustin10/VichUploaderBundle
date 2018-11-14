@@ -84,7 +84,7 @@ class FlysystemStorageTest extends StorageTestCase
 
         $this->filesystem
             ->expects($this->once())
-            ->method('writeStream')
+            ->method('putStream')
             ->with(
                 'originalName.txt',
                 $this->isType('resource'),

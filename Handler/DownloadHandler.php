@@ -18,7 +18,8 @@ class DownloadHandler extends AbstractHandler
      * @param object|array $object
      * @param string       $field
      * @param string       $className
-     * @param string|true  $fileName  True to return original file name
+     * @param string|true  $fileName      True to return original file name
+     * @param bool         $forceDownload
      *
      * @return StreamedResponse
      *
@@ -26,7 +27,7 @@ class DownloadHandler extends AbstractHandler
      * @throws NoFileFoundException
      * @throws \InvalidArgumentException
      */
-    public function downloadObject($object, string $field, ?string $className = null, $fileName = null): StreamedResponse
+    public function downloadObject($object, string $field, ?string $className = null, $fileName = null, bool $forceDownload = true): StreamedResponse
     {
         $mapping = $this->getMapping($object, $field, $className);
         $stream = $this->storage->resolveStream($object, $field, $className);
@@ -44,7 +45,8 @@ class DownloadHandler extends AbstractHandler
         return $this->createDownloadResponse(
             $stream,
             $fileName ?: $mapping->getFileName($object),
-            null === $file ? null : $file->getMimeType()
+            null === $file ? null : $file->getMimeType(),
+            $forceDownload
         );
     }
 
@@ -57,14 +59,14 @@ class DownloadHandler extends AbstractHandler
      *
      * @throws \InvalidArgumentException
      */
-    private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream'): StreamedResponse
+    private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream', bool $forceDownload = true): StreamedResponse
     {
         $response = new StreamedResponse(function () use ($stream): void {
             stream_copy_to_stream($stream, fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $forceDownload ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE,
             Transliterator::transliterate($filename)
         );
         $response->headers->set('Content-Disposition', $disposition);

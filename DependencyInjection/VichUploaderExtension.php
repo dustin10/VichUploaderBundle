@@ -66,7 +66,7 @@ class VichUploaderExtension extends Extension
             $loader->load($file);
         }
 
-        if (in_array($config['storage'], ['gaufrette', 'flysystem'], true)) {
+        if (\in_array($config['storage'], ['gaufrette', 'flysystem'], true)) {
             $loader->load($config['storage'].'.xml');
         }
 
@@ -91,7 +91,7 @@ class VichUploaderExtension extends Extension
         if ($config['metadata']['auto_detection']) {
             foreach ($bundles as $class) {
                 $ref = new \ReflectionClass($class);
-                $directory = dirname($ref->getFileName()).'/Resources/config/vich_uploader';
+                $directory = \dirname($ref->getFileName()).'/Resources/config/vich_uploader';
 
                 if (!is_dir($directory)) {
                     continue;
@@ -112,7 +112,7 @@ class VichUploaderExtension extends Extension
                 }
 
                 $ref = new \ReflectionClass($bundles[$bundleName]);
-                $directory['path'] = dirname($ref->getFileName()).substr($directory['path'], strlen('@'.$bundleName));
+                $directory['path'] = \dirname($ref->getFileName()).substr($directory['path'], \strlen('@'.$bundleName));
             }
 
             $directories[rtrim($directory['namespace_prefix'], '\\')] = rtrim($directory['path'], '\\/');
