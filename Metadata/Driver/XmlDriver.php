@@ -12,7 +12,7 @@ use Symfony\Component\Config\Util\XmlUtils;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, $file): ?ClassMetadata
+    protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?ClassMetadata
     {
         $elem = XmlUtils::loadFile($file);
         $elem = simplexml_import_dom($elem);
