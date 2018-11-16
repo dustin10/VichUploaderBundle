@@ -54,4 +54,18 @@ final class Events
      * @Event("Vich\UploaderBundle\Event\Event")
      */
     public const POST_REMOVE = 'vich_uploader.post_remove';
+
+    /**
+     * Triggered before a file is added to the remove-queue.
+     *
+     * @Event("Vich\UploaderBundle\Event\Event")
+     */
+    public const PRE_ADD_REMOVE_QUEUE = 'vich_uploader.pre_add_remove_queue';
+
+    /**
+     * Triggered after a file is added to the remove-queue.
+     *
+     * @Event("Vich\UploaderBundle\Event\Event")
+     */
+    public const POST_ADD_REMOVE_QUEUE = 'vich_uploader.post_add_remove_queue';
 }

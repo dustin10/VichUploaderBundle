@@ -22,7 +22,6 @@
         <service id="vich_uploader.remove_handler" class="Vich\UploaderBundle\Handler\RemoveHandler" public="true">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="vich_uploader.storage" />
-            <argument type="service" id="vich_uploader.file_injector" />
             <argument type="service" id="event_dispatcher" />
         </service>
 

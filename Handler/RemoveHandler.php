@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Handler;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
-use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use SplObjectStorage;
@@ -19,11 +18,6 @@ use SplObjectStorage;
 class RemoveHandler extends AbstractHandler
 {
     /**
-     * @var FileInjectorInterface
-     */
-    protected $injector;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
@@ -33,31 +27,45 @@ class RemoveHandler extends AbstractHandler
      */
     protected $queue;
 
-    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
+    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, EventDispatcherInterface $dispatcher)
     {
         parent::__construct($factory, $storage);
 
-        $this->injector = $injector;
         $this->dispatcher = $dispatcher;
         $this->queue = new SplObjectStorage();
     }
 
     /**
-     * Adds file to queue which will be removed during postFlush event.
+     * Returns remove-queue.
+     *
+     * @return SplObjectStorage
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
+
+    /**
+     * Adds file to remove-queue (which will be removed during postFlush event).
      *
      * @param $obj
      * @param string $fieldName
      */
     public function addToQueue($obj, string $fieldName): void
     {
+        $mapping = $this->getMapping($obj, $fieldName);
         $fieldNames = [$fieldName];
 
         if ($this->queue->contains($obj)) {
             $data = $this->queue[$obj];
-            $fieldNames = array_merge($fieldNames, $data['fieldNames']);
+            $fieldNames = array_unique(array_merge($fieldNames, $data['fieldNames']));
         }
 
+        $this->dispatch(Events::PRE_ADD_REMOVE_QUEUE, new Event($obj, $mapping));
+
         $this->queue->attach($obj, ['fieldNames' => $fieldNames]);
+
+        $this->dispatch(Events::POST_ADD_REMOVE_QUEUE, new Event($obj, $mapping));
     }
 
     /**
@@ -77,6 +85,9 @@ class RemoveHandler extends AbstractHandler
             }
 
             $updatedEntities[] = $obj;
+        }
+
+        foreach ($updatedEntities as $obj) {
             $this->queue->detach($obj);
         }
 

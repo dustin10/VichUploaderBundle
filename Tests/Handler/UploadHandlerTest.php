@@ -227,7 +227,7 @@ class UploadHandlerTest extends TestCase
 
     protected function getRemoveHandlerMock()
     {
-        return new RemoveHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
+        return new RemoveHandler($this->factory, $this->storage, $this->dispatcher);
     }
 
     protected function validEvent()
