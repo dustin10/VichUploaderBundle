@@ -18,6 +18,7 @@
         <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper" />
         <service id="vich_uploader.namer_directory_current_date_time" class="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true">
             <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null" />
+            <argument type="service" id="property_accessor" on-invalid="null" />
         </service>
 
         <service id="Vich\UploaderBundle\Naming\UniqidNamer" alias="vich_uploader.namer_uniqid" public="false"/>

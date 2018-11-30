@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer;
 use Vich\UploaderBundle\Naming\CurrentDateTimeHelper;
 use Vich\UploaderBundle\Naming\DateTimeHelper;
@@ -46,7 +47,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
             ->method('getTimestamp')
             ->willReturn($timestamp);
 
-        $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock);
+        $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock, null);
 
         if (null !== $dateTimeFormat) {
             $namer->configure(['date_time_format' => $dateTimeFormat]);
@@ -61,10 +62,24 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
         $this->expectExceptionMessage('Option "date_time_format" is empty.');
 
         $mapping = $this->getPropertyMappingMock();
-        $namer = new CurrentDateTimeDirectoryNamer(new CurrentDateTimeHelper());
+        $namer = new CurrentDateTimeDirectoryNamer(new CurrentDateTimeHelper(), null);
 
         $namer->configure(['date_time_format' => '']);
 
         $namer->directoryName(new DummyEntity(), $mapping);
+    }
+
+    public function testNameReturnsObjectDate(): void
+    {
+        $mapping = $this->getPropertyMappingMock();
+        $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
+        $propertyAccessor->expects($this->once())->method('getValue')->willReturn(1543671789);
+
+        $namer = new CurrentDateTimeDirectoryNamer(new CurrentDateTimeHelper(), $propertyAccessor);
+        $namer->configure(['date_time_property' => 'getUploadTimestamp']);
+
+        $name = $namer->directoryName(new DummyEntity(), $mapping);
+
+        $this->assertEquals('2018/12/01', $name);
     }
 }
