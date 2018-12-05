@@ -65,7 +65,7 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
             throw new \LogicException('Option "date_time_format" is empty.');
         }
         if (null !== $this->dateTimeProperty) {
-            $dateTime = $this->propertyAccessor->getValue($object, $this->dateTimeProperty);
+            $dateTime = $this->propertyAccessor->getValue($object, $this->dateTimeProperty)->format('U');
         } else {
             $dateTime = $this->dateTimeHelper->getTimestamp();
         }

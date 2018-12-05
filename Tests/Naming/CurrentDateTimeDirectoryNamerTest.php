@@ -73,7 +73,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
     {
         $mapping = $this->getPropertyMappingMock();
         $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
-        $propertyAccessor->expects($this->once())->method('getValue')->willReturn(1543671789);
+        $propertyAccessor->expects($this->once())->method('getValue')->willReturn(new \DateTime('2018/12/01'));
 
         $namer = new CurrentDateTimeDirectoryNamer(new CurrentDateTimeHelper(), $propertyAccessor);
         $namer->configure(['date_time_property' => 'getUploadTimestamp']);

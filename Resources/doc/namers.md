@@ -143,7 +143,7 @@ created by format `Y/m/d`. It is possible to configure how datetime format use t
 For details of datetime formats see <http://php.net/manual/en/function.date.php>.
 You should also pass to this namer an option declaring a property where uploading datetime is stored in your object.
 Such property will be accessed via ProperyAccessor, so it can be a public property or a getter method.
-For example, if your object has a `getUploadTimestamp(): int` method, you can pass `date_time_property: uploadTimestamp` to namer.
+For example, if your object has a `getUploadTimestamp(): \DateTimeInterface` method, you can pass `date_time_property: uploadTimestamp` to namer.
 
 To use it, you just have to specify the service for the `directory_namer`
 configuration option of your mapping:
