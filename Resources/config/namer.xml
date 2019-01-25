@@ -5,18 +5,17 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Vich\UploaderBundle\Naming\UniqidNamer" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\PropertyNamer" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\OrignameNamer" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\HashNamer" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\Base64Namer" public="false"/>
-
-        <service id="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="false">
+        <service id="Vich\UploaderBundle\Naming\UniqidNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\OrignameNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\HashNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\Base64Namer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
             <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
-        <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper"/>
-        <service id="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="false">
+        <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true">
             <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null"/>
             <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
