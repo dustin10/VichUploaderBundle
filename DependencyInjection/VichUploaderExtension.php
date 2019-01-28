@@ -60,7 +60,7 @@ class VichUploaderExtension extends Extension
 
         $toLoad = [
             'adapter.xml', 'listener.xml', 'storage.xml', 'injector.xml',
-            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml', 'command.xml',
+            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml', 'command.xml', 'collector.xml',
         ];
         foreach ($toLoad as $file) {
             $loader->load($file);

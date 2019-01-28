@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
@@ -22,26 +23,37 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
     private $dateTimeFormat = 'Y/m/d';
 
     /**
-     * CurrentDateTimeDirectoryNamer constructor.
-     *
-     * @param DateTimeHelper $dateTimeHelper
+     * @var PropertyAccessorInterface|null
      */
-    public function __construct(DateTimeHelper $dateTimeHelper)
+    private $propertyAccessor;
+
+    /**
+     * @var string|null
+     */
+    private $dateTimeProperty;
+
+    public function __construct(DateTimeHelper $dateTimeHelper, ?PropertyAccessorInterface $propertyAccessor)
     {
         $this->dateTimeHelper = $dateTimeHelper;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
      * @param array $options Options for this namer.
      *
-     * Only one option accepted:
+     * Options accepted:
      *     - date_time_format: The format of the outputted date. See: http://php.net/manual/en/function.date.php
+     *     - date_time_property: The property to get uploading datetime
      */
     public function configure(array $options): void
     {
         $options = array_merge(['date_time_format' => $this->dateTimeFormat], $options);
 
         $this->dateTimeFormat = $options['date_time_format'];
+
+        if (isset($options['date_time_property'])) {
+            $this->dateTimeProperty = $options['date_time_property'];
+        }
     }
 
     /**
@@ -52,7 +64,12 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
         if (empty($this->dateTimeFormat)) {
             throw new \LogicException('Option "date_time_format" is empty.');
         }
+        if (null !== $this->dateTimeProperty) {
+            $dateTime = $this->propertyAccessor->getValue($object, $this->dateTimeProperty)->format('U');
+        } else {
+            $dateTime = $this->dateTimeHelper->getTimestamp();
+        }
 
-        return date($this->dateTimeFormat, $this->dateTimeHelper->getTimestamp());
+        return date($this->dateTimeFormat, $dateTime);
     }
 }

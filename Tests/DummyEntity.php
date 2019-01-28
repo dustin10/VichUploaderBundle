@@ -52,7 +52,7 @@ class DummyEntity
         $this->size = $size;
     }
 
-    public function generateFileName()
+    public function generateFileName(): string
     {
         return 'generated-file-name';
     }

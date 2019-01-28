@@ -26,13 +26,13 @@ class Product
 
     // ...
 
-    public function setImage(?File $image = null): void
+    public function setImageFile(?File $imageFile = null): void
     {
-        $this->image = $image;
+        $this->imageFile = $imageFile;
 
         // Only change the updated af if the file is really uploaded to avoid database updates.
         // This is needed when the file should be set when loading the entity.
-        if ($this->image instanceof UploadedFile) {
+        if ($this->imageFile instanceof UploadedFile) {
             $this->updatedAt = new \DateTime('now');
         }
     }
@@ -48,7 +48,7 @@ annotated entities, the only workaround is to define mappings using Yaml or XML.
 
 ## Image not deleted with cascade deletion and Doctrine
 
-Just check the following options: ```cascade={"remove"}``` and ```orphanRemoval=true```.
+Just check the following options: `cascade={"remove"}` and `orphanRemoval=true`.
 
 ```yaml
 Vendor\Bundle\CoolBundle\Entity\CoolEntity:
@@ -93,7 +93,7 @@ class Product
      *
      * @var File
      */
-    private $image;
+    private $imageFile;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -102,16 +102,16 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|null $image
+     * @param File|null $imageFile
      */
-    public function setImage(?File $image = null): void
+    public function setImageFile(?File $imageFile = null): void
     {
-        $this->image = $image;
+        $this->imageFile = $imageFile;
     }
 }
 ```
 
-If the bundle's configuration parameter `inject_on_load` is set to `true` the `Product::setImage()`
+If the bundle's configuration parameter `inject_on_load` is set to `true` the `Product::setImageFile()`
 method above must take an instance of `File` as when this class is hydrated by Doctrine this
 bundle will automatically inject an instance of `File` there. However if you were to change
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SUPPORTED_SYMFONY_VERSIONS=('~3.4.0' '~4.0.0')
+SUPPORTED_SYMFONY_VERSIONS=('~3.4.0' '~4.1.0' '~4.2.0')
 GREEN='\033[0;32m'
 NC='\033[0m'
 
@@ -36,7 +36,7 @@ for sf_version in ${SUPPORTED_SYMFONY_VERSIONS[@]}; do
   php composer.phar update --prefer-dist --ignore-platform-reqs || { restore_composer && exit 1; }
 
   echo -e "\n${GREEN}Launching tests${NC}"
-  vendor/bin/phpunit $@
+  php -d date.timezone='UTC' vendor/bin/phpunit $@
 done
 
 restore_composer

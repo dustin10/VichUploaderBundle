@@ -50,6 +50,7 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/phpunit-bridge": "^3.3",
         "symfony/security-csrf": "^3.4|^4.0",
+        "symfony/translation": "^3.4|^4.0",
         "symfony/twig-bridge": "^3.4|^4.0",
         "symfony/twig-bundle": "^3.4|^4.0",
         "symfony/validator": "^3.4|^4.0",

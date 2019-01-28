@@ -5,29 +5,28 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="vich_uploader.namer_uniqid" class="Vich\UploaderBundle\Naming\UniqidNamer" public="true" />
-        <service id="vich_uploader.namer_property" class="Vich\UploaderBundle\Naming\PropertyNamer" public="true" />
-        <service id="vich_uploader.namer_origname" class="Vich\UploaderBundle\Naming\OrignameNamer" public="true" />
-        <service id="vich_uploader.namer_hash" class="Vich\UploaderBundle\Naming\HashNamer" public="true" />
-        <service id="vich_uploader.namer_base64" class="Vich\UploaderBundle\Naming\Base64Namer" public="true" />
-
-        <service id="vich_uploader.directory_namer_subdir" class="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true" />
-        <service id="vich_uploader.namer_directory_property" class="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
-            <argument type="service" id="form.property_accessor" on-invalid="null" />
+        <service id="Vich\UploaderBundle\Naming\UniqidNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\OrignameNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\HashNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\Base64Namer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true"/>
+        <service id="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true">
+            <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
-        <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper" />
-        <service id="vich_uploader.namer_directory_current_date_time" class="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true">
-            <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null" />
+        <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper" public="false"/>
+        <service id="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true">
+            <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null"/>
+            <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
 
-        <service id="Vich\UploaderBundle\Naming\UniqidNamer" alias="vich_uploader.namer_uniqid" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\PropertyNamer" alias="vich_uploader.namer_property" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\OrignameNamer" alias="vich_uploader.namer_origname" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\HashNamer" alias="vich_uploader.namer_hash" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\Base64Namer" alias="vich_uploader.namer_base64" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" alias="vich_uploader.namer_subdir" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" alias="vich_uploader.namer_property" public="false"/>
-        <service id="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" alias="vich_uploader.namer_directory_current_date_time" public="false"/>
+        <service id="vich_uploader.namer_uniqid" alias="Vich\UploaderBundle\Naming\UniqidNamer" public="true"/>
+        <service id="vich_uploader.namer_property" alias="Vich\UploaderBundle\Naming\PropertyNamer" public="true"/>
+        <service id="vich_uploader.namer_origname" alias="Vich\UploaderBundle\Naming\OrignameNamer" public="true"/>
+        <service id="vich_uploader.namer_hash" alias="Vich\UploaderBundle\Naming\HashNamer" public="true"/>
+        <service id="vich_uploader.namer_base64" alias="Vich\UploaderBundle\Naming\Base64Namer" public="true"/>
+        <service id="vich_uploader.directory_namer_subdir" alias="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true"/>
+        <service id="vich_uploader.namer_directory_property" alias="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true"/>
+        <service id="vich_uploader.namer_directory_current_date_time" alias="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true"/>
     </services>
-
 </container>

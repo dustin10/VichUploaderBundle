@@ -142,13 +142,13 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
      */
-    public function setImageFile(?File $image = null): void
+    public function setImageFile(?File $imageFile = null): void
     {
-        $this->imageFile = $image;
+        $this->imageFile = $imageFile;
 
-        if (null !== $image) {
+        if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
@@ -245,13 +245,13 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|UploadedFile $image
+     * @param File|UploadedFile $imageFile
      */
-    public function setImageFile(?File $image = null)
+    public function setImageFile(?File $imageFile = null)
     {
-        $this->imageFile = $image;
+        $this->imageFile = $imageFile;
 
-        if (null !== $image) {
+        if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();

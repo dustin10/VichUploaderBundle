@@ -51,13 +51,13 @@ class AcmeController extends AbstractController
 This handler can also be used to rename the downloaded files.
 
 ```php
-class AcmeController extends AbstractController
+final class AcmeController extends AbstractController
 {
     public function downloadImageAction(Image $image, DownloadHandler $downloadHandler): Response
     {
         $fileName = 'foo.png';
 
-        return $downloadHandler->downloadObject($image, $fileField = 'imageFile', $objectClass = null, $fileName);
+        return $downloadHandler->downloadObject($image, 'imageFile', null, $fileName);
     }
 }
 ```
