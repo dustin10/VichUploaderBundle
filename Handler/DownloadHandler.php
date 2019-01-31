@@ -72,6 +72,9 @@ class DownloadHandler extends AbstractHandler
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', $mimeType ?: 'application/octet-stream');
 
+        $fstat = fstat($stream);
+        $response->headers->set('Content-Length', $fstat['size']);
+
         return $response;
     }
 }
