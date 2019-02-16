@@ -99,7 +99,7 @@ class FileSystemStorageTest extends StorageTestCase
 
         $path = $this->storage->resolvePath($this->object, 'file_field');
 
-        $this->assertEquals(sprintf('/tmp%sfile.txt', \DIRECTORY_SEPARATOR), $path);
+        $this->assertEquals(\sprintf('/tmp%sfile.txt', \DIRECTORY_SEPARATOR), $path);
     }
 
     /**
@@ -125,7 +125,7 @@ class FileSystemStorageTest extends StorageTestCase
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, true);
 
-        $this->assertEquals(sprintf('upload_dir%sfile.txt', \DIRECTORY_SEPARATOR), $path);
+        $this->assertEquals(\sprintf('upload_dir%sfile.txt', \DIRECTORY_SEPARATOR), $path);
     }
 
     public function testResolveUriReturnsNullIfNoFile(): void

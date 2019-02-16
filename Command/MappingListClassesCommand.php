@@ -34,10 +34,10 @@ class MappingListClassesCommand extends Command
         $uploadableClasses = $this->metadataReader->getUploadableClasses();
 
         foreach ($uploadableClasses as $class) {
-            $output->writeln(sprintf('Found <comment>%s</comment>', $class));
+            $output->writeln(\sprintf('Found <comment>%s</comment>', $class));
         }
 
-        $output->writeln(sprintf('Found <comment>%d</comment> classes.', \count($uploadableClasses)));
+        $output->writeln(\sprintf('Found <comment>%d</comment> classes.', \count($uploadableClasses)));
         $output->writeln('<info>NOTE:</info> Only classes configured using XML or YAML are displayed.');
     }
 }

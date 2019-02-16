@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
+use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * Doctrine CleanListener test.
@@ -39,13 +40,13 @@ class CleanListenerTest extends ListenerTestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->with(DummyEntity::class)
             ->will($this->returnValue(true));
 
         $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity', self::MAPPING_NAME)
+            ->with(DummyEntity::class, self::MAPPING_NAME)
             ->will($this->returnValue([
                 ['propertyName' => 'field_name'],
             ]));
@@ -71,7 +72,7 @@ class CleanListenerTest extends ListenerTestCase
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
-            ->with('Vich\UploaderBundle\Tests\DummyEntity')
+            ->with(DummyEntity::class)
             ->will($this->returnValue(false));
 
         $this->handler

@@ -24,11 +24,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir().'/VichUploaderBundle/cache';
+        return \sys_get_temp_dir().'/VichUploaderBundle/cache';
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir().'/VichUploaderBundle/logs';
+        return \sys_get_temp_dir().'/VichUploaderBundle/logs';
     }
 }

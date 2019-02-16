@@ -19,7 +19,7 @@ class RegisterMappingDriversPass implements CompilerPassInterface
             $drivers[] = new Reference('vich_uploader.metadata_driver.annotation');
         }
 
-        if (class_exists(Yaml::class)) {
+        if (\class_exists(Yaml::class)) {
             $drivers[] = new Reference('vich_uploader.metadata_driver.yaml');
         }
 

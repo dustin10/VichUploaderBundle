@@ -56,11 +56,11 @@ class RegisterPropelModelsPass implements CompilerPassInterface
                 }
 
                 foreach ($serviceTypes as $type) {
-                    if (!$container->has(sprintf('vich_uploader.listener.%s.%s', $type, $field['mapping']))) {
+                    if (!$container->has(\sprintf('vich_uploader.listener.%s.%s', $type, $field['mapping']))) {
                         continue;
                     }
 
-                    $definition = $container->getDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $field['mapping']));
+                    $definition = $container->getDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $field['mapping']));
                     $definition->setClass($container->getDefinition($definition->getParent())->getClass());
                     $definition->setPublic(true);
                     $definition->addTag('propel.event_subscriber', ['class' => $class]);

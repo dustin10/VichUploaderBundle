@@ -5,6 +5,8 @@ namespace Vich\UploaderBundle\Tests\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
+use Vich\UploaderBundle\Storage\FlysystemStorage;
+use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
 class VichUploaderExtensionTest extends AbstractExtensionTestCase
 {
@@ -30,7 +32,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles_metadata', []);
         $this->container->setParameter('kernel.root_dir', __DIR__.'/../Fixtures/App/app');
         $this->container->setParameter('kernel.project_dir', __DIR__.'/../Fixtures/App');
-        $this->container->setParameter('kernel.cache_dir', sys_get_temp_dir());
+        $this->container->setParameter('kernel.cache_dir', \sys_get_temp_dir());
         $this->container->setParameter('kernel.debug', true);
     }
 
@@ -59,8 +61,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'flysystem',
         ]);
 
-        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', 'Vich\UploaderBundle\Storage\FlysystemStorage');
-        $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', 'Vich\UploaderBundle\Twig\Extension\UploaderExtension');
+        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', FlysystemStorage::class);
+        $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', UploaderExtension::class);
     }
 
     public function testMappingsServiceParameterIsSet(): void

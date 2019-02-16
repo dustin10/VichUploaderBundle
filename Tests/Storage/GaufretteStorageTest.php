@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use Gaufrette\Adapter;
+use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
@@ -203,7 +205,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->createMock('\Gaufrette\Adapter\MetadataSupporter');
+        $adapter = $this->createMock(MetadataSupporter::class);
 
         $file
             ->expects($this->once())
@@ -256,7 +258,7 @@ class GaufretteStorageTest extends StorageTestCase
 
     public function testUploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter(): void
     {
-        $adapter = $this->createMock('\Gaufrette\Adapter');
+        $adapter = $this->createMock(Adapter::class);
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
 

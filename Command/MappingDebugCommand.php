@@ -34,13 +34,13 @@ class MappingDebugCommand extends Command
         $mapping = $input->getArgument('mapping');
 
         if (!isset($this->mappings[$mapping])) {
-            throw new MappingNotFoundException(sprintf('Mapping "%s" does not exist.', $mapping));
+            throw new MappingNotFoundException(\sprintf('Mapping "%s" does not exist.', $mapping));
         }
 
-        $output->writeln(sprintf('Debug information for mapping <info>%s</info>', $mapping));
+        $output->writeln(\sprintf('Debug information for mapping <info>%s</info>', $mapping));
 
         foreach ($this->mappings[$mapping] as $key => $value) {
-            $output->writeln(sprintf('<comment>%s</comment>: %s', $key, var_export($value, true)));
+            $output->writeln(\sprintf('<comment>%s</comment>: %s', $key, \var_export($value, true)));
         }
     }
 }
