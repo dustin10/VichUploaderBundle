@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -44,7 +45,7 @@ class PropertyMappingTest extends TestCase
             'upload_destination' => '/tmp',
         ]);
 
-        $namer = $this->createMock('Vich\UploaderBundle\Naming\DirectoryNamerInterface');
+        $namer = $this->createMock(DirectoryNamerInterface::class);
         $namer
             ->expects($this->once())
             ->method('directoryName')

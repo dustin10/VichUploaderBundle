@@ -79,7 +79,7 @@ class VichFileType extends AbstractType
 
         $downloadUriNormalizer = function (Options $options, $downloadUri) {
             if (null !== $options['download_link']) {
-                @trigger_error('The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.', E_USER_DEPRECATED);
+                @\trigger_error('The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.', E_USER_DEPRECATED);
 
                 return $options['download_link'];
             }
@@ -153,7 +153,7 @@ class VichFileType extends AbstractType
         $view->vars['download_uri'] = null;
         if ($options['download_uri'] && $object) {
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
-            $view->vars = array_replace(
+            $view->vars = \array_replace(
                 $view->vars,
                 $this->resolveDownloadLabel($options['download_label'], $object, $form)
             );

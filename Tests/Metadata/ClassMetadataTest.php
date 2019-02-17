@@ -13,7 +13,7 @@ class ClassMetadataTest extends TestCase
         $metadata = new ClassMetadata('DateTime');
         $metadata->fields = $fields;
 
-        $deserializedMetadata = unserialize(serialize($metadata));
+        $deserializedMetadata = \unserialize(\serialize($metadata));
 
         $this->assertSame($fields, $deserializedMetadata->fields);
     }

@@ -22,7 +22,7 @@ class ClassUtils
      */
     public static function getClass($object): string
     {
-        if (class_exists(DoctrineClassUtils::class)) {
+        if (\class_exists(DoctrineClassUtils::class)) {
             return DoctrineClassUtils::getClass($object);
         }
 

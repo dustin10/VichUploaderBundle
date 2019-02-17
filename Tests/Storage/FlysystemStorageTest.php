@@ -28,7 +28,7 @@ class FlysystemStorageTest extends StorageTestCase
 
     public static function setUpBeforeClass(): void
     {
-        if (!class_exists('League\Flysystem\MountManager')) {
+        if (!\class_exists(MountManager::class)) {
             self::markTestSkipped('Flysystem is not installed.');
         }
     }
@@ -41,7 +41,7 @@ class FlysystemStorageTest extends StorageTestCase
     protected function setUp(): void
     {
         $this->mountManager = $this->getMountManagerMock();
-        $this->filesystem = $this->createMock('League\Flysystem\FilesystemInterface');
+        $this->filesystem = $this->createMock(FilesystemInterface::class);
 
         $this->mountManager
             ->expects($this->any())
@@ -180,7 +180,7 @@ class FlysystemStorageTest extends StorageTestCase
     protected function getMountManagerMock()
     {
         return $this
-            ->getMockBuilder('League\Flysystem\MountManager')
+            ->getMockBuilder(MountManager::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -12,7 +12,7 @@ class TestCase extends BaseTestCase
     protected function getUploadedFileMock(): UploadedFile
     {
         return $this->getMockBuilder(UploadedFile::class)
-            ->setConstructorArgs(['lala', 'lala', $mimeType = null, $size = null, $error = 9, $test = true])
+            ->setConstructorArgs(['lala', 'lala', $mimeType = null, $error = 9, $test = true])
             ->getMock();
     }
 

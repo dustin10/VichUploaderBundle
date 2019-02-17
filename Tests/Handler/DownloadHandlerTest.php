@@ -87,7 +87,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -123,7 +123,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field', null, null, false);
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(sprintf('/inline; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(\sprintf('/inline; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -152,7 +152,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testDownloadObjectCallOriginalName(): void
@@ -188,7 +188,7 @@ class DownloadHandlerTest extends TestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $expectedFileName = $this->object->getImageOriginalName();
-        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     public function testNonAsciiFilenameIsTransliterated(): void

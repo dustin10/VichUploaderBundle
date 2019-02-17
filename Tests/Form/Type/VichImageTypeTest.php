@@ -136,7 +136,7 @@ class VichImageTypeTest extends VichFileTypeTest
 
     public function testLiipImagineBundleIntegration(): void
     {
-        if (!class_exists(CacheManager::class)) {
+        if (!\class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
         }
 
