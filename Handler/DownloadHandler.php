@@ -54,6 +54,7 @@ class DownloadHandler extends AbstractHandler
      * @param resource    $stream
      * @param string      $filename
      * @param string|null $mimeType
+     * @param bool        $forceDownload
      *
      * @return StreamedResponse
      *
