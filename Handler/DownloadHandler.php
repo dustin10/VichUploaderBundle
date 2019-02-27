@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Handler;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\UploaderBundle\Exception\NoFileFoundException;
@@ -40,12 +41,23 @@ class DownloadHandler extends AbstractHandler
             $fileName = $mapping->readProperty($object, 'originalName');
         }
 
-        $file = $mapping->getFile($object);
+        $mimeType = $mapping->readProperty($object, 'mimeType');
+
+        if (null === $mimeType) {
+            try {
+                $file = $mapping->getFile($object);
+                if (null !== $file) {
+                    $mimeType = $file->getMimeType();
+                }
+            } catch (FileNotFoundException $exception) {
+                $mimeType = null;
+            }
+        }
 
         return $this->createDownloadResponse(
             $stream,
             $fileName ?: $mapping->getFileName($object),
-            null === $file ? null : $file->getMimeType(),
+            $mimeType,
             $forceDownload
         );
     }
