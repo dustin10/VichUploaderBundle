@@ -160,10 +160,12 @@ class DownloadHandlerTest extends TestCase
         $this->object->setImageOriginalName('original-name.jpeg');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('readProperty')
-            ->with($this->object, 'originalName')
-            ->will($this->returnValue($this->object->getImageOriginalName()));
+            ->will($this->returnValueMap([
+                [$this->object, 'originalName', $this->object->getImageOriginalName()],
+                [$this->object, 'mimeType', $this->object->getImageMimeType()],
+            ]));
 
         $file = $this->getUploadedFileMock();
 
@@ -176,7 +178,7 @@ class DownloadHandlerTest extends TestCase
         $file
             ->expects($this->once())
             ->method('getMimeType')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue('application/octet-stream'));
 
         $this->storage
             ->expects($this->once())
