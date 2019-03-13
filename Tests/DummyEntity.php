@@ -22,6 +22,21 @@ class DummyEntity
 
     public $someProperty;
 
+    protected $parent;
+
+    protected $id;
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getFile()
     {
         return $this->file;
@@ -55,5 +70,15 @@ class DummyEntity
     public function generateFileName(): string
     {
         return 'generated-file-name';
+    }
+
+    public function setParent(DummyEntity $parent): void
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

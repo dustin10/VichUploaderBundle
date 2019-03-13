@@ -18,6 +18,9 @@ class PropertyDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
 
+        $parent_entity = (new DummyEntity())->setId(12);
+        $entity->setParent($parent_entity);
+
         $weird_entity = new DummyEntity();
         $weird_entity->someProperty = 'Yéô';
 
@@ -25,6 +28,7 @@ class PropertyDirectoryNamerTest extends TestCase
             ['foo',                 $entity,       'someProperty',     false],
             ['generated-file-name', $entity,       'generateFileName', false], // method call
             ['yeo',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
+            ['12',                  $entity,       'parent',           false],  // hit an object
         ];
     }
 
