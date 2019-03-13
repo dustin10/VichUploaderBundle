@@ -72,7 +72,7 @@ class DummyEntity
         return 'generated-file-name';
     }
 
-    public function setParent(DummyEntity $parent): void
+    public function setParent(self $parent): void
     {
         $this->parent = $parent;
     }
