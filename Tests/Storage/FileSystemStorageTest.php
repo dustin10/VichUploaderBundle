@@ -149,7 +149,7 @@ class FileSystemStorageTest extends StorageTestCase
      *
      * @dataProvider resolveUriDataProvider
      */
-    public function testResolveUri($uploadDir, $uri): void
+    public function testResolveUri($uploadDir, $filename, $uri): void
     {
         $this->mapping
             ->expects($this->once())
@@ -164,7 +164,7 @@ class FileSystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->will($this->returnValue($filename));
 
         $this->factory
             ->expects($this->once())
@@ -210,19 +210,28 @@ class FileSystemStorageTest extends StorageTestCase
         return [
             [
                 '',
+                'file.txt',
                 '/uploads/file.txt',
             ],
             [
                 'dir',
+                'file.txt',
                 '/uploads/dir/file.txt',
             ],
             [
                 'dir/sub-dir',
+                'file.txt',
                 '/uploads/dir/sub-dir/file.txt',
             ],
             [
                 'dir\\sub-dir',
+                'file.txt',
                 '/uploads/dir/sub-dir/file.txt',
+            ],
+            [
+                'dir\\sub-dir',
+                'file-%.txt',
+                '/uploads/dir/sub-dir/file-%25.txt',
             ],
         ];
     }
