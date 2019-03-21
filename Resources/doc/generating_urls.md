@@ -26,7 +26,7 @@ Where `image` is the field name used in your entity where you added the
 In a Twig template you can use the `vich_uploader_asset` function:
 
 ``` twig
-<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
+<img src="{{ asset(vich_uploader_asset(product, 'image')) }}" alt="{{ product.name }}" />
 ```
 
 **Note:**
