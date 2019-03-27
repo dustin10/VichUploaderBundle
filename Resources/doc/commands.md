@@ -5,7 +5,7 @@
 Show entity file mapping metadata for class.
 
 ```bash
-php bin/console vich:mapping:debug-class AcmeBundle\\Entity\\Foo 
+php bin/console vich:mapping:debug-class App\\Entity\\Foo 
 ``` 
 
 ## Debug mapping
@@ -23,5 +23,8 @@ Searches for uploadable classes.
 ```bash
 php bin/console vich:mapping:list-classes
 ```
+
+> **NOTE** Only classes configured using XML or YAML are displayed.
+
 
 [Return to the index](index.md)
