@@ -35,6 +35,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
      */
     public function testNameReturnsTheRightName(int $timestamp, ?string $dateTimeFormat, string $expectedName): void
     {
+        \date_default_timezone_set('UTC');
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
 

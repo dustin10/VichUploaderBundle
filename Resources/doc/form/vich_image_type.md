@@ -56,7 +56,7 @@ Can be callable
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 $builder->add('genericFile', VichImageType::class, [
-    'download_uri' => function (Product $product) use ($router) {
+    'download_uri' => static function (Product $product) use ($router) {
         return $router->generateUrl('acme_download_image', $product->getId());
     },
 ]);
@@ -85,7 +85,7 @@ Can be callable
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 $builder->add('genericFile', VichImageType::class, [
-    'download_label' => function (Product $product) {
+    'download_label' => static function (Product $product) {
         return $product->getTitle();
     },
 ]);
@@ -126,7 +126,7 @@ Can be callable
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 $builder->add('genericFile', VichImageType::class, [
-    'image_uri' => function (Photo $photo, $resolvedUri) use ($cacheManager) {
+    'image_uri' => static function (Photo $photo, $resolvedUri) use ($cacheManager) {
         // $cacheManager is LiipImagine cache manager
         return $cacheManager->getBrowserPath(
             $resolvedUri,

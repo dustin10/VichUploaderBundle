@@ -10,14 +10,14 @@ use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
 class VichUploaderExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return [
             new VichUploaderExtension(),
         ];
     }
 
-    protected function getMinimalConfiguration()
+    protected function getMinimalConfiguration(): array
     {
         return [
             'db_driver' => 'propel',
