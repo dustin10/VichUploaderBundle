@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AbstractFileDriver;
 use Symfony\Component\Config\Util\XmlUtils;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
@@ -13,7 +12,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?JMSClassMetadata
+    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
     {
         $elem = XmlUtils::loadFile($file);
         $elem = \simplexml_import_dom($elem);
