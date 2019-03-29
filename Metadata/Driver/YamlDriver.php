@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
+use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AbstractFileDriver;
 use Symfony\Component\Yaml\Yaml as YmlParser;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
@@ -15,7 +16,7 @@ class YamlDriver extends AbstractFileDriver
     /**
      * {@inheritdoc}
      */
-    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
+    protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?JMSClassMetadata
     {
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
@@ -42,13 +43,13 @@ class YamlDriver extends AbstractFileDriver
 
     protected function loadMappingFile($file)
     {
-        return YmlParser::parse(file_get_contents($file));
+        return YmlParser::parse(\file_get_contents($file));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'yml';
     }
@@ -56,11 +57,11 @@ class YamlDriver extends AbstractFileDriver
     protected function guessClassName($file, array $config, \ReflectionClass $class = null)
     {
         if (null === $class) {
-            return current(array_keys($config));
+            return \current(\array_keys($config));
         }
 
         if (!isset($config[$class->name])) {
-            throw new \RuntimeException(sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
+            throw new \RuntimeException(\sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
         }
 
         return $class->name;

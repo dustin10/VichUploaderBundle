@@ -34,16 +34,16 @@ class MappingDebugClassCommand extends Command
         $fqcn = $input->getArgument('fqcn');
 
         if (!$this->metadataReader->isUploadable($fqcn)) {
-            $output->writeln(sprintf('<error>"%s" is not uploadable.</error>', $fqcn));
+            $output->writeln(\sprintf('<error>"%s" is not uploadable.</error>', $fqcn));
 
             return 1;
         }
 
         $uploadableFields = $this->metadataReader->getUploadableFields($fqcn);
 
-        $output->writeln(sprintf('Introspecting class <info>%s</info>:', $fqcn));
+        $output->writeln(\sprintf('Introspecting class <info>%s</info>:', $fqcn));
         foreach ($uploadableFields as $data) {
-            $output->writeln(sprintf('Found field "<comment>%s</comment>", storing file name in <comment>"%s</comment>" and using mapping "<comment>%s</comment>"', $data['propertyName'], $data['fileNameProperty'], $data['mapping']));
+            $output->writeln(\sprintf('Found field "<comment>%s</comment>", storing file name in <comment>"%s</comment>" and using mapping "<comment>%s</comment>"', $data['propertyName'], $data['fileNameProperty'], $data['mapping']));
         }
 
         return 0;

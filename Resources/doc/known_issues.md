@@ -76,7 +76,7 @@ Consider the following class:
 ``` php
 <?php
 
-namespace Acme\DemoBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;

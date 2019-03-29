@@ -87,7 +87,7 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
     }
 
     /**

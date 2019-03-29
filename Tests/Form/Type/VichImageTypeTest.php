@@ -116,7 +116,7 @@ class VichImageTypeTest extends VichFileTypeTest
                 [
                     'download_label' => 'download',
                     'download_uri' => 'custom-uri',
-                    'image_uri' => function (Product $product, $resolvedUri) {
+                    'image_uri' => static function (Product $product, $resolvedUri) {
                         return 'prefix-'.$resolvedUri;
                     },
                     'imagine_pattern' => null,
@@ -136,7 +136,7 @@ class VichImageTypeTest extends VichFileTypeTest
 
     public function testLiipImagineBundleIntegration(): void
     {
-        if (!class_exists(CacheManager::class)) {
+        if (!\class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
         }
 

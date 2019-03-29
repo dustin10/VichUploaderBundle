@@ -14,7 +14,7 @@ class PHPCRAdapterTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        if (!class_exists(LifecycleEventArgs::class)) {
+        if (!\class_exists(LifecycleEventArgs::class)) {
             self::markTestSkipped('Doctrine\Common\Persistence\Event\LifecycleEventArgs does not exist.');
         }
     }
