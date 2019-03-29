@@ -31,7 +31,7 @@ class XmlDriver extends AbstractFileDriver
                 'size' => (string) $field->attributes()->size,
                 'mimeType' => (string) $field->attributes()->mime_type,
                 'originalName' => (string) $field->attributes()->original_name,
-                'dimensions' => null === $field->attributes()->dimensions ? null : (array) $field->attributes()->dimensions,
+                'dimensions' => null === $field->attributes()->dimensions ? null : (string) $field->attributes()->dimensions,
             ];
 
             $classMetadata->fields[(string) $field->attributes()->name] = $fieldMetadata;
