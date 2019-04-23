@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
@@ -9,7 +11,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class UploaderExtension extends \Twig_Extension
+final class UploaderExtension extends AbstractExtension
 {
     /**
      * @var UploaderHelper
@@ -24,7 +26,7 @@ class UploaderExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('vich_uploader_asset', [$this, 'asset']),
+            new TwigFunction('vich_uploader_asset', [$this, 'asset']),
         ];
     }
 
