@@ -28,7 +28,7 @@ class MongoDBAdapter implements AdapterInterface
 
         $dm = $event->getDocumentManager();
         $uow = $dm->getUnitOfWork();
-        $metadata = $dm->getClassMetadata(get_class($object));
+        $metadata = $dm->getClassMetadata(\get_class($object));
         $uow->recomputeSingleDocumentChangeSet($metadata, $object);
     }
 }

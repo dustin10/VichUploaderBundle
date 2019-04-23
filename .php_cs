@@ -1,8 +1,29 @@
 <?php
 // see https://github.com/FriendsOfPHP/PHP-CS-Fixer
 
+$dirs = [
+    __DIR__.'/Adapter',
+    __DIR__.'/Command',
+    __DIR__.'/DataCollector',
+    __DIR__.'/DependencyInjection',
+    __DIR__.'/Entity',
+    __DIR__.'/Event',
+    __DIR__.'/EventListener',
+    __DIR__.'/Exception',
+    __DIR__.'/Form',
+    __DIR__.'/Handler',
+    __DIR__.'/Injector',
+    __DIR__.'/Mapping',
+    __DIR__.'/Metadata',
+    __DIR__.'/Naming',
+    __DIR__.'/Storage',
+    __DIR__.'/Tests',
+    __DIR__.'/Twig',
+    __DIR__.'/Util',
+];
+
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__.'/Command', __DIR__.'/DependencyInjection', __DIR__.'/Form', __DIR__.'/Tests', __DIR__.'/Twig', __DIR__.'/Util'])
+    ->in($dirs)
 ;
 
 return PhpCsFixer\Config::create()

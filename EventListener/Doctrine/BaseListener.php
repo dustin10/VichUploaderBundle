@@ -68,7 +68,7 @@ abstract class BaseListener implements EventSubscriber
     {
         $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
 
-        return array_map(function ($data) {
+        return \array_map(function ($data) {
             return $data['propertyName'];
         }, $fields);
     }

@@ -59,7 +59,7 @@ class PropertyMapping
      */
     public function __construct(string $filePropertyPath, string $fileNamePropertyPath, array $propertyPaths = [])
     {
-        $this->propertyPaths = array_merge(
+        $this->propertyPaths = \array_merge(
             $this->propertyPaths,
             ['file' => $filePropertyPath, 'name' => $fileNamePropertyPath],
             $propertyPaths
@@ -151,8 +151,8 @@ class PropertyMapping
      */
     public function readProperty($obj, $property)
     {
-        if (!array_key_exists($property, $this->propertyPaths)) {
-            throw new \InvalidArgumentException(sprintf('Unknown property %s', $property));
+        if (!\array_key_exists($property, $this->propertyPaths)) {
+            throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
         }
 
         if (!$this->propertyPaths[$property]) {
@@ -179,8 +179,8 @@ class PropertyMapping
      */
     public function writeProperty($obj, string $property, $value): void
     {
-        if (!array_key_exists($property, $this->propertyPaths)) {
-            throw new \InvalidArgumentException(sprintf('Unknown property %s', $property));
+        if (!\array_key_exists($property, $this->propertyPaths)) {
+            throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
         }
 
         if (!$this->propertyPaths[$property]) {
@@ -334,7 +334,7 @@ class PropertyMapping
         $dir = $this->getDirectoryNamer()->directoryName($obj, $this);
 
         // strip the trailing directory separator if needed
-        $dir = $dir ? rtrim($dir, '/\\') : $dir;
+        $dir = $dir ? \rtrim($dir, '/\\') : $dir;
 
         return $dir;
     }
@@ -372,11 +372,11 @@ class PropertyMapping
      */
     protected function fixPropertyPath($object, string $propertyPath): string
     {
-        if (!is_array($object)) {
+        if (!\is_array($object)) {
             return $propertyPath;
         }
 
-        return '[' === $propertyPath[0] ? $propertyPath : sprintf('[%s]', $propertyPath);
+        return '[' === $propertyPath[0] ? $propertyPath : \sprintf('[%s]', $propertyPath);
     }
 
     protected function getAccessor(): PropertyAccessor

@@ -47,7 +47,7 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
      */
     public function configure(array $options): void
     {
-        $options = array_merge(['date_time_format' => $this->dateTimeFormat], $options);
+        $options = \array_merge(['date_time_format' => $this->dateTimeFormat], $options);
 
         $this->dateTimeFormat = $options['date_time_format'];
 
@@ -70,6 +70,6 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
             $dateTime = $this->dateTimeHelper->getTimestamp();
         }
 
-        return date($this->dateTimeFormat, $dateTime);
+        return \date($this->dateTimeFormat, $dateTime);
     }
 }

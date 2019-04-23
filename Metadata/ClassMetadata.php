@@ -10,7 +10,7 @@ class ClassMetadata extends BaseClassMetadata
 
     public function serialize(): string
     {
-        return serialize([
+        return \serialize([
             $this->fields,
             parent::serialize(),
         ]);
@@ -21,7 +21,7 @@ class ClassMetadata extends BaseClassMetadata
         [
             $this->fields,
             $parentStr
-            ] = unserialize($str);
+            ] = \unserialize($str);
 
         parent::unserialize($parentStr);
     }

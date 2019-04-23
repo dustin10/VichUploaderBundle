@@ -16,10 +16,10 @@ class UniqidNamer implements NamerInterface
     public function name($object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
-        $name = str_replace('.', '', uniqid('', true));
+        $name = \str_replace('.', '', \uniqid('', true));
 
         if ($extension = $this->getExtension($file)) {
-            $name = sprintf('%s.%s', $name, $extension);
+            $name = \sprintf('%s.%s', $name, $extension);
         }
 
         return $name;

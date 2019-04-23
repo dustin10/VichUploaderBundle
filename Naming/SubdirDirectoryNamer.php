@@ -22,7 +22,7 @@ class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInter
      */
     public function configure(array $options): void
     {
-        $options = array_merge(['chars_per_dir' => $this->charsPerDir, 'dirs' => $this->dirs], $options);
+        $options = \array_merge(['chars_per_dir' => $this->charsPerDir, 'dirs' => $this->dirs], $options);
 
         $this->charsPerDir = $options['chars_per_dir'];
         $this->dirs = $options['dirs'];
@@ -34,9 +34,9 @@ class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInter
 
         $parts = [];
         for ($i = 0, $start = 0; $i < $this->dirs; $i++, $start += $this->charsPerDir) {
-            $parts[] = substr($fileName, $start, $this->charsPerDir);
+            $parts[] = \substr($fileName, $start, $this->charsPerDir);
         }
 
-        return implode('/', $parts);
+        return \implode('/', $parts);
     }
 }

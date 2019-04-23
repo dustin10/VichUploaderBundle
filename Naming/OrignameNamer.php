@@ -40,6 +40,6 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
             $name = Transliterator::transliterate($name);
         }
 
-        return uniqid().'_'.$name;
+        return \uniqid().'_'.$name;
     }
 }

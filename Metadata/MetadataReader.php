@@ -90,11 +90,11 @@ class MetadataReader
         $uploadableFields = [];
 
         foreach ($metadata->classMetadata as $classMetadata) {
-            $uploadableFields = array_merge($uploadableFields, $classMetadata->fields);
+            $uploadableFields = \array_merge($uploadableFields, $classMetadata->fields);
         }
 
         if (null !== $mapping) {
-            $uploadableFields = array_filter($uploadableFields, function (array $fieldMetadata) use ($mapping) {
+            $uploadableFields = \array_filter($uploadableFields, function (array $fieldMetadata) use ($mapping) {
                 return $fieldMetadata['mapping'] === $mapping;
             });
         }
