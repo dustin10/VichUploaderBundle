@@ -37,6 +37,7 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'declare_strict_types' => false,
         'native_function_invocation' => true,
+        'fopen_flags' => ['b_mode' => true],
     ])
     ->setFinder($finder)
 ;

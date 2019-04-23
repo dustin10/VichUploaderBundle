@@ -108,7 +108,7 @@ abstract class AbstractStorage implements StorageInterface
             return null;
         }
 
-        return \fopen($path, 'r');
+        return \fopen($path, 'rb');
     }
 
     /**

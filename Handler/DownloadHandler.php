@@ -75,7 +75,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream', bool $forceDownload = true): StreamedResponse
     {
         $response = new StreamedResponse(function () use ($stream): void {
-            \stream_copy_to_stream($stream, \fopen('php://output', 'w'));
+            \stream_copy_to_stream($stream, \fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(
