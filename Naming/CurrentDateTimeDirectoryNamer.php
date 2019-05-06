@@ -56,9 +56,6 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function directoryName($object, PropertyMapping $mapping): string
     {
         if (empty($this->dateTimeFormat)) {
@@ -67,6 +64,9 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
         if (null !== $this->dateTimeProperty) {
             $dateTime = $this->propertyAccessor->getValue($object, $this->dateTimeProperty)->format('U');
         } else {
+            // see https://github.com/dustin10/VichUploaderBundle/issues/992
+            $msg = 'Not passing "date_time_property" option is deprecated and will be removed in version 2.';
+            @trigger_error($msg, E_USER_DEPRECATED);
             $dateTime = $this->dateTimeHelper->getTimestamp();
         }
 
