@@ -41,13 +41,13 @@ class AnnotationDriver implements AdvancedDriverInterface
         $classMetadata = new ClassMetadata($class->name);
         $classMetadata->fileResources[] = $class->getFileName();
     
-        $classes = array();
+        $classes = [];
         do {
             $classes[] = $class;
             $class = $class->getParentClass();
         } while (false !== $class);
         $classes = array_reverse($classes, false);
-        $properties = array();
+        $properties = [];
         foreach ($classes as $class) {
             $properties = array_merge($properties, $class->getProperties());
         }
