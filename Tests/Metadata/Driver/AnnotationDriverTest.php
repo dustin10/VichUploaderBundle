@@ -140,11 +140,11 @@ class AnnotationDriverTest extends TestCase
 
         $this->assertEmpty($metadata->fields);
     }
-    
+
     public function testReadUploadableAnnotationInParentClass(): void
     {
         $entity = new DummyFile();
-        
+
         $reader = $this->createMock(Reader::class);
         $reader
             ->expects($this->once())
@@ -153,33 +153,42 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->at(4))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField([
-                'mapping' => 'dummyFile_file',
-                'fileNameProperty' => 'fileName',
-            ])));
-        
+            ->will(
+                $this->returnValue(
+                    new UploadableField(
+                        [
+                            'mapping' => 'dummyFile_file',
+                            'fileNameProperty' => 'fileName',
+                        ]
+                    )
+                )
+            );
+
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
-        
+
         $this->assertInstanceOf(ClassMetadata::class, $metadata);
         $this->assertObjectHasAttribute('fields', $metadata);
-        $this->assertEquals([
-            'file' => [
-                'mapping' => 'dummyFile_file',
-                'propertyName' => 'file',
-                'fileNameProperty' => 'fileName',
-                'size' => null,
-                'mimeType' => null,
-                'originalName' => null,
-                'dimensions' => null,
+        $this->assertEquals(
+            [
+                'file' => [
+                    'mapping' => 'dummyFile_file',
+                    'propertyName' => 'file',
+                    'fileNameProperty' => 'fileName',
+                    'size' => null,
+                    'mimeType' => null,
+                    'originalName' => null,
+                    'dimensions' => null,
+                ],
             ],
-        ], $metadata->fields);
+            $metadata->fields
+        );
     }
-    
+
     public function testReadUploadableAnnotationReturnsNullWhenNonePresentInParentClass(): void
     {
         $entity = new DummyFile();
-        
+
         $reader = $this->createMock(Reader::class);
         $reader
             ->expects($this->once())
@@ -188,10 +197,10 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->never())
             ->method('getPropertyAnnotation');
-        
+
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
-        
+
         $this->assertNull($metadata);
     }
 }

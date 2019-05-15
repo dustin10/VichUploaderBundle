@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 
 namespace Vich\UploaderBundle\Tests;
 
@@ -13,5 +11,5 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class DummyImageFile
 {
-    
+
 }

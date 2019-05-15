@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 
 namespace Vich\UploaderBundle\Tests;
 
@@ -19,31 +17,31 @@ class DummyFile
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
-    
+
     /**
      * @ORM\Column(type="datetime")
      */
     protected $updatedAt;
-    
+
     /**
      * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
      *
      * @var SymfonyFile
      */
     protected $file;
-    
+
     /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @var string
      */
     protected $fileName;
-    
+
     /**
      * @return mixed
      */
@@ -51,7 +49,7 @@ class DummyFile
     {
         return $this->id;
     }
-    
+
     /**
      * @param mixed $id
      */
@@ -59,7 +57,7 @@ class DummyFile
     {
         $this->id = $id;
     }
-    
+
     /**
      * @return mixed
      */
@@ -67,7 +65,7 @@ class DummyFile
     {
         return $this->title;
     }
-    
+
     /**
      * @param mixed $title
      */
@@ -75,7 +73,7 @@ class DummyFile
     {
         $this->title = $title;
     }
-    
+
     /**
      * @return mixed
      */
@@ -83,7 +81,7 @@ class DummyFile
     {
         return $this->updatedAt;
     }
-    
+
     /**
      * @param mixed $updatedAt
      */
@@ -91,7 +89,7 @@ class DummyFile
     {
         $this->updatedAt = $updatedAt;
     }
-    
+
     /**
      * @return SymfonyFile
      */
@@ -99,7 +97,7 @@ class DummyFile
     {
         return $this->file;
     }
-    
+
     /**
      * @param SymfonyFile $file
      */
@@ -107,7 +105,7 @@ class DummyFile
     {
         $this->file = $file;
     }
-    
+
     /**
      * @return string
      */
@@ -115,7 +113,7 @@ class DummyFile
     {
         return $this->fileName;
     }
-    
+
     /**
      * @param string $fileName
      */
