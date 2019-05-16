@@ -17,9 +17,10 @@ At the moment there are several available namers:
   * `Vich\UploaderBundle\Naming\PropertyNamer`
   * `Vich\UploaderBundle\Naming\HashNamer`
   * `Vich\UploaderBundle\Naming\Base64Namer`
+  * `Vich\UploaderBundle\Naming\SmartUniqeNamer`
 
 **UniqidNamer** will rename your uploaded files using a uniqueid for the name and
-keep the extension. Using this namer, foo.jpg will be uploaded as something like 50eb3db039715.jpg.
+keep the extension. Using this namer, foo.jpg will be uploaded as something like 0eb3db03971550eb3b0371.jpg.
 
 **OrignameNamer** will rename your uploaded files using a uniqueid as the prefix of the
 filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
@@ -35,6 +36,10 @@ hash `algorithm` and result `length` of the file
 You can specify the `length` of the random string. Using this namer, foo.jpg will be uploaded as something
 like 6FMNgvkdUs.jpg
 
+**SmartUniqeNamer** will rename your uploaded files appending a strong uniqueid to the original name, while 
+apllying a transliteration. Using this namer, a Strange name.jpg will be uploaded as something like
+a-strange-name-0eb3db03971550eb3b0371.jpg.
+
 To use it, you just have to specify the service for the `namer` configuration option of your mapping:
 
 ``` yaml
@@ -43,7 +48,7 @@ vich_uploader:
     mappings:
         product_image:
             upload_destination: product_image_fs
-            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            namer: Vich\UploaderBundle\Naming\SmartUniqeNamer
 ```
 
 If no namer is configured for a mapping, the bundle will simply use the name of the file that
