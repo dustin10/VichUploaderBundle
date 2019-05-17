@@ -37,7 +37,7 @@ You can specify the `length` of the random string. Using this namer, foo.jpg wil
 like 6FMNgvkdUs.jpg
 
 **SmartUniqeNamer** will rename your uploaded files appending a strong uniqueid to the original name, while 
-apllying a transliteration. Using this namer, a Strange name.jpg will be uploaded as something like
+applying a transliteration. Using this namer, a Strange name.jpg will be uploaded as something like
 a-strange-name-0eb3db03971550eb3b0371.jpg.
 
 To use it, you just have to specify the service for the `namer` configuration option of your mapping:
