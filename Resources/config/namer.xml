@@ -19,6 +19,7 @@
             <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null"/>
             <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
+        <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true"/>
 
         <service id="vich_uploader.namer_uniqid" alias="Vich\UploaderBundle\Naming\UniqidNamer" public="true"/>
         <service id="vich_uploader.namer_property" alias="Vich\UploaderBundle\Naming\PropertyNamer" public="true"/>
@@ -28,5 +29,6 @@
         <service id="vich_uploader.directory_namer_subdir" alias="Vich\UploaderBundle\Naming\SubdirDirectoryNamer" public="true"/>
         <service id="vich_uploader.namer_directory_property" alias="Vich\UploaderBundle\Naming\PropertyDirectoryNamer" public="true"/>
         <service id="vich_uploader.namer_directory_current_date_time" alias="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true"/>
+        <service id="vich_uploader.namer_smart_unique" alias="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true"/>        
     </services>
 </container>
