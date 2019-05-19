@@ -122,7 +122,7 @@ class PropertyMappingFactory
     protected function checkUploadable(string $class): void
     {
         if (!$this->metadata->isUploadable($class)) {
-            throw new NotUploadableException(sprintf('The class "%s" is not uploadable. If you use annotations to configure VichUploaderBundle, you probably just forgot to add `@Vich\Uploadable` on top of your entity. If you don\'t use annotations, check that the configuration files are in the right place. In both cases, clearing the cache can also solve the issue.', $class));
+            throw new NotUploadableException(\sprintf('The class "%s" is not uploadable. If you use annotations to configure VichUploaderBundle, you probably just forgot to add `@Vich\Uploadable` on top of your entity. If you don\'t use annotations, check that the configuration files are in the right place. In both cases, clearing the cache can also solve the issue.', $class));
         }
     }
 
@@ -140,7 +140,7 @@ class PropertyMappingFactory
      */
     protected function createMapping($obj, string $fieldName, array $mappingData): PropertyMapping
     {
-        if (!array_key_exists($mappingData['mapping'], $this->mappings)) {
+        if (!\array_key_exists($mappingData['mapping'], $this->mappings)) {
             throw MappingNotFoundException::createNotFoundForClassAndField($mappingData['mapping'], $this->getClassName($obj), $fieldName);
         }
 
@@ -158,7 +158,7 @@ class PropertyMappingFactory
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
-                    throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
+                    throw new \LogicException(\sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
                 }
                 $namer->configure($namerConfig['options']);
             }
@@ -172,7 +172,7 @@ class PropertyMappingFactory
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
-                    throw new \LogicException(sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
+                    throw new \LogicException(\sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
                 }
                 $namer->configure($namerConfig['options']);
             }
@@ -199,7 +199,7 @@ class PropertyMappingFactory
             return $className;
         }
 
-        if (is_object($object)) {
+        if (\is_object($object)) {
             return ClassUtils::getClass($object);
         }
 

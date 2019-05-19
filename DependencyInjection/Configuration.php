@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Configuration.
@@ -19,14 +20,17 @@ class Configuration implements ConfigurationInterface
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $tb = new TreeBuilder();
-        $root = $tb->root('vich_uploader');
-
+        if (Kernel::VERSION_ID >= 40200) {
+            $builder = new TreeBuilder('vich_uploader');
+        } else {
+            $builder = new TreeBuilder();
+        }
+        $root = $builder->root('vich_uploader');
         $this->addGeneralSection($root);
         $this->addMetadataSection($root);
         $this->addMappingsSection($root);
 
-        return $tb;
+        return $builder;
     }
 
     protected function addGeneralSection(ArrayNodeDefinition $node): void
@@ -41,12 +45,12 @@ class Configuration implements ConfigurationInterface
                     ->beforeNormalization()
                         ->ifString()
                         ->then(function ($v) {
-                            return strtolower($v);
+                            return \strtolower($v);
                         })
                     ->end()
                     ->validate()
                         ->ifNotInArray($this->supportedDbDrivers)
-                        ->thenInvalid('The db driver %s is not supported. Please choose one of '.implode(', ', $this->supportedDbDrivers))
+                        ->thenInvalid('The db driver %s is not supported. Please choose one of '.\implode(', ', $this->supportedDbDrivers))
                     ->end()
                 ->end()
                 ->scalarNode('storage')
@@ -54,14 +58,14 @@ class Configuration implements ConfigurationInterface
                     ->beforeNormalization()
                         ->ifString()
                         ->then(function ($v) {
-                            return strtolower($v);
+                            return \strtolower($v);
                         })
                     ->end()
                     ->validate()
                         ->ifTrue(function ($storage) {
-                            return 0 !== strpos($storage, '@') && !\in_array($storage, $this->supportedStorages, true);
+                            return 0 !== \strpos($storage, '@') && !\in_array($storage, $this->supportedStorages, true);
                         })
-                        ->thenInvalid('The storage %s is not supported. Please choose one of '.implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
+                        ->thenInvalid('The storage %s is not supported. Please choose one of '.\implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
                     ->end()
                 ->end()
             ->scalarNode('templating')->defaultTrue()->end()
@@ -144,12 +148,12 @@ class Configuration implements ConfigurationInterface
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(function ($v) {
-                                        return strtolower($v);
+                                        return \strtolower($v);
                                     })
                                 ->end()
                                 ->validate()
                                     ->ifNotInArray($this->supportedDbDrivers)
-                                    ->thenInvalid('The db driver %s is not supported. Please choose one of '.implode(', ', $this->supportedDbDrivers))
+                                    ->thenInvalid('The db driver %s is not supported. Please choose one of '.\implode(', ', $this->supportedDbDrivers))
                                 ->end()
                             ->end()
                         ->end()

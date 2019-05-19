@@ -1,0 +1,56 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        {% include '@VichUploader/Collector/icon_grey.html.twig' %}
+        <span class="sf-toolbar-value">{{ collector.mappingsCount }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <strong>Mappings</strong>
+            <span class="sf-toolbar-status sf-toolbar-status-grey">{{ collector.mappingsCount }}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+    <span class="label">
+        <span class="icon">
+            {% include '@VichUploader/Collector/icon_white.html.twig' %}
+        </span>
+        <strong>VichUploader</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>VichUploaderBundle Mappings</h2>
+    <p class="help"><strong>Note</strong>: Only classes configured using XML or YAML are displayed.</p>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Mapping</th>
+                <th scope="col">Filename property</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class, data in collector.mappings %}
+                <tr>
+                    <th scope="row" colspan="4">{{ class }}</th>
+                </tr>
+                {% for mdata in data %}
+                    <tr>
+                        <td>{{ mdata.propertyName }}</td>
+                        <td>{{ mdata.mapping }}</td>
+                        <td>{{ mdata.fileNameProperty }}</td>
+                    </tr>
+                {% endfor %}
+                {# TODO size, mimeType, originalName,dimesions? #}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

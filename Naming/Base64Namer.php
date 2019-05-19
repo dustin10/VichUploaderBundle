@@ -50,6 +50,6 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomChar(): string
     {
-        return self::ALPHABET[random_int(0, 63)];
+        return self::ALPHABET[\random_int(0, 63)];
     }
 }

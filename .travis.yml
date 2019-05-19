@@ -1,8 +1,9 @@
 language: php
 
 php:
-    - 7.1
     - 7.2
+    - 7.3
+    - 7.4snapshot
     - nightly
 
 sudo: false
@@ -17,13 +18,12 @@ env:
 
 matrix:
     include:
-        - php: 7.1
-          env: VALIDATE_DOCS=true
-          env: COMPOSER_FLAGS="--prefer-lowest"
-        - php: 7.1
-          env: SYMFONY_VERSION="~3.4.0" WITH_LIIP_IMAGINE=true
         - php: 7.2
-          env: SYMFONY_VERSION="~4.1.0" WITH_LIIP_IMAGINE=true
+          env: VALIDATE_DOCS=true COMPOSER_FLAGS="--prefer-lowest"
+        - php: 7.2
+          env: SYMFONY_VERSION="~4.2.0" WITH_LIIP_IMAGINE=true
+        - php: 7.3
+          env: SYMFONY_VERSION="~4.2.0" WITH_LIIP_IMAGINE=true
     allow_failures:
         - php: nightly
 

@@ -24,7 +24,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
      */
     public function configure(array $options): void
     {
-        $options = array_merge(['algorithm' => $this->algorithm, 'length' => $this->length], $options);
+        $options = \array_merge(['algorithm' => $this->algorithm, 'length' => $this->length], $options);
 
         $this->algorithm = $options['algorithm'];
         $this->length = $options['length'];
@@ -34,13 +34,13 @@ class HashNamer implements NamerInterface, ConfigurableInterface
     {
         $file = $mapping->getFile($object);
 
-        $name = hash($this->algorithm, $this->getRandomString());
+        $name = \hash($this->algorithm, $this->getRandomString());
         if (null !== $this->length) {
-            $name = substr($name, 0, $this->length);
+            $name = \substr($name, 0, $this->length);
         }
 
         if ($extension = $this->getExtension($file)) {
-            $name = sprintf('%s.%s', $name, $extension);
+            $name = \sprintf('%s.%s', $name, $extension);
         }
 
         return $name;
@@ -48,6 +48,6 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomString(): string
     {
-        return microtime(true).random_int(0, 9999999);
+        return \microtime(true).\random_int(0, 9999999);
     }
 }

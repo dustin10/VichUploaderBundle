@@ -66,7 +66,7 @@ class VichImageType extends VichFileType
                     throw new \RuntimeException('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
                 }
 
-                $path = $this->storage->resolvePath($object, $form->getName(), null, true);
+                $path = $this->storage->resolveUri($object, $form->getName(), null);
                 if (null !== $path) {
                     $view->vars['image_uri'] = $this->cacheManager->getBrowserPath($path, $options['imagine_pattern']);
                 }
@@ -74,7 +74,7 @@ class VichImageType extends VichFileType
                 $view->vars['image_uri'] = $this->resolveUriOption($options['image_uri'], $object, $form);
             }
 
-            $view->vars = array_replace(
+            $view->vars = \array_replace(
                 $view->vars,
                 $this->resolveDownloadLabel($options['download_label'], $object, $form)
             );

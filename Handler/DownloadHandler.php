@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Handler;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\UploaderBundle\Exception\NoFileFoundException;
@@ -33,19 +34,30 @@ class DownloadHandler extends AbstractHandler
         $stream = $this->storage->resolveStream($object, $field, $className);
 
         if (null === $stream) {
-            throw new NoFileFoundException(sprintf('No file found in field "%s".', $field));
+            throw new NoFileFoundException(\sprintf('No file found in field "%s".', $field));
         }
 
         if (true === $fileName) {
             $fileName = $mapping->readProperty($object, 'originalName');
         }
 
-        $file = $mapping->getFile($object);
+        $mimeType = $mapping->readProperty($object, 'mimeType');
+
+        if (null === $mimeType) {
+            try {
+                $file = $mapping->getFile($object);
+                if (null !== $file) {
+                    $mimeType = $file->getMimeType();
+                }
+            } catch (FileNotFoundException $exception) {
+                $mimeType = null;
+            }
+        }
 
         return $this->createDownloadResponse(
             $stream,
             $fileName ?: $mapping->getFileName($object),
-            null === $file ? null : $file->getMimeType(),
+            $mimeType,
             $forceDownload
         );
     }
@@ -54,6 +66,7 @@ class DownloadHandler extends AbstractHandler
      * @param resource    $stream
      * @param string      $filename
      * @param string|null $mimeType
+     * @param bool        $forceDownload
      *
      * @return StreamedResponse
      *
@@ -62,7 +75,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream', bool $forceDownload = true): StreamedResponse
     {
         $response = new StreamedResponse(function () use ($stream): void {
-            stream_copy_to_stream($stream, fopen('php://output', 'wb'));
+            \stream_copy_to_stream($stream, \fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
+use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AbstractFileDriver;
 use Symfony\Component\Config\Util\XmlUtils;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
@@ -12,10 +13,10 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 class XmlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, $file)
+    protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?JMSClassMetadata
     {
         $elem = XmlUtils::loadFile($file);
-        $elem = simplexml_import_dom($elem);
+        $elem = \simplexml_import_dom($elem);
 
         $className = $this->guessClassName($file, $elem, $class);
         $classMetadata = new ClassMetadata($className);
@@ -30,7 +31,7 @@ class XmlDriver extends AbstractFileDriver
                 'size' => (string) $field->attributes()->size,
                 'mimeType' => (string) $field->attributes()->mime_type,
                 'originalName' => (string) $field->attributes()->original_name,
-                'dimensions' => null === $field->attributes()->dimensions ? null : (array) $field->attributes()->dimensions,
+                'dimensions' => null === $field->attributes()->dimensions ? null : (string) $field->attributes()->dimensions,
             ];
 
             $classMetadata->fields[(string) $field->attributes()->name] = $fieldMetadata;
@@ -42,7 +43,7 @@ class XmlDriver extends AbstractFileDriver
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'xml';
     }
@@ -54,7 +55,7 @@ class XmlDriver extends AbstractFileDriver
         }
 
         if ($class->name !== (string) $elem->attributes()->class) {
-            throw new \RuntimeException(sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
+            throw new \RuntimeException(\sprintf('Expected metadata for class %s to be defined in %s.', $class->name, $file));
         }
 
         return $class->name;

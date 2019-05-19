@@ -180,7 +180,7 @@ class VichFileTypeTest extends TestCase
                 $object,
                 [
                     'download_label' => 'download',
-                    'download_uri' => function (Product $product) {
+                    'download_uri' => static function (Product $product) {
                         return '/download/'.$product->getImageOriginalName();
                     },
                 ],
@@ -218,7 +218,7 @@ class VichFileTypeTest extends TestCase
             [
                 $object,
                 [
-                    'download_label' => function (Product $product) {
+                    'download_label' => static function (Product $product) {
                         return 'prefix-'.$product->getImageOriginalName();
                     },
                     'download_uri' => true,
@@ -235,7 +235,7 @@ class VichFileTypeTest extends TestCase
             [
                 $object,
                 [
-                    'download_label' => function (Product $product) {
+                    'download_label' => static function (Product $product) {
                         return [
                             'download_label' => 'prefix-'.$product->getImageOriginalName(),
                             'translation_domain' => 'messages',

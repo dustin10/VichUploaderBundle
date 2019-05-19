@@ -9,30 +9,21 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 class TestCase extends BaseTestCase
 {
-    /**
-     * @return UploadedFile
-     */
-    protected function getUploadedFileMock()
+    protected function getUploadedFileMock(): UploadedFile
     {
         return $this->getMockBuilder(UploadedFile::class)
-            ->setConstructorArgs(['lala', 'lala', $mimeType = null, $size = null, $error = 9, $test = true])
+            ->setConstructorArgs(['lala', 'lala', $mimeType = null, $error = 9, $test = true])
             ->getMock();
     }
 
-    /**
-     * @return PropertyMapping
-     */
-    protected function getPropertyMappingMock()
+    protected function getPropertyMappingMock(): PropertyMapping
     {
         return $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    /**
-     * @return PropertyMappingFactory
-     */
-    protected function getPropertyMappingFactoryMock()
+    protected function getPropertyMappingFactoryMock(): PropertyMappingFactory
     {
         return $this->getMockBuilder(PropertyMappingFactory::class)
             ->disableOriginalConstructor()

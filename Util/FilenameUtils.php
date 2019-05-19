@@ -20,10 +20,10 @@ final class FilenameUtils
      */
     public static function spitNameByExtension(string $filename): array
     {
-        if (false === $pos = strrpos($filename, '.')) {
+        if (false === $pos = \strrpos($filename, '.')) {
             return [$filename, ''];
         }
 
-        return [substr($filename, 0, $pos), substr($filename, $pos + 1)];
+        return [\substr($filename, 0, $pos), \substr($filename, $pos + 1)];
     }
 }

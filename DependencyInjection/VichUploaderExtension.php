@@ -38,8 +38,8 @@ class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
 
-        if (0 === strpos($config['storage'], '@')) {
-            $container->setAlias('vich_uploader.storage', substr($config['storage'], 1));
+        if (0 === \strpos($config['storage'], '@')) {
+            $container->setAlias('vich_uploader.storage', \substr($config['storage'], 1));
         } else {
             $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.'.$config['storage']);
         }
@@ -60,7 +60,7 @@ class VichUploaderExtension extends Extension
 
         $toLoad = [
             'adapter.xml', 'listener.xml', 'storage.xml', 'injector.xml',
-            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml', 'command.xml',
+            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml', 'command.xml', 'collector.xml',
         ];
         foreach ($toLoad as $file) {
             $loader->load($file);
@@ -93,7 +93,7 @@ class VichUploaderExtension extends Extension
                 $ref = new \ReflectionClass($class);
                 $directory = \dirname($ref->getFileName()).'/Resources/config/vich_uploader';
 
-                if (!is_dir($directory)) {
+                if (!\is_dir($directory)) {
                     continue;
                 }
 
@@ -102,20 +102,20 @@ class VichUploaderExtension extends Extension
         }
 
         foreach ($config['metadata']['directories'] as $directory) {
-            $directory['path'] = rtrim(str_replace('\\', '/', $directory['path']), '/');
+            $directory['path'] = \rtrim(\str_replace('\\', '/', $directory['path']), '/');
 
             if ('@' === $directory['path'][0]) {
-                $bundleName = substr($directory['path'], 1, strpos($directory['path'], '/') - 1);
+                $bundleName = \substr($directory['path'], 1, \strpos($directory['path'], '/') - 1);
 
                 if (!isset($bundles[$bundleName])) {
-                    throw new \RuntimeException(sprintf('The bundle "%s" has not been registered with AppKernel. Available bundles: %s', $bundleName, implode(', ', array_keys($bundles))));
+                    throw new \RuntimeException(\sprintf('The bundle "%s" has not been registered with AppKernel. Available bundles: %s', $bundleName, \implode(', ', \array_keys($bundles))));
                 }
 
                 $ref = new \ReflectionClass($bundles[$bundleName]);
-                $directory['path'] = \dirname($ref->getFileName()).substr($directory['path'], \strlen('@'.$bundleName));
+                $directory['path'] = \dirname($ref->getFileName()).\substr($directory['path'], \strlen('@'.$bundleName));
             }
 
-            $directories[rtrim($directory['namespace_prefix'], '\\')] = rtrim($directory['path'], '\\/');
+            $directories[\rtrim($directory['namespace_prefix'], '\\')] = \rtrim($directory['path'], '\\/');
         }
 
         $container
@@ -135,8 +135,8 @@ class VichUploaderExtension extends Extension
             ;
 
             $dir = $container->getParameterBag()->resolveValue($config['metadata']['file_cache']['dir']);
-            if (!file_exists($dir) && !@mkdir($dir, 0777, true)) {
-                throw new \RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
+            if (!\file_exists($dir) && !@\mkdir($dir, 0777, true)) {
+                throw new \RuntimeException(\sprintf('Could not create cache directory "%s".', $dir));
             }
         } else {
             $container->setAlias('vich_uploader.metadata.cache', new Alias($config['metadata']['cache'], false));
@@ -192,7 +192,7 @@ class VichUploaderExtension extends Extension
 
     protected function createNamerService(ContainerBuilder $container, string $mappingName, array $mapping): array
     {
-        $serviceId = sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
+        $serviceId = \sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
         $container->setDefinition(
             $serviceId, new ChildDefinition($mapping['namer']['service'])
         );
@@ -210,7 +210,7 @@ class VichUploaderExtension extends Extension
         int $priority = 0
     ): void {
         $definition = $container
-            ->setDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
+            ->setDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
@@ -225,7 +225,7 @@ class VichUploaderExtension extends Extension
         $resources = $container->hasParameter('twig.form.resources') ?
             $container->getParameter('twig.form.resources') : [];
 
-        array_unshift($resources, '@VichUploader/Form/fields.html.twig');
+        \array_unshift($resources, '@VichUploader/Form/fields.html.twig');
         $container->setParameter('twig.form.resources', $resources);
     }
 }

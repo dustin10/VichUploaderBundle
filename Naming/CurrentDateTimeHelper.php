@@ -14,6 +14,6 @@ class CurrentDateTimeHelper implements DateTimeHelper
      */
     public function getTimestamp(): int
     {
-        return time();
+        return \time();
     }
 }

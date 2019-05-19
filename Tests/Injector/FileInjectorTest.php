@@ -3,8 +3,10 @@
 namespace Vich\UploaderBundle\Tests\Injector;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Injector\FileInjector;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Storage\GaufretteStorage;
+use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
  * FileInjectorTest.
@@ -31,9 +33,9 @@ class FileInjectorTest extends TestCase
      */
     public function testInjectsOneFile(): void
     {
-        $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+        $fileMapping = $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()
             ->getMock();
         $fileMapping
@@ -60,9 +62,9 @@ class FileInjectorTest extends TestCase
      */
     public function testPropertyIsNullWhenFileNamePropertyIsNull(): void
     {
-        $obj = $this->createMock('Vich\UploaderBundle\Tests\DummyEntity');
+        $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->getMockBuilder('Vich\UploaderBundle\Mapping\PropertyMapping')
+        $fileMapping = $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -82,7 +84,7 @@ class FileInjectorTest extends TestCase
      */
     protected function getMockStorage()
     {
-        return $this->getMockBuilder('Vich\UploaderBundle\Storage\GaufretteStorage')
+        return $this->getMockBuilder(GaufretteStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
