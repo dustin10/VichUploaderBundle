@@ -11,7 +11,7 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
  *
  * @author Kim Wüstkamp <kim@wuestkamp.com>
  */
-class FlushListener extends BaseListener
+final class FlushListener extends BaseListener
 {
     /**
      * The events the listener is subscribed to.
@@ -36,10 +36,6 @@ class FlushListener extends BaseListener
         $entities = $this->handler->removeFilesInQueue();
 
         if (count($entities) > 0) {
-            foreach ($entities as $entity) {
-                $em->persist($entity);
-            }
-
             $em->flush();
         }
     }

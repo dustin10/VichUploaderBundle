@@ -15,7 +15,7 @@ use SplObjectStorage;
  * @author Kévin Gomez <contact@kevingomez.fr>
  * @author Kim Wüstkamp <kim@wuestkamp.com>
  */
-class RemoveHandler extends AbstractHandler
+final class RemoveHandler extends AbstractHandler
 {
     /**
      * @var EventDispatcherInterface

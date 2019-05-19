@@ -185,17 +185,17 @@ class RemoveHandlerTest extends TestCase
         $this->assertTrue($objects[1] === $object2);
     }
 
-    protected function getStorageMock()
+    private function getStorageMock()
     {
         return $this->createMock('Vich\UploaderBundle\Storage\StorageInterface');
     }
 
-    protected function getDispatcherMock()
+    private function getDispatcherMock()
     {
         return $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     }
 
-    protected function validEvent($object, $mapping)
+    private function validEvent($object, $mapping)
     {
         return $this->callback(
             function ($event) use ($object, $mapping) {
@@ -204,7 +204,7 @@ class RemoveHandlerTest extends TestCase
         );
     }
 
-    protected function dispatcherExceptsDispatch($at, $event, $object, $mapping)
+    private function dispatcherExceptsDispatch($at, $event, $object, $mapping)
     {
         $this->dispatcher
             ->expects($this->at($at))
@@ -212,7 +212,7 @@ class RemoveHandlerTest extends TestCase
             ->with($event, $this->validEvent($object, $mapping));
     }
 
-    protected function factoryExpectsFromField($at, $object, $fieldName, $mapping)
+    private function factoryExpectsFromField($at, $object, $fieldName, $mapping)
     {
         $this->factory
             ->expects($this->at($at))
