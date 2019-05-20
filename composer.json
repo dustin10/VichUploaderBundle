@@ -14,24 +14,19 @@
             "email": "ddobervich@gmail.com"
         }
     ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.10.x-dev"
-        }
-    },
     "require": {
         "php": "^7.2",
         "ext-simplexml": "*",
         "behat/transliterator": "^1.2",
         "jms/metadata": "^2.0",
-        "symfony/config": "^3.4|^4.0",
-        "symfony/dependency-injection": "^3.4|^4.0",
-        "symfony/event-dispatcher": "^3.4|^4.0",
-        "symfony/form": "^3.4|^4.0",
-        "symfony/http-foundation": "^3.4|^4.0",
-        "symfony/http-kernel": "^3.4|^4.0",
-        "symfony/property-access": "^3.4|^4.0",
-        "symfony/templating": "^3.4|^4.0"
+        "symfony/config": "^3.4 || ^4.0",
+        "symfony/dependency-injection": "^3.4 || ^4.0",
+        "symfony/event-dispatcher": "^3.4 || ^4.0",
+        "symfony/form": "^3.4 || ^4.0",
+        "symfony/http-foundation": "^3.4 || ^4.0",
+        "symfony/http-kernel": "^3.4 || ^4.0",
+        "symfony/property-access": "^3.4 || ^4.0",
+        "symfony/templating": "^3.4 || ^4.0"
     },
     "require-dev": {
         "ext-sqlite3": "*",
@@ -43,20 +38,20 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.0",
         "mikey179/vfsstream": "^1.6",
         "oneup/flysystem-bundle": "^3.0",
-        "phpunit/phpunit": "^7.0|^8.0",
-        "symfony/browser-kit": "^3.4|^4.0",
-        "symfony/css-selector": "^3.4|^4.0",
-        "symfony/doctrine-bridge": "^3.4|^4.0",
-        "symfony/dom-crawler": "^3.4|^4.0",
-        "symfony/framework-bundle": "^3.4|^4.0",
+        "phpunit/phpunit": "^7.0 || ^8.0",
+        "symfony/browser-kit": "^3.4 || ^4.0",
+        "symfony/css-selector": "^3.4 || ^4.0",
+        "symfony/doctrine-bridge": "^3.4 || ^4.0",
+        "symfony/dom-crawler": "^3.4 || ^4.0",
+        "symfony/framework-bundle": "^3.4 || ^4.0",
         "symfony/phpunit-bridge": "^3.3",
-        "symfony/security-csrf": "^3.4|^4.0",
-        "symfony/translation": "^3.4|^4.0",
-        "symfony/twig-bridge": "^3.4|^4.0",
-        "symfony/twig-bundle": "^3.4|^4.0",
-        "symfony/validator": "^3.4|^4.0",
-        "symfony/var-dumper": "^3.4|^4.0",
-        "symfony/yaml": "^3.4|^4.0"
+        "symfony/security-csrf": "^3.4 || ^4.0",
+        "symfony/translation": "^3.4 || ^4.0",
+        "symfony/twig-bridge": "^3.4 || ^4.0",
+        "symfony/twig-bundle": "^3.4 || ^4.0",
+        "symfony/validator": "^3.4 || ^4.0",
+        "symfony/var-dumper": "^3.4 || ^4.0",
+        "symfony/yaml": "^3.4 || ^4.0"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "For integration with Doctrine",
@@ -70,6 +65,17 @@
         "symfony/yaml": "To use YAML mapping",
         "willdurand/propel-eventdispatcher-bundle": "For integration with Propel"
     },
+    "config": {
+        "platform": {
+            "ext-mongo": "1.6.16"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.10.x-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Vich\\UploaderBundle\\": ""
@@ -78,12 +84,6 @@
     "autoload-dev": {
         "psr-4": {
             "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
-        }
-    },
-    "config": {
-        "sort-packages": true,
-        "platform": {
-            "ext-mongo": "1.6.16"
         }
     }
 }
