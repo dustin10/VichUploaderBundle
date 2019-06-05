@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
         } else {
             $builder = new TreeBuilder();
         }
-        $root = $builder->root('vich_uploader');
+        $root = \method_exists($treeBuilder, 'getRootNode') ? $builder->getRootNode() : $builder->root('vich_uploader');
         $this->addGeneralSection($root);
         $this->addMetadataSection($root);
         $this->addMappingsSection($root);
