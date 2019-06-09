@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
@@ -104,7 +105,11 @@ class UploadHandler extends AbstractHandler
 
     protected function dispatch(string $eventName, Event $event): void
     {
-        $this->dispatcher->dispatch($eventName, $event);
+        if (Kernel::VERSION_ID >= 40300) {
+            $this->dispatcher->dispatch($event, $eventName);
+        } else {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
     }
 
     protected function hasUploadedFile($obj, PropertyMapping $mapping): bool

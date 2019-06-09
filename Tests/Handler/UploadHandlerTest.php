@@ -3,9 +3,11 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Kernel;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -14,7 +16,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHandlerTest extends TestCase
+final class UploadHandlerTest extends TestCase
 {
     protected $factory;
 
@@ -49,7 +51,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->any())
             ->method('fromField')
             ->with($this->object, self::FILE_FIELD)
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
     }
 
     public function testUpload(): void
@@ -60,7 +62,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getUploadedFileMock()));
+            ->willReturn($this->getUploadedFileMock());
 
         $this->storage
             ->expects($this->once())
@@ -80,12 +82,12 @@ class UploadHandlerTest extends TestCase
      */
     public function testAnExceptionIsThrownIfMappingIsntFound($method): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+        $this->expectException(MappingNotFoundException::class);
 
         $this->factory = $this->getPropertyMappingFactoryMock();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
 
-        \call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
+        $handler->$method($this->object, self::FILE_FIELD);
     }
 
     public function methodProvider(): array
@@ -135,13 +137,13 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getUploadedFileMock()));
+            ->willReturn($this->getUploadedFileMock());
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->storage
             ->expects($this->once())
@@ -157,7 +159,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->any())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->dispatcher
             ->expects($this->never())
@@ -178,13 +180,13 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->mapping
             ->expects($this->once())
             ->method('erase')
             ->with($this->object)
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->storage
             ->expects($this->once())
@@ -228,7 +230,7 @@ class UploadHandlerTest extends TestCase
         $object = $this->object;
         $mapping = $this->mapping;
 
-        return $this->callback(function ($event) use ($object, $mapping) {
+        return $this->callback(static function ($event) use ($object, $mapping) {
             return $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping;
         });
     }
@@ -236,10 +238,19 @@ class UploadHandlerTest extends TestCase
     protected function expectEvents(array $events): void
     {
         foreach ($events as $i => $event) {
-            $this->dispatcher
-                ->expects($this->at($i))
-                ->method('dispatch')
-                ->with($event, $this->validEvent());
+            if (Kernel::VERSION_ID >= 40300) {
+                $this->dispatcher
+                    ->expects($this->at($i))
+                    ->method('dispatch')
+                    ->with($this->validEvent(), $event)
+                ;
+            } else {
+                $this->dispatcher
+                    ->expects($this->at($i))
+                    ->method('dispatch')
+                    ->with($event, $this->validEvent())
+                ;
+            }
         }
     }
 }
