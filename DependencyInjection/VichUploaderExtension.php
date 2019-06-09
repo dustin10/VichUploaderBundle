@@ -173,8 +173,9 @@ class VichUploaderExtension extends Extension
                 $this->createListener($container, $name, $service['name'], $driver, $service['priority']);
             }
 
-            // the upload listener is mandatory
+            // the upload and flush listeners are mandatory
             $this->createListener($container, $name, 'upload', $driver);
+            $this->createListener($container, $name, 'flush', $driver);
         }
     }
 

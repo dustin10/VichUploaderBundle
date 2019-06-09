@@ -141,7 +141,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            $this->handler->remove($object, $form->getName());
+            $this->handler->removeQueued($object, $form->getName());
         });
     }
 
