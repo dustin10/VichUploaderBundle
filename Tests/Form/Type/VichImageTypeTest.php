@@ -148,23 +148,23 @@ class VichImageTypeTest extends VichFileTypeTest
             ->expects($this->any())
             ->method('resolveUri')
             ->with($object, $field)
-            ->will($this->returnValue('resolved-uri'));
+            ->willReturn('resolved-uri');
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
         $form
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($field));
+            ->willReturn($field);
 
         $uploadHandler = $this->createMock(UploadHandler::class);
         $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
@@ -176,7 +176,7 @@ class VichImageTypeTest extends VichFileTypeTest
             ->expects($this->once())
             ->method('getBrowserPath')
             ->with('resolved-uri', 'product_sq200')
-            ->will($this->returnValue('product_sq200/resolved-uri'));
+            ->willReturn('product_sq200/resolved-uri');
 
         $testedType = static::TESTED_TYPE;
 
@@ -222,13 +222,13 @@ class VichImageTypeTest extends VichFileTypeTest
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
 
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);

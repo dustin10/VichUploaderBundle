@@ -24,7 +24,7 @@ class MetadataReaderTest extends TestCase
             ->expects($this->once())
             ->method('getMetadataForClass')
             ->with('ClassName')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->assertTrue($this->reader->isUploadable('ClassName'));
     }
@@ -40,7 +40,7 @@ class MetadataReaderTest extends TestCase
         $this->factory
             ->method('getMetadataForClass')
             ->with('ClassName')
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $this->assertTrue($this->reader->isUploadable('ClassName', 'joe'));
         $this->assertFalse($this->reader->isUploadable('ClassName', 'foo'));
@@ -52,7 +52,7 @@ class MetadataReaderTest extends TestCase
             ->expects($this->once())
             ->method('getMetadataForClass')
             ->with('ClassName')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->assertFalse($this->reader->isUploadable('ClassName'));
     }
@@ -82,7 +82,7 @@ class MetadataReaderTest extends TestCase
             ->expects($this->exactly(2))
             ->method('getMetadataForClass')
             ->with('ClassName')
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $this->assertSame($fields, $this->reader->getUploadableFields('ClassName'));
 
@@ -106,7 +106,7 @@ class MetadataReaderTest extends TestCase
             ->expects($this->once())
             ->method('getMetadataForClass')
             ->with('SubClassName')
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $this->assertSame(['bar', 'baz', 'foo'], $this->reader->getUploadableFields('SubClassName'));
     }
@@ -125,7 +125,7 @@ class MetadataReaderTest extends TestCase
             ->expects($this->once())
             ->method('getMetadataForClass')
             ->with('ClassName')
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $this->assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
     }

@@ -41,7 +41,7 @@ class FileInjectorTest extends TestCase
         $fileMapping
             ->expects($this->once())
             ->method('getFilePropertyName')
-            ->will($this->returnValue('file_field'));
+            ->willReturn('file_field');
         $fileMapping
             ->expects($this->once())
             ->method('setFile');
@@ -50,7 +50,7 @@ class FileInjectorTest extends TestCase
             ->expects($this->once())
             ->method('resolvePath')
             ->with($obj, 'file_field')
-            ->will($this->returnValue('/uploadDir/file.txt'));
+            ->willReturn('/uploadDir/file.txt');
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);
@@ -71,7 +71,7 @@ class FileInjectorTest extends TestCase
         $this->storage
             ->expects($this->once())
             ->method('resolvePath')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);

@@ -38,13 +38,13 @@ class PropertyNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
-            ->will($this->returnValue($originalFileName));
+            ->willReturn($originalFileName);
 
         $mapping = $this->getPropertyMappingMock();
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new PropertyNamer();
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);

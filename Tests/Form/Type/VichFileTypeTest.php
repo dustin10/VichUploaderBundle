@@ -82,23 +82,23 @@ class VichFileTypeTest extends TestCase
             ->expects($this->any())
             ->method('resolveUri')
             ->with($object, $field)
-            ->will($this->returnValue('resolved-uri'));
+            ->willReturn('resolved-uri');
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
         $form
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($field));
+            ->willReturn($field);
 
         $uploadHandler = $this->createMock(UploadHandler::class);
         $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
@@ -112,13 +112,13 @@ class VichFileTypeTest extends TestCase
                     ->expects($this->once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
-                    ->will($this->returnValue($object->getImageOriginalName()));
+                    ->willReturn($object->getImageOriginalName());
 
                 $propertyMappingFactory
                     ->expects($this->once())
                     ->method('fromField')
                     ->with($object, $field)
-                    ->will($this->returnValue($mapping));
+                    ->willReturn($mapping);
             }
 
             if ($options['download_label'] instanceof PropertyPath) {
@@ -126,7 +126,7 @@ class VichFileTypeTest extends TestCase
                     ->expects($this->once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
-                    ->will($this->returnValue($object->getTitle()));
+                    ->willReturn($object->getTitle());
             }
         }
 

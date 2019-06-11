@@ -63,7 +63,7 @@ abstract class StorageTestCase extends TestCase
             ->expects($this->any())
             ->method('fromObject')
             ->with($this->object)
-            ->will($this->returnValue([$this->mapping]));
+            ->willReturn([$this->mapping]);
 
         // and initialize the virtual filesystem
         $this->root = vfsStream::setup('vich_uploader_bundle', null, [
@@ -89,13 +89,13 @@ abstract class StorageTestCase extends TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue($filename));
+            ->willReturn($filename);
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
@@ -108,13 +108,13 @@ abstract class StorageTestCase extends TestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue($filename));
+            ->willReturn($filename);
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }

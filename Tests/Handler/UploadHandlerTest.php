@@ -49,7 +49,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->any())
             ->method('fromField')
             ->with($this->object, self::FILE_FIELD)
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
     }
 
     public function testUpload(): void
@@ -60,7 +60,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getUploadedFileMock()));
+            ->willReturn($this->getUploadedFileMock());
 
         $this->storage
             ->expects($this->once())
@@ -135,13 +135,13 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($this->getUploadedFileMock()));
+            ->willReturn($this->getUploadedFileMock());
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->storage
             ->expects($this->once())
@@ -157,7 +157,7 @@ class UploadHandlerTest extends TestCase
             ->expects($this->any())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->dispatcher
             ->expects($this->never())
@@ -178,13 +178,13 @@ class UploadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $this->mapping
             ->expects($this->once())
             ->method('erase')
             ->with($this->object)
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->storage
             ->expects($this->once())

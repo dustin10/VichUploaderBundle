@@ -38,6 +38,7 @@ return PhpCsFixer\Config::create()
         'declare_strict_types' => false,
         'native_function_invocation' => true,
         'fopen_flags' => ['b_mode' => true],
+        'php_unit_mock_short_will_return' => true,
     ])
     ->setFinder($finder)
 ;

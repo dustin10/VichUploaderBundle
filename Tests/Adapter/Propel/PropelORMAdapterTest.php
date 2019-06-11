@@ -33,7 +33,7 @@ class PropelORMAdapterTest extends TestCase
         $event
             ->expects($this->once())
             ->method('getSubject')
-            ->will($this->returnValue(42));
+            ->willReturn(42);
 
         $this->assertSame(42, $this->adapter->getObjectFromArgs($event));
     }

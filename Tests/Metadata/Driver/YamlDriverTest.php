@@ -21,7 +21,7 @@ class YamlDriverTest extends FileDriverTestCase
             ->expects($this->once())
             ->method('findFileForClass')
             ->with($this->equalTo($rClass), $this->equalTo('yml'))
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $driver = new TestableYamlDriver($fileLocator);
 

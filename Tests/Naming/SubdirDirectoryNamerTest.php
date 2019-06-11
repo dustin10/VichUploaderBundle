@@ -34,7 +34,7 @@ class SubdirDirectoryNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFileName')
             ->with($entity)
-            ->will($this->returnValue($fileName));
+            ->willReturn($fileName);
 
         $namer = new SubdirDirectoryNamer();
         $namer->configure(['chars_per_dir' => $charsPerDir, 'dirs' => $dirs]);
