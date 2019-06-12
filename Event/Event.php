@@ -3,42 +3,79 @@
 namespace Vich\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event as BaseEvent;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
-/**
+/*
  * Base class for upload events.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class Event extends BaseEvent
-{
-    protected $object;
-
-    protected $mapping;
-
-    public function __construct($object, PropertyMapping $mapping)
+if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
+    class Event extends ContractEvent
     {
-        $this->object = $object;
-        $this->mapping = $mapping;
+        protected $object;
+
+        protected $mapping;
+
+        public function __construct($object, PropertyMapping $mapping)
+        {
+            $this->object = $object;
+            $this->mapping = $mapping;
+        }
+
+        /**
+         * Accessor to the object being manipulated.
+         *
+         * @return object
+         */
+        public function getObject()
+        {
+            return $this->object;
+        }
+
+        /**
+         * Accessor to the mapping used to manipulate the object.
+         *
+         * @return PropertyMapping
+         */
+        public function getMapping(): PropertyMapping
+        {
+            return $this->mapping;
+        }
     }
-
-    /**
-     * Accessor to the object being manipulated.
-     *
-     * @return object
-     */
-    public function getObject()
+} else {
+    class Event extends BaseEvent
     {
-        return $this->object;
-    }
+        protected $object;
 
-    /**
-     * Accessor to the mapping used to manipulate the object.
-     *
-     * @return PropertyMapping
-     */
-    public function getMapping(): PropertyMapping
-    {
-        return $this->mapping;
+        protected $mapping;
+
+        public function __construct($object, PropertyMapping $mapping)
+        {
+            $this->object = $object;
+            $this->mapping = $mapping;
+        }
+
+        /**
+         * Accessor to the object being manipulated.
+         *
+         * @return object
+         */
+        public function getObject()
+        {
+            return $this->object;
+        }
+
+        /**
+         * Accessor to the mapping used to manipulate the object.
+         *
+         * @return PropertyMapping
+         */
+        public function getMapping(): PropertyMapping
+        {
+            return $this->mapping;
+        }
     }
 }

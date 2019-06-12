@@ -3,6 +3,8 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -104,7 +106,11 @@ class UploadHandler extends AbstractHandler
 
     protected function dispatch(string $eventName, Event $event): void
     {
-        $this->dispatcher->dispatch($eventName, $event);
+        if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
+            $this->dispatcher->dispatch($event, $eventName);
+        } else {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
     }
 
     protected function hasUploadedFile($obj, PropertyMapping $mapping): bool

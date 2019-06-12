@@ -3,9 +3,12 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -14,7 +17,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHandlerTest extends TestCase
+final class UploadHandlerTest extends TestCase
 {
     protected $factory;
 
@@ -80,12 +83,12 @@ class UploadHandlerTest extends TestCase
      */
     public function testAnExceptionIsThrownIfMappingIsntFound($method): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+        $this->expectException(MappingNotFoundException::class);
 
         $this->factory = $this->getPropertyMappingFactoryMock();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
 
-        \call_user_func([$handler, $method], $this->object, self::FILE_FIELD);
+        $handler->$method($this->object, self::FILE_FIELD);
     }
 
     public function methodProvider(): array
@@ -228,7 +231,7 @@ class UploadHandlerTest extends TestCase
         $object = $this->object;
         $mapping = $this->mapping;
 
-        return $this->callback(function ($event) use ($object, $mapping) {
+        return $this->callback(static function ($event) use ($object, $mapping) {
             return $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping;
         });
     }
@@ -236,10 +239,19 @@ class UploadHandlerTest extends TestCase
     protected function expectEvents(array $events): void
     {
         foreach ($events as $i => $event) {
-            $this->dispatcher
-                ->expects($this->at($i))
-                ->method('dispatch')
-                ->with($event, $this->validEvent());
+            if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
+                $this->dispatcher
+                    ->expects($this->at($i))
+                    ->method('dispatch')
+                    ->with($this->validEvent(), $event)
+                ;
+            } else {
+                $this->dispatcher
+                    ->expects($this->at($i))
+                    ->method('dispatch')
+                    ->with($event, $this->validEvent())
+                ;
+            }
         }
     }
 }
