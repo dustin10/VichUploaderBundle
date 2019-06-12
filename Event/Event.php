@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event as BaseEvent;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
@@ -11,7 +12,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-if (class_exists(ContractEvent::class)) {
+if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
     class Event extends ContractEvent
     {
         protected $object;

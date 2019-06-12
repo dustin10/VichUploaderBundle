@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -238,7 +239,7 @@ final class UploadHandlerTest extends TestCase
     protected function expectEvents(array $events): void
     {
         foreach ($events as $i => $event) {
-            if (Kernel::VERSION_ID >= 40300) {
+            if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
                 $this->dispatcher
                     ->expects($this->at($i))
                     ->method('dispatch')
