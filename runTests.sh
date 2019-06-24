@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SUPPORTED_SYMFONY_VERSIONS=('~3.4.0' '~4.1.0' '~4.2.0')
+SUPPORTED_SYMFONY_VERSIONS=('~3.4.0' '~4.1.0' '~4.2.0' '~4.3.0')
 GREEN='\033[0;32m'
 NC='\033[0m'
 
