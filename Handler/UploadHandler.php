@@ -3,8 +3,7 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -35,7 +34,7 @@ class UploadHandler extends AbstractHandler
         parent::__construct($factory, $storage);
 
         $this->injector = $injector;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = \class_exists(LegacyEventDispatcherProxy::class) ? LegacyEventDispatcherProxy::decorate($dispatcher) : $dispatcher;
     }
 
     /**
@@ -106,7 +105,7 @@ class UploadHandler extends AbstractHandler
 
     protected function dispatch(string $eventName, Event $event): void
     {
-        if ('42' !== Kernel::MAJOR_VERSION.Kernel::MINOR_VERSION && class_exists(ContractEvent::class)) {
+        if (\class_exists(LegacyEventDispatcherProxy::class)) {
             $this->dispatcher->dispatch($event, $eventName);
         } else {
             $this->dispatcher->dispatch($eventName, $event);
