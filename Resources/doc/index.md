@@ -49,10 +49,6 @@ Don't worry, it will be quick and easy (I promise!):
 
   * [Serving files with a controller](downloads/serving_files_with_a_controller.md)
 
-### Upload-related
-
-  * [Uploading files without a form](uploads/uploading_files_without_a_form.md)
-
 ## Useful resources
 
   * [Configuration reference](configuration_reference.md)
