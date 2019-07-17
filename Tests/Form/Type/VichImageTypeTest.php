@@ -155,7 +155,7 @@ class VichImageTypeTest extends VichFileTypeTest
         $storage
             ->expects($this->atLeastOnce())
             ->method($storageResolveMethodName)
-            ->with($storageResolveArguments)
+            ->with(...$storageResolveArguments)
             ->willReturn($storageResolvedPath);
 
         $parentForm = $this->createMock(FormInterface::class);
