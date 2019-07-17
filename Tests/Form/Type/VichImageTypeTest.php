@@ -219,7 +219,7 @@ class VichImageTypeTest extends VichFileTypeTest
         $object = new Product();
 
         return [
-            [
+            'calling StorageInterface::resolveUri()' => [
                 $field,
                 $object,
                 VichImageType::STORAGE_RESOLVE_URI,
@@ -229,7 +229,7 @@ class VichImageTypeTest extends VichFileTypeTest
                 'product_sq200',
                 'product_sq200/resolved-uri',
             ],
-            [
+            'calling StorageInterface::resolvePath()' => [
                 $field,
                 $object,
                 VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE,
@@ -239,7 +239,7 @@ class VichImageTypeTest extends VichFileTypeTest
                 'product_sq200',
                 'product_sq200/resolved-path-absolute',
             ],
-            [
+            'calling StorageInterface::resolvePath() with argument $relative = true' => [
                 $field,
                 $object,
                 VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,

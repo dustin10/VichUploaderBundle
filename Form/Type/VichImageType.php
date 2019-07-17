@@ -19,11 +19,11 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class VichImageType extends VichFileType
 {
-    const STORAGE_RESOLVE_URI = 0;
+    public const STORAGE_RESOLVE_URI = 0;
 
-    const STORAGE_RESOLVE_PATH_ABSOLUTE = 1;
+    public const STORAGE_RESOLVE_PATH_ABSOLUTE = 1;
 
-    const STORAGE_RESOLVE_PATH_RELATIVE = 2;
+    public const STORAGE_RESOLVE_PATH_RELATIVE = 2;
 
     /**
      * @var CacheManager|null
@@ -107,7 +107,7 @@ class VichImageType extends VichFileType
         return 'vich_image';
     }
 
-    protected function resolvePath($storageResolveMethod, $object, FormInterface $form)
+    private function resolvePath($storageResolveMethod, $object, FormInterface $form): ?string
     {
         if (static::STORAGE_RESOLVE_URI === $storageResolveMethod) {
             return $this->storage->resolveUri($object, $form->getName());
