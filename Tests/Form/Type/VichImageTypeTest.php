@@ -134,21 +134,29 @@ class VichImageTypeTest extends VichFileTypeTest
         ];
     }
 
-    public function testLiipImagineBundleIntegration(): void
-    {
+    /**
+     * @dataProvider getLiipImagineBundleIntegrationData
+     */
+    public function testLiipImagineBundleIntegration(
+        string $field,
+        Product $object,
+        int $storageResolveMethod,
+        string $storageResolveMethodName,
+        array $storageResolveArguments,
+        string $storageResolvedPath,
+        string $imaginePattern,
+        string $imagineResolvedPath
+    ): void {
         if (!\class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
         }
 
-        $field = 'image';
-        $object = new Product();
-
         $storage = $this->createMock(StorageInterface::class);
         $storage
-            ->expects($this->any())
-            ->method('resolveUri')
-            ->with($object, $field)
-            ->willReturn('resolved-uri');
+            ->expects($this->atLeastOnce())
+            ->method($storageResolveMethodName)
+            ->with($storageResolveArguments)
+            ->willReturn($storageResolvedPath);
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
@@ -175,8 +183,8 @@ class VichImageTypeTest extends VichFileTypeTest
         $cacheManager
             ->expects($this->once())
             ->method('getBrowserPath')
-            ->with('resolved-uri', 'product_sq200')
-            ->willReturn('product_sq200/resolved-uri');
+            ->with($storageResolvedPath, $imaginePattern)
+            ->willReturn($imagineResolvedPath);
 
         $testedType = static::TESTED_TYPE;
 
@@ -187,7 +195,8 @@ class VichImageTypeTest extends VichFileTypeTest
             'download_label' => 'download',
             'download_uri' => 'custom-uri',
             'image_uri' => true,
-            'imagine_pattern' => 'product_sq200',
+            'imagine_pattern' => $imaginePattern,
+            'storage_resolve_method' => $storageResolveMethod,
         ];
 
         $vars = [
@@ -195,13 +204,52 @@ class VichImageTypeTest extends VichFileTypeTest
             'download_uri' => 'custom-uri',
             'download_label' => 'download',
             'show_download_link' => true,
-            'image_uri' => 'product_sq200/resolved-uri',
+            'image_uri' => $imagineResolvedPath,
             'value' => null,
             'attr' => [],
         ];
 
         $type->buildView($view, $form, $options);
         $this->assertEquals($vars, $view->vars);
+    }
+
+    public function getLiipImagineBundleIntegrationData(): array
+    {
+        $field = 'image';
+        $object = new Product();
+
+        return [
+            [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_URI,
+                'resolveUri',
+                [$object, $field],
+                'resolved-uri',
+                'product_sq200',
+                'product_sq200/resolved-uri',
+            ],
+            [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE,
+                'resolvePath',
+                [$object, $field],
+                'resolved-path-absolute',
+                'product_sq200',
+                'product_sq200/resolved-path-absolute',
+            ],
+            [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,
+                'resolvePath',
+                [$object, $field, null, true],
+                'resolved-path-relative',
+                'product_sq200',
+                'product_sq200/resolved-path-relative',
+            ],
+        ];
     }
 
     public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
