@@ -200,6 +200,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'download_uri' => 'custom-uri',
             'image_uri' => true,
             'imagine_pattern' => 'product_sq200',
+            'asset_helper' => false,
         ];
 
         $vars = [
@@ -210,6 +211,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'image_uri' => 'product_sq200/resolved-uri',
             'value' => null,
             'attr' => [],
+            'asset_helper' => false,
         ];
 
         $type->buildView($view, $form, $options);
