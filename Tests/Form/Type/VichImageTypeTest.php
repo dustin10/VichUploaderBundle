@@ -29,6 +29,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => false,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -38,6 +39,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => true,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -47,6 +49,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => false,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => null,
@@ -55,6 +58,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => false,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -64,6 +68,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => true,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -73,6 +78,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => false,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -82,6 +88,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_uri' => 'custom-uri',
                     'image_uri' => true,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -91,6 +98,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -100,6 +108,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_uri' => 'custom-uri',
                     'image_uri' => 'image_uri',
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -109,6 +118,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'image_uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -120,6 +130,7 @@ class VichImageTypeTest extends VichFileTypeTest
                         return 'prefix-'.$resolvedUri;
                     },
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -129,6 +140,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'prefix-resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
         ];
@@ -197,6 +209,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'image_uri' => true,
             'imagine_pattern' => $imaginePattern,
             'storage_resolve_method' => $storageResolveMethod,
+            'asset_helper' => false,
         ];
 
         $vars = [
@@ -207,6 +220,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'image_uri' => $imagineResolvedPath,
             'value' => null,
             'attr' => [],
+            'asset_helper' => false,
         ];
 
         $type->buildView($view, $form, $options);
