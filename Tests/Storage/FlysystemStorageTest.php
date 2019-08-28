@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\File;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
@@ -156,13 +155,12 @@ class FlysystemStorageTest extends StorageTestCase
         $this->filesystem
             ->expects($this->any())
             ->method('getAdapter')
-            ->will($this->returnValue($this->adapter));
+            ->willReturn($this->adapter);
 
         $this->adapter
             ->expects($this->any())
             ->method('applyPathPrefix')
-            ->will($this->returnValue($uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt'));
-
+            ->willReturn($uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt');
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 
