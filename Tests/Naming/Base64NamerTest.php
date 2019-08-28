@@ -39,7 +39,7 @@ class Base64NamerTest extends TestCase
 
         $file->expects($this->once())
             ->method('guessExtension')
-            ->will($this->returnValue($extension));
+            ->willReturn($extension);
 
         $entity = new DummyEntity();
         $entity->setFile($file);
@@ -48,7 +48,7 @@ class Base64NamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new Base64Namer();
         $namer->configure(['length' => $length]);

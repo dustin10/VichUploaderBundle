@@ -28,7 +28,7 @@ final class SmartUniqidNamerTest extends TestCase
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
-            ->will($this->returnValue($originalName))
+            ->willReturn($originalName)
         ;
 
         $entity = new \StdClass();
@@ -40,7 +40,7 @@ final class SmartUniqidNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file))
+            ->willReturn($file)
         ;
 
         $namer = new SmartUniqueNamer();

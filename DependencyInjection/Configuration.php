@@ -55,12 +55,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('storage')
                     ->defaultValue('file_system')
-                    ->beforeNormalization()
-                        ->ifString()
-                        ->then(function ($v) {
-                            return \strtolower($v);
-                        })
-                    ->end()
                     ->validate()
                         ->ifTrue(function ($storage) {
                             return 0 !== \strpos($storage, '@') && !\in_array($storage, $this->supportedStorages, true);

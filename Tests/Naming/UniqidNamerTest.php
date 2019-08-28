@@ -33,11 +33,11 @@ class UniqidNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
-            ->will($this->returnValue($originalName));
+            ->willReturn($originalName);
         $file
             ->expects($this->any())
             ->method('guessExtension')
-            ->will($this->returnValue($guessedExtension));
+            ->willReturn($guessedExtension);
 
         $entity = new \DateTime();
 
@@ -47,7 +47,7 @@ class UniqidNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new UniqidNamer();
 

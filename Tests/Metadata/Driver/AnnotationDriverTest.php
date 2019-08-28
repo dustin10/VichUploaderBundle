@@ -26,14 +26,14 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
         $reader
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField([
+            ->willReturn(new UploadableField([
                 'mapping' => 'dummy_file',
                 'fileNameProperty' => 'fileName',
-            ])));
+            ]));
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
@@ -61,7 +61,7 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
         $reader
             ->expects($this->never())
             ->method('getPropertyAnnotation');
@@ -80,25 +80,25 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
         $reader
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField([
+            ->willReturn(new UploadableField([
                 'mapping' => 'dummy_file',
                 'fileNameProperty' => 'attachmentName',
-            ])));
+            ]));
         $reader
             ->expects($this->at(3))
             ->method('getPropertyAnnotation')
-            ->will($this->returnValue(new UploadableField([
+            ->willReturn(new UploadableField([
                 'mapping' => 'dummy_image',
                 'fileNameProperty' => 'imageName',
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
                 'dimensions' => null,
-            ])));
+            ]));
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
@@ -133,7 +133,7 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
@@ -149,19 +149,17 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
         $reader
             ->expects($this->at(4))
             ->method('getPropertyAnnotation')
-            ->will(
-                $this->returnValue(
+            ->willReturn(
                     new UploadableField(
                         [
                             'mapping' => 'dummyFile_file',
                             'fileNameProperty' => 'fileName',
                         ]
                     )
-                )
             );
 
         $driver = new AnnotationDriver($reader);
@@ -193,7 +191,7 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->once())
             ->method('getClassAnnotation')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
         $reader
             ->expects($this->never())
             ->method('getPropertyAnnotation');

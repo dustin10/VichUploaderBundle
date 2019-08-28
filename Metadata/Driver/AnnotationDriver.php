@@ -46,10 +46,10 @@ class AnnotationDriver implements AdvancedDriverInterface
             $classes[] = $class;
             $class = $class->getParentClass();
         } while (false !== $class);
-        $classes = array_reverse($classes, false);
+        $classes = \array_reverse($classes, false);
         $properties = [];
         foreach ($classes as $class) {
-            $properties = array_merge($properties, $class->getProperties());
+            $properties = \array_merge($properties, $class->getProperties());
         }
 
         foreach ($properties as $property) {
