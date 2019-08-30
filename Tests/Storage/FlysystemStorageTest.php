@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use League\Flysystem\File;
+use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -26,6 +26,11 @@ class FlysystemStorageTest extends StorageTestCase
      */
     protected $filesystem;
 
+    /**
+     * @var AbstractAdapter
+     */
+    protected $adapter;
+
     public static function setUpBeforeClass(): void
     {
         if (!\class_exists(MountManager::class)) {
@@ -41,7 +46,8 @@ class FlysystemStorageTest extends StorageTestCase
     protected function setUp(): void
     {
         $this->mountManager = $this->getMountManagerMock();
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(Filesystem::class);
+        $this->adapter = $this->createMock(AbstractAdapter::class);
 
         $this->mountManager
             ->expects($this->any())
@@ -148,13 +154,13 @@ class FlysystemStorageTest extends StorageTestCase
 
         $this->filesystem
             ->expects($this->any())
-            ->method('get')
-            ->willReturn(
-                new File(
-                    $this->filesystem,
-                    $uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt'
-                )
-            );
+            ->method('getAdapter')
+            ->willReturn($this->adapter);
+
+        $this->adapter
+            ->expects($this->any())
+            ->method('applyPathPrefix')
+            ->willReturn($uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt');
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 
