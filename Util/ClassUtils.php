@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\Util;
 
-use Doctrine\Common\Util\ClassUtils as DoctrineClassUtils;
-
 class ClassUtils
 {
     /**
