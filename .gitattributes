@@ -11,3 +11,5 @@
 /Tests              export-ignore
 /Resources/meta     export-ignore
 /Resources/doc      export-ignore
+/docker             export-ignore
+/.Makefile          export-ignore
