@@ -31,25 +31,38 @@ Thank you!
 
 ## Running the test suite
 
-Ensure that the required vendors are installed by running `composer install`.
-The test suite requires the `php5-mongo` and `php5-sqlite` extensions to be installed.
+Tests suite uses Docker environments in order to be idempotent to OS's. More than this 
+PHP version is written inside the Dockerfile; this assure to tests the bundle with
+the same resources. No need to have php or Mongo installed. 
 
-PHPUnit should be installed by composer. Run the tests with the
-`./vendor/bin/phpunit` command.
+You only need Docker set it up.
 
-Alternatively you can use the `runTests.sh` bash script present at the project root.
-Default usage example (This runs all tests with your current PHP version against
-all supported Symfony versions.):
-
-```bash
-./runTest.sh
-```
-
-You can also set a specific Symfony version to test against and/or pass the arguments for PHPUnit
- as arguments to the script. Usage example:
+To allow testing environments more smooth we implemented **Makefile** 
+You have two commands available:
 
 ```bash
-SYMFONY_VERSION=3.4.1 ./runTests.sh --filter testCustomFileNameProperty
+make tests
 ```
 
-**Note:** The script was prepared to run under Ubuntu and using Bash so it might need further validation for other OS.
+which will execute all tests inside the docker.
+
+```bash
+make test TEST="Tests/Util/FilenameUtilsTest.php"
+```
+
+will allow to tests single Test Classes.
+
+There are 3 environments available: PHP 7.2, 7.3 and 7.4-rc.
+Default environment is *PHP 7.2* if you want to execute it against 
+other PHP version please use environment variables as this:
+
+```bash
+make tests #PHP 7.2 env
+TARGET=73 make tests #PHP 7.3 env
+TARGET=74 make tests #PHP 7.4 env
+
+make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.2 env
+TARGET=73 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.3 env
+TARGET=74 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.4 env
+```
+

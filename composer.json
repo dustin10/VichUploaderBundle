@@ -47,6 +47,7 @@
         "symfony/framework-bundle": "^3.4.23 || ^4.2.4",
         "symfony/phpunit-bridge": "^4.3",
         "symfony/security-csrf": "^3.4 || ^4.0",
+        "symfony/symfony": "~3.4.0",
         "symfony/translation": "^3.4 || ^4.0",
         "symfony/twig-bridge": "^3.4 || ^4.0",
         "symfony/twig-bundle": "^3.4 || ^4.0",
