@@ -53,16 +53,16 @@ make test TEST="Tests/Util/FilenameUtilsTest.php"
 will allow to tests single Test Classes.
 
 There are 3 environments available: PHP 7.2, 7.3 and 7.4-rc.
-Default environment is *PHP 7.2* if you want to execute it against 
+Default environment is *PHP 7.3* if you want to execute it against 
 other PHP version please use environment variables as this:
 
 ```bash
-make tests #PHP 7.2 env
-TARGET=73 make tests #PHP 7.3 env
+make tests #PHP 7.3 env
+TARGET=72 make tests #PHP 7.2 env
 TARGET=74 make tests #PHP 7.4 env
 
-make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.2 env
-TARGET=73 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.3 env
+make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.3 env
+TARGET=72 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.2 env
 TARGET=74 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.4 env
 ```
 
