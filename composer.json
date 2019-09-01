@@ -34,7 +34,7 @@
         "doctrine/doctrine-bundle": "^1.8",
         "doctrine/mongodb-odm": "^1.2",
         "doctrine/orm": "^2.5",
-        "knplabs/knp-gaufrette-bundle": "^0.5",
+        "knplabs/knp-gaufrette-bundle": "^0.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0",
         "mikey179/vfsstream": "^1.6",
         "oneup/flysystem-bundle": "^3.0",
