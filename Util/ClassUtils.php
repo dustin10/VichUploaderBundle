@@ -18,7 +18,7 @@ class ClassUtils
      *
      * @return string The FQCN of the given object
      */
-    public static function getClass($object): string
+    public static function getClass(object $object): string
     {
         $className = \get_class($object);
 
