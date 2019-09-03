@@ -4,7 +4,7 @@
 {%- endblock %}
 
 {% block vich_file_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="vich-file">
             {{ form_widget(form.file) }}
             {% if form.delete is defined %}
@@ -15,7 +15,7 @@
                 <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block vich_image_row -%}
@@ -24,7 +24,7 @@
 {%- endblock %}
 
 {% block vich_image_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="vich-image">
             {{ form_widget(form.file) }}
             {% if form.delete is defined %}
@@ -38,7 +38,7 @@
                 <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block vich_file_label %}
