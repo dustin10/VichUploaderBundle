@@ -21,6 +21,9 @@ class UniqidNamerTest extends TestCase
             ['lala.mp3',      'mpga',            '/[a-z0-9]{13}.mp3/'],
             ['lala',          'mpga',            '/[a-z0-9]{13}.mpga/'],
             ['lala',          null,              '/[a-z0-9]{13}/'],
+            ['lala.0',        null,              '/[a-z0-9]{13}\\.0/'],
+            ['lala.data.0',   null,              '/[a-z0-9]{13}\\.0/'],
+            ['lala.data.0',   'gzip',            '/[a-z0-9]{13}\\.0/'],
         ];
     }
 
