@@ -17,8 +17,9 @@ class UniqidNamer implements NamerInterface
     {
         $file = $mapping->getFile($object);
         $name = \str_replace('.', '', \uniqid('', true));
+        $extension = $this->getExtension($file);
 
-        if ($extension = $this->getExtension($file)) {
+        if (\is_string($extension) && '' !== $extension) {
             $name = \sprintf('%s.%s', $name, $extension);
         }
 
