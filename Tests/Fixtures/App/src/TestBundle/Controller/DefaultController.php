@@ -14,7 +14,7 @@ class DefaultController extends Controller
     {
         $form = $this->getForm($formType, $this->getImage());
 
-        return $this->render('VichTestBundle:Default:upload.html.twig', [
+        return $this->render('default/upload.html.twig', [
             'formType' => $formType,
             'form' => $form->createView(),
         ]);
@@ -24,7 +24,7 @@ class DefaultController extends Controller
     {
         $form = $this->getForm($formType, $this->getImage($imageId));
 
-        return $this->render('VichTestBundle:Default:edit.html.twig', [
+        return $this->render('default/edit.html.twig', [
             'imageId' => $imageId,
             'formType' => $formType,
             'form' => $form->createView(),
@@ -48,7 +48,7 @@ class DefaultController extends Controller
             ]));
         }
 
-        return $this->render('VichTestBundle:Default:upload.html.twig', [
+        return $this->render('default/upload.html.twig', [
             'formType' => $formType,
             'form' => $form->createView(),
         ]);
