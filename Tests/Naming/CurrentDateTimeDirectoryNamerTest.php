@@ -60,7 +60,6 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
         $this->assertSame($expectedName, $namer->directoryName($entity, $mapping));
     }
 
-
     /**
      * @group legacy
      */
