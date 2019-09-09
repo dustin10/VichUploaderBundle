@@ -22,7 +22,7 @@
         <server name="KERNEL_DIR" value="./Tests/Fixtures/App/app" />
         <server name="KERNEL_CLASS" value="AppKernel" />
         <server name="SHELL_VERBOSITY" value="1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=3" />
     </php>
 
     <filter>

@@ -34,7 +34,7 @@ before_install:
     - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer self-update
     - phpenv config-rm xdebug.ini || true
-    - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony:${SYMFONY_VERSION}; fi
+    - if [ "$SYMFONY_VERSION" != "" ]; then sed -i -r 's/\^3\.4(\.19|\.23)* \|\| \^4\.(0|2)(.4)*/${SYMFONY_VERSION}/' composer.json; fi
     - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:"^1.7|^2.0"; fi;
     - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
 

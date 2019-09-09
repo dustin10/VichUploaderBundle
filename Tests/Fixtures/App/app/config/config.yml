@@ -1,7 +1,7 @@
 # Symfony Configuration
 framework:
     secret:             Hell yeah!
-    router:             { resource: "%kernel.root_dir%/config/routing.yml" }
+    router:             { resource: "%kernel.project_dir%/app/config/routing.yml" }
     form:               true
     csrf_protection:    true
     default_locale:     en
