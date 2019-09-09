@@ -34,7 +34,7 @@ class DoctrineORMAdapterTest extends TestCase
         $args
             ->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue($entity));
+            ->willReturn($entity);
 
         $adapter = new DoctrineORMAdapter();
 

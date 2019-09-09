@@ -21,6 +21,9 @@ class UniqidNamerTest extends TestCase
             ['lala.mp3',      'mpga',            '/[a-z0-9]{13}.mp3/'],
             ['lala',          'mpga',            '/[a-z0-9]{13}.mpga/'],
             ['lala',          null,              '/[a-z0-9]{13}/'],
+            ['lala.0',        null,              '/[a-z0-9]{13}\\.0/'],
+            ['lala.data.0',   null,              '/[a-z0-9]{13}\\.0/'],
+            ['lala.data.0',   'gzip',            '/[a-z0-9]{13}\\.0/'],
         ];
     }
 
@@ -33,11 +36,11 @@ class UniqidNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
-            ->will($this->returnValue($originalName));
+            ->willReturn($originalName);
         $file
             ->expects($this->any())
             ->method('guessExtension')
-            ->will($this->returnValue($guessedExtension));
+            ->willReturn($guessedExtension);
 
         $entity = new \DateTime();
 
@@ -47,7 +50,7 @@ class UniqidNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new UniqidNamer();
 

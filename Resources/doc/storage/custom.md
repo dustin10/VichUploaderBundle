@@ -12,7 +12,7 @@ prefixing it with `@`:
 ``` yaml
 vich_uploader:
     db_driver: orm
-    storage: "@App\Storage\CustomStorage"
+    storage: '@App\Storage\CustomStorage'
 ```
 
 ## That was it!

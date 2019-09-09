@@ -66,7 +66,7 @@ class VichImageType extends VichFileType
                     throw new \RuntimeException('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
                 }
 
-                $path = $this->storage->resolvePath($object, $form->getName(), null, true);
+                $path = $this->storage->resolveUri($object, $form->getName(), null);
                 if (null !== $path) {
                     $view->vars['image_uri'] = $this->cacheManager->getBrowserPath($path, $options['imagine_pattern']);
                 }
@@ -84,6 +84,7 @@ class VichImageType extends VichFileType
         // required for BC
         // TODO: remove for 2.0
         $view->vars['show_download_link'] = !empty($view->vars['download_uri']);
+        $view->vars['asset_helper'] = $options['asset_helper'];
     }
 
     public function getBlockPrefix(): string

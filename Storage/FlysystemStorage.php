@@ -34,7 +34,7 @@ class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        $stream = fopen($file->getRealPath(), 'r');
+        $stream = \fopen($file->getRealPath(), 'rb');
         $fs->putStream($path, $stream, [
             'mimetype' => $file->getMimeType(),
         ]);
@@ -61,7 +61,7 @@ class FlysystemStorage extends AbstractStorage
             return $path;
         }
 
-        return (string) $fs->get($path)->getPath();
+        return (string) $fs->getAdapter()->applyPathPrefix($path);
     }
 
     public function resolveStream($obj, string $fieldName, ?string $className = null)

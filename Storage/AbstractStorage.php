@@ -41,8 +41,8 @@ abstract class AbstractStorage implements StorageInterface
         $mapping->writeProperty($obj, 'mimeType', $file->getMimeType());
         $mapping->writeProperty($obj, 'originalName', $file->getClientOriginalName());
 
-        if (false !== strpos($file->getMimeType(), 'image/') && 'image/svg+xml' !== $file->getMimeType() && false !== $dimensions = @getimagesize($file)) {
-            $mapping->writeProperty($obj, 'dimensions', array_splice($dimensions, 0, 2));
+        if (false !== \strpos($file->getMimeType(), 'image/') && 'image/svg+xml' !== $file->getMimeType() && false !== $dimensions = @\getimagesize($file)) {
+            $mapping->writeProperty($obj, 'dimensions', \array_splice($dimensions, 0, 2));
         }
 
         $dir = $mapping->getUploadDir($obj);
@@ -108,7 +108,7 @@ abstract class AbstractStorage implements StorageInterface
             return null;
         }
 
-        return fopen($path, 'rb');
+        return \fopen($path, 'rb');
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class AbstractStorage implements StorageInterface
      *
      * @param             $obj
      * @param string      $fieldName
-     * @param null|string $className
+     * @param string|null $className
      *
      * @return array
      *
@@ -129,7 +129,7 @@ abstract class AbstractStorage implements StorageInterface
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 
         if (null === $mapping) {
-            throw new MappingNotFoundException(sprintf('Mapping not found for field "%s"', $fieldName));
+            throw new MappingNotFoundException(\sprintf('Mapping not found for field "%s"', $fieldName));
         }
 
         return [$mapping, $mapping->getFileName($obj)];

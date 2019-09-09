@@ -24,6 +24,7 @@ class Form extends AbstractType
             'download_uri' => true,
             'image_uri' => true,
             'imagine_pattern' => '...',
+            'asset_helper' => true,
         ]);
     }
 }
@@ -32,6 +33,12 @@ class Form extends AbstractType
 allow_delete
 ------------
 **type**: `bool` **default**: `true`
+
+asset_helper
+------------
+**type**: `bool` **default**: `false`
+
+If set to `true`, download uri will be generated with `asset()` method from `symfony/asset` component.
 
 download_uri
 ------------

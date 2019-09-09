@@ -80,7 +80,7 @@ abstract class FileDriverTestCase extends TestCase
             ->expects($this->once())
             ->method('findFileForClass')
             ->with($this->equalTo($class), $this->equalTo($this->getExtension()))
-            ->will($this->returnValue($foundFile));
+            ->willReturn($foundFile);
 
         return $fileLocator;
     }

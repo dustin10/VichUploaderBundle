@@ -34,7 +34,7 @@ class DownloadHandler extends AbstractHandler
         $stream = $this->storage->resolveStream($object, $field, $className);
 
         if (null === $stream) {
-            throw new NoFileFoundException(sprintf('No file found in field "%s".', $field));
+            throw new NoFileFoundException(\sprintf('No file found in field "%s".', $field));
         }
 
         if (true === $fileName) {
@@ -75,7 +75,7 @@ class DownloadHandler extends AbstractHandler
     private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream', bool $forceDownload = true): StreamedResponse
     {
         $response = new StreamedResponse(function () use ($stream): void {
-            stream_copy_to_stream($stream, fopen('php://output', 'wb'));
+            \stream_copy_to_stream($stream, \fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(

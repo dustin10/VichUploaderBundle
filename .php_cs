@@ -2,7 +2,8 @@
 // see https://github.com/FriendsOfPHP/PHP-CS-Fixer
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__.'/Command', __DIR__.'/DependencyInjection', __DIR__.'/Form', __DIR__.'/Tests', __DIR__.'/Twig', __DIR__.'/Util'])
+    ->exclude('vendor')
+    ->in([__DIR__])
 ;
 
 return PhpCsFixer\Config::create()
@@ -16,6 +17,8 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'declare_strict_types' => false,
         'native_function_invocation' => true,
+        'fopen_flags' => ['b_mode' => true],
+        'php_unit_mock_short_will_return' => true,
     ])
     ->setFinder($finder)
 ;

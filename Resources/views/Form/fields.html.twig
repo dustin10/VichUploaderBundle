@@ -11,7 +11,7 @@
         {%- endif -%}
 
         {%- if download_uri -%}
-            <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
+            <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
         {%- endif -%}
     </div>
 {%- endblock -%}
@@ -29,10 +29,10 @@
         {%- endif -%}
 
         {%- if image_uri -%}
-            <a href="{{ image_uri }}"><img src="{{ image_uri }}" alt="" /></a>
+            <a href="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}"><img src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" alt="" /></a>
         {%- endif -%}
         {%- if download_uri -%}
-            <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
+            <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
         {%- endif -%}
     </div>
 {%- endblock -%}

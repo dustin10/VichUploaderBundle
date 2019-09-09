@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
         } else {
             $builder = new TreeBuilder();
         }
-        $root = $builder->root('vich_uploader');
+        $root = \method_exists($builder, 'getRootNode') ? $builder->getRootNode() : $builder->root('vich_uploader');
         $this->addGeneralSection($root);
         $this->addMetadataSection($root);
         $this->addMappingsSection($root);
@@ -55,12 +55,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('storage')
                     ->defaultValue('file_system')
-                    ->beforeNormalization()
-                        ->ifString()
-                        ->then(function ($v) {
-                            return \strtolower($v);
-                        })
-                    ->end()
                     ->validate()
                         ->ifTrue(function ($storage) {
                             return 0 !== \strpos($storage, '@') && !\in_array($storage, $this->supportedStorages, true);

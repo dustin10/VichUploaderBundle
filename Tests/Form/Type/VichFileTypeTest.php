@@ -82,23 +82,23 @@ class VichFileTypeTest extends TestCase
             ->expects($this->any())
             ->method('resolveUri')
             ->with($object, $field)
-            ->will($this->returnValue('resolved-uri'));
+            ->willReturn('resolved-uri');
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
         $form
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($field));
+            ->willReturn($field);
 
         $uploadHandler = $this->createMock(UploadHandler::class);
         $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
@@ -112,13 +112,13 @@ class VichFileTypeTest extends TestCase
                     ->expects($this->once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
-                    ->will($this->returnValue($object->getImageOriginalName()));
+                    ->willReturn($object->getImageOriginalName());
 
                 $propertyMappingFactory
                     ->expects($this->once())
                     ->method('fromField')
                     ->with($object, $field)
-                    ->will($this->returnValue($mapping));
+                    ->willReturn($mapping);
             }
 
             if ($options['download_label'] instanceof PropertyPath) {
@@ -126,7 +126,7 @@ class VichFileTypeTest extends TestCase
                     ->expects($this->once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
-                    ->will($this->returnValue($object->getTitle()));
+                    ->willReturn($object->getTitle());
             }
         }
 
@@ -147,33 +147,48 @@ class VichFileTypeTest extends TestCase
         return [
             [
                 $object,
-                ['download_label' => 'custom label', 'download_uri' => true],
+                [
+                    'download_label' => 'custom label',
+                    'download_uri' => true,
+                    'asset_helper' => true,
+                ],
                 [
                     'object' => $object,
                     'download_label' => 'custom label',
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => true,
                 ],
             ],
             [
                 null,
-                ['download_label' => 'download', 'download_uri' => false],
+                [
+                    'download_label' => 'download',
+                    'download_uri' => false,
+                    'asset_helper' => false,
+                ],
                 [
                     'object' => null,
                     'download_uri' => null,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
                 $object,
-                ['download_label' => 'download', 'download_uri' => false],
+                [
+                    'download_label' => 'download',
+                    'download_uri' => false,
+                    'asset_helper' => false,
+                ],
                 [
                     'object' => $object,
                     'download_uri' => null,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -183,6 +198,7 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => static function (Product $product) {
                         return '/download/'.$product->getImageOriginalName();
                     },
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -190,22 +206,32 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => '/download/image.jpeg',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
                 $object,
-                ['download_label' => 'download', 'download_uri' => 'custom-uri'],
+                [
+                    'download_label' => 'download',
+                    'download_uri' => 'custom-uri',
+                    'asset_helper' => false,
+                ],
                 [
                     'object' => $object,
                     'download_label' => 'download',
                     'download_uri' => 'custom-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
                 $object,
-                ['download_label' => true, 'download_uri' => true],
+                [
+                    'download_label' => true,
+                    'download_uri' => true,
+                    'asset_helper' => false,
+                ],
                 [
                     'object' => $object,
                     'download_label' => 'image.jpeg',
@@ -213,6 +239,7 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -222,6 +249,7 @@ class VichFileTypeTest extends TestCase
                         return 'prefix-'.$product->getImageOriginalName();
                     },
                     'download_uri' => true,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -230,6 +258,7 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -242,6 +271,7 @@ class VichFileTypeTest extends TestCase
                         ];
                     },
                     'download_uri' => true,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -250,6 +280,7 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -257,6 +288,7 @@ class VichFileTypeTest extends TestCase
                 [
                     'download_label' => new PropertyPath('title'),
                     'download_uri' => true,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -265,6 +297,7 @@ class VichFileTypeTest extends TestCase
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
         ];

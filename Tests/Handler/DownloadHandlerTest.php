@@ -41,7 +41,7 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->any())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
     }
 
     public function filenamesProvider(): array
@@ -65,24 +65,24 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue($fileName));
+            ->willReturn($fileName);
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $file
             ->expects($this->once())
             ->method('getMimeType')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
@@ -101,24 +101,24 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue($fileName));
+            ->willReturn($fileName);
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $file
             ->expects($this->once())
             ->method('getMimeType')
-            ->will($this->returnValue('application/pdf'));
+            ->willReturn('application/pdf');
 
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field', null, null, false);
 
@@ -135,19 +135,19 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
-            ->will($this->returnValue($fileName));
+            ->willReturn($fileName);
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
@@ -162,10 +162,10 @@ class DownloadHandlerTest extends TestCase
         $this->mapping
             ->expects($this->exactly(2))
             ->method('readProperty')
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 [$this->object, 'originalName', $this->object->getImageOriginalName()],
                 [$this->object, 'mimeType', $this->object->getImageMimeType()],
-            ]));
+            ]);
 
         $file = $this->getUploadedFileMock();
 
@@ -173,18 +173,18 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $file
             ->expects($this->once())
             ->method('getMimeType')
-            ->will($this->returnValue('application/octet-stream'));
+            ->willReturn('application/octet-stream');
 
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field', null, true);
 
@@ -201,18 +201,18 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $file
             ->expects($this->once())
             ->method('getMimeType')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->storage
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue('something not null'));
+            ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field', null, 'ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334º');
 
@@ -237,7 +237,7 @@ class DownloadHandlerTest extends TestCase
             ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->handler->downloadObject($this->object, 'file_field');
     }

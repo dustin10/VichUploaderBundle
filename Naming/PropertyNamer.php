@@ -55,11 +55,11 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         try {
             $name = $this->getPropertyValue($object, $this->propertyPath);
         } catch (NoSuchPropertyException $e) {
-            throw new NameGenerationException(sprintf('File name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
+            throw new NameGenerationException(\sprintf('File name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
 
         if (empty($name)) {
-            throw new NameGenerationException(sprintf('File name could not be generated: property %s is empty.', $this->propertyPath));
+            throw new NameGenerationException(\sprintf('File name could not be generated: property %s is empty.', $this->propertyPath));
         }
 
         if ($this->transliterate) {
@@ -68,7 +68,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
 
         // append the file extension if there is one
         if ($extension = $this->getExtension($file)) {
-            $name = sprintf('%s.%s', $name, $extension);
+            $name = \sprintf('%s.%s', $name, $extension);
         }
 
         return $name;

@@ -40,7 +40,7 @@ class HashNamerTest extends TestCase
 
         $file->expects($this->once())
             ->method('guessExtension')
-            ->will($this->returnValue($extension));
+            ->willReturn($extension);
 
         $entity = new DummyEntity();
         $entity->setFile($file);
@@ -49,7 +49,7 @@ class HashNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new HashNamer();
         $namer->configure(['algorithm' => $algorithm, 'length' => $length]);

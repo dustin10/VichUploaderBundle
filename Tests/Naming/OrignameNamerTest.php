@@ -31,7 +31,7 @@ class OrignameNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getClientOriginalName')
-            ->will($this->returnValue($name));
+            ->willReturn($name);
 
         $entity = new \DateTime();
 
@@ -41,7 +41,7 @@ class OrignameNamerTest extends TestCase
         $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $namer = new OrignameNamer();
         $namer->configure(['transliterate' => $transliterate]);

@@ -63,9 +63,9 @@ class ListenerTestCase extends TestCase
             ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->will($this->returnCallback(function () use ($that) {
+            ->willReturnCallback(function () use ($that) {
                 return $that->object;
-            }));
+            });
     }
 
     /**

@@ -44,7 +44,7 @@ class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->listener->preRemove($this->event);
     }
@@ -60,7 +60,7 @@ class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->listener->preRemove($this->event);
     }
@@ -74,15 +74,15 @@ class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->metadata
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
-            ->will($this->returnValue([
+            ->willReturn([
                 ['propertyName' => 'field_name'],
-            ]));
+            ]);
 
         $this->handler
             ->expects($this->once())
@@ -101,7 +101,7 @@ class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->handler
             ->expects($this->never())

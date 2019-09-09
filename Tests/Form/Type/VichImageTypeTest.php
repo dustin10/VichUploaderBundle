@@ -29,6 +29,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => false,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -38,6 +39,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => true,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -47,6 +49,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => false,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => null,
@@ -55,6 +58,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => false,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -64,6 +68,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_label' => 'download',
                     'image_uri' => true,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -73,6 +78,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'show_download_link' => false,
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -82,6 +88,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_uri' => 'custom-uri',
                     'image_uri' => true,
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -91,6 +98,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -100,6 +108,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'download_uri' => 'custom-uri',
                     'image_uri' => 'image_uri',
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -109,6 +118,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'image_uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
             [
@@ -120,6 +130,7 @@ class VichImageTypeTest extends VichFileTypeTest
                         return 'prefix-'.$resolvedUri;
                     },
                     'imagine_pattern' => null,
+                    'asset_helper' => false,
                 ],
                 [
                     'object' => $object,
@@ -129,6 +140,7 @@ class VichImageTypeTest extends VichFileTypeTest
                     'image_uri' => 'prefix-resolved-uri',
                     'value' => null,
                     'attr' => [],
+                    'asset_helper' => false,
                 ],
             ],
         ];
@@ -146,25 +158,25 @@ class VichImageTypeTest extends VichFileTypeTest
         $storage = $this->createMock(StorageInterface::class);
         $storage
             ->expects($this->any())
-            ->method('resolvePath')
-            ->with($object, $field, null, true)
-            ->will($this->returnValue('resolved-path'));
+            ->method('resolveUri')
+            ->with($object, $field)
+            ->willReturn('resolved-uri');
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
         $form
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($field));
+            ->willReturn($field);
 
         $uploadHandler = $this->createMock(UploadHandler::class);
         $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
@@ -175,8 +187,8 @@ class VichImageTypeTest extends VichFileTypeTest
         $cacheManager
             ->expects($this->once())
             ->method('getBrowserPath')
-            ->with('resolved-path', 'product_sq200')
-            ->will($this->returnValue('product_sq200/resolved-uri'));
+            ->with('resolved-uri', 'product_sq200')
+            ->willReturn('product_sq200/resolved-uri');
 
         $testedType = static::TESTED_TYPE;
 
@@ -188,6 +200,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'download_uri' => 'custom-uri',
             'image_uri' => true,
             'imagine_pattern' => 'product_sq200',
+            'asset_helper' => false,
         ];
 
         $vars = [
@@ -198,6 +211,7 @@ class VichImageTypeTest extends VichFileTypeTest
             'image_uri' => 'product_sq200/resolved-uri',
             'value' => null,
             'attr' => [],
+            'asset_helper' => false,
         ];
 
         $type->buildView($view, $form, $options);
@@ -222,13 +236,13 @@ class VichImageTypeTest extends VichFileTypeTest
         $parentForm
             ->expects($this->any())
             ->method('getData')
-            ->will($this->returnValue($object));
+            ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
             ->method('getParent')
-            ->will($this->returnValue($parentForm));
+            ->willReturn($parentForm);
 
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);

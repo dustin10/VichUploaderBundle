@@ -66,15 +66,15 @@ class ListenerTestCase extends TestCase
             ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->will($this->returnValue($this->object));
+            ->willReturn($this->object);
 
         $this->metadata
             ->expects($this->any())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
-            ->will($this->returnValue([
+            ->willReturn([
                 ['propertyName' => self::FIELD_NAME],
-            ]));
+            ]);
     }
 
     /**

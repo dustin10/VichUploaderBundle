@@ -43,7 +43,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->mapping
             ->expects($this->never())
@@ -61,23 +61,23 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $this->mapping
             ->method('getUploadDestination')
-            ->will($this->returnValue($filesystemKey));
+            ->willReturn($filesystemKey);
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue($uploadDir));
+            ->willReturn($uploadDir);
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->willReturn('file.txt');
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, $protocol);
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
@@ -90,18 +90,18 @@ class GaufretteStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUriPrefix')
-            ->will($this->returnValue('/uploads'));
+            ->willReturn('/uploads');
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->willReturn('file.txt');
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'gaufrette');
         $path = $this->storage->resolveUri($this->object, 'file_field');
@@ -114,13 +114,13 @@ class GaufretteStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue(''));
+            ->willReturn('');
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'gaufrette');
         $path = $this->storage->resolveUri($this->object, 'file_field');
@@ -148,11 +148,11 @@ class GaufretteStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->any())
             ->method('getUploadDestination')
-            ->will($this->returnValue('filesystemKey'));
+            ->willReturn('filesystemKey');
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->willReturn('file.txt');
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
@@ -165,7 +165,7 @@ class GaufretteStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
-            ->will($this->returnValue($filesystem));
+            ->willReturn($filesystem);
 
         $this->storage->remove($this->object, $this->mapping);
     }
@@ -178,11 +178,11 @@ class GaufretteStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->any())
             ->method('getUploadDestination')
-            ->will($this->returnValue('filesystemKey'));
+            ->willReturn('filesystemKey');
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->willReturn('file.txt');
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
@@ -196,7 +196,7 @@ class GaufretteStorageTest extends StorageTestCase
             ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
-            ->will($this->returnValue($filesystem));
+            ->willReturn($filesystem);
 
         $this->storage->remove($this->object, $this->mapping);
     }
@@ -210,34 +210,34 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
-            ->will($this->returnValue('filename'));
+            ->willReturn('filename');
 
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt'));
+            ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
-            ->will($this->returnValue('filename'));
+            ->willReturn('filename');
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDestination')
-            ->will($this->returnValue('filesystemKey'));
+            ->willReturn('filesystemKey');
 
         $this->filesystemMap
             ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
-            ->will($this->returnValue($filesystem));
+            ->willReturn($filesystem);
 
         $adapter
             ->expects($this->once())
@@ -246,7 +246,7 @@ class GaufretteStorageTest extends StorageTestCase
         $filesystem
             ->expects($this->any())
             ->method('getAdapter')
-            ->will($this->returnValue($adapter));
+            ->willReturn($adapter);
 
         $filesystem
             ->expects($this->once())
@@ -265,44 +265,44 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
-            ->will($this->returnValue('filename'));
+            ->willReturn('filename');
 
         $file
             ->expects($this->once())
             ->method('getPathname')
-            ->will($this->returnValue($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt'));
+            ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
-            ->will($this->returnValue('filename'));
+            ->willReturn('filename');
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue(''));
+            ->willReturn('');
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDestination')
-            ->will($this->returnValue('filesystemKey'));
+            ->willReturn('filesystemKey');
 
         $this->filesystemMap
             ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
-            ->will($this->returnValue($filesystem));
+            ->willReturn($filesystem);
 
         $filesystem
             ->expects($this->any())
             ->method('getAdapter')
-            ->will($this->returnValue($adapter));
+            ->willReturn($adapter);
 
         $filesystem
             ->expects($this->once())

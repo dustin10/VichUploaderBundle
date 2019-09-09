@@ -2,9 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
-use League\Flysystem\File;
+use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -26,6 +26,11 @@ class FlysystemStorageTest extends StorageTestCase
      */
     protected $filesystem;
 
+    /**
+     * @var AbstractAdapter
+     */
+    protected $adapter;
+
     public static function setUpBeforeClass(): void
     {
         if (!\class_exists(MountManager::class)) {
@@ -41,20 +46,21 @@ class FlysystemStorageTest extends StorageTestCase
     protected function setUp(): void
     {
         $this->mountManager = $this->getMountManagerMock();
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(Filesystem::class);
+        $this->adapter = $this->createMock(AbstractAdapter::class);
 
         $this->mountManager
             ->expects($this->any())
             ->method('getFilesystem')
             ->with(self::FS_KEY)
-            ->will($this->returnValue($this->filesystem));
+            ->willReturn($this->filesystem);
 
         parent::setUp();
 
         $this->mapping
             ->expects($this->any())
             ->method('getUploadDestination')
-            ->will($this->returnValue(self::FS_KEY));
+            ->willReturn(self::FS_KEY);
     }
 
     public function testUpload(): void
@@ -64,23 +70,23 @@ class FlysystemStorageTest extends StorageTestCase
         $file
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt'));
+            ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt');
 
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
-            ->will($this->returnValue('originalName.txt'));
+            ->willReturn('originalName.txt');
 
         $this->mapping
             ->expects($this->once())
             ->method('getFile')
-            ->will($this->returnValue($file));
+            ->willReturn($file);
 
         $this->mapping
             ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
-            ->will($this->returnValue('originalName.txt'));
+            ->willReturn('originalName.txt');
 
         $this->filesystem
             ->expects($this->once())
@@ -104,7 +110,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('test.txt'));
+            ->willReturn('test.txt');
 
         $this->storage->remove($this->object, $this->mapping);
     }
@@ -120,7 +126,7 @@ class FlysystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('not_found.txt'));
+            ->willReturn('not_found.txt');
 
         $this->storage->remove($this->object, $this->mapping);
     }
@@ -133,28 +139,28 @@ class FlysystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects($this->once())
             ->method('getUploadDir')
-            ->will($this->returnValue($uploadDir));
+            ->willReturn($uploadDir);
 
         $this->mapping
             ->expects($this->once())
             ->method('getFileName')
-            ->will($this->returnValue('file.txt'));
+            ->willReturn('file.txt');
 
         $this->factory
             ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
-            ->will($this->returnValue($this->mapping));
+            ->willReturn($this->mapping);
 
         $this->filesystem
             ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue(
-                new File(
-                    $this->filesystem,
-                    $uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt'
-                )
-            ));
+            ->method('getAdapter')
+            ->willReturn($this->adapter);
+
+        $this->adapter
+            ->expects($this->any())
+            ->method('applyPathPrefix')
+            ->willReturn($uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt');
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 

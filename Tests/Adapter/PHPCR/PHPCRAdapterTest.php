@@ -30,7 +30,7 @@ class PHPCRAdapterTest extends TestCase
         $args
             ->expects($this->once())
             ->method('getObject')
-            ->will($this->returnValue($entity));
+            ->willReturn($entity);
 
         $adapter = new PHPCRAdapter();
 

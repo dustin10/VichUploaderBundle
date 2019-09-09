@@ -34,7 +34,7 @@ class MongoDBAdapterTest extends TestCase
         $args
             ->expects($this->once())
             ->method('getDocument')
-            ->will($this->returnValue($entity));
+            ->willReturn($entity);
 
         $adapter = new MongoDBAdapter();
 

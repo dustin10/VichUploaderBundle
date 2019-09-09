@@ -50,7 +50,7 @@ class PropertyMappingTest extends TestCase
             ->expects($this->once())
             ->method('directoryName')
             ->with($object, $prop)
-            ->will($this->returnValue($dir));
+            ->willReturn($dir);
 
         $prop->setDirectoryNamer($namer);
 
@@ -106,7 +106,7 @@ class PropertyMappingTest extends TestCase
             ->expects($this->once())
             ->method('name')
             ->with($object, $prop)
-            ->will($this->returnValue('123'));
+            ->willReturn('123');
 
         $prop->setNamer($namer);
 
@@ -122,7 +122,7 @@ class PropertyMappingTest extends TestCase
         $file
             ->expects($this->once())
             ->method('getClientOriginalName')
-            ->will($this->returnValue('filename'));
+            ->willReturn('filename');
 
         $object->setFile($file);
 
