@@ -4,16 +4,14 @@ framework:
     router:             { resource: "%kernel.root_dir%/config/routing.yml" }
     form:               true
     csrf_protection:    true
-    session:            ~
     default_locale:     en
     translator:         { fallback: en }
     test:               ~
-    templating:
-        engines: ['twig']
     session:
         storage_id:     session.storage.mock_file
     profiler:
         collect: false
+    fragments:          ~
 
 # Twig Configuration
 twig:
