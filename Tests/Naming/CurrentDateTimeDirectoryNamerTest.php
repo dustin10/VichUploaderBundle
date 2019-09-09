@@ -38,6 +38,36 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
         \date_default_timezone_set('UTC');
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
+        $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
+        $propertyAccessor->expects($this->any())->method('getValue')->willReturn(new \DateTime(date('Y-m-d H:i:s', $timestamp)));
+
+        $dateTimeHelperMock = $this->getMockBuilder(DateTimeHelper::class)
+            ->setMethods(['getTimestamp'])
+            ->getMock();
+
+        $dateTimeHelperMock
+            ->expects($this->any())
+            ->method('getTimestamp')
+            ->willReturn($timestamp);
+
+        $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock, $propertyAccessor);
+        $namer->configure(['date_time_property' => 'getUploadTimestamp']);
+
+        if (null !== $dateTimeFormat) {
+            $namer->configure(['date_time_format' => $dateTimeFormat]);
+        }
+
+        $this->assertSame($expectedName, $namer->directoryName($entity, $mapping));
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testDeprecatedNamerWithoutPropertyAccessor(): void
+    {
+        \date_default_timezone_set('UTC');
+        $entity = new DummyEntity();
+        $mapping = $this->getPropertyMappingMock();
 
         $dateTimeHelperMock = $this->getMockBuilder(DateTimeHelper::class)
             ->setMethods(['getTimestamp'])
@@ -46,15 +76,11 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
         $dateTimeHelperMock
             ->expects($this->once())
             ->method('getTimestamp')
-            ->willReturn($timestamp);
+            ->willReturn(1537706096);
 
         $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock, null);
 
-        if (null !== $dateTimeFormat) {
-            $namer->configure(['date_time_format' => $dateTimeFormat]);
-        }
-
-        $this->assertSame($expectedName, $namer->directoryName($entity, $mapping));
+        $this->assertSame('2018/09/23', $namer->directoryName($entity, $mapping));
     }
 
     public function testConfigurationFailsIfTheDateFormatIsEmpty(): void
