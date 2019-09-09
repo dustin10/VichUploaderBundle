@@ -31,4 +31,9 @@ class AppKernel extends Kernel
     {
         return \sys_get_temp_dir().'/VichUploaderBundle/logs';
     }
+
+    public function getProjectDir(): string
+    {
+        return __DIR__.'/../';
+    }
 }
