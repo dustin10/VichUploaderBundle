@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class FileInjectorTest extends TestCase
 {
     /**
-     * @var Vich\UploaderBundle\Storage\GaufretteStorage
+     * @var GaufretteStorage
      */
     protected $storage;
 
@@ -80,7 +80,7 @@ class FileInjectorTest extends TestCase
     /**
      * Gets a mock storage.
      *
-     * @return Vich\UploaderBundle\Storage\GaufretteStorage Storage
+     * @return GaufretteStorage
      */
     protected function getMockStorage()
     {

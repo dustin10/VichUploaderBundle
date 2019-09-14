@@ -41,7 +41,7 @@ class YamlDriver extends AbstractFileDriver
         return $classMetadata;
     }
 
-    protected function loadMappingFile($file)
+    protected function loadMappingFile(string $file)
     {
         return YmlParser::parse(\file_get_contents($file));
     }

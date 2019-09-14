@@ -31,7 +31,7 @@ final class SmartUniqidNamerTest extends TestCase
             ->willReturn($originalName)
         ;
 
-        $entity = new \StdClass();
+        $entity = new \stdClass();
 
         $mapping = $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()

@@ -16,25 +16,25 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class ListenerTestCase extends TestCase
 {
-    const MAPPING_NAME = 'dummy_mapping';
+    public const MAPPING_NAME = 'dummy_mapping';
 
     /**
-     * @var AdapterInterface
+     * @var AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
 
     /**
-     * @var MetadataReader
+     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 
     /**
-     * @var UploadHandler
+     * @var UploadHandler&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $handler;
 
     /**
-     * @var EventArgs
+     * @var EventArgs&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $event;
 
@@ -69,21 +69,17 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock adapter.
-     *
-     * @return AdapterInterface The mock adapter
+     * @return AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getAdapterMock()
+    protected function getAdapterMock(): AdapterInterface
     {
         return $this->createMock(AdapterInterface::class);
     }
 
     /**
-     * Creates a mock metadata reader.
-     *
-     * @return MetadataReader The mock metadata reader
+     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getMetadataReaderMock()
+    protected function getMetadataReaderMock(): MetadataReader
     {
         return $this->getMockBuilder(MetadataReader::class)
             ->disableOriginalConstructor()
@@ -91,11 +87,9 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock handler.
-     *
-     * @return UploadHandler The handler mock
+     * @return UploadHandler&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getHandlerMock()
+    protected function getHandlerMock(): UploadHandler
     {
         return $this->getMockBuilder(UploadHandler::class)
             ->disableOriginalConstructor()
@@ -103,11 +97,9 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock doctrine event.
-     *
-     * @return EventArgs
+     * @return EventArgs&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getEventMock()
+    protected function getEventMock(): EventArgs
     {
         return $this->getMockBuilder(EventArgs::class)
             ->disableOriginalConstructor()

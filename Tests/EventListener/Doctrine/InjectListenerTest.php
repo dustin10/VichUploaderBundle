@@ -72,7 +72,8 @@ class InjectListenerTest extends ListenerTestCase
 
         $this->handler
             ->expects($this->never())
-            ->method('inject', self::MAPPING_NAME);
+            ->method('inject')
+            ->with(self::MAPPING_NAME);
 
         $this->listener->postLoad($this->event);
     }

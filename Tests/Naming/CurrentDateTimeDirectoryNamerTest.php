@@ -39,7 +39,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
         $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
-        $propertyAccessor->expects($this->any())->method('getValue')->willReturn(new \DateTime(date('Y-m-d H:i:s', $timestamp)));
+        $propertyAccessor->expects($this->any())->method('getValue')->willReturn(new \DateTime(\date('Y-m-d H:i:s', $timestamp)));
 
         $dateTimeHelperMock = $this->getMockBuilder(DateTimeHelper::class)
             ->setMethods(['getTimestamp'])

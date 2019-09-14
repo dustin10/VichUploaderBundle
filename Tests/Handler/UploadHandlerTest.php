@@ -35,7 +35,7 @@ final class UploadHandlerTest extends TestCase
 
     protected $handler;
 
-    const FILE_FIELD = 'image';
+    public const FILE_FIELD = 'image';
 
     protected function setUp(): void
     {
@@ -80,7 +80,7 @@ final class UploadHandlerTest extends TestCase
     /**
      * @dataProvider methodProvider
      */
-    public function testAnExceptionIsThrownIfMappingIsntFound($method): void
+    public function testAnExceptionIsThrownIfMappingIsntFound(string $method): void
     {
         $this->expectException(MappingNotFoundException::class);
 
@@ -156,7 +156,6 @@ final class UploadHandlerTest extends TestCase
     public function testCleanSkipsEmptyObjects(): void
     {
         $this->mapping
-            ->expects($this->any())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');
@@ -210,17 +209,26 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    protected function getStorageMock()
+    /**
+     * @return StorageInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getStorageMock(): StorageInterface
     {
         return $this->createMock(StorageInterface::class);
     }
 
-    protected function getInjectorMock()
+    /**
+     * @return FileInjectorInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getInjectorMock(): FileInjectorInterface
     {
         return $this->createMock(FileInjectorInterface::class);
     }
 
-    protected function getDispatcherMock()
+    /**
+     * @return EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getDispatcherMock(): EventDispatcherInterface
     {
         return $this->createMock(EventDispatcherInterface::class);
     }

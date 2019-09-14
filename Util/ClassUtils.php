@@ -25,21 +25,21 @@ class ClassUtils
         // see original code @ https://github.com/api-platform/core/blob/6e9ccf7418bf973d273b125d55ccc521b89afb06/src/Util/ClassInfoTrait.php#L38
         // __CG__: Doctrine Common Marker for Proxy (ODM < 2.0 and ORM < 3.0)
         // __PM__: Ocramius Proxy Manager (ODM >= 2.0)
-        if ((false === $positionCg = strrpos($className, '\\__CG__\\')) &&
-            (false === $positionPm = strrpos($className, '\\__PM__\\'))) {
+        if ((false === $positionCg = \strrpos($className, '\\__CG__\\')) &&
+            (false === $positionPm = \strrpos($className, '\\__PM__\\'))) {
             return $className;
         }
 
         if (false !== $positionCg) {
-            return substr($className, $positionCg + 8);
+            return \substr($className, $positionCg + 8);
         }
 
-        $className = ltrim($className, '\\');
+        $className = \ltrim($className, '\\');
 
-        return substr(
+        return \substr(
             $className,
             8 + $positionPm,
-            strrpos($className, '\\') - ($positionPm + 8)
+            \strrpos($className, '\\') - ($positionPm + 8)
         );
     }
 }

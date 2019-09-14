@@ -23,7 +23,7 @@ class PropertyMappingFactory
     protected $container;
 
     /**
-     * @var MetadataReader
+     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 
@@ -152,7 +152,7 @@ class PropertyMappingFactory
         $mapping->setMappingName($mappingData['mapping']);
         $mapping->setMapping($config);
 
-        if ($config['namer']['service']) {
+        if (!empty($config['namer']) && null !== $config['namer']['service']) {
             $namerConfig = $config['namer'];
             $namer = $this->container->get($namerConfig['service']);
 
@@ -166,7 +166,7 @@ class PropertyMappingFactory
             $mapping->setNamer($namer);
         }
 
-        if ($config['directory_namer']['service']) {
+        if (!empty($config['directory_namer']) && null !== $config['directory_namer']['service']) {
             $namerConfig = $config['directory_namer'];
             $namer = $this->container->get($namerConfig['service']);
 

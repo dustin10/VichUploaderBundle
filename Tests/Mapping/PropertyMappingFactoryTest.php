@@ -19,12 +19,12 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 class PropertyMappingFactoryTest extends TestCase
 {
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $container;
 
     /**
-     * @var MetadataReader
+     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 
@@ -403,7 +403,7 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * Creates a mock container.
      *
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface The container
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getContainerMock()
     {
@@ -413,7 +413,7 @@ class PropertyMappingFactoryTest extends TestCase
     /**
      * Creates a mock metadata reader.
      *
-     * @return MetadataReader The metadata reader
+     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getMetadataReaderMock()
     {

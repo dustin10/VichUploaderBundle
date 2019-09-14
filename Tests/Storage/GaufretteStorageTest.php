@@ -18,7 +18,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class GaufretteStorageTest extends StorageTestCase
 {
     /**
-     * @var FilesystemMap
+     * @var FilesystemMap&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $filesystemMap;
 
@@ -312,6 +312,9 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
+    /**
+     * @return FilesystemMap&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getFilesystemMapMock(): FilesystemMap
     {
         return $this
@@ -320,6 +323,9 @@ class GaufretteStorageTest extends StorageTestCase
             ->getMock();
     }
 
+    /**
+     * @return Filesystem&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getFilesystemMock(): Filesystem
     {
         return $this

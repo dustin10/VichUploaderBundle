@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Vich\UploaderBundle\Tests\Form\Type;
+namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormInterface;
@@ -11,7 +11,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
-use Vich\UploaderBundle\Tests\Form\Type\VichFileTypeTest;
 
 class VichImageTypeTest extends VichFileTypeTest
 {
