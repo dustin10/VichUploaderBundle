@@ -18,12 +18,12 @@ class AnnotationDriver implements AdvancedDriverInterface
     /**
      * @deprecated
      */
-    const UPLOADABLE_ANNOTATION = Uploadable::class;
+    public const UPLOADABLE_ANNOTATION = Uploadable::class;
 
     /**
      * @deprecated
      */
-    const UPLOADABLE_FIELD_ANNOTATION = UploadableField::class;
+    public const UPLOADABLE_FIELD_ANNOTATION = UploadableField::class;
 
     protected $reader;
 
@@ -82,7 +82,7 @@ class AnnotationDriver implements AdvancedDriverInterface
         return [];
     }
 
-    protected function isUploadable(\ReflectionClass $class)
+    protected function isUploadable(\ReflectionClass $class): bool
     {
         return null !== $this->reader->getClassAnnotation($class, Uploadable::class);
     }

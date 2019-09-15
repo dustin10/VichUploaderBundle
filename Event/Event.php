@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-if (Kernel::VERSION_ID >= 40300 && class_exists(ContractEvent::class)) {
+if (Kernel::VERSION_ID >= 40300 && \class_exists(ContractEvent::class)) {
     class Event extends ContractEvent
     {
         protected $object;

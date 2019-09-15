@@ -26,7 +26,7 @@ class UploadListenerTest extends ListenerTestCase
      */
     public function testGetSubscribedEvents(): void
     {
-        $events = $this->listener->getSubscribedEvents();
+        $events = $this->listener::getSubscribedEvents();
 
         $this->assertArrayHasKey('propel.pre_update', $events);
         $this->assertArrayHasKey('propel.pre_insert', $events);

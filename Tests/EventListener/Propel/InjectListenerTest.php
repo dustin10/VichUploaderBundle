@@ -26,7 +26,7 @@ class InjectListenerTest extends ListenerTestCase
      */
     public function testGetSubscribedEvents(): void
     {
-        $events = $this->listener->getSubscribedEvents();
+        $events = $this->listener::getSubscribedEvents();
 
         $this->assertArrayHasKey('propel.post_hydrate', $events);
     }

@@ -29,7 +29,7 @@ class MappingDebugCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mapping = $input->getArgument('mapping');
 
@@ -42,5 +42,7 @@ class MappingDebugCommand extends Command
         foreach ($this->mappings[$mapping] as $key => $value) {
             $output->writeln(\sprintf('<comment>%s</comment>: %s', $key, \var_export($value, true)));
         }
+
+        return 0;
     }
 }

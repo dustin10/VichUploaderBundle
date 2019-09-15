@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use Metadata\Driver\DriverInterface;
 use Metadata\Driver\FileLocatorInterface;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
@@ -30,12 +31,12 @@ class YamlDriverTest extends FileDriverTestCase
         $driver->loadMetadataForClass($rClass);
     }
 
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'yml';
     }
 
-    protected function getDriver($reflectionClass, $file)
+    protected function getDriver(\ReflectionClass $reflectionClass, ?string $file): DriverInterface
     {
         return new YamlDriver($this->getFileLocatorMock($reflectionClass, $file));
     }
@@ -45,7 +46,7 @@ class TestableYamlDriver extends YamlDriver
 {
     public $mappingContent;
 
-    protected function loadMappingFile($file)
+    protected function loadMappingFile(string $file)
     {
         return $this->mappingContent;
     }

@@ -14,20 +14,20 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class FlysystemStorageTest extends StorageTestCase
 {
-    const FS_KEY = 'filesystemKey';
+    public const FS_KEY = 'filesystemKey';
 
     /**
-     * @var MountManager
+     * @var MountManager&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mountManager;
 
     /**
-     * @var FilesystemInterface
+     * @var Filesystem&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $filesystem;
 
     /**
-     * @var AbstractAdapter
+     * @var AbstractAdapter&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
 
@@ -181,7 +181,7 @@ class FlysystemStorageTest extends StorageTestCase
     /**
      * Creates a filesystem map mock.
      *
-     * @return MountManager The mount manager
+     * @return MountManager&\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getMountManagerMock()
     {

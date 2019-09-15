@@ -14,7 +14,7 @@ abstract class FileDriverTestCase extends TestCase
     /**
      * @dataProvider classesProvider
      */
-    public function testLoadMetadataForClass($class, $file, $expectedMetadata): void
+    public function testLoadMetadataForClass(string $class, string $file, array $expectedMetadata): void
     {
         $reflectionClass = new \ReflectionClass($class);
         $driver = $this->getDriver($reflectionClass, $file);
@@ -73,7 +73,7 @@ abstract class FileDriverTestCase extends TestCase
         return $metadatas;
     }
 
-    protected function getFileLocatorMock(\ReflectionClass $class, $foundFile = null)
+    protected function getFileLocatorMock(\ReflectionClass $class, ?string $foundFile = null)
     {
         $fileLocator = $this->createMock(FileLocatorInterface::class);
         $fileLocator
@@ -85,13 +85,7 @@ abstract class FileDriverTestCase extends TestCase
         return $fileLocator;
     }
 
-    abstract protected function getExtension();
+    abstract protected function getExtension(): string;
 
-    /**
-     * @param $reflectionClass
-     * @param $file
-     *
-     * @return DriverInterface
-     */
-    abstract protected function getDriver($reflectionClass, $file);
+    abstract protected function getDriver(\ReflectionClass $reflectionClass, ?string $file): DriverInterface;
 }

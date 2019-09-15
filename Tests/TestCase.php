@@ -9,6 +9,9 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 class TestCase extends BaseTestCase
 {
+    /**
+     * @return UploadedFile&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getUploadedFileMock(): UploadedFile
     {
         return $this->getMockBuilder(UploadedFile::class)
@@ -16,6 +19,9 @@ class TestCase extends BaseTestCase
             ->getMock();
     }
 
+    /**
+     * @return PropertyMapping&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getPropertyMappingMock(): PropertyMapping
     {
         return $this->getMockBuilder(PropertyMapping::class)
@@ -23,6 +29,9 @@ class TestCase extends BaseTestCase
             ->getMock();
     }
 
+    /**
+     * @return PropertyMappingFactory&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getPropertyMappingFactoryMock(): PropertyMappingFactory
     {
         return $this->getMockBuilder(PropertyMappingFactory::class)

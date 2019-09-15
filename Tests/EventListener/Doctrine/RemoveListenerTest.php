@@ -23,9 +23,6 @@ class RemoveListenerTest extends ListenerTestCase
         $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
-    /**
-     * Test the getSubscribedEvents method.
-     */
     public function testGetSubscribedEvents(): void
     {
         $events = $this->listener->getSubscribedEvents();
@@ -65,9 +62,6 @@ class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
     }
 
-    /**
-     * Test the postRemove method.
-     */
     public function testPostRemove(): void
     {
         $this->metadata
@@ -111,11 +105,9 @@ class RemoveListenerTest extends ListenerTestCase
     }
 
     /**
-     * Creates a mock doctrine entity proxy.
-     *
-     * @return Proxy
+     * @return Proxy&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getEntityProxyMock()
+    protected function getEntityProxyMock(): Proxy
     {
         return $this->getMockBuilder(Proxy::class)
             ->setMockClassName('VichUploaderEntityProxy')

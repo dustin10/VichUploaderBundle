@@ -16,22 +16,22 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class ListenerTestCase extends TestCase
 {
-    const FIELD_NAME = 'file';
+    public const FIELD_NAME = 'file';
 
-    const MAPPING_NAME = 'mapping_name';
+    public const MAPPING_NAME = 'mapping_name';
 
     /**
-     * @var AdapterInterface
+     * @var AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
 
     /**
-     * @var UploadHandler
+     * @var UploadHandler&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $handler;
 
     /**
-     * @var MetadataReader
+     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 
@@ -41,7 +41,7 @@ class ListenerTestCase extends TestCase
     protected $listener;
 
     /**
-     * @var EventArgs
+     * @var GenericEvent&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $event;
 
@@ -63,13 +63,11 @@ class ListenerTestCase extends TestCase
 
         // the adapter is always used to return the object
         $this->adapter
-            ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
             ->willReturn($this->object);
 
         $this->metadata
-            ->expects($this->any())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
             ->willReturn([
@@ -78,21 +76,17 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock adapter.
-     *
-     * @return AdapterInterface The mock adapter
+     * @return AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getAdapterMock()
+    protected function getAdapterMock(): AdapterInterface
     {
         return $this->createMock(AdapterInterface::class);
     }
 
     /**
-     * Creates a mock handler.
-     *
-     * @return UploadHandler The handler mock
+     * @return UploadHandler&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getHandlerMock()
+    protected function getHandlerMock(): UploadHandler
     {
         return $this->getMockBuilder(UploadHandler::class)
             ->disableOriginalConstructor()
@@ -100,11 +94,9 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock event.
-     *
-     * @return GenericEvent The mock event
+     * @return GenericEvent&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getEventMock()
+    protected function getEventMock(): GenericEvent
     {
         return $this->getMockBuilder(GenericEvent::class)
             ->disableOriginalConstructor()
@@ -112,11 +104,9 @@ class ListenerTestCase extends TestCase
     }
 
     /**
-     * Creates a mock metadata reader.
-     *
-     * @return MetadataReader The mock metadata reader
+     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getMetadataReaderMock()
+    protected function getMetadataReaderMock(): MetadataReader
     {
         return $this->getMockBuilder(MetadataReader::class)
             ->disableOriginalConstructor()

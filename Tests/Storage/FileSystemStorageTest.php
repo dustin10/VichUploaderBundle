@@ -23,7 +23,7 @@ class FileSystemStorageTest extends StorageTestCase
      *
      * @dataProvider emptyFilenameProvider
      */
-    public function testRemoveSkipsEmptyFilenameProperties($propertyValue): void
+    public function testRemoveSkipsEmptyFilenameProperties(?string $propertyValue): void
     {
         $this->mapping
             ->expects($this->once())
