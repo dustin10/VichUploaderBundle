@@ -21,6 +21,11 @@ vich_uploader:
             directory_namer: my.directory_namer.product
 ```
 
+**Note**:
+
+> The directory namer service must be public.
+> If you're using default configuration, make sure to explicit public visibility
+> for your directory namer service
 
 ## That was it!
 
