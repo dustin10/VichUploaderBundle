@@ -46,7 +46,7 @@ class VichImageType extends VichFileType
 
         $resolver->setAllowedTypes('image_uri', ['bool', 'string', 'callable']);
 
-        $imageUriNormalizer = function (Options $options, $imageUri) {
+        $imageUriNormalizer = static function (Options $options, $imageUri) {
             return $imageUri ?? $options['download_uri'];
         };
 
