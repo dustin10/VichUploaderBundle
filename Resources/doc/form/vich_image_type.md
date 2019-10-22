@@ -162,6 +162,29 @@ $builder->add('photo', VichImageType::class, [
 
 ```
 
+storage_resolve_method
+------------
+**type**: `int` **default**: `0`
+
+Allowed values:
+
+```
+VichImageType::STORAGE_RESOLVE_URI = 0;
+VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE = 1;
+VichImageType::STORAGE_RESOLVE_PATH_RELATIVE = 2;
+```
+
+Example
+
+```php
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
+$builder->add('photo', VichImageType::class, [
+    'storage_resolve_method' => VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,
+]);
+
+```
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
