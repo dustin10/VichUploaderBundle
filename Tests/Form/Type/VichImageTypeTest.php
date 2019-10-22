@@ -145,20 +145,19 @@ class VichImageTypeTest extends VichFileTypeTest
         ];
     }
 
-	/**
+    /**
      * @dataProvider getLiipImagineBundleIntegrationData
-	 */
+     */
     public function testLiipImagineBundleIntegration(
-	    string $field,
-	    Product $object,
-	    int $storageResolveMethod,
-	    string $storageResolveMethodName,
-	    array $storageResolveArguments,
-	    string $storageResolvedPath,
-	    string $imaginePattern,
-	    string $imagineResolvedPath
-    ): void
-    {
+        string $field,
+        Product $object,
+        int $storageResolveMethod,
+        string $storageResolveMethodName,
+        array $storageResolveArguments,
+        string $storageResolvedPath,
+        string $imaginePattern,
+        string $imagineResolvedPath
+    ): void {
         if (!\class_exists(CacheManager::class)) {
             $this->markTestSkipped('LiipImagineBundle is not installed.');
         }
@@ -227,43 +226,44 @@ class VichImageTypeTest extends VichFileTypeTest
         $this->assertEquals($vars, $view->vars);
     }
 
-	public function getLiipImagineBundleIntegrationData(): array
-	{
-		$field = 'image';
-		$object = new Product();
-		return [
-			'calling StorageInterface::resolveUri()' => [
-				$field,
-				$object,
-				VichImageType::STORAGE_RESOLVE_URI,
-				'resolveUri',
-				[$object, $field],
-				'resolved-uri',
-				'product_sq200',
-				'product_sq200/resolved-uri',
-			],
-			'calling StorageInterface::resolvePath()' => [
-				$field,
-				$object,
-				VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE,
-				'resolvePath',
-				[$object, $field],
-				'resolved-path-absolute',
-				'product_sq200',
-				'product_sq200/resolved-path-absolute',
-			],
-			'calling StorageInterface::resolvePath() with argument $relative = true' => [
-				$field,
-				$object,
-				VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,
-				'resolvePath',
-				[$object, $field, null, true],
-				'resolved-path-relative',
-				'product_sq200',
-				'product_sq200/resolved-path-relative',
-			],
-		];
-	}
+    public function getLiipImagineBundleIntegrationData(): array
+    {
+        $field = 'image';
+        $object = new Product();
+
+        return [
+            'calling StorageInterface::resolveUri()' => [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_URI,
+                'resolveUri',
+                [$object, $field],
+                'resolved-uri',
+                'product_sq200',
+                'product_sq200/resolved-uri',
+            ],
+            'calling StorageInterface::resolvePath()' => [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE,
+                'resolvePath',
+                [$object, $field],
+                'resolved-path-absolute',
+                'product_sq200',
+                'product_sq200/resolved-path-absolute',
+            ],
+            'calling StorageInterface::resolvePath() with argument $relative = true' => [
+                $field,
+                $object,
+                VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,
+                'resolvePath',
+                [$object, $field, null, true],
+                'resolved-path-relative',
+                'product_sq200',
+                'product_sq200/resolved-path-relative',
+            ],
+        ];
+    }
 
     public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
     {
