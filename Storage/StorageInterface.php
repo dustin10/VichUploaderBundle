@@ -45,12 +45,12 @@ interface StorageInterface
      * Resolves the uri based on the specified object and mapping name.
      *
      * @param object|array $obj       The object
-     * @param string       $fieldName The field to use
-     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param string|null  $fieldName The field to use
+     * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return string|null The uri or null if file not stored
      */
-    public function resolveUri($obj, string $fieldName, ?string $className = null): ?string;
+    public function resolveUri($obj, ?string $fieldName = null, ?string $className = null): ?string;
 
     /**
      * Returns a read-only stream based on the specified object and mapping name.

@@ -112,6 +112,23 @@ class PropertyMappingFactory
         return $this->createMapping($obj, $field, $mappingData);
     }
 
+    public function fromFirstField($obj, ?string $className = null): ?PropertyMapping
+    {
+        if ($obj instanceof Proxy) {
+            $obj->__load();
+        }
+
+        $class = $this->getClassName($obj, $className);
+        $this->checkUploadable($class);
+
+        $mappingData = $this->metadata->getUploadableFields($class);
+        if (null === $mappingData || 0 === \count($mappingData)) {
+            return null;
+        }
+
+        return $this->createMapping($obj, \key($mappingData), \reset($mappingData));
+    }
+
     /**
      * Checks to see if the class is uploadable.
      *

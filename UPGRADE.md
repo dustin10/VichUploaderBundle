@@ -1,3 +1,9 @@
+Upgrading from v1.8.0 to 1.11.0
+===============================
+
+- minor **BC-BREAK**: methods `resolvePath` and `resolveUri` in `StorageInterface` now accepts `null` in second argument.
+  This will affect you only if you implementd a custom storage, without extending base `AbstractStorage` class.
+
 Upgrading from v1.6.0 to 1.8.0
 ==============================
 

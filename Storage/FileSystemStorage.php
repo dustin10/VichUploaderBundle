@@ -37,9 +37,9 @@ class FileSystemStorage extends AbstractStorage
         return $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$path;
     }
 
-    public function resolveUri($obj, string $mappingName, string $className = null): ?string
+    public function resolveUri($obj, ?string $fieldName = null, ?string $className = null): ?string
     {
-        [$mapping, $name] = $this->getFilename($obj, $mappingName, $className);
+        [$mapping, $name] = $this->getFilename($obj, $fieldName, $className);
 
         if (empty($name)) {
             return null;
