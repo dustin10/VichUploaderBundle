@@ -103,6 +103,37 @@ class FileSystemStorageTest extends StorageTestCase
     }
 
     /**
+     * Test the resolve path method without passing field name.
+     */
+    public function testResolvePathWithoutFieldName(): void
+    {
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDir')
+            ->willReturn('');
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getUploadDestination')
+            ->willReturn('/tmp');
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('fromFirstField')
+            ->with($this->object)
+            ->willReturn($this->mapping);
+
+        $path = $this->storage->resolvePath($this->object);
+
+        $this->assertEquals(\sprintf('/tmp%sfile.txt', \DIRECTORY_SEPARATOR), $path);
+    }
+
+    /**
      * Test the resolve path method.
      */
     public function testResolveRelativePath(): void

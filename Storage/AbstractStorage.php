@@ -75,7 +75,7 @@ abstract class AbstractStorage implements StorageInterface
      */
     abstract protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string;
 
-    public function resolvePath($obj, string $fieldName, ?string $className = null, ?bool $relative = false): ?string
+    public function resolvePath($obj, ?string $fieldName = null, ?string $className = null, ?bool $relative = false): ?string
     {
         [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
@@ -86,7 +86,7 @@ abstract class AbstractStorage implements StorageInterface
         return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename, $relative);
     }
 
-    public function resolveUri($obj, string $fieldName, ?string $className = null): ?string
+    public function resolveUri($obj, ?string $fieldName = null, ?string $className = null): ?string
     {
         [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
@@ -115,7 +115,7 @@ abstract class AbstractStorage implements StorageInterface
      * note: extension point.
      *
      * @param             $obj
-     * @param string      $fieldName
+     * @param string|null $fieldName
      * @param string|null $className
      *
      * @return array
@@ -124,9 +124,12 @@ abstract class AbstractStorage implements StorageInterface
      * @throws \RuntimeException
      * @throws \Vich\UploaderBundle\Exception\NotUploadableException
      */
-    protected function getFilename($obj, string $fieldName, ?string $className = null): array
+    protected function getFilename($obj, ?string $fieldName = null, ?string $className = null): array
     {
-        $mapping = $this->factory->fromField($obj, $fieldName, $className);
+        $mapping = null === $fieldName ?
+            $this->factory->fromFirstField($obj, $className) :
+            $this->factory->fromField($obj, $fieldName, $className)
+        ;
 
         if (null === $mapping) {
             throw new MappingNotFoundException(\sprintf('Mapping not found for field "%s"', $fieldName));

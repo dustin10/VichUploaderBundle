@@ -32,12 +32,12 @@ class UploaderHelper extends Helper
      * object.
      *
      * @param object|array $obj       The object
-     * @param string       $fieldName The field name
-     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param string|null  $fieldName The field name
+     * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return string|null The public asset path or null if file not stored
      */
-    public function asset($obj, string $fieldName, ?string $className = null)
+    public function asset($obj, ?string $fieldName = null, ?string $className = null)
     {
         return $this->storage->resolveUri($obj, $fieldName, $className);
     }
