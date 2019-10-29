@@ -21,6 +21,7 @@ final class SmartUniqueNamer implements NamerInterface
         $originalBasename = \basename($originalName, '.'.$originalExtension);
         $originalBasename = Transliterator::transliterate($originalBasename);
         $uniqId = \str_replace('.', '', \uniqid('-', true));
+        $uniqBasename = \sprintf('%s%s', $originalBasename, $uniqId);
         $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);
         // Check if smartName is an acceptable size (some filesystems accept a max of 255)
@@ -28,14 +29,29 @@ final class SmartUniqueNamer implements NamerInterface
             return $smartName;
         }
 
-        // Shorten the basename to fit into 255 (excluding the unique extension)
-        $diffSize = (255 - \strlen($uniqExtension)) - \strlen($originalBasename);
-        if ($diffSize > 0) {
-            $shortBasename = \substr($originalBasename, 0, $diffSize);
+        // Check if the unique extension will fit into 255
+        // 254 to account for a one letter basename
+        if (\strlen($uniqExtension) <= 254) {
+            // Resize the basename to fit into 255 alongside the unique ID and extension
+            $shrinkBasenameSize = 255 - \strlen($uniqExtension);
+            $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
 
             return \sprintf('%s%s', $shortBasename, $uniqExtension);
+        // The extension is too long, but first try to preserve the basename, if possible
+        // 253 is used to account for a dot and one letter extension
+        } elif (\strlen($uniqBasename) <= 253) {
+            // Resize the extension to fit into 255 alongside the basename, unique ID, and the dot
+            // 254 is used to account for the dot
+            $shrinkExtenstionSize = 254 - \strlen($uniqBasename);
+            $shortExtension = \substr($originalExtension, 0, $shrinkExtensionSize);
+            
+            return \sprintf('%s.%s', $uniqBasename, $shortExtension);
         }
-        // Last resort
-        return $uniqExtension;
+        // Both the basename and extension are too long
+        // 4 is used to keep three characters from the extension and include the dot
+        $shrinkBasenameSize = 4 + \strlen($uniqId);
+        $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
+        $shortExtension = \substr($originalExtension, 0, 3);
+        return \sprintf('%s.%s', $shortBasename, $shortExtension);
     }
 }
