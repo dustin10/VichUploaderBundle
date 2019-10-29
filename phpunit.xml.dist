@@ -3,14 +3,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.0/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
          convertDeprecationsToExceptions="false"
-         processIsolation="false"
-         stopOnFailure="false"
          colors="true">
     <testsuites>
         <testsuite name="VichUploaderBundle Test Suite">
