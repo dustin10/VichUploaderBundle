@@ -17,10 +17,26 @@ final class SmartUniqueNamer implements NamerInterface
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
-        $originalExtension = \pathinfo($originalName, PATHINFO_EXTENSION);
-        $originalBasename = \basename($originalName, '.'.$originalExtension);
+        $originalExtension = \strtolower(\pathinfo($originalName, PATHINFO_EXTENSION));
+        $originalBasename = \strtolower(\basename($originalName, '.'.$originalExtension));
         $originalBasename = Transliterator::transliterate($originalBasename);
+        $uniqId = \str_replace('.', '', \uniqid('-', true));
+        $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
+        $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);
+        
+        // Check if smartName is an acceptable size (some filesystems accept a max of 255)
+        if (\strlen($smartName) <= 255) {
+            return $smartName;
+        }
 
-        return \sprintf('%s%s.%s', $originalBasename, \str_replace('.', '', \uniqid('-', true)), $originalExtension);
+        // Shorten the basename to fit into 255 (excluding the unique extension)
+        $diffSize = (255 - \strlen($uniqExtension)) - \strlen($originalBasename);
+        if ($diffSize > 0) {
+            $shortBasename = \substr($originalBasename, 0, $diffSize);
+            return \sprintf('%s%s', $shortBasename, $uniqExtension);
+        }
+        
+        // Last resort
+        return $uniqExtension;
     }
 }
