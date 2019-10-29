@@ -23,7 +23,6 @@ final class SmartUniqueNamer implements NamerInterface
         $uniqId = \str_replace('.', '', \uniqid('-', true));
         $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);
-        
         // Check if smartName is an acceptable size (some filesystems accept a max of 255)
         if (\strlen($smartName) <= 255) {
             return $smartName;
@@ -35,7 +34,6 @@ final class SmartUniqueNamer implements NamerInterface
             $shortBasename = \substr($originalBasename, 0, $diffSize);
             return \sprintf('%s%s', $shortBasename, $uniqExtension);
         }
-        
         // Last resort
         return $uniqExtension;
     }
