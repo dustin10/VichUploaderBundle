@@ -32,6 +32,7 @@ final class SmartUniqueNamer implements NamerInterface
         $diffSize = (255 - \strlen($uniqExtension)) - \strlen($originalBasename);
         if ($diffSize > 0) {
             $shortBasename = \substr($originalBasename, 0, $diffSize);
+
             return \sprintf('%s%s', $shortBasename, $uniqExtension);
         }
         // Last resort
