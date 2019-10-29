@@ -24,6 +24,7 @@ final class SmartUniqueNamer implements NamerInterface
         $uniqBasename = \sprintf('%s%s', $originalBasename, $uniqId);
         $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);
+
         // Check if smartName is an acceptable size (some filesystems accept a max of 255)
         if (\strlen($smartName) <= 255) {
             return $smartName;
@@ -37,6 +38,7 @@ final class SmartUniqueNamer implements NamerInterface
             $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
 
             return \sprintf('%s%s', $shortBasename, $uniqExtension);
+
         // The extension is too long, but first try to preserve the basename, if possible
         // 253 is used to account for a dot and one letter extension
         } elseif (\strlen($uniqBasename) <= 253) {
@@ -44,14 +46,16 @@ final class SmartUniqueNamer implements NamerInterface
             // 254 is used to account for the dot
             $shrinkExtenstionSize = 254 - \strlen($uniqBasename);
             $shortExtension = \substr($originalExtension, 0, $shrinkExtensionSize);
-            
+
             return \sprintf('%s.%s', $uniqBasename, $shortExtension);
         }
+
         // Both the basename and extension are too long
         // 4 is used to keep three characters from the extension and include the dot
         $shrinkBasenameSize = 4 + \strlen($uniqId);
         $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
         $shortExtension = \substr($originalExtension, 0, 3);
+
         return \sprintf('%s.%s', $shortBasename, $shortExtension);
     }
 }
