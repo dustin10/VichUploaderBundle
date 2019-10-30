@@ -36,7 +36,7 @@ final class SmartUniqueNamer implements NamerInterface
             $shrinkBasenameSize = 255 - \strlen($uniqExtension);
             $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
 
-            return \sprintf('%s%s', $shortBasename, $uniqExtension);        
+            return \sprintf('%s%s', $shortBasename, $uniqExtension);
         }
 
         // The extension is too long, but first try to preserve the basename, if possible
