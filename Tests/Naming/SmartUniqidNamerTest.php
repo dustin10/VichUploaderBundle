@@ -16,9 +16,9 @@ final class SmartUniqidNamerTest extends TestCase
             'accented' => ['làlà.mp3', '/lala-[[:xdigit:]]{22}\.mp3/'],
             'spaced' => ['a Foo Bar.txt', '/a-foo-bar-[[:xdigit:]]{22}\.txt/'],
             'special char' => ['yezz!.png', '/yezz-[[:xdigit:]]{22}\.png/'],
-            'long basename' => [\str_repeat("a", 230).'.txt', '/a{229}[[:xdigit:]]{22}\.txt/'],
-            'long extension' => ['a.'.\str_repeat("a", 232), '/a[[:xdigit:]]{22}\.a{231}/'],
-            'long basename and extension' => [\str_repeat("a", 237).'.txt'.\str_repeat("a", 256),
+            'long basename' => [\str_repeat('a', 230).'.txt', '/a{229}[[:xdigit:]]{22}\.txt/'],
+            'long extension' => ['a.'.\str_repeat('a', 232), '/a[[:xdigit:]]{22}\.a{231}/'],
+            'long basename and extension' => [\str_repeat('a', 237).'.txt'.\str_repeat('a', 256),
                                               '/[[:xdigit:]]{22}\.txt/']
         ];
     }
