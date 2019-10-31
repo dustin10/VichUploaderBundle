@@ -45,7 +45,7 @@ final class SmartUniqueNamer implements NamerInterface
         if (\strlen($uniqBasename) <= 253) {
             // Resize the extension to fit into 255 alongside the basename, unique ID, and the dot
             // 254 is used to account for the dot
-            $shrinkExtenstionSize = 254 - \strlen($uniqBasename);
+            $shrinkExtensionSize = 254 - \strlen($uniqBasename);
             $shortExtension = \substr($originalExtension, 0, $shrinkExtensionSize);
 
             return \sprintf('%s.%s', $uniqBasename, $shortExtension);
