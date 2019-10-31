@@ -57,6 +57,6 @@ final class SmartUniqueNamer implements NamerInterface
         $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
         $shortExtension = \substr($originalExtension, 0, 3);
 
-        return \sprintf('%s.%s', $shortBasename, $shortExtension);
+        return \sprintf('%s%s.%s', $shortBasename, $uniqId, $shortExtension);
     }
 }
