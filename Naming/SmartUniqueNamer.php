@@ -52,8 +52,8 @@ final class SmartUniqueNamer implements NamerInterface
         }
 
         // Both the basename and extension are too long
-        // 4 is used to keep three characters from the extension and include the dot
-        $shrinkBasenameSize = 4 + \strlen($uniqId);
+        // 251 is used to account for a dot and 3 letter extension
+        $shrinkBasenameSize = 251 - \strlen($uniqId);
         $shortBasename = \substr($originalBasename, 0, $shrinkBasenameSize);
         $shortExtension = \substr($originalExtension, 0, 3);
 
