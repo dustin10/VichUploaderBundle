@@ -19,7 +19,7 @@ final class SmartUniqidNamerTest extends TestCase
             'long basename' => [\str_repeat('a', 230).'.txt', '/a{229}[[:xdigit:]]{22}\.txt/'],
             'long extension' => ['a.'.\str_repeat('a', 232), '/a[[:xdigit:]]{22}\.a{231}/'],
             'long basename and extension' => [\str_repeat('a', 237).'.txt'.\str_repeat('a', 256),
-                                              '/[[:xdigit:]]{22}\.txt/', ]
+                                              '/[[:xdigit:]]{22}\.txt/', ],
         ];
     }
 
