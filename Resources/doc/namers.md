@@ -97,8 +97,8 @@ At the moment there are several available namers:
   * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
   * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
 
-**SubdirDirectoryNamer** creates subdirs depends of file name, `abcdef.jpg` will be 
-stored in as folder `ab`. It is also possible configure how many chars use per directory name and 
+**SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be 
+stored in a folder `ab`. It is also possible to configure how many chars use per directory name and 
 how many directories to create. 
 
 To use it, you just have to specify the service for the `directory_namer`
@@ -130,7 +130,7 @@ vich_uploader:
 
 To use it, you just have to specify the service for the `directory_namer`
 configuration option of your mapping, and **must** set a property,
-optionally you can use the `transliterate` option to remove special char from directory name:
+optionally you can use the `transliterate` option to remove special chars from directory name:
 
 ``` yaml
 vich_uploader:
@@ -143,8 +143,8 @@ vich_uploader:
                 options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
 
-**CurrentDateTimeDirectoryNamer** creates subdirs depends on current locale datetime. By default will be 
-created by format `Y/m/d`. It is possible to configure how datetime format use to create directories.
+**CurrentDateTimeDirectoryNamer** creates subdirs depending on the current locale datetime. By default, it will be 
+created in the `Y/m/d` format. It is possible to configure the datetime format used to create directories.
 For details of datetime formats see <http://php.net/manual/en/function.date.php>.
 You should also pass to this namer an option declaring a property where uploading datetime is stored in your object.
 Such property will be accessed via ProperyAccessor, so it can be a public property or a getter method.
