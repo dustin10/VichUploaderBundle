@@ -23,7 +23,7 @@ matrix:
         - php: 7.2
           env: SYMFONY_VERSION="^4.4.0" WITH_LIIP_IMAGINE=true
         - php: 7.3
-          env: SYMFONY_VERSION="^5.0.0" WITH_LIIP_IMAGINE=true
+          env: SYMFONY_VERSION="^5.0.0"
     allow_failures:
         - php: nightly
 
@@ -40,4 +40,4 @@ install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS 
 
 script:
     - if [ "$VALIDATE_DOCS" != true ]; then ./vendor/bin/phpunit; fi
-    - if [ "$VALIDATE_DOCS" = true ]; then php ./vendor/bin/rusty check --no-execute ./Resources/doc; fi
+    - if [ "$VALIDATE_DOCS" = true ]; then php ./vendor/bin/rusty check --no-execute ./docs; fi
