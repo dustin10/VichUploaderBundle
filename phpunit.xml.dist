@@ -7,25 +7,20 @@
          colors="true">
     <testsuites>
         <testsuite name="VichUploaderBundle Test Suite">
-            <directory suffix="Test.php">./Tests</directory>
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
 
     <php>
-        <server name="KERNEL_DIR" value="./Tests/Fixtures/App/app" />
+        <server name="KERNEL_DIR" value="./tests/Fixtures/App/app" />
         <server name="KERNEL_CLASS" value="AppKernel" />
         <server name="SHELL_VERBOSITY" value="1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=3" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
     </php>
 
     <filter>
         <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
+            <directory>./src</directory>
         </whitelist>
     </filter>
     <listeners>
