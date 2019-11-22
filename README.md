@@ -19,7 +19,7 @@ All of this functionality is fully configurable to allow for app-specific custom
 
 For usage documentation, see:
 
-[Resources/doc/index.md](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md)
+[docs/index.md](https://github.com/dustin10/VichUploaderBundle/blob/master/docs/index.md)
 
 If upgrading from a previous version, also check:
 
@@ -31,4 +31,4 @@ See the [CONTRIBUTING](https://github.com/dustin10/VichUploaderBundle/blob/maste
 
 ## License
 
-See the bundled [LICENSE](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/meta/LICENSE) file.
+See the bundled [LICENSE](https://github.com/dustin10/VichUploaderBundle/blob/master/LICENSE) file.

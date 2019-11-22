@@ -2,8 +2,7 @@
 // see https://github.com/FriendsOfPHP/PHP-CS-Fixer
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('vendor')
-    ->in([__DIR__])
+    ->in([__DIR__.'/src', __DIR__.'/tests'])
 ;
 
 return PhpCsFixer\Config::create()
