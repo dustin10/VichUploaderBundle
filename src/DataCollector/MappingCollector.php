@@ -19,7 +19,7 @@ final class MappingCollector extends DataCollector
         $this->metadataReader = $metadataReader;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $mappings = [];
         $uploadableClasses = $this->metadataReader->getUploadableClasses();
