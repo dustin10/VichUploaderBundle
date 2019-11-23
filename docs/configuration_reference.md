@@ -8,7 +8,7 @@ Below is the full default configuration for the bundle:
 ``` yaml
 # config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
-    db_driver: orm        # or mongodb or propel or phpcr - default db driver
+    db_driver: orm        # or mongodb or phpcr - default db driver
     templating: true      # set to false to disable templating integration 
     twig: true            # set to false to disable twig integration (requires templating)                  
     form: true            # set to false to disable form integration

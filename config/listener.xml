@@ -29,19 +29,6 @@
         <service id="vich_uploader.listener.clean.phpcr" parent="vich_uploader.listener.clean.orm" />
         <service id="vich_uploader.listener.remove.phpcr" parent="vich_uploader.listener.remove.orm" />
 
-        <!-- propel listeners -->
-        <service id="vich_uploader.listener.propel.base" abstract="true" public="false">
-            <argument /> <!-- will contain the mapping name -->
-            <argument /> <!-- adapter -->
-            <argument type="service" id="vich_uploader.metadata_reader" />
-            <argument type="service" id="vich_uploader.upload_handler" />
-        </service>
-
-        <service id="vich_uploader.listener.inject.propel" class="Vich\UploaderBundle\EventListener\Propel\InjectListener" parent="vich_uploader.listener.propel.base" />
-        <service id="vich_uploader.listener.upload.propel" class="Vich\UploaderBundle\EventListener\Propel\UploadListener" parent="vich_uploader.listener.propel.base" />
-        <service id="vich_uploader.listener.clean.propel" class="Vich\UploaderBundle\EventListener\Propel\CleanListener" parent="vich_uploader.listener.propel.base" />
-        <service id="vich_uploader.listener.remove.propel" class="Vich\UploaderBundle\EventListener\Propel\RemoveListener" parent="vich_uploader.listener.propel.base" />
-
     </services>
 
 </container>
