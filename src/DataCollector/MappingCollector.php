@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Throwable;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
 final class MappingCollector extends DataCollector
@@ -20,7 +19,7 @@ final class MappingCollector extends DataCollector
         $this->metadataReader = $metadataReader;
     }
 
-    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $mappings = [];
         $uploadableClasses = $this->metadataReader->getUploadableClasses();
