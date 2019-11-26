@@ -41,7 +41,6 @@ Four engines are currently supported:
   * [orm](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/index.html)
   * [mongodb](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/1.2/index.html)
   * [phpcr](https://www.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html)
-  * [propel](http://propelorm.org/Propel/)
 
 Once the chosen persistence engine is installed and configured, tell
 VichUploaderBundle that you want to use it.
@@ -49,14 +48,8 @@ VichUploaderBundle that you want to use it.
 ```yaml
 # config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
-    db_driver: orm # or mongodb or propel or phpcr
+    db_driver: orm # or mongodb or phpcr
 ```
-
-**Note:**
-
-> Propel requires a bit more in order to work with this bundle. Check [Propel's
-> section](propel.md) to know what to configure.
-
 
 ## That was it!
 

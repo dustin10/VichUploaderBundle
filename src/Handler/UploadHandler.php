@@ -2,9 +2,8 @@
 
 namespace Vich\UploaderBundle\Handler;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
@@ -29,12 +28,16 @@ class UploadHandler extends AbstractHandler
      */
     protected $dispatcher;
 
-    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage, FileInjectorInterface $injector, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        PropertyMappingFactory $factory,
+        StorageInterface $storage,
+        FileInjectorInterface $injector,
+        EventDispatcherInterface $dispatcher
+    ) {
         parent::__construct($factory, $storage);
 
         $this->injector = $injector;
-        $this->dispatcher = \class_exists(LegacyEventDispatcherProxy::class) ? LegacyEventDispatcherProxy::decorate($dispatcher) : $dispatcher;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -105,11 +108,7 @@ class UploadHandler extends AbstractHandler
 
     protected function dispatch(string $eventName, Event $event): void
     {
-        if (\class_exists(LegacyEventDispatcherProxy::class)) {
-            $this->dispatcher->dispatch($event, $eventName);
-        } else {
-            $this->dispatcher->dispatch($eventName, $event);
-        }
+        $this->dispatcher->dispatch($event, $eventName);
     }
 
     protected function hasUploadedFile($obj, PropertyMapping $mapping): bool

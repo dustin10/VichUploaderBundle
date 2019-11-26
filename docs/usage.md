@@ -74,12 +74,7 @@ The `UploadableField` annotation has a few options. They are as follows:
   * `originalName`: the property that will contain the original name of the uploaded file.
   * `dimensions`: the property that will contain the dimensions of uploaded **image file**
 
-**Note**:
-
-> Annotations can NOT be used in conjunction with Propel. You must describe your
-> mappings in [YAML](mapping/yaml.md) or [XML](mapping/xml.md).
-
-Lets look at an example using a fictional `Product` ORM entity:
+Let's look at an example using a fictional `Product` ORM entity:
 
 ``` php
 <?php

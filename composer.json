@@ -64,8 +64,7 @@
         "ocramius/proxy-manager": "To use lazy services",
         "oneup/flysystem-bundle": "For integration with Flysystem",
         "symfony/asset": "To generate better links",
-        "symfony/yaml": "To use YAML mapping",
-        "willdurand/propel-eventdispatcher-bundle": "For integration with Propel"
+        "symfony/yaml": "To use YAML mapping"
     },
     "config": {
         "platform": {

@@ -213,7 +213,7 @@ final class VichUploaderExtension extends Extension
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
-        // propel does not require tags to work
+        // propel does not require tags to work TODO check if this test still makes sense
         if (isset($this->tagMap[$driver])) {
             $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
         }

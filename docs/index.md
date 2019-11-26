@@ -5,7 +5,7 @@ VichUploaderBundle provides an easy way to link file uploads with a persistence
 layer.
 
 So if you want to save file uploads to ORM entities, MongoDB ODM documents,
-PHPCR ODM documents or Propel models, you are in the right place.
+or PHPCR ODM documents, you are in the right place.
 
 
 ## Installation

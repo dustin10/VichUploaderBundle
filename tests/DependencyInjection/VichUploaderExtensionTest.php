@@ -20,7 +20,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
     protected function getMinimalConfiguration(): array
     {
         return [
-            'db_driver' => 'propel',
+            'db_driver' => 'orm',
         ];
     }
 
@@ -82,7 +82,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         ]);
 
         // the default db_driver is copied into the mapping
-        $mappings['foo']['db_driver'] = 'propel';
+        $mappings['foo']['db_driver'] = 'orm';
 
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
@@ -90,7 +90,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
     public function testDbDriverIsNotOverridden(): void
     {
         $this->load([
-            'db_driver' => 'propel',
+            'db_driver' => 'orm',
             'mappings' => $mappings = [
                 'foo' => [
                     'upload_destination' => 'web/',
