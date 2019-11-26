@@ -112,7 +112,16 @@ the image path to a new image in that instance of `File` and attempted a `flush(
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.
 
-**N.B** : UploadedFile objects have a [*test* mode](http://api.symfony.com/3.4/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
+**N.B.** : UploadedFile objects have a [*test* mode](http://api.symfony.com/5.0/Symfony/Component/HttpFoundation/File/UploadedFile.html#method___construct) that can be used to simulate file uploads.
+If you are going to insert images programatically, make sure to set it to true, i.e.
+``` php
+<?php
+
+$uploadedFile = new \Symfony\Component\HttpFoundation\File\UploadedFile($filePath, basename($filePath), null, null, true);
+$entity->setFile( $uploadedFile );
+```
+Be aware that these files will be _moved_ to the designated location by VichUploader, so if you want to keep the original files intact, copy them to a temporary location first. If you plan to upload the same file multiple times, you will need multiple different locations, otherwise the handler on the first VichUploader field will move the file and accessing that file will fail on subsequent tries.
+Note: The `UploadedFile` constructor changed in 4.1, if you're using a prior version, you will need to add a parameter for the file size.
 
 ## Failed to set metadata before uploading the file
 
