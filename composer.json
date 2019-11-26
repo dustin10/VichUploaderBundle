@@ -18,41 +18,41 @@
         "php": "^7.2",
         "ext-simplexml": "*",
         "behat/transliterator": "^1.2",
-        "jms/metadata": "^2.0",
-        "symfony/config": "^3.4 || ^4.0",
-        "symfony/dependency-injection": "^3.4 || ^4.0",
-        "symfony/event-dispatcher": "^3.4 || ^4.0",
-        "symfony/form": "^3.4.19 || ^4.0",
-        "symfony/http-foundation": "^3.4 || ^4.0",
-        "symfony/http-kernel": "^3.4 || ^4.0",
-        "symfony/property-access": "^3.4 || ^4.0",
-        "symfony/templating": "^3.4 || ^4.0"
+        "jms/metadata": "^2.1",
+        "symfony/config": "^4.4 || ^5.0",
+        "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/event-dispatcher": "^4.4 || ^5.0",
+        "symfony/form": "^4.4 || ^5.0",
+        "symfony/http-foundation": "^4.4 || ^5.0",
+        "symfony/http-kernel": "^4.4 || ^5.0",
+        "symfony/property-access": "^4.4 || ^5.0",
+        "symfony/templating": "^4.4 || ^5.0"
     },
     "require-dev": {
         "ext-sqlite3": "*",
         "alcaeus/mongo-php-adapter": "^1.1",
-        "doctrine/doctrine-bundle": "^1.8",
+        "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^1.2",
-        "doctrine/orm": "^2.5",
+        "doctrine/orm": "^2.7",
         "knplabs/knp-gaufrette-bundle": "^0.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0",
         "mikey179/vfsstream": "^1.6",
         "oneup/flysystem-bundle": "^3.0",
-        "phpunit/phpunit": "^8.0",
-        "symfony/asset": "^3.4 || ^4.0",
-        "symfony/browser-kit": "^3.4 || ^4.0",
-        "symfony/css-selector": "^3.4 || ^4.0",
-        "symfony/doctrine-bridge": "^3.4 || ^4.0",
-        "symfony/dom-crawler": "^3.4 || ^4.0",
+        "phpunit/phpunit": "^8.4",
+        "symfony/asset": "^4.4 || ^5.0",
+        "symfony/browser-kit": "^4.4 || ^5.0",
+        "symfony/css-selector": "^4.4 || ^5.0",
+        "symfony/doctrine-bridge": "^4.4 || ^5.0",
+        "symfony/dom-crawler": "^4.4 || ^5.0",
         "symfony/framework-bundle": "^3.4.23 || ^4.2.4",
         "symfony/phpunit-bridge": "^4.3",
-        "symfony/security-csrf": "^3.4 || ^4.0",
-        "symfony/translation": "^3.4 || ^4.0",
-        "symfony/twig-bridge": "^3.4 || ^4.0",
-        "symfony/twig-bundle": "^3.4 || ^4.0",
-        "symfony/validator": "^3.4 || ^4.0",
-        "symfony/var-dumper": "^3.4 || ^4.0",
-        "symfony/yaml": "^3.4 || ^4.0"
+        "symfony/security-csrf": "^4.4 || ^5.0",
+        "symfony/translation": "^4.4 || ^5.0",
+        "symfony/twig-bridge": "^4.4 || ^5.0",
+        "symfony/twig-bundle": "^4.4 || ^5.0",
+        "symfony/validator": "^4.4 || ^5.0",
+        "symfony/var-dumper": "^4.4 || ^5.0",
+        "symfony/yaml": "^4.4 || ^5.0"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "For integration with Doctrine",
@@ -75,17 +75,18 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.10.x-dev"
+            "dev-master": "1.12.x-dev"
         }
     },
     "autoload": {
         "psr-4": {
-            "Vich\\UploaderBundle\\": ""
+            "Vich\\UploaderBundle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vich\\TestBundle\\": "Tests/Fixtures/App/src/TestBundle/"
+            "Vich\\TestBundle\\": "tests/Fixtures/App/src/TestBundle/",
+            "Vich\\UploaderBundle\\Tests\\": "tests"
         }
     }
 }
