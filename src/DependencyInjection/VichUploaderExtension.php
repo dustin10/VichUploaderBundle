@@ -94,6 +94,10 @@ final class VichUploaderExtension extends Extension
                 $directory = \dirname($ref->getFileName()).'/../config/vich_uploader';
 
                 if (!\is_dir($directory)) {
+                    $directory = \dirname($ref->getFileName()).'/Resources/config/vich_uploader';
+                }
+
+                if (!\is_dir($directory)) {
                     continue;
                 }
 
