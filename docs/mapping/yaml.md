@@ -5,7 +5,7 @@ You can choose to describe your entities in YAML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
 
 ```yaml
-# src/Acme/DemoBundle/Resources/config/vich_uploader/Entity.Product.yml
+# config/vich_uploader/Entity.Product.yml
 Acme\DemoBundle\Entity\Product:
     imageFile:
         mapping: product_image        # required
@@ -16,11 +16,11 @@ Acme\DemoBundle\Entity\Product:
         dimensions: imageDimensions
 ```
 
-To be automatically found, the mapping configuration MUST be in the `Resources/config/vich_uploader`
+To be automatically found, the mapping configuration MUST be in the `config/vich_uploader`
 directory of the bundle containing the entity you want to describe.
 
 If you need the mapping elsewhere, you need to add some configuration.
-In the following example, the configuration is placed in the `app/config/vich_uploader` directory:
+In the following example, the configuration is placed in the `config/acme` directory:
 
 ```yaml
 # config/packages/vich_uploader.yaml or app/config/config.yml
@@ -29,7 +29,7 @@ vich_uploader:
     metadata:
         auto_detection: false
         directories:
-            - {path: '%kernel.project_dir%/config/vich_uploader', namespace_prefix: 'Acme'}
+            - {path: '%kernel.project_dir%/config/acme', namespace_prefix: 'Acme'}
 ```
 
 #### Naming YAML Files

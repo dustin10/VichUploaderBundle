@@ -3,6 +3,7 @@ Upgrading from v1.11.0 to 1.12.0
 
 - Propel support has been dropped. It was likely not working since a while.
   If you need to use this bundle with Propel, you need to use a previous bundle version.
+- **BC-BREAK** Default Configuration directory changed from `Resources/config/vich_uploader` to `config/vich_uploader`.
 
 Upgrading from v1.8.0 to 1.11.0
 ===============================
