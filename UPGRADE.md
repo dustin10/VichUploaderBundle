@@ -1,3 +1,8 @@
+Upgrading from v1.12.0 to 1.12.1
+================================
+- The BC-break for the configuration directory introduced in 1.12.0 has been mitigated.
+  The default Configuration directory is `config/vich_uploader`, `Resources/config/vich_uploader` is now also supported for BC.
+
 Upgrading from v1.11.0 to 1.12.0
 ================================
 
