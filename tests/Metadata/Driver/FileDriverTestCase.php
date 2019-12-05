@@ -31,7 +31,7 @@ abstract class FileDriverTestCase extends TestCase
         $metadatas = [];
         $metadatas[] = [
             Product::class,
-            __DIR__.'/../../Fixtures/App/src/TestBundle/Resources/config/vich_uploader/Entity.Product.'.$this->getExtension(),
+            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Product.'.$this->getExtension(),
             [
                 'image' => [
                     'mapping' => 'product_image',
@@ -47,7 +47,7 @@ abstract class FileDriverTestCase extends TestCase
 
         $metadatas[] = [
             Article::class,
-            __DIR__.'/../../Fixtures/App/src/TestBundle/Resources/config/vich_uploader/Entity.Article.'.$this->getExtension(),
+            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Article.'.$this->getExtension(),
             [
                 'attachment' => [
                     'mapping' => 'dummy_file',
