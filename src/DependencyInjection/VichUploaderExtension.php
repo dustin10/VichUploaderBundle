@@ -94,6 +94,13 @@ final class VichUploaderExtension extends Extension
                 $directory = \dirname($ref->getFileName()).'/../config/vich_uploader';
 
                 if (!\is_dir($directory)) {
+                    $directory = \dirname($ref->getFileName()).'/Resources/config/vich_uploader';
+                    if (\is_dir($directory)) {
+                        @trigger_error('Using Resources/config/vich_uploader for auto config discovery is deprecated use ../config/vich_uploader, relative to the Bundle class, instead', E_USER_DEPRECATED);
+                    }
+                }
+
+                if (!\is_dir($directory)) {
                     continue;
                 }
 
