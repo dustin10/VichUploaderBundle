@@ -29,6 +29,13 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    Vich\TestBundle\Controller\:
+        resource: '../../../TestBundle/src/Controller'
+
 vich_uploader:
     db_driver: orm
 

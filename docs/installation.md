@@ -10,16 +10,17 @@ your Symfony project:
 composer require vich/uploader-bundle
 ```
 
-Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.8"` to your composer.json and run `composer update`.
-This could be useful when the installation of VichUploaderBundle is not compatible with some currently installed dependencies. Anyway, the previous option is the preferred way, since composer can pick the best requirement constraint for you.
+Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.12"` to your composer.json and run `composer update`.
+This could be useful when the installation of VichUploaderBundle is not compatible with some currently installed dependencies.
+Anyway, the previous option is the preferred way, since composer can pick the best requirement constraint for you.
 
 ## Enable the bundle
 
-If you use Flex (you should!), the bundle is automatically enabled and no further action is required.
+If you use Flex (you should!), the bundle is automatically enabled with a recipe and no further action is required.
 Otherwise, to start using the bundle, register it in your application's kernel class:
 
 ```php
-// app/AppKernel.php
+// app/AppKernel.php (your kernel class may be defined in a different class/path)
 class AppKernel extends Kernel
 {
     public function registerBundles()

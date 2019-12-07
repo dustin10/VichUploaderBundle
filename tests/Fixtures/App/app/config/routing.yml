@@ -1,19 +1,19 @@
 upload:
     path: /upload/{formType}
     methods: GET
-    defaults: { _controller: VichTestBundle:Default:upload }
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::uploadAction }
 
 upload_send:
     path: /upload/{formType}/send
     methods: POST
-    defaults: { _controller: VichTestBundle:Default:submit }
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitAction }
 
 upload_edit:
     path: /upload/{formType}/send/{imageId}
     methods: POST
-    defaults: { _controller: VichTestBundle:Default:submit }
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitAction }
 
 view:
     path: /upload/{imageId}/{formType}
     methods: GET
-    defaults: { _controller: VichTestBundle:Default:edit }
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::editAction }

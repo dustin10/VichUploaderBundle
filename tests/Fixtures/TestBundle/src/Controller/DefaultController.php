@@ -2,13 +2,13 @@
 
 namespace Vich\TestBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpFoundation\Request;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Form\Type as VichType;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     public function uploadAction($formType)
     {

@@ -15,9 +15,11 @@ $path = $helper->asset($entity, 'image');
 Where `image` is the field name used in your entity where you added the
 `UploadableField` annotation/configuration.
 
+If `image` is your only mapped field, you can omit it and use simply `$helper->asset($entity)`.
+
 **Note:**
 
-> The path returned is relative to the web directory which is specified
+> The path returned is relative to the public directory which is specified
 > using the `uri_prefix` configuration parameter.
 
 
@@ -27,6 +29,13 @@ In a Twig template you can use the `vich_uploader_asset` function:
 
 ``` twig
 <img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
+```
+
+Or, in the simpler case of a single mapped field:
+
+``` twig
+<img src="{{ vich_uploader_asset(product) }}" alt="{{ product.name }}" />
+
 ```
 
 **Note:**
@@ -42,4 +51,4 @@ In a Twig template you can use the `vich_uploader_asset` function:
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
-index.](index.md)
+index](index.md).

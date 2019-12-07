@@ -1,14 +1,10 @@
-Upgrading from v1.12.0 to 1.12.1
-================================
-- The BC-break for the configuration directory introduced in 1.12.0 has been mitigated.
-  The default Configuration directory is `config/vich_uploader`, `Resources/config/vich_uploader` is now also supported for BC.
-
 Upgrading from v1.11.0 to 1.12.0
 ================================
 
 - Propel support has been dropped. It was likely not working since a while.
   If you need to use this bundle with Propel, you need to use a previous bundle version.
-- **BC-BREAK** Default Configuration directory changed from `Resources/config/vich_uploader` to `config/vich_uploader`.
+- Default configuration directory changed from `Resources/config/vich_uploader` to `config/vich_uploader`.
+  Old path is still supported, but deprecated.
 
 Upgrading from v1.8.0 to 1.11.0
 ===============================
