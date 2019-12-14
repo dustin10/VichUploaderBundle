@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Templating\Helper;
 
-use Symfony\Component\Templating\Helper\Helper;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -10,7 +9,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class UploaderHelper extends Helper
+class UploaderHelper
 {
     /**
      * @var StorageInterface
