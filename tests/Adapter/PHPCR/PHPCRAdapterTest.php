@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -15,7 +15,7 @@ class PHPCRAdapterTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         if (!\class_exists(LifecycleEventArgs::class)) {
-            self::markTestSkipped('Doctrine\Common\Persistence\Event\LifecycleEventArgs does not exist.');
+            self::markTestSkipped('Doctrine\Persistence\Event\LifecycleEventArgs does not exist.');
         }
     }
 
