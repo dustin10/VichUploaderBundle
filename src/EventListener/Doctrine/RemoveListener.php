@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 /**
  * RemoveListener.

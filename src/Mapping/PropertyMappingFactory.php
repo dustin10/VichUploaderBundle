@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;

@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 

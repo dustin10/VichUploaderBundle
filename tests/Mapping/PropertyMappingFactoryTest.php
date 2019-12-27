@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
