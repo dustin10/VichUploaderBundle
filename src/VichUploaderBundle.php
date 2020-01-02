@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterFlysystemRegistryPass;
 use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterMappingDriversPass;
 
 /**
@@ -16,6 +17,7 @@ final class VichUploaderBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterMappingDriversPass());
+        $container->addCompilerPass(new RegisterFlysystemRegistryPass());
     }
 
     public function getPath(): string
