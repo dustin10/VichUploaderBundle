@@ -5,25 +5,31 @@ namespace Vich\UploaderBundle\Storage;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
+ * @author Titouan Galopin <galopintitouan@gmail.com>
  */
 class FlysystemStorage extends AbstractStorage
 {
     /**
-     * @var MountManager Flysystem mount manager
+     * @var MountManager|ContainerInterface a registry to get FilesystemInterface instances
      */
-    protected $mountManager;
+    protected $registry;
 
-    public function __construct(PropertyMappingFactory $factory, MountManager $mountManager)
+    public function __construct(PropertyMappingFactory $factory, $registry)
     {
         parent::__construct($factory);
 
-        $this->mountManager = $mountManager;
+        if (!$registry instanceof MountManager && !$registry instanceof ContainerInterface) {
+            throw new \TypeError(sprintf('Argument 2 passed to %s::__construct() must be an instance of %s or an instance of %s, %s given.', __CLASS__, MountManager::class, ContainerInterface::class, is_object($registry) ? get_class($registry) : gettype($registry)));
+        }
+
+        $this->registry = $registry;
     }
 
     /**
@@ -80,6 +86,10 @@ class FlysystemStorage extends AbstractStorage
 
     protected function getFilesystem(PropertyMapping $mapping): FilesystemInterface
     {
-        return $this->mountManager->getFilesystem($mapping->getUploadDestination());
+        if ($this->registry instanceof MountManager) {
+            return $this->registry->getFilesystem($mapping->getUploadDestination());
+        }
+
+        return $this->registry->get($mapping->getUploadDestination());
     }
 }
