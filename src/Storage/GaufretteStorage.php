@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Storage;
 use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use Gaufrette\FilesystemMapInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -18,7 +18,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 class GaufretteStorage extends AbstractStorage
 {
     /**
-     * @var FilesystemMap
+     * @var FilesystemMapInterface
      */
     protected $filesystemMap;
 
@@ -31,10 +31,10 @@ class GaufretteStorage extends AbstractStorage
      * Constructs a new instance of FileSystemStorage.
      *
      * @param PropertyMappingFactory $factory       The factory
-     * @param FilesystemMap          $filesystemMap Gaufrete filesystem factory
+     * @param FilesystemMapInterface $filesystemMap Gaufrete filesystem factory
      * @param string                 $protocol      Gaufrette stream wrapper protocol
      */
-    public function __construct(PropertyMappingFactory $factory, FilesystemMap $filesystemMap, string $protocol = 'gaufrette')
+    public function __construct(PropertyMappingFactory $factory, FilesystemMapInterface $filesystemMap, string $protocol = 'gaufrette')
     {
         parent::__construct($factory);
 
