@@ -33,14 +33,14 @@ final class UploaderExtension extends AbstractExtension
     /**
      * Gets the public path for the file associated with the uploadable object.
      *
-     * @param object $obj       The object
-     * @param string $fieldName The field name
-     * @param string $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param object      $object    The object
+     * @param string|null $fieldName The field name
+     * @param string|null $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return string|null The public path or null if file not stored
      */
-    public function asset($obj, string $fieldName, string $className = null): ?string
+    public function asset($object, ?string $fieldName = null, ?string $className = null): ?string
     {
-        return $this->helper->asset($obj, $fieldName, $className);
+        return $this->helper->asset($object, $fieldName, $className);
     }
 }
