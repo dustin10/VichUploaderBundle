@@ -1,25 +1,29 @@
 <?php
 
-namespace Vich\UploaderBundle\Tests\Storage;
+namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
+use Psr\Container\ContainerInterface;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
+ * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-class FlysystemStorageTest extends StorageTestCase
+abstract class AbstractFlysystemStorageTest extends StorageTestCase
 {
     public const FS_KEY = 'filesystemKey';
 
     /**
-     * @var MountManager&\PHPUnit\Framework\MockObject\MockObject
+     * @var (MountManager|ContainerInterface)&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $mountManager;
+    protected $registry;
 
     /**
      * @var Filesystem&\PHPUnit\Framework\MockObject\MockObject
@@ -31,6 +35,8 @@ class FlysystemStorageTest extends StorageTestCase
      */
     protected $adapter;
 
+    abstract protected function createRegistry(FilesystemInterface $filesystem);
+
     public static function setUpBeforeClass(): void
     {
         if (!\class_exists(MountManager::class)) {
@@ -40,20 +46,14 @@ class FlysystemStorageTest extends StorageTestCase
 
     protected function getStorage(): StorageInterface
     {
-        return new FlysystemStorage($this->factory, $this->mountManager);
+        return new FlysystemStorage($this->factory, $this->registry);
     }
 
     protected function setUp(): void
     {
-        $this->mountManager = $this->getMountManagerMock();
         $this->filesystem = $this->createMock(Filesystem::class);
         $this->adapter = $this->createMock(AbstractAdapter::class);
-
-        $this->mountManager
-            ->expects($this->any())
-            ->method('getFilesystem')
-            ->with(self::FS_KEY)
-            ->willReturn($this->filesystem);
+        $this->registry = $this->createRegistry($this->filesystem);
 
         parent::setUp();
 
@@ -176,18 +176,5 @@ class FlysystemStorageTest extends StorageTestCase
             ['foo', 'foo/file.txt',           true],
             ['foo', '/absolute/foo/file.txt', false],
         ];
-    }
-
-    /**
-     * Creates a filesystem map mock.
-     *
-     * @return MountManager&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getMountManagerMock()
-    {
-        return $this
-            ->getMockBuilder(MountManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }
