@@ -6,7 +6,6 @@ use League\Flysystem\FilesystemInterface;
 use Psr\Container\ContainerInterface;
 
 /**
- * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
 final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTest

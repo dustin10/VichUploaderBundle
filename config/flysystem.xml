@@ -7,7 +7,7 @@
     <services>
         <service id="vich_uploader.storage.flysystem" class="Vich\UploaderBundle\Storage\FlysystemStorage" public="false">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
-            <argument type="service" id="oneup_flysystem.mount_manager" />
+            <argument /><!-- Populated by RegisterFlysystemRegistryPass -->
         </service>
         <service id="Vich\UploaderBundle\Storage\FlysystemStorage" alias="vich_uploader.storage.flysystem" public="false"/>
     </services>
