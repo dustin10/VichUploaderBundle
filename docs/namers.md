@@ -4,7 +4,8 @@ Namers
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
 implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
 configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. If you would like to change this, you can use one of the provided namers or implement a custom one.
+was uploaded (this is deprecated).
+If should change this, you can use one of the provided namers or implement a custom one.
 
 ## File Namer
 
@@ -52,7 +53,7 @@ vich_uploader:
 ```
 
 If no namer is configured for a mapping, the bundle will simply use the name of the file that
-was uploaded.
+was uploaded. This is deprecated and will be removed in next major version.
 
 **Warning:** it means that if two files having the same name are uploaded, one
 will override the other.

@@ -25,11 +25,10 @@ class OrignameNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($name, $pattern, $transliterate): void
+    public function testNameReturnsAnUniqueName(string $name, string $pattern, bool $transliterate): void
     {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects($this->any())
             ->method('getClientOriginalName')
             ->willReturn($name);
 
@@ -43,7 +42,7 @@ class OrignameNamerTest extends TestCase
             ->with($entity)
             ->willReturn($file);
 
-        $namer = new OrignameNamer();
+        $namer = new OrignameNamer($this->getTransliterator());
         $namer->configure(['transliterate' => $transliterate]);
 
         $this->assertRegExp($pattern, $namer->name($entity, $mapping));

@@ -4,8 +4,10 @@ namespace Vich\UploaderBundle\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Util\Transliterator;
 
 class TestCase extends BaseTestCase
 {
@@ -37,5 +39,10 @@ class TestCase extends BaseTestCase
         return $this->getMockBuilder(PropertyMappingFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getTransliterator(): Transliterator
+    {
+        return new Transliterator(new AsciiSlugger());
     }
 }

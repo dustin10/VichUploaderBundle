@@ -38,7 +38,6 @@ class DownloadHandlerTest extends TestCase
 
         $this->handler = new DownloadHandler($this->factory, $this->storage);
         $this->factory
-            ->expects($this->any())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -47,17 +46,16 @@ class DownloadHandlerTest extends TestCase
     public function filenamesProvider(): array
     {
         return [
-            ['file_name', 'file-name'],
-            ['file_name.ext', 'file-name.ext'],
+            ['file_name', 'file_name'],
+            ['file_name.ext', 'file_name.ext'],
             ['file-name.ext', 'file-name.ext'],
-            ['ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334', 'eauuopoueuiiii-4334'],
         ];
     }
 
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObject($fileName, $expectedFileName): void
+    public function testDownloadObject(string $fileName, string $expectedFileName): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -93,7 +91,7 @@ class DownloadHandlerTest extends TestCase
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDisplayObject($fileName, $expectedFileName): void
+    public function testDisplayObject(string $fileName, string $expectedFileName): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -129,7 +127,7 @@ class DownloadHandlerTest extends TestCase
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObjectWithoutFile($fileName, $expectedFileName): void
+    public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName): void
     {
         $this->mapping
             ->expects($this->once())
@@ -191,32 +189,6 @@ class DownloadHandlerTest extends TestCase
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $expectedFileName = $this->object->getImageOriginalName();
         $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
-    }
-
-    public function testNonAsciiFilenameIsTransliterated(): void
-    {
-        $file = $this->getUploadedFileMock();
-
-        $this->mapping
-            ->expects($this->once())
-            ->method('getFile')
-            ->with($this->object)
-            ->willReturn($file);
-
-        $file
-            ->expects($this->once())
-            ->method('getMimeType')
-            ->willReturn(null);
-
-        $this->storage
-            ->expects($this->once())
-            ->method('resolveStream')
-            ->with($this->object, 'file_field')
-            ->willReturn('something not null');
-
-        $response = $this->handler->downloadObject($this->object, 'file_field', null, 'ÉÁŰÚŐPÓÜÉŰÍÍÍÍ$$$$$$$++4334º');
-
-        $this->assertInstanceOf(StreamedResponse::class, $response);
     }
 
     public function testAnExceptionIsThrownIfMappingIsNotFound(): void

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Vich\UploaderBundle\Naming\OrignameNamer;
 use Vich\UploaderBundle\VichUploaderBundle;
 
 /**
@@ -22,7 +23,7 @@ class FilesystemAppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(function (ContainerBuilder $container) {
+        $loader->load(static function (ContainerBuilder $container): void {
             $container->loadFromExtension('framework', ['secret' => '$ecret']);
             $container->loadFromExtension('vich_uploader', [
                 'db_driver' => 'orm',
@@ -30,6 +31,7 @@ class FilesystemAppKernel extends Kernel
                     'product_image' => [
                         'uri_prefix' => '/images/products',
                         'upload_destination' => '%kernel.project_dir%/public/images/products',
+                        'namer' => OrignameNamer::class,
                     ],
                 ],
             ]);

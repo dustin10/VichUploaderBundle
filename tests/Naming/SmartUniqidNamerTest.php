@@ -47,7 +47,7 @@ final class SmartUniqidNamerTest extends TestCase
             ->willReturn($file)
         ;
 
-        $namer = new SmartUniqueNamer();
+        $namer = new SmartUniqueNamer($this->getTransliterator());
 
         $this->assertRegExp($pattern, $namer->name($entity, $mapping));
     }

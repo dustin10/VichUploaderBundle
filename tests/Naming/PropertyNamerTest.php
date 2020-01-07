@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use Vich\UploaderBundle\Exception\NameGenerationException;
 use Vich\UploaderBundle\Naming\PropertyNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -18,25 +19,29 @@ class PropertyNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
 
-        $weird_entity = new DummyEntity();
-        $weird_entity->someProperty = 'Yéô';
+        $weirdEntity = new DummyEntity();
+        $weirdEntity->someProperty = 'Yéô';
 
         return [
-            ['some-file-name.jpeg', 'foo.jpeg',                 $entity,       'someProperty',     false],
-            ['some-file-name',      'foo',                      $entity,       'someProperty',     false],
-            ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,       'generateFileName', false], // method call
-            ['some-file-name.jpeg', 'yeo.jpeg',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
+            'with ext' => ['some-file-name.jpeg',    'foo.jpeg',                 $entity,      'someProperty',     false],
+            'without ext' => ['some-file-name',      'foo',                      $entity,      'someProperty',     false],
+            'method call' => ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,      'generateFileName', false],
+            'translit.' => ['some-file-name.jpeg',   'yeo.jpeg',                 $weirdEntity, 'someProperty',     true],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($originalFileName, $expectedFileName, $entity, $propertyName, $transliterate): void
-    {
+    public function testNameReturnsTheRightName(
+        string $originalFileName,
+        string $expectedFileName,
+        object $entity,
+        string $propertyName,
+        bool $transliterate
+    ): void {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects($this->any())
             ->method('getClientOriginalName')
             ->willReturn($originalFileName);
 
@@ -46,7 +51,7 @@ class PropertyNamerTest extends TestCase
             ->with($entity)
             ->willReturn($file);
 
-        $namer = new PropertyNamer();
+        $namer = new PropertyNamer($this->getTransliterator());
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
 
         $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
@@ -54,12 +59,12 @@ class PropertyNamerTest extends TestCase
 
     public function testNameFailsIfThePropertyDoesNotExist(): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
+        $this->expectException(NameGenerationException::class);
 
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
 
-        $namer = new PropertyNamer();
+        $namer = new PropertyNamer($this->getTransliterator());
         $namer->configure(['property' => 'nonExistentProperty']);
 
         $namer->name($entity, $mapping);
@@ -67,10 +72,10 @@ class PropertyNamerTest extends TestCase
 
     public function testNameFailsIfThePropertyIsEmpty(): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
+        $this->expectException(NameGenerationException::class);
 
         $mapping = $this->getPropertyMappingMock();
-        $namer = new PropertyNamer();
+        $namer = new PropertyNamer($this->getTransliterator());
 
         $namer->configure(['property' => 'someProperty']);
 
@@ -83,7 +88,7 @@ class PropertyNamerTest extends TestCase
         $this->expectExceptionMessage('The property to use can not be determined. Did you call the configure() method?');
 
         $mapping = $this->getPropertyMappingMock();
-        $namer = new PropertyNamer();
+        $namer = new PropertyNamer($this->getTransliterator());
 
         $namer->name(new DummyEntity(), $mapping);
     }
@@ -93,7 +98,7 @@ class PropertyNamerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "property" is missing or empty.');
 
-        $namer = new PropertyNamer();
+        $namer = new PropertyNamer($this->getTransliterator());
 
         $namer->configure(['incorrect' => 'options']);
     }

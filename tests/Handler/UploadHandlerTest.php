@@ -48,7 +48,6 @@ final class UploadHandlerTest extends TestCase
 
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
         $this->factory
-            ->expects($this->any())
             ->method('fromField')
             ->with($this->object, self::FILE_FIELD)
             ->willReturn($this->mapping);

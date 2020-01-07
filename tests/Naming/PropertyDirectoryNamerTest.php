@@ -18,24 +18,28 @@ class PropertyDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
 
-        $weird_entity = new DummyEntity();
-        $weird_entity->someProperty = 'Yéô';
+        $weirdEntity = new DummyEntity();
+        $weirdEntity->someProperty = 'Yéô';
 
         return [
-            ['foo',                 $entity,       'someProperty',     false],
-            ['generated-file-name', $entity,       'generateFileName', false], // method call
-            ['yeo',                 $weird_entity, 'someProperty',     true],  // transliteration enabled
+            'plain' => ['foo',                       $entity,      'someProperty',     false],
+            'method call' => ['generated-file-name', $entity,      'generateFileName', false],
+            'translit.' => ['yeo',                   $weirdEntity, 'someProperty',     true],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($expectedDirectoryName, $entity, $propertyName, $transliterate): void
-    {
+    public function testNameReturnsTheRightName(
+        string $expectedDirectoryName,
+        object $entity,
+        string $propertyName,
+        bool $transliterate
+    ): void {
         $mapping = $this->getPropertyMappingMock();
 
-        $namer = new PropertyDirectoryNamer();
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
 
         $this->assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
@@ -48,7 +52,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
 
-        $namer = new PropertyDirectoryNamer();
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => 'nonExistentProperty']);
 
         $namer->directoryName($entity, $mapping);
@@ -59,7 +63,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
 
         $mapping = $this->getPropertyMappingMock();
-        $namer = new PropertyDirectoryNamer();
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
 
         $namer->configure(['property' => 'someProperty']);
 
@@ -72,7 +76,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $this->expectExceptionMessage('The property to use can not be determined. Did you call the configure() method?');
 
         $mapping = $this->getPropertyMappingMock();
-        $namer = new PropertyDirectoryNamer();
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
 
         $namer->directoryName(new DummyEntity(), $mapping);
     }
@@ -82,7 +86,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "property" is missing or empty.');
 
-        $namer = new PropertyDirectoryNamer();
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
 
         $namer->configure(['incorrect' => 'options']);
     }
