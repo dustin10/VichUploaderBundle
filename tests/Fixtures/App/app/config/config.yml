@@ -35,6 +35,9 @@ services:
         autoconfigure: true
     Vich\TestBundle\Controller\:
         resource: '../../../TestBundle/src/Controller'
+    Vich\TestBundle\Naming\:
+        resource: '../../../TestBundle/src/Naming'
+        public: true
 
 vich_uploader:
     db_driver: orm
@@ -46,3 +49,4 @@ vich_uploader:
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
+            namer:              Vich\TestBundle\Naming\DummyNamer

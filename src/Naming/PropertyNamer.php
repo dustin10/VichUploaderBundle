@@ -28,6 +28,16 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
     private $transliterate = false;
 
     /**
+     * @var Transliterator
+     */
+    private $transliterator;
+
+    public function __construct(Transliterator $transliterator)
+    {
+        $this->transliterator = $transliterator;
+    }
+
+    /**
      * @param array $options Options for this namer. The following options are accepted:
      *                       - property: path to the property used to name the file. Can be either an attribute or a method.
      *                       - transliterate: whether the filename should be transliterated or not
@@ -63,7 +73,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         }
 
         if ($this->transliterate) {
-            $name = Transliterator::transliterate($name);
+            $name = $this->transliterator->transliterate($name);
         }
 
         // append the file extension if there is one

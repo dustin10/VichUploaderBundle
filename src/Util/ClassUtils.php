@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Util;
 
+/**
+ * @internal
+ */
 class ClassUtils
 {
     /**

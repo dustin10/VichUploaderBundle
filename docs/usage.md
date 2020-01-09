@@ -33,15 +33,15 @@ vich_uploader:
         product_image:
             uri_prefix: /images/products
             upload_destination: '%kernel.project_dir%/public/images/products'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 ```
 
 This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
 **Note:**
-> The default behaviour is using the original name of the uploaded file, it can
-> override an old file with the same name. Please use a [namer](namers.md)
-> like `vich_uploader.namer_property` to avoid this issue.
+> The old default behaviour of not defining `namer` (and so using the original name of the
+> uploaded file) is deprecated, you should always use a [namer](namers.md).
 
 
 ## Step 2: link the upload mapping to an entity

@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Vich\TestBundle\Entity\Article;
+use Vich\TestBundle\Naming\DummyNamer;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
@@ -26,6 +27,7 @@ class PropertyMappingTest extends TestCase
         $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping([
             'upload_destination' => '/tmp',
+            'namer' => DummyNamer::class,
         ]);
 
         $this->assertEquals('', $prop->getUploadDir($object));
@@ -37,12 +39,13 @@ class PropertyMappingTest extends TestCase
     /**
      * @dataProvider directoryProvider
      */
-    public function testDirectoryNamerIsCalled($dir, $expectedDir): void
+    public function testDirectoryNamerIsCalled(string $dir, string $expectedDir): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
         $prop->setMapping([
             'upload_destination' => '/tmp',
+            'namer' => DummyNamer::class,
         ]);
 
         $namer = $this->createMock(DirectoryNamerInterface::class);
@@ -63,6 +66,7 @@ class PropertyMappingTest extends TestCase
         $object = new DummyEntity();
         $object->setSize(100);
         $prop = new PropertyMapping('file', 'fileName', ['size' => 'size']);
+        $prop->setMapping(['namer' => DummyNamer::class]);
 
         $this->assertEquals(100, $prop->readProperty($object, 'size'));
     }
@@ -73,6 +77,7 @@ class PropertyMappingTest extends TestCase
 
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
+        $prop->setMapping(['namer' => DummyNamer::class]);
 
         $prop->readProperty($object, 'unused');
     }
@@ -81,6 +86,7 @@ class PropertyMappingTest extends TestCase
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName', ['size' => 'size']);
+        $prop->setMapping(['namer' => DummyNamer::class]);
         $prop->writeProperty($object, 'size', 100);
 
         $this->assertEquals(100, $object->getSize());
@@ -92,6 +98,7 @@ class PropertyMappingTest extends TestCase
 
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
+        $prop->setMapping(['namer' => DummyNamer::class]);
 
         $prop->writeProperty($object, 'unused', null);
     }
@@ -113,6 +120,9 @@ class PropertyMappingTest extends TestCase
         $this->assertEquals('123', $prop->getUploadName($object));
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetUploadNameWithoutNamer(): void
     {
         $object = new DummyEntity();
@@ -156,6 +166,7 @@ class PropertyMappingTest extends TestCase
                 'size' => 'sizeField',
                 'mimeType' => 'mimeTypeField',
                 'originalName' => 'originalNameField',
+                'namer' => DummyNamer::class,
             ]
         );
 

@@ -26,7 +26,7 @@ class FlysystemStorage extends AbstractStorage
         parent::__construct($factory);
 
         if (!$registry instanceof MountManager && !$registry instanceof ContainerInterface) {
-            throw new \TypeError(sprintf('Argument 2 passed to %s::__construct() must be an instance of %s or an instance of %s, %s given.', __CLASS__, MountManager::class, ContainerInterface::class, is_object($registry) ? get_class($registry) : gettype($registry)));
+            throw new \TypeError(\sprintf('Argument 2 passed to %s::__construct() must be an instance of %s or an instance of %s, %s given.', __CLASS__, MountManager::class, ContainerInterface::class, \is_object($registry) ? \get_class($registry) : \gettype($registry)));
         }
 
         $this->registry = $registry;

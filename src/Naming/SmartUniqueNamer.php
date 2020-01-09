@@ -2,8 +2,8 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Behat\Transliterator\Transliterator;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Util\Transliterator;
 
 /**
  * This namer makes filename unique by appending a uniqid.
@@ -13,13 +13,23 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 final class SmartUniqueNamer implements NamerInterface
 {
+    /**
+     * @var Transliterator
+     */
+    private $transliterator;
+
+    public function __construct(Transliterator $transliterator)
+    {
+        $this->transliterator = $transliterator;
+    }
+
     public function name($object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
         $originalExtension = \strtolower(\pathinfo($originalName, PATHINFO_EXTENSION));
         $originalBasename = \basename($originalName, '.'.$originalExtension);
-        $originalBasename = Transliterator::transliterate($originalBasename);
+        $originalBasename = $this->transliterator->transliterate($originalBasename);
         $uniqId = \str_replace('.', '', \uniqid('-', true));
         $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);

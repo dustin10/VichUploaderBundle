@@ -30,7 +30,7 @@ final class RegisterFlysystemRegistryPass implements CompilerPassInterface
         }
 
         // League\FlysystemBundle
-        if (!class_exists(FlysystemBundle::class)) {
+        if (!\class_exists(FlysystemBundle::class)) {
             throw new MissingPackageException("Missing package, to use the VichUploader \"flysystem\" storage, run either:\ncomposer require league/flysystem-bundle\nor:\ncomposer require oneup/flysystem-bundle");
         }
 

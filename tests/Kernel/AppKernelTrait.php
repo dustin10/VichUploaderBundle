@@ -19,10 +19,10 @@ trait AppKernelTrait
 
     private function createTmpDir(string $type): string
     {
-        $dir = sys_get_temp_dir().'/VichUploaderBundle/'.uniqid($type.'_', true);
+        $dir = \sys_get_temp_dir().'/VichUploaderBundle/'.\uniqid($type.'_', true);
 
-        if (!file_exists($dir)) {
-            mkdir($dir, 0777, true);
+        if (!\file_exists($dir)) {
+            \mkdir($dir, 0777, true);
         }
 
         return $dir;

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\UploaderBundle\Exception\NoFileFoundException;
-use Vich\UploaderBundle\Util\Transliterator;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -65,13 +64,13 @@ class DownloadHandler extends AbstractHandler
      */
     private function createDownloadResponse($stream, string $filename, ?string $mimeType = 'application/octet-stream', bool $forceDownload = true): StreamedResponse
     {
-        $response = new StreamedResponse(function () use ($stream): void {
+        $response = new StreamedResponse(static function () use ($stream): void {
             \stream_copy_to_stream($stream, \fopen('php://output', 'wb'));
         });
 
         $disposition = $response->headers->makeDisposition(
             $forceDownload ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE,
-            Transliterator::transliterate($filename)
+            $filename
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', $mimeType ?: 'application/octet-stream');

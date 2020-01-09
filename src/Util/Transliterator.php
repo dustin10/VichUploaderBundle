@@ -2,29 +2,34 @@
 
 namespace Vich\UploaderBundle\Util;
 
-use Behat\Transliterator\Transliterator as BehatTransliterator;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+ * @internal
+ */
 class Transliterator
 {
     /**
-     * This class should not be instantiated.
+     * @var SluggerInterface
      */
-    private function __construct()
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
     {
+        $this->slugger = $slugger;
     }
 
     /**
      * Transliterate a string. If string represents a filename, extension is kept.
      */
-    public static function transliterate(string $string, string $separator = '-'): string
+    public function transliterate(string $string, string $separator = '-'): string
     {
         [$filename, $extension] = FilenameUtils::spitNameByExtension($string);
-
-        $transliterated = BehatTransliterator::transliterate($filename, $separator);
+        $transliterated = $this->slugger->slug($filename, $separator);
         if ('' !== $extension) {
             $transliterated .= '.'.$extension;
         }
 
-        return $transliterated;
+        return \strtolower($transliterated);
     }
 }

@@ -31,9 +31,15 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
      */
     protected $propertyAccessor;
 
-    public function __construct(PropertyAccessorInterface $propertyAccessor = null)
+    /**
+     * @var Transliterator
+     */
+    private $transliterator;
+
+    public function __construct(?PropertyAccessorInterface $propertyAccessor, Transliterator $transliterator)
     {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->transliterator = $transliterator;
     }
 
     /**
@@ -70,7 +76,7 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
         }
 
         if ($this->transliterate) {
-            $name = Transliterator::transliterate($name);
+            $name = $this->transliterator->transliterate($name);
         }
 
         return $name;

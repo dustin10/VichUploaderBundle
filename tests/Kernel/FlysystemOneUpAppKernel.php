@@ -23,7 +23,7 @@ class FlysystemOneUpAppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(function (ContainerBuilder $container) {
+        $loader->load(static function (ContainerBuilder $container): void {
             $container->loadFromExtension('framework', ['secret' => '$ecret']);
 
             $container->loadFromExtension('oneup_flysystem', [

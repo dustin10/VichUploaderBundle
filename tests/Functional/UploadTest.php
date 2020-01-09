@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Functional;
 
-class UploadTest extends WebTestCase
+final class UploadTest extends WebTestCase
 {
     public function testFileIsUploadedWithFileType(): void
     {
@@ -15,7 +15,7 @@ class UploadTest extends WebTestCase
         $form = $crawler->selectButton('form_save')->form();
         $image = $this->getUploadedFile($client, 'symfony_black_03.png');
 
-        $crawler = $client->submit($form, [
+        $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
                 'imageFile' => ['file' => $image],
@@ -32,7 +32,7 @@ class UploadTest extends WebTestCase
         // test the delete feature
         $this->assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
         $form = $crawler->selectButton('form_save')->form();
-        $crawler = $client->submit($form, [
+        $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
                 'imageFile' => ['delete' => true],
@@ -70,7 +70,7 @@ class UploadTest extends WebTestCase
         // test the delete feature
         $this->assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
         $form = $crawler->selectButton('form_save')->form();
-        $crawler = $client->submit($form, [
+        $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
                 'imageFile' => ['delete' => true],

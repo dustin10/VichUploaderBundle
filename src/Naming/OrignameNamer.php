@@ -19,6 +19,16 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
     private $transliterate = false;
 
     /**
+     * @var Transliterator
+     */
+    private $transliterator;
+
+    public function __construct(Transliterator $transliterator)
+    {
+        $this->transliterator = $transliterator;
+    }
+
+    /**
      * @param array $options Options for this namer. The following options are accepted:
      *                       - transliterate: whether the filename should be transliterated or not
      */
@@ -37,7 +47,7 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
         $name = $file->getClientOriginalName();
 
         if ($this->transliterate) {
-            $name = Transliterator::transliterate($name);
+            $name = $this->transliterator->transliterate($name);
         }
 
         return \uniqid().'_'.$name;

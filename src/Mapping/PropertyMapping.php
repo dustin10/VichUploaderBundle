@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 class PropertyMapping
 {
     /**
-     * @var NamerInterface
+     * @var NamerInterface|null
      */
     protected $namer;
 
@@ -213,8 +213,6 @@ class PropertyMapping
 
     /**
      * Gets the configured namer.
-     *
-     * @return NamerInterface|null The namer
      */
     public function getNamer(): ?NamerInterface
     {
@@ -223,8 +221,6 @@ class PropertyMapping
 
     /**
      * Sets the namer.
-     *
-     * @param NamerInterface $namer The namer
      */
     public function setNamer(NamerInterface $namer): void
     {
@@ -233,8 +229,6 @@ class PropertyMapping
 
     /**
      * Determines if the mapping has a custom namer configured.
-     *
-     * @return bool True if has namer, false otherwise
      */
     public function hasNamer(): bool
     {
@@ -243,8 +237,6 @@ class PropertyMapping
 
     /**
      * Gets the configured directory namer.
-     *
-     * @return DirectoryNamerInterface|null The directory namer
      */
     public function getDirectoryNamer(): ?DirectoryNamerInterface
     {
@@ -253,8 +245,6 @@ class PropertyMapping
 
     /**
      * Sets the directory namer.
-     *
-     * @param DirectoryNamerInterface $directoryNamer The directory namer
      */
     public function setDirectoryNamer(DirectoryNamerInterface $directoryNamer): void
     {
@@ -263,8 +253,6 @@ class PropertyMapping
 
     /**
      * Determines if the mapping has a custom directory namer configured.
-     *
-     * @return bool True if has directory namer, false otherwise
      */
     public function hasDirectoryNamer(): bool
     {
@@ -283,8 +271,6 @@ class PropertyMapping
 
     /**
      * Gets the configured configuration mapping name.
-     *
-     * @return string The mapping name
      */
     public function getMappingName(): string
     {
@@ -293,8 +279,6 @@ class PropertyMapping
 
     /**
      * Sets the configured configuration mapping name.
-     *
-     * @param string $mappingName The mapping name
      */
     public function setMappingName($mappingName): void
     {
@@ -311,6 +295,9 @@ class PropertyMapping
     public function getUploadName($obj): string
     {
         if (!$this->hasNamer()) {
+            $msg = 'Not using a namer is deprecated and will be removed in version 2.';
+            @\trigger_error($msg, E_USER_DEPRECATED);
+
             return $this->getFile($obj)->getClientOriginalName();
         }
 

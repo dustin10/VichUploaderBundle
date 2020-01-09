@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterFlysystemRegistryPass;
 use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterMappingDriversPass;
+use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterSluggerPass;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -18,6 +19,7 @@ final class VichUploaderBundle extends Bundle
 
         $container->addCompilerPass(new RegisterMappingDriversPass());
         $container->addCompilerPass(new RegisterFlysystemRegistryPass());
+        $container->addCompilerPass(new RegisterSluggerPass());
     }
 
     public function getPath(): string
