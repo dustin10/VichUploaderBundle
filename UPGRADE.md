@@ -1,3 +1,13 @@
+Upgrading from v1.12.0 to 1.13.0
+================================
+
+- not using a namer is deprecated. You should always configure a namer.
+- DownloadHandler doesn't convert names of files anymore. You should not relay on it for your files, but convert names at upload time (using a namer, see previous point).
+- namer use symfony/string instead of behat/transliterator. This should not cause any visibile effect.
+- support for templating component was removed. You should use Twig.
+- Flysystem now is supported also via league/flysystem-bundle
+
+
 Upgrading from v1.11.0 to 1.12.0
 ================================
 
