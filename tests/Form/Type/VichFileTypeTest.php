@@ -40,7 +40,11 @@ class VichFileTypeTest extends TestCase
         $type->configureOptions($optionsResolver);
 
         $resolved = $optionsResolver->resolve($options);
-        $this->assertArraySubset($resolvedOptions, $resolved);
+
+        foreach ($resolvedOptions as $key => $value) {
+            $this->assertArrayHasKey($key, $resolved);
+            $this->assertSame($value, $resolved[$key]);
+        }
     }
 
     public function configureOptionsBCDataProvider(): array
@@ -67,7 +71,11 @@ class VichFileTypeTest extends TestCase
         $type->configureOptions($optionsResolver);
 
         $resolved = $optionsResolver->resolve([]);
-        $this->assertArraySubset(['download_uri' => true, 'download_link' => null], $resolved);
+
+        foreach (['download_uri' => true, 'download_link' => null] as $key => $value) {
+            $this->assertArrayHasKey($key, $resolved);
+            $this->assertSame($value, $resolved[$key]);
+        }
     }
 
     /**

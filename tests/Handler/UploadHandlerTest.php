@@ -183,8 +183,7 @@ final class UploadHandlerTest extends TestCase
         $this->mapping
             ->expects($this->once())
             ->method('erase')
-            ->with($this->object)
-            ->willReturn(null);
+            ->with($this->object);
 
         $this->storage
             ->expects($this->once())
