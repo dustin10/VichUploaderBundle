@@ -105,7 +105,7 @@ class Product
      * 
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
      * 
-     * @var File
+     * @var File|null
      */
     private $imageFile;
 
