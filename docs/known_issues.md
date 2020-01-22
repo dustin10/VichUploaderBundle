@@ -20,7 +20,7 @@ class Product
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime|null
+     * @var \DateTimeInterface|null
      */
     private $updatedAt;
 
@@ -85,7 +85,7 @@ class Product
     /**
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
      *
-     * @var File
+     * @var File|null
      */
     private $imageFile;
 

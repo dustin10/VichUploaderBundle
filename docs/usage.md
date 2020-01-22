@@ -110,23 +110,23 @@ class Product
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      *
-     * @var string
+     * @var string|null
      */
     private $imageName;
 
     /**
      * @ORM\Column(type="integer")
      *
-     * @var integer
+     * @var int|null
      */
     private $imageSize;
 
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime
+     * @var \DateTimeInterface|null
      */
     private $updatedAt;
 
@@ -137,7 +137,7 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {
@@ -210,7 +210,7 @@ class Product
      * 
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
      * 
-     * @var File
+     * @var File|null
      */
     private $imageFile;
 
@@ -224,7 +224,7 @@ class Product
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime
+     * @var \DateTimeInterface|null
      */
     private $updatedAt;
     
@@ -240,7 +240,7 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|UploadedFile $imageFile
+     * @param File|UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null)
     {
@@ -258,7 +258,7 @@ class Product
         return $this->imageFile;
     }
 
-    public function setImage(EmbeddedFile $image)
+    public function setImage(EmbeddedFile $image): void
     {
         $this->image = $image;
     }
