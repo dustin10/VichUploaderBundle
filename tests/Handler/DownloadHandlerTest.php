@@ -46,16 +46,18 @@ class DownloadHandlerTest extends TestCase
     public function filenamesProvider(): array
     {
         return [
-            ['file_name', 'file_name'],
-            ['file_name.ext', 'file_name.ext'],
-            ['file-name.ext', 'file-name.ext'],
+            ['file name', 'file name', null],
+            ['file_name', 'file_name', null],
+            ['file_name.ext', 'file_name.ext', null],
+            ['file-name.ext', 'file-name.ext', null],
+            ['file-name-/\-ẞ-ćź-ů-💩-%.ext', 'file-name--%E1%BA%9E-%C4%87%C5%BA-%C5%AF-%F0%9F%92%A9-.ext', 'file-name------.ext'],
         ];
     }
 
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObject(string $fileName, string $expectedFileName): void
+    public function testDownloadObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -85,13 +87,16 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(
+            $this->getDispositionHeaderRegexp('attachment', $expectedFileName, $expectedFallbackFilename),
+            $response->headers->get('Content-Disposition')
+        );
     }
 
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDisplayObject(string $fileName, string $expectedFileName): void
+    public function testDisplayObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -121,13 +126,16 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field', null, null, false);
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(\sprintf('/inline; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(
+            $this->getDispositionHeaderRegexp('inline', $expectedFileName, $expectedFallbackFilename),
+            $response->headers->get('Content-Disposition')
+        );
     }
 
     /**
      * @dataProvider filenamesProvider
      */
-    public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName): void
+    public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $this->mapping
             ->expects($this->once())
@@ -150,7 +158,10 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(
+            $this->getDispositionHeaderRegexp('attachment', $expectedFileName, $expectedFallbackFilename),
+            $response->headers->get('Content-Disposition')
+        );
     }
 
     public function testDownloadObjectCallOriginalName(): void
@@ -187,8 +198,10 @@ class DownloadHandlerTest extends TestCase
         $response = $this->handler->downloadObject($this->object, 'file_field', null, true);
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $expectedFileName = $this->object->getImageOriginalName();
-        $this->assertRegexp(\sprintf('/attachment; filename=["]{0,1}%s["]{0,1}/', $expectedFileName), $response->headers->get('Content-Disposition'));
+        $this->assertRegexp(
+            $this->getDispositionHeaderRegexp('attachment', $this->object->getImageOriginalName()),
+            $response->headers->get('Content-Disposition')
+        );
     }
 
     public function testAnExceptionIsThrownIfMappingIsNotFound(): void
@@ -212,5 +225,14 @@ class DownloadHandlerTest extends TestCase
             ->willReturn(null);
 
         $this->handler->downloadObject($this->object, 'file_field');
+    }
+
+    private function getDispositionHeaderRegexp(string $disposition, string $expectedFileName, ?string $expectedFallbackFilename = null): string
+    {
+        if (null !== $expectedFallbackFilename) {
+            return \sprintf('/%s; filename=["]{0,1}%s["]{0,1}; filename\*=utf-8\'\'%s/', $disposition, $expectedFallbackFilename, $expectedFileName);
+        }
+
+        return \sprintf('/%s; filename=["]{0,1}%s["]{0,1}/', $disposition, $expectedFileName);
     }
 }
