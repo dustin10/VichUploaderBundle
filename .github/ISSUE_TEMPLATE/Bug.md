@@ -7,10 +7,12 @@ about: Something is broken? 🔨
 
 <!-- Fill in the relevant information below to help triage your issue. -->
 
-|    Q        |   A
-|------------ | ------
-| BC Break    | yes/no
-| Version     | x.y.z
+|    Q            |   A
+|---------------- | ------
+| BC Break        | yes/no
+| Bundle version  | x.y.z <!-- provide patch version too -->
+| Symfony version | x.y.z
+| PHP version     | x.y.z
 
 #### Summary
 
