@@ -322,7 +322,4 @@ When you submit and save, the uploaded file will automatically be moved to the
 location you configured and the `imageName` field will be set to the filename of
 the uploaded file.
 
-Feel free to check our [sandbox application](https://github.com/K-Phoen/Vich-Uploader-Sandbox)
-if you need working examples!
-
 [Return to the index to explore the other possibilities of the bundle.](index.md)
