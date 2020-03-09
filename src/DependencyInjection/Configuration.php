@@ -20,7 +20,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('vich_uploader');
-        $root = \method_exists($builder, 'getRootNode') ? $builder->getRootNode() : $builder->root('vich_uploader');
+        $root = $builder->getRootNode();
         $this->addGeneralSection($root);
         $this->addMetadataSection($root);
         $this->addMappingsSection($root);
@@ -39,7 +39,7 @@ final class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->beforeNormalization()
                         ->ifString()
-                        ->then(function ($v) {
+                        ->then(static function ($v) {
                             return \strtolower($v);
                         })
                     ->end()
@@ -107,7 +107,7 @@ final class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) {
+                                    ->then(static function ($v) {
                                         return ['service' => $v, 'options' => []];
                                     })
                                 ->end()
@@ -120,7 +120,7 @@ final class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) {
+                                    ->then(static function ($v) {
                                         return ['service' => $v, 'options' => []];
                                     })
                                 ->end()
@@ -136,7 +136,7 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultNull()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) {
+                                    ->then(static function ($v) {
                                         return \strtolower($v);
                                     })
                                 ->end()

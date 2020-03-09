@@ -112,7 +112,7 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * note: extension point.
      *
-     * @param $obj
+     * @param object $obj
      *
      * @throws MappingNotFoundException
      * @throws \RuntimeException
