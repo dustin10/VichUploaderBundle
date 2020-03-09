@@ -153,14 +153,7 @@ class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->at(4))
             ->method('getPropertyAnnotation')
-            ->willReturn(
-                    new UploadableField(
-                        [
-                            'mapping' => 'dummyFile_file',
-                            'fileNameProperty' => 'fileName',
-                        ]
-                    )
-            );
+            ->willReturn(new UploadableField(['mapping' => 'dummyFile_file', 'fileNameProperty' => 'fileName']));
 
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));

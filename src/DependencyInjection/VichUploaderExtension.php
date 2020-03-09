@@ -199,9 +199,7 @@ final class VichUploaderExtension extends Extension
     protected function createNamerService(ContainerBuilder $container, string $mappingName, array $mapping): array
     {
         $serviceId = \sprintf('%s.%s', $mapping['namer']['service'], $mappingName);
-        $container->setDefinition(
-            $serviceId, new ChildDefinition($mapping['namer']['service'])
-        );
+        $container->setDefinition($serviceId, new ChildDefinition($mapping['namer']['service']));
 
         $mapping['namer']['service'] = $serviceId;
 
@@ -220,7 +218,6 @@ final class VichUploaderExtension extends Extension
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
 
-        // propel does not require tags to work TODO check if this test still makes sense
         if (isset($this->tagMap[$driver])) {
             $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
         }
