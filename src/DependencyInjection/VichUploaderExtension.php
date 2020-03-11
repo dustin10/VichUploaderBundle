@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Vich\UploaderBundle\Storage\StorageInterface;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -73,11 +72,8 @@ final class VichUploaderExtension extends Extension
         if ($config['form']) {
             $loader->load('form.xml');
         }
-        if ($config['templating']) {
-            $loader->load('templating.xml');
-            $container->setAlias(UploaderHelper::class, new Alias('vich_uploader.templating.helper.uploader_helper', false));
-        }
-        if ($config['twig'] && $config['templating']) {
+
+        if ($config['twig']) {
             $loader->load('twig.xml');
         }
     }

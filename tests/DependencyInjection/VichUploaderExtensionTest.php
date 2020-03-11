@@ -62,7 +62,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', FlysystemStorage::class);
-        $this->assertContainerBuilderHasService('vich_uploader.twig.extension.uploader', UploaderExtension::class);
+        $this->assertContainerBuilderHasService(UploaderExtension::class);
     }
 
     public function testMappingsServiceParameterIsSet(): void

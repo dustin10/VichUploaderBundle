@@ -35,6 +35,7 @@
         "doctrine/mongodb-odm": "^1.2",
         "doctrine/orm": "^2.7",
         "knplabs/knp-gaufrette-bundle": "^0.7",
+        "kphoen/rusty": "dev-update-php-parser",
         "league/flysystem-bundle": "^1.4",
         "league/flysystem-memory": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",

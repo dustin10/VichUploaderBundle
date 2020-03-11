@@ -1,3 +1,5 @@
+os: linux
+dist: bionic
 language: php
 
 php:
@@ -6,8 +8,6 @@ php:
     - 7.4
     - nightly
 
-sudo: false
-
 cache:
     directories:
         - $HOME/.composer/cache
@@ -15,15 +15,17 @@ cache:
 env:
     - SYMFONY_VERSION="^4.4.0"
     - COMPOSER_FLAGS="--prefer-dist"
+    - VALIDATE_DOCS=false
+    - WITH_LIIP_IMAGINE=false
 
-matrix:
+jobs:
     include:
         - php: 7.2
           env: VALIDATE_DOCS=true COMPOSER_FLAGS="--prefer-lowest"
         - php: 7.3
           env: SYMFONY_VERSION="^4.4.0" WITH_LIIP_IMAGINE=true
         - php: 7.4
-          env: SYMFONY_VERSION="^5.0.0"
+          env: VALIDATE_DOCS=false SYMFONY_VERSION="^5.0.0"
     allow_failures:
         - php: nightly
 
@@ -34,7 +36,7 @@ before_install:
     - phpenv config-rm xdebug.ini || true
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update "symfony/framework-bundle:${SYMFONY_VERSION}"; fi;
     - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:"^1.7|^2.0"; fi;
-    - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-master; fi
+    - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-update-php-parser; fi
 
 install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS --no-suggest
 

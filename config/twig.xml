@@ -6,12 +6,16 @@
 
     <services>
 
-        <service id="vich_uploader.twig.extension.uploader" class="Vich\UploaderBundle\Twig\Extension\UploaderExtension" public="false">
-            <tag name="twig.extension" />
-            <argument type="service" id="vich_uploader.templating.helper.uploader_helper" />
+        <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" public="false">
+            <tag name="templating.helper" alias="vich_uploader" />
+            <argument type="service" id="vich_uploader.storage" />
         </service>
 
-        <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
+        <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" />
+        </service>
+
     </services>
 
 </container>
