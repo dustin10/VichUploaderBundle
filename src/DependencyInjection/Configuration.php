@@ -57,7 +57,7 @@ final class Configuration implements ConfigurationInterface
                         ->thenInvalid('The storage %s is not supported. Please choose one of '.\implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
                     ->end()
                 ->end()
-            ->scalarNode('templating')->defaultTrue()->end()
+            ->scalarNode('templating')->defaultFalse()->setDeprecated('The "%node%" option is deprecated.')->end()
             ->scalarNode('twig')->defaultTrue()->info('twig requires templating')->end()
             ->scalarNode('form')->defaultTrue()->end()
             ->end()
