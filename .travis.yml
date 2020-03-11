@@ -15,6 +15,8 @@ cache:
 env:
     - SYMFONY_VERSION="^4.4.0"
     - COMPOSER_FLAGS="--prefer-dist"
+    - VALIDATE_DOCS=false
+    - WITH_LIIP_IMAGINE=false
 
 matrix:
     include:
