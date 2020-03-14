@@ -5,7 +5,7 @@
 
 {%- block vich_file_widget -%}
     <div class="vich-file">
-        {{- form_widget(form.file) -}}
+        {{- form_widget(form.file, {'attr': attr, 'id': id}) -}}
         {%- if form.delete is defined -%}
             {{- form_row(form.delete) -}}
         {%- endif -%}
@@ -25,7 +25,7 @@
 
 {%- block vich_image_widget -%}
     <div class="vich-image">
-        {{- form_widget(form.file) -}}
+        {{- form_widget(form.file, {'attr': attr, 'id': id}) -}}
         {%- if form.delete is defined -%}
             {{- form_row(form.delete) -}}
         {%- endif -%}
