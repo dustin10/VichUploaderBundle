@@ -69,7 +69,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         }
 
         // Check if string is empty (Better solution than empty())
-        if ($name === '') {
+        if ('' === $name) {
             throw new NameGenerationException(\sprintf('File name could not be generated: property %s is empty.', $this->propertyPath));
         }
 
