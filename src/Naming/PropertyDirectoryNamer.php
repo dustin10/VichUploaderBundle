@@ -71,7 +71,8 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
             throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
 
-        if (empty($name)) {
+        // Check if string is empty (Better solution than empty())
+        if ($name === '') {
             throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s is empty.', $this->propertyPath));
         }
 
