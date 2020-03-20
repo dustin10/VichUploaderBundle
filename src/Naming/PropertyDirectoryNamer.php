@@ -72,7 +72,7 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
         }
 
         // Check if string is empty (Better solution than empty())
-        if ($name === '') {
+        if ('' === $name) {
             throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s is empty.', $this->propertyPath));
         }
 
