@@ -36,12 +36,13 @@ abstract class AbstractStorage implements StorageInterface
 
         $name = $mapping->getUploadName($obj);
         $mapping->setFileName($obj, $name);
+        $mimeType = $file->getMimeType();
 
         $mapping->writeProperty($obj, 'size', $file->getSize());
-        $mapping->writeProperty($obj, 'mimeType', $file->getMimeType());
+        $mapping->writeProperty($obj, 'mimeType', $mimeType);
         $mapping->writeProperty($obj, 'originalName', $file->getClientOriginalName());
 
-        if (false !== \strpos($file->getMimeType(), 'image/') && 'image/svg+xml' !== $file->getMimeType() && false !== $dimensions = @\getimagesize($file)) {
+        if (false !== \strpos($mimeType, 'image/') && 'image/svg+xml' !== $mimeType && false !== $dimensions = @\getimagesize($file)) {
             $mapping->writeProperty($obj, 'dimensions', \array_splice($dimensions, 0, 2));
         }
 
