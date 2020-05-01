@@ -2,7 +2,10 @@
 
 namespace Vich\UploaderBundle\Exception;
 
-class MappingNotFoundException extends \RuntimeException
+/**
+ * @final
+ */
+class MappingNotFoundException extends \RuntimeException implements VichUploaderExceptionInterface
 {
     public static function createNotFoundForClassAndField($mapping, $class, $field): self
     {
