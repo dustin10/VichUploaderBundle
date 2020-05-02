@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Exception;
 
-class NameGenerationException extends \RuntimeException
+/**
+ * @final
+ */
+class NameGenerationException extends \RuntimeException implements VichUploaderExceptionInterface
 {
 }

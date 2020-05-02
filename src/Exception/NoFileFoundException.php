@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Exception;
 
-class NoFileFoundException extends \RuntimeException
+/**
+ * @final
+ */
+class NoFileFoundException extends \RuntimeException implements VichUploaderExceptionInterface
 {
 }

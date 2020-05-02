@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Exception;
 
-class NotUploadableException extends \InvalidArgumentException
+/**
+ * @final
+ */
+class NotUploadableException extends \InvalidArgumentException implements VichUploaderExceptionInterface
 {
 }
