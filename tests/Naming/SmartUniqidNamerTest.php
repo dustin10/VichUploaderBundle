@@ -23,7 +23,6 @@ final class SmartUniqidNamerTest extends TestCase
             'double extension' => ['lala.png.jpg', '/lala\.png-[[:xdigit:]]{22}\.jpg/'],
             'uppercase extension' => ['lala.JPEG', '/lala-[[:xdigit:]]{22}\.jpeg/'],
             'double uppercase extension' => ['lala.JPEG.JPEG', '/lala\.jpeg-[[:xdigit:]]{22}\.jpeg/'],
-
         ];
     }
 
