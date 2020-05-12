@@ -20,6 +20,9 @@ final class SmartUniqidNamerTest extends TestCase
             'long extension' => ['a.'.\str_repeat('a', 256), '/a-[[:xdigit:]]{22}\.a{230}/'],
             'long basename and extension' => [\str_repeat('a', 256).'.txt'.\str_repeat('a', 256),
                                               '/a{228}-[[:xdigit:]]{22}\.txt/', ],
+            'double extension' => ['lala.png.jpg', '/lala\.png-[[:xdigit:]]{22}\.jpg/'],
+            'uppercase extension' => ['lala.JPEG', '/lala-[[:xdigit:]]{22}\.jpeg/'],
+            'double uppercase extension' => ['lala.JPEG.JPEG', '/lala\.jpeg-[[:xdigit:]]{22}\.jpeg/'],
         ];
     }
 
