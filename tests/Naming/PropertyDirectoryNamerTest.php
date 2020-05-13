@@ -25,6 +25,7 @@ class PropertyDirectoryNamerTest extends TestCase
             'plain' => ['foo',                       $entity,      'someProperty',     false],
             'method call' => ['generated-file-name', $entity,      'generateFileName', false],
             'translit.' => ['yeo',                   $weirdEntity, 'someProperty',     true],
+            'multiple property' => ['yeo/yeo',       $weirdEntity, ['someProperty', 'someProperty'], true],
         ];
     }
 
@@ -34,7 +35,7 @@ class PropertyDirectoryNamerTest extends TestCase
     public function testNameReturnsTheRightName(
         string $expectedDirectoryName,
         object $entity,
-        string $propertyName,
+        $propertyName,
         bool $transliterate
     ): void {
         $mapping = $this->getPropertyMappingMock();

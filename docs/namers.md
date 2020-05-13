@@ -142,6 +142,10 @@ vich_uploader:
             directory_namer:
                 service: vich_uploader.namer_directory_property
                 options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
+                
+                #array version, order of properties matters
+                #both "parent" attribute and parent's "slug" attribute must be accessable
+                #options: { property: ['parent.slug', 'slug']} 
 ```
 
 **CurrentDateTimeDirectoryNamer** creates subdirs depending on the current locale datetime. By default, it will be 
