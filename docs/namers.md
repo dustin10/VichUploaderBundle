@@ -163,7 +163,7 @@ vich_uploader:
             directory_namer:
                 service: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
                 options:
-                    date_time_format: 'Y/d/m' # will create directory "2018/23/09" for curent date "2018-09-23"
+                    date_time_format: 'Y/d/m' # will create directory "2018/23/09" for current date "2018-09-23"
                     date_time_property: uploadTimestamp # see above example
 ```
 
