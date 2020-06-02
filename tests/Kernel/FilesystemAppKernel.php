@@ -24,7 +24,15 @@ class FilesystemAppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(static function (ContainerBuilder $container): void {
-            $container->loadFromExtension('framework', ['secret' => '$ecret']);
+            $container->loadFromExtension('framework', [
+                'secret' => '$ecret',
+                'router' => [
+                    'resource' => 'kernel::loadRoutes',
+                    'type' => 'service',
+                    'utf8' => false,
+                ],
+            ]);
+
             $container->loadFromExtension('vich_uploader', [
                 'db_driver' => 'orm',
                 'mappings' => [
