@@ -273,8 +273,8 @@ class PropertyMappingFactoryTest extends TestCase
                 'mapping' => 'dummy_file',
                 'propertyName' => 'file',
                 'fileNameProperty' => 'fileName',
-            ]
-            );
+            ])
+        ;
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mapping = $factory->fromField($object, 'file', $className);
