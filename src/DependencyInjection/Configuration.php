@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\BaseNode;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -57,7 +58,7 @@ final class Configuration implements ConfigurationInterface
                         ->thenInvalid('The storage %s is not supported. Please choose one of '.\implode(', ', $this->supportedStorages).' or provide a service name prefixed with "@".')
                     ->end()
                 ->end()
-            ->scalarNode('templating')->defaultFalse()->setDeprecated('The "%node%" option is deprecated.')->end()
+            ->scalarNode('templating')->defaultFalse()->setDeprecated(...$this->getTemplatingDeprecationMessage())->end()
             ->scalarNode('twig')->defaultTrue()->info('twig requires templating')->end()
             ->scalarNode('form')->defaultTrue()->end()
             ->end()
@@ -149,5 +150,24 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    /**
+     * Keep compatibility with symfony/config < 5.1.
+     *
+     * The signature of method NodeDefinition::setDeprecated() has been updated to
+     * NodeDefinition::setDeprecation(string $package, string $version, string $message).
+     *
+     * @return array
+     */
+    private function getTemplatingDeprecationMessage(): array
+    {
+        $message = 'The "%node%" option is deprecated.';
+
+        if (method_exists(BaseNode::class, 'getDeprecation')) {
+            return ['vich/uploader-bundle', '1.13.2', $message];
+        }
+
+        return [$message];
     }
 }

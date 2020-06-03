@@ -25,7 +25,7 @@ jobs:
         - php: 7.3
           env: SYMFONY_VERSION="^4.4.0" WITH_LIIP_IMAGINE=true
         - php: 7.4
-          env: VALIDATE_DOCS=false SYMFONY_VERSION="^5.0.0"
+          env: VALIDATE_DOCS=false SYMFONY_VERSION="^5.1.0"
     allow_failures:
         - php: nightly
 
@@ -34,9 +34,12 @@ before_install:
     - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer self-update
     - phpenv config-rm xdebug.ini || true
-    - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update "symfony/framework-bundle:${SYMFONY_VERSION}"; fi;
+    - |
+        if [ "$SYMFONY_VERSION" != "" ]; then
+            sed -ri 's/"symfony\/(.+)": "(\^4\.[0-9]+\s*\|+\s*\^5\.[0-9]+)"/"symfony\/\1": "'$SYMFONY_VERSION'"/' composer.json;
+        fi;
     - if [ "$WITH_LIIP_IMAGINE" = true ] ; then composer require --no-update liip/imagine-bundle:"^1.7|^2.0"; fi;
-    - if [ "$VALIDATE_DOCS" = true ]; then composer require --dev --no-update kphoen/rusty dev-update-php-parser; fi
+    - if [ "$VALIDATE_DOCS" != true ]; then composer remove --dev --no-update kphoen/rusty; fi
 
 install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS --no-suggest
 

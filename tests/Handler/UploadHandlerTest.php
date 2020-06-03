@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -244,19 +243,11 @@ final class UploadHandlerTest extends TestCase
     protected function expectEvents(array $events): void
     {
         foreach ($events as $i => $event) {
-            if (\class_exists(LegacyEventDispatcherProxy::class)) {
-                $this->dispatcher
-                    ->expects($this->at($i))
-                    ->method('dispatch')
-                    ->with($this->validEvent(), $event)
-                ;
-            } else {
-                $this->dispatcher
-                    ->expects($this->at($i))
-                    ->method('dispatch')
-                    ->with($event, $this->validEvent())
-                ;
-            }
+            $this->dispatcher
+                ->expects($this->at($i))
+                ->method('dispatch')
+                ->with($this->validEvent(), $event)
+            ;
         }
     }
 }

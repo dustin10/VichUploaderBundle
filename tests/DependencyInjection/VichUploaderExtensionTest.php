@@ -138,7 +138,11 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $twigExtension = new TwigExtension();
         $this->container->registerExtension($twigExtension);
 
-        $twigExtension->load([['strict_variables' => true, 'form_themes' => ['@Ololo/trololo.html.twig']]], $this->container);
+        $twigExtension->load([[
+            'strict_variables' => true,
+            'exception_controller' => null, // TODO remove after bumping symfony/twig-bundle to ^5.0
+            'form_themes' => ['@Ololo/trololo.html.twig'],
+        ]], $this->container);
         $vichUploaderExtension->load([$this->getMinimalConfiguration()], $this->container);
 
         $this->assertContainerBuilderHasParameter(

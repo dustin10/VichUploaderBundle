@@ -1,7 +1,9 @@
 # Symfony Configuration
 framework:
     secret:             Hell yeah!
-    router:             { resource: "%kernel.project_dir%/app/config/routing.yml" }
+    router:
+        resource: "%kernel.project_dir%/app/config/routing.yml"
+        utf8: false
     form:               true
     csrf_protection:    true
     default_locale:     en
@@ -17,7 +19,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    exception_controller: ~
+    exception_controller: null
 
 # Doctrine Configuration
 doctrine:
