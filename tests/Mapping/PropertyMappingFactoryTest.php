@@ -67,6 +67,14 @@ class PropertyMappingFactoryTest extends TestCase
             ],
         ];
 
+        $expectedFields = [
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+                'fileNameProperty' => 'fileName',
+            ],
+        ];
+
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -77,13 +85,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with($expectedClassName)
-            ->willReturn([
-                'file' => [
-                    'mapping' => 'dummy_file',
-                    'propertyName' => 'file',
-                    'fileNameProperty' => 'fileName',
-                ],
-            ]);
+            ->willReturn($expectedFields);
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($object, $givenClassName);
@@ -131,6 +133,13 @@ class PropertyMappingFactoryTest extends TestCase
             ],
         ];
 
+        $expectedFields = [
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+            ],
+        ];
+
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -141,12 +150,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
-            ->willReturn([
-                'file' => [
-                    'mapping' => 'dummy_file',
-                    'propertyName' => 'file',
-                ],
-            ]);
+            ->willReturn($expectedFields);
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($obj);
@@ -177,6 +181,21 @@ class PropertyMappingFactoryTest extends TestCase
             ],
         ];
 
+        $expectedFields = [
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+            ],
+            'other_file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'other_file',
+            ],
+            'document' => [
+                'mapping' => 'other_mapping',
+                'propertyName' => 'document',
+            ],
+        ];
+
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -187,20 +206,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
-            ->willReturn([
-                'file' => [
-                    'mapping' => 'dummy_file',
-                    'propertyName' => 'file',
-                ],
-                'other_file' => [
-                    'mapping' => 'dummy_file',
-                    'propertyName' => 'other_file',
-                ],
-                'document' => [
-                    'mapping' => 'other_mapping',
-                    'propertyName' => 'document',
-                ],
-            ]);
+            ->willReturn($expectedFields);
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
@@ -220,8 +226,13 @@ class PropertyMappingFactoryTest extends TestCase
     {
         $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
 
-        $mappings = [
-            'bad_name' => [],
+        $mappings = ['bad_name' => []];
+        $expectedFields = [
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+                'fileNameProperty' => 'fileName',
+            ],
         ];
 
         $this->metadata
@@ -234,13 +245,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
-            ->willReturn([
-                'file' => [
-                    'mapping' => 'dummy_file',
-                    'propertyName' => 'file',
-                    'fileNameProperty' => 'fileName',
-                ],
-            ]);
+            ->willReturn($expectedFields);
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $factory->fromObject(new DummyEntity());
@@ -259,6 +264,12 @@ class PropertyMappingFactoryTest extends TestCase
             ],
         ];
 
+        $expectedFields = [
+            'mapping' => 'dummy_file',
+            'propertyName' => 'file',
+            'fileNameProperty' => 'fileName',
+        ];
+
         $this->metadata
             ->expects($this->once())
             ->method('isUploadable')
@@ -269,12 +280,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->expects($this->once())
             ->method('getUploadableField')
             ->with($expectedClassName, 'file')
-            ->willReturn([
-                'mapping' => 'dummy_file',
-                'propertyName' => 'file',
-                'fileNameProperty' => 'fileName',
-            ])
-        ;
+            ->willReturn($expectedFields);
 
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mapping = $factory->fromField($object, 'file', $className);

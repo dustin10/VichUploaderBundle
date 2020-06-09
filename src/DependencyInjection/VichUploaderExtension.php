@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -111,7 +112,7 @@ final class VichUploaderExtension extends Extension
                 $bundleName = \substr($directory['path'], 1, \strpos($directory['path'], '/') - 1);
 
                 if (!isset($bundles[$bundleName])) {
-                    throw new \RuntimeException(\sprintf('The bundle "%s" has not been registered with AppKernel. Available bundles: %s', $bundleName, \implode(', ', \array_keys($bundles))));
+                    throw new \RuntimeException(\sprintf('The bundle "%s" has not been registered with Kernel. Available bundles: %s', $bundleName, \implode(', ', \array_keys($bundles))));
                 }
 
                 $ref = new \ReflectionClass($bundles[$bundleName]);
@@ -134,6 +135,10 @@ final class VichUploaderExtension extends Extension
         } elseif ('file' === $config['metadata']['cache']) {
             $container
                 ->getDefinition('vich_uploader.metadata.cache.file_cache')
+                ->replaceArgument(0, $config['metadata']['file_cache']['dir'])
+            ;
+            $container
+                ->getDefinition(CacheWarmer::class)
                 ->replaceArgument(0, $config['metadata']['file_cache']['dir'])
             ;
 
