@@ -59,7 +59,7 @@ class UploadableField
 
         foreach ($options as $property => $value) {
             if (!\property_exists($this, $property)) {
-                throw new \RuntimeException(\sprintf('Unknown key "%s" for annotation "@%s".', $property, \get_class($this)));
+                throw new \RuntimeException(\sprintf('Unknown key "%s" for annotation "@%s".', $property, static::class));
             }
 
             $this->$property = $value;

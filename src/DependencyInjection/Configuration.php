@@ -157,14 +157,12 @@ final class Configuration implements ConfigurationInterface
      *
      * The signature of method NodeDefinition::setDeprecated() has been updated to
      * NodeDefinition::setDeprecation(string $package, string $version, string $message).
-     *
-     * @return array
      */
     private function getTemplatingDeprecationMessage(): array
     {
         $message = 'The "%node%" option is deprecated.';
 
-        if (method_exists(BaseNode::class, 'getDeprecation')) {
+        if (\method_exists(BaseNode::class, 'getDeprecation')) {
             return ['vich/uploader-bundle', '1.13.2', $message];
         }
 
