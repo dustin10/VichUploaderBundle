@@ -1,0 +1,7 @@
+#contributed by https://github.com/petk
+vich_uploader:
+    form_label:
+         delete_confirm: Izbris?
+    link:
+         download: Prenesi
+

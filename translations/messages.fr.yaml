@@ -1,0 +1,7 @@
+# contributed by https://github.com/K-Phoen
+vich_uploader:
+    form_label:
+         delete_confirm: Supprimer?
+    link:
+         download: Télécharger
+

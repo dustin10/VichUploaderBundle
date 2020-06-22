@@ -1,0 +1,7 @@
+# contributed by https://github.com/davidromani
+vich_uploader:
+    form_label:
+         delete_confirm: Eliminar?
+    link:
+         download: Descarregar
+

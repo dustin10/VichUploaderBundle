@@ -74,7 +74,12 @@ download_label
 
 If set to `true`, download label will use original file name.
 
-Can be string 
+Can be string. If you use a string, string wille be translated. You can put your translation in default messages domain.
+Otherwise, you can pass `translation_domain` option, setting it to `false` (no translation) or to your custom domain.
+
+See [Symfony documentation](https://symfony.com/doc/current/translation.html) for more informations.
+
+
 ```php
 use Vich\UploaderBundle\Form\Type\VichFileType;
 

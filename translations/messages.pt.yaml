@@ -1,0 +1,7 @@
+# contributed by https://github.com/Restless-ET
+vich_uploader:
+    form_label:
+         delete_confirm: Apagar?
+    link:
+         download: Descarregar
+

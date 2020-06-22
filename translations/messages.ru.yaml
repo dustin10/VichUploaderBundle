@@ -1,0 +1,7 @@
+# contributed by https://github.com/bocharsky-bw
+vich_uploader:
+    form_label:
+         delete_confirm: Удалить?
+    link:
+         download: Скачать
+

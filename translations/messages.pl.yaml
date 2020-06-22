@@ -1,0 +1,7 @@
+# contributed by https://github.com/meron1122
+vich_uploader:
+    form_label:
+         delete_confirm: Usunąć?
+    link:
+         download: Pobierz
+
