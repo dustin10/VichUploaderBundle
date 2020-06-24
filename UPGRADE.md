@@ -1,3 +1,10 @@
+Upgrading from v1.14.0 to 1.15.0
+================================
+
+- translation has been refactored to use standard domain. If you added translations in "VichUploaderBundle" domain, you can move it to "messages" domain.
+  Also, label were change to avoid possible conflicts: from "Download" to "vich_uploader.link.download", and from "form.label.delete" to
+  "vich_uploader.form_label.delete_confirm".
+
 Upgrading from v1.12.0 to 1.13.0
 ================================
 

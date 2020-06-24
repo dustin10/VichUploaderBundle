@@ -1,0 +1,6 @@
+vich_uploader:
+    form_label:
+         delete_confirm: Delete?
+    link:
+         download: Download
+

@@ -1,0 +1,7 @@
+# contributed by https://github.com/oebabaluba
+vich_uploader:
+    form_label:
+         delete_confirm: Poista?
+    link:
+         download: Lataa
+

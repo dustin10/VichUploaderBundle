@@ -1,0 +1,7 @@
+# contributed by https://github.com/medinae
+vich_uploader:
+    form_label:
+         delete_confirm: Rimuovere?
+    link:
+         download: Scaricare
+

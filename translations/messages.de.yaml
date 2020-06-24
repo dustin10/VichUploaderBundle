@@ -1,0 +1,7 @@
+# contributed by https://github.com/kaiwa
+vich_uploader:
+    form_label:
+         delete_confirm: Löschen?
+    link:
+         download: herunterladen
+

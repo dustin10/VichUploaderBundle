@@ -1,0 +1,7 @@
+# contributed by https://github.com/tungps0811
+vich_uploader:
+    form_label:
+         delete_confirm: Xoá?
+    link:
+         download: Tải
+

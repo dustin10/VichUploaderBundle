@@ -65,11 +65,9 @@ class VichFileType extends AbstractType
             'asset_helper' => false,
             'download_link' => null,
             'download_uri' => true,
-            //TODO: use 'form.label.download'
-            'download_label' => 'download',
-            'delete_label' => 'form.label.delete',
+            'download_label' => 'vich_uploader.link.download',
+            'delete_label' => 'vich_uploader.form_label.delete_confirm',
             'error_bubbling' => false,
-            'translation_domain' => 'VichUploaderBundle',
         ]);
 
         $resolver->setAllowedTypes('allow_delete', 'bool');
