@@ -37,7 +37,7 @@ class AppKernel extends Kernel
 
 ## Choose and configure a persistence engine
 
-Four engines are currently supported:
+Three engines are currently supported:
 
   * [orm](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/index.html)
   * [mongodb](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/1.2/index.html)
