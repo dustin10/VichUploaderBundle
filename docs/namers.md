@@ -19,47 +19,17 @@ At the moment there are several available namers:
   * `Vich\UploaderBundle\Naming\HashNamer`
   * `Vich\UploaderBundle\Naming\Base64Namer`
   * `Vich\UploaderBundle\Naming\SmartUniqueNamer`
+  * `Vich\UploaderBundle\Naming\SlugNamer`
 
 **UniqidNamer** will rename your uploaded files using a uniqueid for the name and
-keep the extension. Using this namer, foo.jpg will be uploaded as something like 0eb3db03971550eb3b0371.jpg.
+keep the extension. Using this namer, "foo.jpg" will be uploaded as something like "0eb3db03971550eb3b0371.jpg".
 
 **OrignameNamer** will rename your uploaded files using a uniqueid as the prefix of the
-filename and keeping the original name and extension. Using this namer, foo.jpg will be uploaded as
-something like 50eb3db039715_foo.jpg
+filename and keeping the original name and extension. Using this namer, "foo.jpg" will be uploaded as
+something like "50eb3db039715_foo.jpg"
 
-**PropertyNamer** will use a property or a method to name the
-file.
-
-**HashNamer** will use a hash of random string to name the file. You also can specify
-hash `algorithm` and result `length` of the file
-
-**Base64Namer** will generate a URL-safe base64 decodable random string to name the file.
-You can specify the `length` of the random string. Using this namer, foo.jpg will be uploaded as something
-like 6FMNgvkdUs.jpg
-
-**SmartUniqueNamer** will rename your uploaded files appending a strong uniqueid to the original name, while 
-applying a transliteration. Using this namer, a Strange name.jpg will be uploaded as something like
-a-strange-name-0eb3db03971550eb3b0371.jpg.
-
-To use it, you just have to specify the service for the `namer` configuration option of your mapping:
-
-``` yaml
-vich_uploader:
-    # ...
-    mappings:
-        product_image:
-            upload_destination: product_image_fs
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-```
-
-If no namer is configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. This is deprecated and will be removed in next major version.
-
-**Warning:** it means that if two files having the same name are uploaded, one
-will override the other.
-
-**N.B:** when using the `PropertyNamer` namer, you have to specify which
-property will be used.
+**PropertyNamer** will use a property or a method to name the file. You have to specify which
+property will be used:
 
 ``` yaml
 vich_uploader:
@@ -71,6 +41,48 @@ vich_uploader:
                 service: Vich\UploaderBundle\Naming\PropertyNamer
                 options: { property: 'slug'} # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
+
+**HashNamer** will use a hash of random string to name the file. You also can specify
+hash `algorithm` and result `length` of the file
+
+**Base64Namer** will generate a URL-safe base64 decodable random string to name the file.
+You can specify the `length` of the random string. Using this namer, "foo.jpg" will be uploaded as something
+like "6FMNgvkdUs.jpg"
+
+**SmartUniqueNamer** will rename your uploaded files appending a strong uniqueid to the original name, while 
+applying a transliteration. Using this namer, "a Strange name.jpg" will be uploaded as something like
+"a-strange-name-0eb3db03971550eb3b0371.jpg".
+
+**SlugNamer** will only transliterate uploaded file. Then, it will search if such name already exists and, if so,
+will append a progresive number (to ensure uniqueness). This is useful when you want to keep your names as closer
+as possible to original ones, but is also limited to simple situations (i.e. when you're using a single mapped entity).
+To use it, you just have to specify the service for the `namer` configuration option of your mapping:
+``` yaml
+# config/services.yaml
+services:
+    Vich\UploaderBundle\Naming\SlugNamer:
+        public: true
+        arguments:
+            $service: '@App\Repository\MyFileRepository'
+            $method: findOneByPath
+```
+
+### Configuration
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image_fs
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer # or any other namer listed above
+```
+
+If no namer is configured for a mapping, the bundle will simply use the name of the file that
+was uploaded. This is deprecated and will be removed in next major version.
+
+**Warning:** it means that if two files having the same name are uploaded, one
+will override the other.
 
 
 ### How-to
