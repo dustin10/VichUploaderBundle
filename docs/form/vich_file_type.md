@@ -19,7 +19,8 @@ class Form extends AbstractType
 
         $builder->add('genericFile', VichFileType::class, [
             'required' => false,
-            'allow_delete' => true, 
+            'allow_delete' => true,
+            'delete_label' => '...',
             'download_uri' => '...',
             'download_label' => '...',
             'asset_helper' => true,
@@ -31,6 +32,33 @@ class Form extends AbstractType
 allow_delete
 ------------
 **type**: `bool` **default**: `true`
+
+delete_label
+--------------
+**type**: `string`, `callable`, `Symfony\Component\PropertyAccess\PropertyPath` **default**: `vich_uploader.form_label.delete_confirm`
+
+Can be string 
+```php
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
+$builder->add('genericFile', VichImageType::class, [
+    'delete_label' => 'delete_file',
+]);
+
+```
+
+Can be callable
+
+```php
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
+$builder->add('genericFile', VichImageType::class, [
+    'delete_label' => static function (Product $product) {
+        return 'Delete ' . $product->getTitle();
+    },
+]);
+
+```
 
 asset_helper
 ------------
