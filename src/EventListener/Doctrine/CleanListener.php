@@ -16,7 +16,7 @@ class CleanListener extends BaseListener
     /**
      * The events the listener is subscribed to.
      *
-     * @return array The array of events
+     * @return array<int, string> The array of events
      */
     public function getSubscribedEvents(): array
     {
@@ -25,9 +25,6 @@ class CleanListener extends BaseListener
         ];
     }
 
-    /**
-     * @param EventArgs $event The event
-     */
     public function preUpdate(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
@@ -38,7 +35,8 @@ class CleanListener extends BaseListener
 
         foreach ($this->getUploadableFields($object) as $field) {
             $this->handler->clean($object, $field);
-            $this->adapter->recomputeChangeSet($event);
         }
+
+        $this->adapter->recomputeChangeSet($event);
     }
 }

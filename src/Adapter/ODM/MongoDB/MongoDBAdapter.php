@@ -11,17 +11,11 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  */
 class MongoDBAdapter implements AdapterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectFromArgs($event)
     {
         return $event->getDocument();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function recomputeChangeSet($event): void
     {
         $object = $this->getObjectFromArgs($event);

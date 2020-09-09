@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
 class DoctrineORMAdapter implements AdapterInterface
 {
     /**
-     * {@inheritdoc}
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $event
      */
     public function getObjectFromArgs($event)
     {
@@ -20,7 +20,7 @@ class DoctrineORMAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param \Doctrine\ORM\Event\PreUpdateEventArgs $event
      */
     public function recomputeChangeSet($event): void
     {
