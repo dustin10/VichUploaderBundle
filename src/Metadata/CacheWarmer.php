@@ -18,6 +18,9 @@ final class CacheWarmer implements CacheWarmerInterface
 
     public function warmUp($cacheDirectory): void
     {
+        if (empty($this->dir)) {
+            return;
+        }
         $files = [];
         if (!\is_dir($this->dir)) {
             if (!\mkdir($concurrentDirectory = $this->dir, 0777, true) && !\is_dir($concurrentDirectory)) {

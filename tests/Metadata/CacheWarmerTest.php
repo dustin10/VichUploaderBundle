@@ -15,5 +15,15 @@ final class CacheWarmerTest extends TestCase
 
         $warmer = new CacheWarmer(\sys_get_temp_dir(), $reader);
         $warmer->warmUp('foo');
+
+    }
+
+    public function testDoNotWarmUpEmptyDir(): void
+    {
+        $reader = $this->createMock(MetadataReader::class);
+        $reader->expects($this->never())->method('getUploadableClasses');
+
+        $warmer = new CacheWarmer('', $reader);
+        $warmer->warmUp('foo');
     }
 }

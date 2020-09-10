@@ -32,8 +32,8 @@ class MetadataReader
     /**
      * Tells if the given class is uploadable.
      *
-     * @param string $class   The class name to test (FQCN)
-     * @param string $mapping If given, also checks that the object has the given mapping
+     * @param string      $class   The class name to test (FQCN)
+     * @param string|null $mapping If given, also checks that the object has the given mapping
      *
      * @throws MappingNotFoundException
      */
@@ -73,8 +73,8 @@ class MetadataReader
     /**
      * Attempts to read the uploadable fields.
      *
-     * @param string $class   The class name to test (FQCN)
-     * @param string $mapping If given, also checks that the object has the given mapping
+     * @param string      $class   The class name to test (FQCN)
+     * @param string|null $mapping If given, also checks that the object has the given mapping
      *
      * @return array A list of uploadable fields
      *
