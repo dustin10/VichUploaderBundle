@@ -98,7 +98,13 @@ class UploadHandler extends AbstractHandler
             return;
         }
 
-        $this->dispatch(Events::PRE_REMOVE, new Event($obj, $mapping));
+        $preEvent = new Event($obj, $mapping);
+
+        $this->dispatch(Events::PRE_REMOVE, $preEvent);
+
+        if ($preEvent->isCanceled()) {
+            return;
+        }
 
         $this->storage->remove($obj, $mapping);
         $mapping->erase($obj);
