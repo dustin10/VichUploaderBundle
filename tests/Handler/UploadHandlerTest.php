@@ -192,6 +192,35 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
+    public function testRemoveIfEventIsCanceled(): void
+    {
+        $this->expectEvents([Events::PRE_REMOVE]);
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->willReturn('something not null');
+
+        $this->mapping
+            ->expects($this->never())
+            ->method('erase');
+
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $eventListener = function($event) {
+            $event->cancel();
+        };
+
+        $this->dispatcher
+            ->method('dispatch')
+            ->will($this->returnCallback($eventListener));
+
+        $this->handler->remove($this->object, self::FILE_FIELD);
+    }
+
     public function testRemoveWithEmptyObject(): void
     {
         $this->dispatcher
