@@ -49,10 +49,14 @@ Don't worry, it will be quick and easy (I promise!):
 
   * [Serving files with a controller](downloads/serving_files_with_a_controller.md)
 
+### Event-related
+
+  * [Events](events/events.md)
+  * [Remove files asynchronously](events/howto/remove_files_asynchronously.md)
+
 ## Useful resources
 
   * [Configuration reference](configuration_reference.md)
-  * [Events](events.md)
   * [Console commands](commands.md)
   * [Known issues](known_issues.md)
   * [Symfony support policy](symfony_support_policy.md)

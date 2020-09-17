@@ -15,6 +15,8 @@ The following is a list of events you can listen to:
 |`vich_uploader.pre_remove`|`Events::PRE_REMOVE`|before a file is removed|
 |`vich_uploader.post_remove`|`Events::POST_REMOVE`|after a file is removed|
 
+The `vich_uploader.pre_remove` event is cancelable, that means that the actual remove request will not take place, and you have to take action.
+
 Example
 -------
 
@@ -50,4 +52,4 @@ services:
             - { name: kernel.event_listener, event: vich_uploader.pre_upload }
 ```
 
-[Return to the index](index.md)
+[Return to the index](../index.md)
