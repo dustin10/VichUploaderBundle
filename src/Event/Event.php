@@ -16,6 +16,8 @@ class Event extends ContractEvent
 
     protected $mapping;
 
+    protected $cancel = false;
+
     public function __construct($object, PropertyMapping $mapping)
     {
         $this->object = $object;
@@ -39,4 +41,22 @@ class Event extends ContractEvent
     {
         return $this->mapping;
     }
+
+    /**
+     * Cancels the execution of the actual request.
+     * Only works for the vich_uploader.pre_remove event.
+     */
+    public function cancel(): void
+    {
+        $this->cancel = true;
+    }
+
+    /**
+     * Returns whether further processing of the request should be executed.
+     */
+    public function isCanceled(): bool
+    {
+        return $this->cancel;
+    }
+
 }
