@@ -65,14 +65,32 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');
         }
 
+        if (!\is_array($this->propertyPath)) {
+            return $this->_directoryNameGenerator($object, $this->propertyPath);
+        }
+
+        $names = [];
+        foreach ($this->propertyPath as $p) {
+            $names[] = $this->_directoryNameGenerator($object, $p);
+        }
+
+        return \implode('/', $names);
+    }
+
+    private function _directoryNameGenerator($object, $properyPath)
+    {
+        if (empty($properyPath)) {
+            throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');
+        }
+
         try {
-            $name = $this->propertyAccessor->getValue($object, $this->propertyPath);
+            $name = $this->propertyAccessor->getValue($object, $properyPath);
         } catch (NoSuchPropertyException $e) {
-            throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
+            throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s does not exist.', $properyPath), $e->getCode(), $e);
         }
 
         if (empty($name)) {
-            throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s is empty.', $this->propertyPath));
+            throw new NameGenerationException(\sprintf('Directory name could not be generated: property %s is empty.', $properyPath));
         }
 
         if ($this->transliterate) {
