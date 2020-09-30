@@ -7,7 +7,7 @@ The messenger allows you to run tasks asynchronously, in our example the file re
 **Note**:
 
 > We recommend you to create a message and message handler for each mapping.
-> Use `instanceof` checks to send different messages in the event subscriber.
+> Use `getMappingName` to send the right message in the event subscriber.
 
 **Important**:
 
@@ -21,7 +21,7 @@ Create a message containing the filename of the file to be deleted.
 
 namespace App\Message;
 
-class RemoveFileMessage
+class RemoveProductImageMessage
 {
 
     private $filename;
@@ -46,12 +46,12 @@ Create a message handler that will do the actual removal.
 
 namespace App\MessageHandler;
 
-use App\Message\RemoveFileMessage;
+use App\Message\RemoveProductImageMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class RemoveFileMessageHandler implements MessageHandlerInterface
+class RemoveProductImageMessageHandler implements MessageHandlerInterface
 {
-    public function __invoke(RemoveFileMessage $message)
+    public function __invoke(RemoveProductImageMessage $message)
     {
         $filename = $message->getFilename();
 
@@ -68,8 +68,7 @@ Create a event subscriber that will cancel the remove request and dispatch a rem
 
 namespace App\EventSubscriber;
 
-use App\Message\RemoveFileMessage;
-use App\Entity\Foo;
+use App\Message\RemoveProductImageMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Vich\UploaderBundle\Event\Event;
@@ -94,15 +93,24 @@ class RemoveFileEventSubscriber implements EventSubscriberInterface
 
     public function onPreRemove(Event $event): void
     {
+        $mapping = $event->getMapping();
+        $mappingName = $mapping->getMappingName();
+
+        if ('product_image' === $mappingName) {
+            $this->dispatch(RemoveProductImageMessage::class, $event);
+        }
+    }
+
+    private function dispatch(string $messageClass, Event $event): void
+    {
         $event->cancel();
 
         $object = $event->getObject();
-        $mapping = $event->getMapping();
 
+        $mapping = $event->getMapping();
         $filename = $mapping->getFileName($object);
 
-        $message = new RemoveFileMessage($filename);
-
+        $message = new $messageClass($filename);
         $this->messageBus->dispatch($message);
     }
 
