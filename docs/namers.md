@@ -39,17 +39,29 @@ vich_uploader:
             upload_destination: product_image_fs
             namer:
                 service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'slug'} # supposing that the object contains a "slug" attribute or a "getSlug" method
+                options: { property: 'slug' } # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
 
 **HashNamer** will use a hash of random string to name the file. You also can specify
-hash `algorithm` and result `length` of the file
+hash `algorithm` and result `length` of the file:
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        product_image:
+            upload_destination: product_image_fs
+            namer:
+                service: Vich\UploaderBundle\Naming\HashNamer
+                options: { algorithm: 'sha256', length: 50 }
+```
+
+
 
 **Base64Namer** will generate a URL-safe base64 decodable random string to name the file.
 You can specify the `length` of the random string. Using this namer, "foo.jpg" will be uploaded as something
 like "6FMNgvkdUs.jpg"
 
-**SmartUniqueNamer** will rename your uploaded files appending a strong uniqueid to the original name, while 
+**SmartUniqueNamer** will rename your uploaded files appending a strong uniqueid to the original name, while
 applying a transliteration. Using this namer, "a Strange name.jpg" will be uploaded as something like
 "a-strange-name-0eb3db03971550eb3b0371.jpg".
 
@@ -110,9 +122,9 @@ At the moment there are several available namers:
   * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
   * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
 
-**SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be 
-stored in a folder `ab`. It is also possible to configure how many chars use per directory name and 
-how many directories to create. 
+**SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be
+stored in a folder `ab`. It is also possible to configure how many chars use per directory name and
+how many directories to create.
 
 To use it, you just have to specify the service for the `directory_namer`
 configuration option of your mapping:
@@ -136,10 +148,10 @@ vich_uploader:
             upload_destination: product_image
             directory_namer:
                 service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
-                options: {chars_per_dir: 1, dirs: 2} # will create directory "a/b" for "abcdef.jpg"
+                options: { chars_per_dir: 1, dirs: 2 } # will create directory "a/b" for "abcdef.jpg"
 ```
 
-**PropertyDirectoryNamer** will use a property or a method to name the directory. 
+**PropertyDirectoryNamer** will use a property or a method to name the directory.
 
 To use it, you just have to specify the service for the `directory_namer`
 configuration option of your mapping, and **must** set a property,
@@ -153,10 +165,10 @@ vich_uploader:
             upload_destination: product_image
             directory_namer:
                 service: vich_uploader.namer_directory_property
-                options: { property: 'slug', transliterate: true} # supposing that the object contains a "slug" attribute or a "getSlug" method
+                options: { property: 'slug', transliterate: true } # supposing that the object contains a "slug" attribute or a "getSlug" method
 ```
 
-**CurrentDateTimeDirectoryNamer** creates subdirs depending on the current locale datetime. By default, it will be 
+**CurrentDateTimeDirectoryNamer** creates subdirs depending on the current locale datetime. By default, it will be
 created in the `Y/m/d` format. It is possible to configure the datetime format used to create directories.
 For details of datetime formats see <http://php.net/manual/en/function.date.php>.
 You should also pass to this namer an option declaring a property where uploading datetime is stored in your object.
