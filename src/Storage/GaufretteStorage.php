@@ -46,7 +46,7 @@ class GaufretteStorage extends AbstractStorage
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
-        
+
         $filesystem->write($path, \file_get_contents($file->getPathname()), true);
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
