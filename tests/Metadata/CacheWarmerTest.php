@@ -15,7 +15,6 @@ final class CacheWarmerTest extends TestCase
 
         $warmer = new CacheWarmer(\sys_get_temp_dir(), $reader);
         $warmer->warmUp('foo');
-
     }
 
     public function testDoNotWarmUpEmptyDir(): void
