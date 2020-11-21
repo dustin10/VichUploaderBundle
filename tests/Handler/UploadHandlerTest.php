@@ -210,13 +210,13 @@ final class UploadHandlerTest extends TestCase
             ->expects($this->never())
             ->method('remove');
 
-        $eventListener = function($event) {
+        $eventListener = static function ($event): void {
             $event->cancel();
         };
 
         $this->dispatcher
             ->method('dispatch')
-            ->will($this->returnCallback($eventListener));
+            ->willReturnCallback($eventListener);
 
         $this->handler->remove($this->object, self::FILE_FIELD);
     }

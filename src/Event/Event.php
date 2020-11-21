@@ -58,5 +58,4 @@ class Event extends ContractEvent
     {
         return $this->cancel;
     }
-
 }

@@ -14,9 +14,9 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
-    protected $supportedDbDrivers = ['orm', 'mongodb', 'phpcr'];
+    private $supportedDbDrivers = ['orm', 'mongodb', 'phpcr'];
 
-    protected $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
+    private $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -29,7 +29,7 @@ final class Configuration implements ConfigurationInterface
         return $builder;
     }
 
-    protected function addGeneralSection(ArrayNodeDefinition $node): void
+    private function addGeneralSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -65,7 +65,7 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-    protected function addMetadataSection(ArrayNodeDefinition $node): void
+    private function addMetadataSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -94,7 +94,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    protected function addMappingsSection(ArrayNodeDefinition $node): void
+    private function addMappingsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
