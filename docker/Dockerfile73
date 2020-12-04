@@ -1,6 +1,6 @@
-FROM php:7.3.8-alpine
+FROM php:7.3-alpine
 
-ARG MONGODB_VERSION=1.5.3
+ARG MONGODB_VERSION=1.8.2
 
 # Install mongo
 RUN set -eux; \
@@ -37,7 +37,7 @@ WORKDIR /srv/vich-uploader
 COPY . ./
 
 RUN set -eux; \
-	composer install --prefer-dist -vvv; \
+	composer install --prefer-dist -v; \
 	composer clear-cache
 
 CMD ["/init"]
