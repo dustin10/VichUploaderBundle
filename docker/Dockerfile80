@@ -1,6 +1,6 @@
-FROM php:7.2.21-alpine
+FROM php:8.0.0-alpine
 
-ARG MONGODB_VERSION=1.5.3
+ARG MONGODB_VERSION=1.9.0
 
 # Install mongo
 RUN set -eux; \
@@ -34,11 +34,11 @@ WORKDIR /srv/vich-uploader
 
 # prevent the reinstallation of vendors at every changes in the source code
 
-COPY ./docker/script/runTests.sh ./runTests.sh
+#COPY ./docker/script/runTests.sh ./runTests.sh
 COPY . ./
 
 RUN set -eux; \
-	composer install --prefer-dist -vvv; \
+	composer install --prefer-dist --ignore-platform-reqs; \
 	composer clear-cache
 
 CMD ["/init"]
