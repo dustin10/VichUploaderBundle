@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.0/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          convertDeprecationsToExceptions="false"
          colors="true">
@@ -18,11 +18,12 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
     </php>
 
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory>./src</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
+
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
