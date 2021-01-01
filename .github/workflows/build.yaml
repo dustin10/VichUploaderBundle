@@ -1,0 +1,63 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+    cs-fixer:
+        runs-on: ubuntu-20.04
+        name: PHP-CS-Fixer
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Fix CS
+              uses: docker://oskarstark/php-cs-fixer-ga
+    tests:
+        runs-on: ubuntu-20.04
+        strategy:
+            matrix:
+                php:
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+                include:
+                    - description: 'Lowest'
+                      composer_option: '--prefer-lowest'
+                      validate_docs: true
+                      with_imagine: false
+                    - description: '7.4'
+                      php: '7.4'
+                      with_imagine: true
+                      validate_docs: false
+                    - description: '8.0'
+                      php: '8.0'
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet 
+                      composer_option: '--ignore-platform-reqs'
+                      symfony: 5.2.*
+                      validate_docs: false
+                      with_imagine: false
+        name: PHP ${{ matrix.php }} tests (${{ matrix.description }})
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Cache
+              uses: actions/cache@v2
+              with: 
+                  path: ~/.composer/cache/files
+                  key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.composer_option }} 
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: mongodb-stable, pdo_sqlite
+            - run: |
+                  sed -ri 's/"symfony\/(.+)": "(\^4\.[0-9]+\s*\|+\s*\^5\.[0-9]+)"/"symfony\/\1": "'${{ matrix.symfony }}'"/' composer.json;
+              if: matrix.symfony
+            - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
+              if: matrix.with_imagine
+            - run: composer require --dev --no-update kphoen/rusty:"dev-update-php-parser"
+              if: matrix.validate_docs
+            - run: composer update --no-interaction --no-progress --ansi ${{ matrix.composer_option }}
+            - run: vendor/bin/phpunit
+            - run: vendor/bin/rusty check --no-execute ./docs
+              if: matrix.validate_docs
+
