@@ -1,7 +1,7 @@
 VichUploaderBundle
 ==================
 
-[![Build Status](https://secure.travis-ci.org/dustin10/VichUploaderBundle.png?branch=master)](http://travis-ci.org/dustin10/VichUploaderBundle)	[![Total Downloads](https://poser.pugx.org/vich/uploader-bundle/downloads.png)](https://packagist.org/packages/vich/uploader-bundle) [![Latest Unstable Version](https://poser.pugx.org/vich/uploader-bundle/v/unstable.png)](https://packagist.org/packages/vich/uploader-bundle) [![Latest stable Version](https://poser.pugx.org/vich/uploader-bundle/v/stable.png)](https://packagist.org/packages/vich/uploader-bundle)
+[![Build Status](https://github.com/dustin10/VichUploaderBundle/workflows/build/badge.svg)](https://github.com/dustin10/VichUploaderBundle/actions)	[![Total Downloads](https://poser.pugx.org/vich/uploader-bundle/downloads.png)](https://packagist.org/packages/vich/uploader-bundle) [![Latest Unstable Version](https://poser.pugx.org/vich/uploader-bundle/v/unstable.png)](https://packagist.org/packages/vich/uploader-bundle) [![Latest stable Version](https://poser.pugx.org/vich/uploader-bundle/v/stable.png)](https://packagist.org/packages/vich/uploader-bundle)
 
 The VichUploaderBundle is a Symfony bundle that attempts to ease file
 uploads that are attached to ORM entities, MongoDB ODM documents, or PHPCR ODM
