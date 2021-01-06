@@ -4,10 +4,10 @@
 /.php_cs          export-ignore
 /CONTRIBUTING.md  export-ignore
 /Makefile         export-ignore
+/phpstan*         export-ignore
 /README.md        export-ignore
 /UPGRADE.md       export-ignore
 /phpunit.xml.dist export-ignore
-/runTests.sh      export-ignore
 /docker           export-ignore
 /docs             export-ignore
 /tests            export-ignore

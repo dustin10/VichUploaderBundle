@@ -42,8 +42,8 @@ class VichFileTypeTest extends TestCase
         $resolved = $optionsResolver->resolve($options);
 
         foreach ($resolvedOptions as $key => $value) {
-            $this->assertArrayHasKey($key, $resolved);
-            $this->assertSame($value, $resolved[$key]);
+            self::assertArrayHasKey($key, $resolved);
+            self::assertSame($value, $resolved[$key]);
         }
     }
 
@@ -73,8 +73,8 @@ class VichFileTypeTest extends TestCase
         $resolved = $optionsResolver->resolve([]);
 
         foreach (['download_uri' => true, 'download_link' => null] as $key => $value) {
-            $this->assertArrayHasKey($key, $resolved);
-            $this->assertSame($value, $resolved[$key]);
+            self::assertArrayHasKey($key, $resolved);
+            self::assertSame($value, $resolved[$key]);
         }
     }
 
@@ -117,13 +117,13 @@ class VichFileTypeTest extends TestCase
             if (true === $options['download_label']) {
                 $mapping = $this->createMock(PropertyMapping::class);
                 $mapping
-                    ->expects($this->once())
+                    ->expects(self::once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
                     ->willReturn($object->getImageOriginalName());
 
                 $propertyMappingFactory
-                    ->expects($this->once())
+                    ->expects(self::once())
                     ->method('fromField')
                     ->with($object, $field)
                     ->willReturn($mapping);
@@ -131,7 +131,7 @@ class VichFileTypeTest extends TestCase
 
             if ($options['download_label'] instanceof PropertyPath) {
                 $propertyAccessor
-                    ->expects($this->once())
+                    ->expects(self::once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
                     ->willReturn($object->getTitle());
@@ -143,7 +143,7 @@ class VichFileTypeTest extends TestCase
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);
         $type->buildView($view, $form, $options);
-        $this->assertEquals($vars, $view->vars);
+        self::assertEquals($vars, $view->vars);
     }
 
     public function buildViewDataProvider(): array

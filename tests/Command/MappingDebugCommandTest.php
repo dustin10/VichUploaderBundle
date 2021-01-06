@@ -20,6 +20,6 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
         $mappings = ['image_mapping' => []];
         $command = new MappingDebugCommand($mappings);
         $output = $this->executeCommand('vich:mapping:debug', $command, ['mapping' => 'image_mapping']);
-        $this->assertStringContainsString('Debug information for mapping image_mapping', $output);
+        self::assertStringContainsString('Debug information for mapping image_mapping', $output);
     }
 }

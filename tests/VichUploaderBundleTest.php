@@ -21,8 +21,8 @@ final class VichUploaderBundleTest extends TestCase
         $kernel = new SimpleAppKernel('test', true);
         $kernel->boot();
 
-        $this->assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
-        $this->assertInstanceOf(UploadHandler::class, $kernel->getContainer()->get('vich_uploader.upload_handler'));
+        self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
+        self::assertInstanceOf(UploadHandler::class, $kernel->getContainer()->get('vich_uploader.upload_handler'));
     }
 
     public function testFilesystemKernel(): void
@@ -30,8 +30,8 @@ final class VichUploaderBundleTest extends TestCase
         $kernel = new FilesystemAppKernel('test', true);
         $kernel->boot();
 
-        $this->assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
-        $this->assertInstanceOf(UploadHandler::class, $kernel->getContainer()->get('vich_uploader.upload_handler'));
+        self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
+        self::assertInstanceOf(UploadHandler::class, $kernel->getContainer()->get('vich_uploader.upload_handler'));
     }
 
     public function testFlysystemOfficialKernel(): void
@@ -39,40 +39,40 @@ final class VichUploaderBundleTest extends TestCase
         $kernel = new FlysystemOfficialAppKernel('test', true);
         $kernel->boot();
 
-        $this->assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
+        self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
 
         // Test the upload
         /** @var FilesystemInterface $filesystem */
         $filesystem = $kernel->getContainer()->get('test.uploads.storage');
-        $this->assertFalse($filesystem->has('filename.txt'));
+        self::assertFalse($filesystem->has('filename.txt'));
 
         /** @var FlysystemStorage $storage */
         $storage = $kernel->getContainer()->get('test.vich_uploader.storage');
-        $this->assertInstanceOf(FlysystemStorage::class, $storage);
+        self::assertInstanceOf(FlysystemStorage::class, $storage);
 
         $object = new DummyEntity();
 
         $mapping = $this->getPropertyMappingMock();
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($object)
             ->willReturn($this->createUploadedFile());
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDestination')
             ->willReturn('uploads.storage');
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadName')
             ->with($object)
             ->willReturn('filename.txt');
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->with($object)
             ->willReturn('');
@@ -81,7 +81,7 @@ final class VichUploaderBundleTest extends TestCase
 
         /** @var FilesystemInterface $filesystem */
         $filesystem = $kernel->getContainer()->get('test.uploads.storage');
-        $this->assertTrue($filesystem->has('filename.txt'));
+        self::assertTrue($filesystem->has('filename.txt'));
     }
 
     public function testFlysystemOneUpKernel(): void
@@ -89,40 +89,40 @@ final class VichUploaderBundleTest extends TestCase
         $kernel = new FlysystemOneUpAppKernel('test', true);
         $kernel->boot();
 
-        $this->assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
+        self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
 
         // Test the upload
         /** @var FilesystemInterface $filesystem */
         $filesystem = $kernel->getContainer()->get('oneup_flysystem.product_image_fs_filesystem');
-        $this->assertFalse($filesystem->has('filename.txt'));
+        self::assertFalse($filesystem->has('filename.txt'));
 
         /** @var FlysystemStorage $storage */
         $storage = $kernel->getContainer()->get('test.vich_uploader.storage');
-        $this->assertInstanceOf(FlysystemStorage::class, $storage);
+        self::assertInstanceOf(FlysystemStorage::class, $storage);
 
         $object = new DummyEntity();
 
         $mapping = $this->getPropertyMappingMock();
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($object)
             ->willReturn($this->createUploadedFile());
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDestination')
             ->willReturn('product_image_fs');
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadName')
             ->with($object)
             ->willReturn('filename.txt');
 
         $mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->with($object)
             ->willReturn('');
@@ -131,7 +131,7 @@ final class VichUploaderBundleTest extends TestCase
 
         /** @var FilesystemInterface $filesystem */
         $filesystem = $kernel->getContainer()->get('oneup_flysystem.product_image_fs_filesystem');
-        $this->assertTrue($filesystem->has('filename.txt'));
+        self::assertTrue($filesystem->has('filename.txt'));
     }
 
     private function createUploadedFile(): UploadedFile

@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-class UniqidNamerTest extends TestCase
+final class UniqidNamerTest extends TestCase
 {
     public function fileDataProvider(): array
     {
@@ -30,15 +30,13 @@ class UniqidNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName($originalName, $guessedExtension, $pattern): void
+    public function testNameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects($this->any())
             ->method('getClientOriginalName')
             ->willReturn($originalName);
         $file
-            ->expects($this->any())
             ->method('guessExtension')
             ->willReturn($guessedExtension);
 
@@ -47,13 +45,13 @@ class UniqidNamerTest extends TestCase
         $mapping = $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);
 
         $namer = new UniqidNamer();
 
-        $this->assertRegExp($pattern, $namer->name($entity, $mapping));
+        self::assertMatchesRegularExpression($pattern, $namer->name($entity, $mapping));
     }
 }

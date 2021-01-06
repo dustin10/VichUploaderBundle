@@ -12,17 +12,10 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class DoctrineORMAdapterTest extends TestCase
+final class DoctrineORMAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        if (!\class_exists(LifecycleEventArgs::class)) {
-            self::markTestSkipped('Doctrine\ORM\Event\LifecycleEventArgs does not exist.');
-        }
-    }
-
     /**
-     * Test the getObjectFromArgs method.
+     * @requires function LifecycleEventArgs::getEntity
      */
     public function testGetObjectFromArgs(): void
     {
@@ -32,12 +25,12 @@ class DoctrineORMAdapterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $args
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getEntity')
             ->willReturn($entity);
 
         $adapter = new DoctrineORMAdapter();
 
-        $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
     }
 }

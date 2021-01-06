@@ -30,10 +30,10 @@ class PropertyMappingTest extends TestCase
             'namer' => DummyNamer::class,
         ]);
 
-        $this->assertEquals('', $prop->getUploadDir($object));
-        $this->assertEquals('/tmp', $prop->getUploadDestination());
-        $this->assertEquals('file', $prop->getFilePropertyName());
-        $this->assertEquals('fileName', $prop->getFileNamePropertyName());
+        self::assertEquals('', $prop->getUploadDir($object));
+        self::assertEquals('/tmp', $prop->getUploadDestination());
+        self::assertEquals('file', $prop->getFilePropertyName());
+        self::assertEquals('fileName', $prop->getFileNamePropertyName());
     }
 
     /**
@@ -50,15 +50,15 @@ class PropertyMappingTest extends TestCase
 
         $namer = $this->createMock(DirectoryNamerInterface::class);
         $namer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('directoryName')
             ->with($object, $prop)
             ->willReturn($dir);
 
         $prop->setDirectoryNamer($namer);
 
-        $this->assertEquals($expectedDir, $prop->getUploadDir($object));
-        $this->assertEquals('/tmp', $prop->getUploadDestination());
+        self::assertEquals($expectedDir, $prop->getUploadDir($object));
+        self::assertEquals('/tmp', $prop->getUploadDestination());
     }
 
     public function testReadProperty(): void
@@ -68,7 +68,7 @@ class PropertyMappingTest extends TestCase
         $prop = new PropertyMapping('file', 'fileName', ['size' => 'size']);
         $prop->setMapping(['namer' => DummyNamer::class]);
 
-        $this->assertEquals(100, $prop->readProperty($object, 'size'));
+        self::assertEquals(100, $prop->readProperty($object, 'size'));
     }
 
     public function testReadUnknownProperty(): void
@@ -89,7 +89,7 @@ class PropertyMappingTest extends TestCase
         $prop->setMapping(['namer' => DummyNamer::class]);
         $prop->writeProperty($object, 'size', 100);
 
-        $this->assertEquals(100, $object->getSize());
+        self::assertEquals(100, $object->getSize());
     }
 
     public function testWriteUnknownProperty(): void
@@ -110,14 +110,14 @@ class PropertyMappingTest extends TestCase
 
         $namer = $this->createMock(NamerInterface::class);
         $namer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('name')
             ->with($object, $prop)
             ->willReturn('123');
 
         $prop->setNamer($namer);
 
-        $this->assertEquals('123', $prop->getUploadName($object));
+        self::assertEquals('123', $prop->getUploadName($object));
     }
 
     /**
@@ -130,13 +130,13 @@ class PropertyMappingTest extends TestCase
 
         $file = $this->getUploadedFileMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn('filename');
 
         $object->setFile($file);
 
-        $this->assertEquals('filename', $prop->getUploadName($object));
+        self::assertEquals('filename', $prop->getUploadName($object));
     }
 
     public function directoryProvider(): array
@@ -172,9 +172,9 @@ class PropertyMappingTest extends TestCase
 
         $prop->erase($object);
 
-        $this->assertNull($object->getImageName());
-        $this->assertNull($object->getOriginalNameField());
-        $this->assertNull($object->getMimeTypeField());
-        $this->assertNull($object->getSizeField());
+        self::assertNull($object->getImageName());
+        self::assertNull($object->getOriginalNameField());
+        self::assertNull($object->getMimeTypeField());
+        self::assertNull($object->getSizeField());
     }
 }

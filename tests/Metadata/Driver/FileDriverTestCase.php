@@ -18,12 +18,12 @@ abstract class FileDriverTestCase extends TestCase
     {
         $reflectionClass = new \ReflectionClass($class);
         $driver = $this->getDriver($reflectionClass, $file);
-
+        /** @var ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass($reflectionClass);
 
-        $this->assertInstanceOf(ClassMetadata::class, $metadata);
-        $this->assertObjectHasAttribute('fields', $metadata);
-        $this->assertEquals($expectedMetadata, $metadata->fields);
+        self::assertInstanceOf(ClassMetadata::class, $metadata);
+        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertEquals($expectedMetadata, $metadata->fields);
     }
 
     public function classesProvider(): array
@@ -73,13 +73,13 @@ abstract class FileDriverTestCase extends TestCase
         return $metadatas;
     }
 
-    protected function getFileLocatorMock(\ReflectionClass $class, ?string $foundFile = null)
+    protected function getFileLocatorMock(\ReflectionClass $class, ?string $foundFile = null): FileLocatorInterface
     {
         $fileLocator = $this->createMock(FileLocatorInterface::class);
         $fileLocator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findFileForClass')
-            ->with($this->equalTo($class), $this->equalTo($this->getExtension()))
+            ->with(self::equalTo($class), self::equalTo($this->getExtension()))
             ->willReturn($foundFile);
 
         return $fileLocator;

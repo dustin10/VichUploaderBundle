@@ -11,7 +11,7 @@ final class CacheWarmerTest extends TestCase
     public function testWarmUp(): void
     {
         $reader = $this->createMock(MetadataReader::class);
-        $reader->expects($this->once())->method('getUploadableClasses')->willReturn([]);
+        $reader->expects(self::once())->method('getUploadableClasses')->willReturn([]);
 
         $warmer = new CacheWarmer(\sys_get_temp_dir(), $reader);
         $warmer->warmUp('foo');

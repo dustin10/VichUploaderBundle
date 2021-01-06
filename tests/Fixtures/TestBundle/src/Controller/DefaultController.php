@@ -4,15 +4,17 @@ namespace Vich\TestBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Form\Type as VichType;
 
 class DefaultController extends AbstractController
 {
-    public function uploadAction($formType)
+    public function uploadAction($formType): Response
     {
-        $form = $this->getForm($formType, $this->getImage());
+        $form = $this->getForm($this->getImage());
 
         return $this->render('default/upload.html.twig', [
             'formType' => $formType,
@@ -20,9 +22,9 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    public function editAction($formType, $imageId)
+    public function editAction($formType, $imageId): Response
     {
-        $form = $this->getForm($formType, $this->getImage($imageId));
+        $form = $this->getForm($this->getImage($imageId));
 
         return $this->render('default/edit.html.twig', [
             'imageId' => $imageId,
@@ -31,12 +33,12 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    public function submitAction(Request $request, $formType, $imageId = null)
+    public function submitAction(Request $request, $formType, $imageId = null): Response
     {
         $image = $this->getImage($imageId);
-        $form = $this->getForm($formType, $image);
+        $form = $this->getForm($image)->handleRequest($request);
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($image);
@@ -54,7 +56,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    private function getForm($fileType, Image $image)
+    private function getForm(Image $image): FormInterface
     {
         return $this->createFormBuilder($image)
             ->add('title', Type\TextType::class)
@@ -64,13 +66,12 @@ class DefaultController extends AbstractController
         ;
     }
 
-    private function getImage($imageId = null)
+    private function getImage($imageId = null): Image
     {
         if (null === $imageId) {
             return new Image();
         }
-        $image = $this->getDoctrine()->getRepository('VichTestBundle:Image')->find($imageId);
 
-        return $image;
+        return $this->getDoctrine()->getRepository(Image::class)->find($imageId);
     }
 }

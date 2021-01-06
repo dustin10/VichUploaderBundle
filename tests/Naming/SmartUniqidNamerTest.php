@@ -33,7 +33,7 @@ final class SmartUniqidNamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn($originalName)
         ;
@@ -44,7 +44,7 @@ final class SmartUniqidNamerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file)
@@ -52,6 +52,6 @@ final class SmartUniqidNamerTest extends TestCase
 
         $namer = new SmartUniqueNamer($this->getTransliterator());
 
-        $this->assertRegExp($pattern, $namer->name($entity, $mapping));
+        self::assertMatchesRegularExpression($pattern, $namer->name($entity, $mapping));
     }
 }

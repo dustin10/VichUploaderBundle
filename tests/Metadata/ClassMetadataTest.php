@@ -15,6 +15,6 @@ class ClassMetadataTest extends TestCase
 
         $deserializedMetadata = \unserialize(\serialize($metadata));
 
-        $this->assertSame($fields, $deserializedMetadata->fields);
+        self::assertSame($fields, $deserializedMetadata->fields);
     }
 }

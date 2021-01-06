@@ -37,7 +37,7 @@ class OrignameNamerTest extends TestCase
         $mapping = $this->getMockBuilder(PropertyMapping::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);
@@ -45,6 +45,6 @@ class OrignameNamerTest extends TestCase
         $namer = new OrignameNamer($this->getTransliterator());
         $namer->configure(['transliterate' => $transliterate]);
 
-        $this->assertRegExp($pattern, $namer->name($entity, $mapping));
+        self::assertMatchesRegularExpression($pattern, $namer->name($entity, $mapping));
     }
 }

@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class YamlDriverTest extends FileDriverTestCase
+final class YamlDriverTest extends FileDriverTestCase
 {
     public function testInconsistentYamlFile(): void
     {
@@ -19,9 +19,9 @@ class YamlDriverTest extends FileDriverTestCase
 
         $fileLocator = $this->createMock(FileLocatorInterface::class);
         $fileLocator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findFileForClass')
-            ->with($this->equalTo($rClass), $this->equalTo('yml'))
+            ->with(self::equalTo($rClass), self::equalTo('yml'))
             ->willReturn('something not null');
 
         $driver = new TestableYamlDriver($fileLocator);
@@ -42,11 +42,14 @@ class YamlDriverTest extends FileDriverTestCase
     }
 }
 
-class TestableYamlDriver extends YamlDriver
+final class TestableYamlDriver extends YamlDriver
 {
+    /**
+     * @var array
+     */
     public $mappingContent;
 
-    protected function loadMappingFile(string $file)
+    protected function loadMappingFile(string $file): array
     {
         return $this->mappingContent;
     }

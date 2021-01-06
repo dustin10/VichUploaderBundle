@@ -11,10 +11,16 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class DownloadHandlerTest extends TestCase
+final class DownloadHandlerTest extends TestCase
 {
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory
+     */
     protected $factory;
 
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
+     */
     protected $storage;
 
     /**
@@ -27,6 +33,9 @@ class DownloadHandlerTest extends TestCase
      */
     protected $handler;
 
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMapping
+     */
     protected $mapping;
 
     protected function setUp(): void
@@ -62,32 +71,32 @@ class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMimeType')
             ->willReturn(null);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(
+        self::assertInstanceOf(StreamedResponse::class, $response);
+        self::assertMatchesRegularExpression(
             $this->getDispositionHeaderRegexp('attachment', $expectedFileName, $expectedFallbackFilename),
             $response->headers->get('Content-Disposition')
         );
@@ -101,32 +110,32 @@ class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMimeType')
             ->willReturn('application/pdf');
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field', null, null, false);
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(
+        self::assertInstanceOf(StreamedResponse::class, $response);
+        self::assertMatchesRegularExpression(
             $this->getDispositionHeaderRegexp('inline', $expectedFileName, $expectedFallbackFilename),
             $response->headers->get('Content-Disposition')
         );
@@ -138,27 +147,27 @@ class DownloadHandlerTest extends TestCase
     public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn(null);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field');
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(
+        self::assertInstanceOf(StreamedResponse::class, $response);
+        self::assertMatchesRegularExpression(
             $this->getDispositionHeaderRegexp('attachment', $expectedFileName, $expectedFallbackFilename),
             $response->headers->get('Content-Disposition')
         );
@@ -179,26 +188,26 @@ class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMimeType')
             ->willReturn('application/octet-stream');
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
 
         $response = $this->handler->downloadObject($this->object, 'file_field', null, true);
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertRegexp(
+        self::assertInstanceOf(StreamedResponse::class, $response);
+        self::assertMatchesRegularExpression(
             $this->getDispositionHeaderRegexp('attachment', $this->object->getImageOriginalName()),
             $response->headers->get('Content-Disposition')
         );
@@ -219,7 +228,7 @@ class DownloadHandlerTest extends TestCase
         $this->expectException(\Vich\UploaderBundle\Exception\NoFileFoundException::class);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn(null);

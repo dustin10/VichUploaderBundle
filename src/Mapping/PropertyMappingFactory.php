@@ -23,7 +23,7 @@ class PropertyMappingFactory
     protected $container;
 
     /**
-     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
+     * @var MetadataReader
      */
     protected $metadata;
 
@@ -50,9 +50,9 @@ class PropertyMappingFactory
      * configuration for the uploadable fields in the specified
      * object.
      *
-     * @param object $obj         The object
-     * @param string $className   The object's class. Mandatory if $obj can't be used to determine it
-     * @param string $mappingName The mapping name
+     * @param object      $obj         The object
+     * @param string|null $className   The object's class. Mandatory if $obj can't be used to determine it
+     * @param string|null $mappingName The mapping name
      *
      * @return array|PropertyMapping[] An array up PropertyMapping objects
      *
@@ -87,7 +87,7 @@ class PropertyMappingFactory
      *
      * @param object|array $obj       The object
      * @param string       $field     The field
-     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return PropertyMapping|null The property mapping
      *
@@ -122,7 +122,7 @@ class PropertyMappingFactory
         $this->checkUploadable($class);
 
         $mappingData = $this->metadata->getUploadableFields($class);
-        if (null === $mappingData || 0 === \count($mappingData)) {
+        if (0 === \count($mappingData)) {
             return null;
         }
 
@@ -203,8 +203,8 @@ class PropertyMappingFactory
     /**
      * Returns the className of the given object.
      *
-     * @param object $object    The object to inspect
-     * @param string $className User specified className
+     * @param object|mixed $object    The object to inspect
+     * @param string|null  $className User specified className
      *
      * @throws \RuntimeException
      */

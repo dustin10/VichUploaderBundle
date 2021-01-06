@@ -68,7 +68,7 @@ abstract class WebTestCase extends BaseWebTestCase
         $metadatas = $om->getMetadataFactory()->getAllMetadata();
 
         $schemaTool = new SchemaTool($om);
-        $schemaTool->dropDatabase($name);
+        $schemaTool->dropDatabase();
         if (!empty($metadatas)) {
             $schemaTool->createSchema($metadatas);
         }

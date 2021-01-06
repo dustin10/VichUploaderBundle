@@ -12,17 +12,10 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MongoDBAdapterTest extends TestCase
+final class MongoDBAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        if (!\class_exists(LifecycleEventArgs::class)) {
-            self::markTestSkipped('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs does not exist.');
-        }
-    }
-
     /**
-     * Test the getObjectFromArgs method.
+     * @requires function LifecycleEventArgs::getDocument
      */
     public function testGetObjectFromArgs(): void
     {
@@ -32,12 +25,12 @@ class MongoDBAdapterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $args
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getDocument')
             ->willReturn($entity);
 
         $adapter = new MongoDBAdapter();
 
-        $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
     }
 }
