@@ -24,6 +24,7 @@ class ClassUtils
     public static function getClass(object $object): string
     {
         $className = \get_class($object);
+        $positionPm = 0;
 
         // see original code @ https://github.com/api-platform/core/blob/6e9ccf7418bf973d273b125d55ccc521b89afb06/src/Util/ClassInfoTrait.php#L38
         // __CG__: Doctrine Common Marker for Proxy (ODM < 2.0 and ORM < 3.0)

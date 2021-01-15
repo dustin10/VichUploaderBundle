@@ -42,7 +42,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
 
-        $this->assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
+        self::assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
     }
 
     public function testNameFailsIfThePropertyDoesNotExist(): void

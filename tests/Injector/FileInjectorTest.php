@@ -13,10 +13,10 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class FileInjectorTest extends TestCase
+final class FileInjectorTest extends TestCase
 {
     /**
-     * @var GaufretteStorage
+     * @var GaufretteStorage|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $storage;
 
@@ -39,15 +39,15 @@ class FileInjectorTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $fileMapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFilePropertyName')
             ->willReturn('file_field');
         $fileMapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setFile');
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolvePath')
             ->with($obj, 'file_field')
             ->willReturn('/uploadDir/file.txt');
@@ -69,7 +69,7 @@ class FileInjectorTest extends TestCase
             ->getMock();
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolvePath')
             ->willReturn(null);
 

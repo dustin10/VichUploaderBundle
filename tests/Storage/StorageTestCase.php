@@ -82,39 +82,39 @@ abstract class StorageTestCase extends TestCase
     /**
      * @dataProvider emptyFilenameProvider
      */
-    public function testResolvePathWithEmptyFile($filename): void
+    public function testResolvePathWithEmptyFile(?string $filename): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn($filename);
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
 
-        $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
+        self::assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
     /**
      * @dataProvider emptyFilenameProvider
      */
-    public function testResolveUriWithEmptyFile($filename): void
+    public function testResolveUriWithEmptyFile(?string $filename): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn($filename);
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
 
-        $this->assertNull($this->storage->resolvePath($this->object, 'file_field'));
+        self::assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
     protected function getValidUploadDir(): string

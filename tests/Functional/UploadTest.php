@@ -10,7 +10,7 @@ final class UploadTest extends WebTestCase
         $this->loadFixtures($client);
 
         $crawler = $client->request('GET', '/upload/vich_file');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();
         $image = $this->getUploadedFile($client, 'symfony_black_03.png');
@@ -23,14 +23,14 @@ final class UploadTest extends WebTestCase
         ]);
 
         // we should be redirected to the "view" page
-        $this->assertTrue($client->getResponse()->isRedirect());
+        self::assertTrue($client->getResponse()->isRedirect());
         $crawler = $client->followRedirect();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
+        self::assertTrue($client->getResponse()->isSuccessful());
+        self::assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
 
         // test the delete feature
-        $this->assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
+        self::assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
         $form = $crawler->selectButton('form_save')->form();
         $client->submit($form, [
             'form' => [
@@ -38,8 +38,8 @@ final class UploadTest extends WebTestCase
                 'imageFile' => ['delete' => true],
             ],
         ]);
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $this->assertFileNotExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
+        self::assertTrue($client->getResponse()->isRedirect());
+        self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
     }
 
     public function testFileIsUploadedWithImageType(): void
@@ -48,7 +48,7 @@ final class UploadTest extends WebTestCase
         $this->loadFixtures($client);
 
         $crawler = $client->request('GET', '/upload/vich_image');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();
         $image = $this->getUploadedFile($client, 'symfony_black_03.png');
@@ -61,14 +61,14 @@ final class UploadTest extends WebTestCase
         ]);
 
         // we should be redirected to the "view" page
-        $this->assertTrue($client->getResponse()->isRedirect());
+        self::assertTrue($client->getResponse()->isRedirect());
         $crawler = $client->followRedirect();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
+        self::assertTrue($client->getResponse()->isSuccessful());
+        self::assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
 
         // test the delete feature
-        $this->assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
+        self::assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
         $form = $crawler->selectButton('form_save')->form();
         $client->submit($form, [
             'form' => [
@@ -76,7 +76,7 @@ final class UploadTest extends WebTestCase
                 'imageFile' => ['delete' => true],
             ],
         ]);
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $this->assertFileNotExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
+        self::assertTrue($client->getResponse()->isRedirect());
+        self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
     }
 }

@@ -5,14 +5,14 @@ namespace Vich\UploaderBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Util\FilenameUtils;
 
-class FilenameUtilsTest extends TestCase
+final class FilenameUtilsTest extends TestCase
 {
     /**
      * @dataProvider spitNameByExtensionProvider
      */
-    public function testSpitNameByExtension($filename, $basename, $extension): void
+    public function testSpitNameByExtension(string $filename, string $basename, string $extension): void
     {
-        $this->assertSame([$basename, $extension], FilenameUtils::spitNameByExtension($filename));
+        self::assertSame([$basename, $extension], FilenameUtils::spitNameByExtension($filename));
     }
 
     public function spitNameByExtensionProvider(): array

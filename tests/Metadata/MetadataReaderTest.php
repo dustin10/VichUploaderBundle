@@ -6,10 +6,16 @@ use Metadata\AdvancedMetadataFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
-class MetadataReaderTest extends TestCase
+final class MetadataReaderTest extends TestCase
 {
+    /**
+     * @var MetadataReader
+     */
     protected $reader;
 
+    /**
+     * @var AdvancedMetadataFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $factory;
 
     protected function setUp(): void
@@ -21,12 +27,12 @@ class MetadataReaderTest extends TestCase
     public function testIsUploadable(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn('something not null');
 
-        $this->assertTrue($this->reader->isUploadable('ClassName'));
+        self::assertTrue($this->reader->isUploadable('ClassName'));
     }
 
     public function testIsUploadableWithGivenMapping(): void
@@ -42,25 +48,25 @@ class MetadataReaderTest extends TestCase
             ->with('ClassName')
             ->willReturn($metadata);
 
-        $this->assertTrue($this->reader->isUploadable('ClassName', 'joe'));
-        $this->assertFalse($this->reader->isUploadable('ClassName', 'foo'));
+        self::assertTrue($this->reader->isUploadable('ClassName', 'joe'));
+        self::assertFalse($this->reader->isUploadable('ClassName', 'foo'));
     }
 
     public function testIsUploadableForNotUploadable(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn(null);
 
-        $this->assertFalse($this->reader->isUploadable('ClassName'));
+        self::assertFalse($this->reader->isUploadable('ClassName'));
     }
 
     public function testGetUploadableClassesForwardsCallsToTheFactory(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAllClassNames');
 
         $this->reader->getUploadableClasses();
@@ -79,15 +85,15 @@ class MetadataReaderTest extends TestCase
         $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn($metadata);
 
-        $this->assertSame($fields, $this->reader->getUploadableFields('ClassName'));
+        self::assertSame($fields, $this->reader->getUploadableFields('ClassName'));
 
         $barFields = ['bar' => ['mapping' => 'bar_mapping']];
-        $this->assertSame($barFields, $this->reader->getUploadableFields('ClassName', 'bar_mapping'));
+        self::assertSame($barFields, $this->reader->getUploadableFields('ClassName', 'bar_mapping'));
     }
 
     public function testGetUploadableFieldsWithInheritance(): void
@@ -103,18 +109,18 @@ class MetadataReaderTest extends TestCase
         ];
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('SubClassName')
             ->willReturn($metadata);
 
-        $this->assertSame(['bar', 'baz', 'foo'], $this->reader->getUploadableFields('SubClassName'));
+        self::assertSame(['bar', 'baz', 'foo'], $this->reader->getUploadableFields('SubClassName'));
     }
 
     /**
      * @dataProvider fieldsMetadataProvider
      */
-    public function testGetUploadableField(array $fields, $expectedMetadata): void
+    public function testGetUploadableField(array $fields, ?string $expectedMetadata): void
     {
         $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
@@ -122,12 +128,12 @@ class MetadataReaderTest extends TestCase
         $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn($metadata);
 
-        $this->assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
+        self::assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
     }
 
     public function testGetUploadableFieldWithInvalidClass(): void

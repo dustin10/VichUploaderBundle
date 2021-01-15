@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
  */
 final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTest
 {
-    protected function createRegistry(FilesystemInterface $filesystem)
+    protected function createRegistry(FilesystemInterface $filesystem): ContainerInterface
     {
         $locator = $this
             ->getMockBuilder(ContainerInterface::class)
@@ -18,7 +18,6 @@ final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTes
             ->getMock();
 
         $locator
-            ->expects($this->any())
             ->method('get')
             ->with(self::FS_KEY)
             ->willReturn($filesystem);

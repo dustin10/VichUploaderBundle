@@ -11,10 +11,16 @@ use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploaderExtensionTest extends TestCase
+final class UploaderExtensionTest extends TestCase
 {
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|UploaderHelper
+     */
     protected $helper;
 
+    /**
+     * @var UploaderExtension
+     */
     protected $extension;
 
     protected function setUp(): void
@@ -27,8 +33,8 @@ class UploaderExtensionTest extends TestCase
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertCount(1, $functions);
-        $this->assertSame('vich_uploader_asset', $functions[0]->getName());
+        self::assertCount(1, $functions);
+        self::assertSame('vich_uploader_asset', $functions[0]->getName());
     }
 
     public function testAssetForwardsCallsToTheHelper(): void
@@ -36,7 +42,7 @@ class UploaderExtensionTest extends TestCase
         $obj = new \stdClass();
 
         $this->helper
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('asset')
             ->with($obj, 'file', 'ClassName');
 

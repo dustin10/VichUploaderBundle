@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Tests\DummyFile;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class AnnotationDriverTest extends TestCase
+final class AnnotationDriverTest extends TestCase
 {
     public function testReadUploadableAnnotation(): void
     {
@@ -24,11 +24,11 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn('something not null');
         $reader
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('getPropertyAnnotation')
             ->willReturn(new UploadableField([
                 'mapping' => 'dummy_file',
@@ -36,11 +36,12 @@ class AnnotationDriverTest extends TestCase
             ]));
 
         $driver = new AnnotationDriver($reader);
+        /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertInstanceOf(ClassMetadata::class, $metadata);
-        $this->assertObjectHasAttribute('fields', $metadata);
-        $this->assertEquals([
+        self::assertInstanceOf(ClassMetadata::class, $metadata);
+        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertEquals([
             'file' => [
                 'mapping' => 'dummy_file',
                 'propertyName' => 'file',
@@ -59,7 +60,7 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn(null);
         $reader
@@ -69,7 +70,7 @@ class AnnotationDriverTest extends TestCase
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertNull($metadata);
+        self::assertNull($metadata);
     }
 
     public function testReadTwoUploadableFields(): void
@@ -78,7 +79,7 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn('something not null');
         $reader
@@ -101,9 +102,10 @@ class AnnotationDriverTest extends TestCase
             ]));
 
         $driver = new AnnotationDriver($reader);
+        /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertEquals([
+        self::assertEquals([
             'attachment' => [
                 'mapping' => 'dummy_file',
                 'propertyName' => 'attachment',
@@ -131,14 +133,15 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn('something not null');
 
         $driver = new AnnotationDriver($reader);
+        /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertEmpty($metadata->fields);
+        self::assertEmpty($metadata->fields);
     }
 
     public function testReadUploadableAnnotationInParentClass(): void
@@ -147,7 +150,7 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn('something not null');
         $reader
@@ -156,11 +159,12 @@ class AnnotationDriverTest extends TestCase
             ->willReturn(new UploadableField(['mapping' => 'dummyFile_file', 'fileNameProperty' => 'fileName']));
 
         $driver = new AnnotationDriver($reader);
+        /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertInstanceOf(ClassMetadata::class, $metadata);
-        $this->assertObjectHasAttribute('fields', $metadata);
-        $this->assertEquals(
+        self::assertInstanceOf(ClassMetadata::class, $metadata);
+        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertEquals(
             [
                 'file' => [
                     'mapping' => 'dummyFile_file',
@@ -182,7 +186,7 @@ class AnnotationDriverTest extends TestCase
 
         $reader = $this->createMock(Reader::class);
         $reader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClassAnnotation')
             ->willReturn(null);
         $reader
@@ -192,6 +196,6 @@ class AnnotationDriverTest extends TestCase
         $driver = new AnnotationDriver($reader);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        $this->assertNull($metadata);
+        self::assertNull($metadata);
     }
 }

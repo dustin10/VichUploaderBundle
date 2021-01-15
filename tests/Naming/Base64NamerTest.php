@@ -34,10 +34,10 @@ class Base64NamerTest extends TestCase
     public function testNameReturnsTheRightName(string $expectedFileName, string $extension, ?int $length): void
     {
         $file = $this->getUploadedFileMock();
-        $file->expects($this->once())
+        $file->expects(self::once())
             ->method('getClientOriginalName');
 
-        $file->expects($this->once())
+        $file->expects(self::once())
             ->method('guessExtension')
             ->willReturn($extension);
 
@@ -45,7 +45,7 @@ class Base64NamerTest extends TestCase
         $entity->setFile($file);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);
@@ -53,6 +53,6 @@ class Base64NamerTest extends TestCase
         $namer = new Base64Namer();
         $namer->configure(['length' => $length]);
 
-        $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
+        self::assertSame($expectedFileName, $namer->name($entity, $mapping));
     }
 }

@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Storage;
 
 use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
-use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use Gaufrette\FilesystemMapInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -80,7 +80,7 @@ class GaufretteStorage extends AbstractStorage
     /**
      * Get filesystem adapter from the property mapping.
      */
-    protected function getFilesystem(PropertyMapping $mapping): Filesystem
+    protected function getFilesystem(PropertyMapping $mapping): FilesystemInterface
     {
         return $this->filesystemMap->get($mapping->getUploadDestination());
     }

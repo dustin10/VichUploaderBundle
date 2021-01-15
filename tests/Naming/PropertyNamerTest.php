@@ -46,7 +46,7 @@ class PropertyNamerTest extends TestCase
             ->willReturn($originalFileName);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);
@@ -54,7 +54,7 @@ class PropertyNamerTest extends TestCase
         $namer = new PropertyNamer($this->getTransliterator());
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
 
-        $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
+        self::assertSame($expectedFileName, $namer->name($entity, $mapping));
     }
 
     public function testNameFailsIfThePropertyDoesNotExist(): void

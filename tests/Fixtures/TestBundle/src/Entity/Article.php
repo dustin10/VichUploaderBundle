@@ -33,7 +33,6 @@ class Article
 
     public function getAttachment(): void
     {
-        $this->attachment;
     }
 
     public function setAttachment($attachment): void
@@ -53,7 +52,6 @@ class Article
 
     public function getImage(): void
     {
-        $this->image;
     }
 
     public function setImage($image): void

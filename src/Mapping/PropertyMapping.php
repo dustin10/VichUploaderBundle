@@ -36,7 +36,7 @@ class PropertyMapping
     protected $mappingName;
 
     /**
-     * @var string[]
+     * @var array<string, string|null>
      */
     protected $propertyPaths = [
         'file' => null,
@@ -71,7 +71,7 @@ class PropertyMapping
      *
      * @param object $obj The object
      *
-     * @return File|null The file
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null The file
      *
      * @throws \InvalidArgumentException
      */

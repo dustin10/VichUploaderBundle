@@ -11,7 +11,7 @@ use League\Flysystem\MountManager;
  */
 final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTest
 {
-    protected function createRegistry(FilesystemInterface $filesystem)
+    protected function createRegistry(FilesystemInterface $filesystem): MountManager
     {
         $mountManager = $this
             ->getMockBuilder(MountManager::class)
@@ -19,7 +19,6 @@ final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTes
             ->getMock();
 
         $mountManager
-            ->expects($this->any())
             ->method('getFilesystem')
             ->with(self::FS_KEY)
             ->willReturn($filesystem);

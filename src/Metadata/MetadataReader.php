@@ -87,6 +87,7 @@ class MetadataReader
         }
         $uploadableFields = [];
 
+        /** @var ClassMetadata $classMetadata */
         foreach ($metadata->classMetadata as $classMetadata) {
             $uploadableFields = \array_merge($uploadableFields, $classMetadata->fields);
         }

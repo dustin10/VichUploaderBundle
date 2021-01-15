@@ -32,13 +32,13 @@ class HashNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($expectedFileName, $extension, $algorithm, $length): void
+    public function testNameReturnsTheRightName(string $expectedFileName, string $extension, string $algorithm, ?int $length): void
     {
         $file = $this->getUploadedFileMock();
-        $file->expects($this->once())
+        $file->expects(self::once())
             ->method('getClientOriginalName');
 
-        $file->expects($this->once())
+        $file->expects(self::once())
             ->method('guessExtension')
             ->willReturn($extension);
 
@@ -46,7 +46,7 @@ class HashNamerTest extends TestCase
         $entity->setFile($file);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);
@@ -54,6 +54,6 @@ class HashNamerTest extends TestCase
         $namer = new HashNamer();
         $namer->configure(['algorithm' => $algorithm, 'length' => $length]);
 
-        $this->assertSame($expectedFileName, $namer->name($entity, $mapping));
+        self::assertSame($expectedFileName, $namer->name($entity, $mapping));
     }
 }

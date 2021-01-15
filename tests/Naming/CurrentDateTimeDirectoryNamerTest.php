@@ -53,7 +53,7 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
             $namer->configure(['date_time_format' => $dateTimeFormat]);
         }
 
-        $this->assertSame($expectedName, $namer->directoryName($entity, $mapping));
+        self::assertSame($expectedName, $namer->directoryName($entity, $mapping));
     }
 
     /**
@@ -70,13 +70,13 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
             ->getMock();
 
         $dateTimeHelperMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTimestamp')
             ->willReturn(1537706096);
 
         $namer = new CurrentDateTimeDirectoryNamer($dateTimeHelperMock, null);
 
-        $this->assertSame('2018/09/23', $namer->directoryName($entity, $mapping));
+        self::assertSame('2018/09/23', $namer->directoryName($entity, $mapping));
     }
 
     public function testConfigurationFailsIfTheDateFormatIsEmpty(): void
@@ -96,13 +96,13 @@ class CurrentDateTimeDirectoryNamerTest extends TestCase
     {
         $mapping = $this->getPropertyMappingMock();
         $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
-        $propertyAccessor->expects($this->once())->method('getValue')->willReturn(new \DateTime('2018/12/01'));
+        $propertyAccessor->expects(self::once())->method('getValue')->willReturn(new \DateTime('2018/12/01'));
 
         $namer = new CurrentDateTimeDirectoryNamer(new CurrentDateTimeHelper(), $propertyAccessor);
         $namer->configure(['date_time_property' => 'getUploadTimestamp']);
 
         $name = $namer->directoryName(new DummyEntity(), $mapping);
 
-        $this->assertEquals('2018/12/01', $name);
+        self::assertEquals('2018/12/01', $name);
     }
 }

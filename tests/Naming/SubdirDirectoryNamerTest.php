@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
-class SubdirDirectoryNamerTest extends TestCase
+final class SubdirDirectoryNamerTest extends TestCase
 {
     public function fileDataProvider(): array
     {
@@ -25,13 +25,13 @@ class SubdirDirectoryNamerTest extends TestCase
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsTheRightName($fileName, $expectedFileName, $charsPerDir, $dirs): void
+    public function testNameReturnsTheRightName(string $fileName, string $expectedFileName, int $charsPerDir, int $dirs): void
     {
         $entity = new DummyEntity();
         $entity->setFileName($fileName);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFileName')
             ->with($entity)
             ->willReturn($fileName);
@@ -39,6 +39,6 @@ class SubdirDirectoryNamerTest extends TestCase
         $namer = new SubdirDirectoryNamer();
         $namer->configure(['chars_per_dir' => $charsPerDir, 'dirs' => $dirs]);
 
-        $this->assertSame($expectedFileName, $namer->directoryName($entity, $mapping));
+        self::assertSame($expectedFileName, $namer->directoryName($entity, $mapping));
     }
 }

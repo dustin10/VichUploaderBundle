@@ -11,10 +11,16 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class UploadHelperTest extends TestCase
+final class UploadHelperTest extends TestCase
 {
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
+     */
     protected $storage;
 
+    /**
+     * @var UploaderHelper
+     */
     protected $helper;
 
     protected function setUp(): void
@@ -25,7 +31,7 @@ class UploadHelperTest extends TestCase
 
     public function testGetName(): void
     {
-        $this->assertSame('vich_uploader', $this->helper->getName());
+        self::assertSame('vich_uploader', $this->helper->getName());
     }
 
     public function testAssetForwardsCallsToTheStorage(): void
@@ -33,7 +39,7 @@ class UploadHelperTest extends TestCase
         $obj = new \stdClass();
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveUri')
             ->with($obj, 'file', 'ClassName');
 

@@ -14,32 +14,32 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class ListenerTestCase extends TestCase
+abstract class ListenerTestCase extends TestCase
 {
     public const MAPPING_NAME = 'dummy_mapping';
 
     /**
-     * @var AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @var AdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
 
     /**
-     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
+     * @var MetadataReader|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 
     /**
-     * @var UploadHandler&\PHPUnit\Framework\MockObject\MockObject
+     * @var UploadHandler|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $handler;
 
     /**
-     * @var EventArgs&\PHPUnit\Framework\MockObject\MockObject
+     * @var EventArgs|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $event;
 
     /**
-     * @var DummyEntity
+     * @var DummyEntity|\PHPUnit\Framework\MockObject\MockObject
      */
     public $object;
 

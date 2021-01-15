@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class RemoveListenerTest extends ListenerTestCase
+final class RemoveListenerTest extends ListenerTestCase
 {
     /**
      * Sets up the test.
@@ -27,18 +27,18 @@ class RemoveListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        $this->assertSame(['preRemove', 'postRemove'], $events);
+        self::assertSame(['preRemove', 'postRemove'], $events);
     }
 
     public function testPreRemove(): void
     {
         $this->object = $this->getEntityProxyMock();
         $this->object
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__load');
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
             ->willReturn(true);
@@ -54,7 +54,7 @@ class RemoveListenerTest extends ListenerTestCase
             ->method('__load');
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
             ->willReturn(false);
@@ -65,13 +65,13 @@ class RemoveListenerTest extends ListenerTestCase
     public function testPostRemove(): void
     {
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
             ->willReturn([
@@ -79,7 +79,7 @@ class RemoveListenerTest extends ListenerTestCase
             ]);
 
         $this->handler
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('remove')
             ->with($this->object, 'field_name');
 
@@ -92,7 +92,7 @@ class RemoveListenerTest extends ListenerTestCase
     public function testPostRemoveSkipsNonUploadable(): void
     {
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(false);

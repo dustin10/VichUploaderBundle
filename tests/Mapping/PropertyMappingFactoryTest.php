@@ -43,7 +43,7 @@ class PropertyMappingFactoryTest extends TestCase
         $this->expectException(\Vich\UploaderBundle\Exception\NotUploadableException::class);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->willReturn(false);
 
@@ -55,9 +55,11 @@ class PropertyMappingFactoryTest extends TestCase
      * Test the fromObject method with one uploadable
      * field.
      *
+     * @param object|array $object
+     *
      * @dataProvider fromObjectProvider
      */
-    public function testFromObjectOneField($object, $givenClassName, $expectedClassName): void
+    public function testFromObjectOneField($object, ?string $givenClassName, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -76,13 +78,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with($expectedClassName)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with($expectedClassName)
             ->willReturn($expectedFields);
@@ -90,14 +92,14 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($object, $givenClassName);
 
-        $this->assertCount(1, $mappings);
+        self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
 
-        $this->assertEquals('dummy_file', $mapping->getMappingName());
-        $this->assertEquals('images', $mapping->getUploadDestination());
-        $this->assertNull($mapping->getNamer());
-        $this->assertFalse($mapping->hasNamer());
+        self::assertEquals('dummy_file', $mapping->getMappingName());
+        self::assertEquals('images', $mapping->getUploadDestination());
+        self::assertNull($mapping->getNamer());
+        self::assertFalse($mapping->hasNamer());
     }
 
     public function fromObjectProvider(): array
@@ -141,13 +143,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -155,15 +157,15 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject($obj);
 
-        $this->assertCount(1, $mappings);
+        self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
 
-        $this->assertEquals('dummy_file', $mapping->getMappingName());
-        $this->assertEquals('images', $mapping->getUploadDestination());
-        $this->assertNull($mapping->getNamer());
-        $this->assertFalse($mapping->hasNamer());
-        $this->assertEquals('file_name', $mapping->getFileNamePropertyName());
+        self::assertEquals('dummy_file', $mapping->getMappingName());
+        self::assertEquals('images', $mapping->getUploadDestination());
+        self::assertNull($mapping->getNamer());
+        self::assertFalse($mapping->hasNamer());
+        self::assertEquals('file_name', $mapping->getFileNamePropertyName());
     }
 
     public function testFromObjectWithExplicitMapping(): void
@@ -197,13 +199,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -211,11 +213,11 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
 
-        $this->assertCount(1, $mappings);
+        self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
 
-        $this->assertEquals('other_mapping', $mapping->getMappingName());
+        self::assertEquals('other_mapping', $mapping->getMappingName());
     }
 
     /**
@@ -236,13 +238,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -252,9 +254,11 @@ class PropertyMappingFactoryTest extends TestCase
     }
 
     /**
+     * @param array|object $object
+     *
      * @dataProvider fromFieldProvider
      */
-    public function testFromField($object, $className, $expectedClassName): void
+    public function testFromField($object, ?string $className, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -271,13 +275,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with($expectedClassName)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableField')
             ->with($expectedClassName, 'file')
             ->willReturn($expectedFields);
@@ -285,7 +289,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mapping = $factory->fromField($object, 'file', $className);
 
-        $this->assertEquals('dummy_file', $mapping->getMappingName());
+        self::assertEquals('dummy_file', $mapping->getMappingName());
     }
 
     public function fromFieldProvider(): array
@@ -308,13 +312,13 @@ class PropertyMappingFactoryTest extends TestCase
     public function testFromFieldReturnsNullOnInvalidFieldName(): void
     {
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableField')
             ->with(DummyEntity::class)
             ->willReturn(null);
@@ -322,7 +326,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, []);
         $mapping = $factory->fromField(new DummyEntity(), 'oops');
 
-        $this->assertNull($mapping);
+        self::assertNull($mapping);
     }
 
     public function testCustomFileNameProperty(): void
@@ -335,13 +339,13 @@ class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableField')
             ->with(DummyEntity::class)
             ->willReturn(['mapping' => 'dummy_file', 'propertyName' => 'file']);
@@ -349,7 +353,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings, '_suffix');
         $mapping = $factory->fromField(new DummyEntity(), 'file');
 
-        $this->assertEquals('file_suffix', $mapping->getFileNamePropertyName());
+        self::assertEquals('file_suffix', $mapping->getFileNamePropertyName());
     }
 
     public function testConfiguredNamersAreRetrievedFromContainer(): void
@@ -373,13 +377,13 @@ class PropertyMappingFactoryTest extends TestCase
             ]);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn(['file' => ['mapping' => 'dummy_file', 'propertyName' => 'file', 'fileNameProperty' => 'fileName']]);
@@ -387,14 +391,14 @@ class PropertyMappingFactoryTest extends TestCase
         $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
         $mappings = $factory->fromObject(new DummyEntity());
 
-        $this->assertCount(1, $mappings);
+        self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
 
-        $this->assertEquals($namer, $mapping->getNamer());
-        $this->assertTrue($mapping->hasNamer());
-        $this->assertEquals($directoryNamer, $mapping->getDirectoryNamer());
-        $this->assertTrue($mapping->hasDirectoryNamer());
+        self::assertEquals($namer, $mapping->getNamer());
+        self::assertTrue($mapping->hasNamer());
+        self::assertEquals($directoryNamer, $mapping->getDirectoryNamer());
+        self::assertTrue($mapping->hasDirectoryNamer());
     }
 
     /**

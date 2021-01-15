@@ -10,17 +10,10 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 /**
  * @author Ben Glassman <bglassman@gmail.com>
  */
-class PHPCRAdapterTest extends TestCase
+final class PHPCRAdapterTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        if (!\class_exists(LifecycleEventArgs::class)) {
-            self::markTestSkipped('Doctrine\Persistence\Event\LifecycleEventArgs does not exist.');
-        }
-    }
-
     /**
-     * Test the getObjectFromArgs method.
+     * @requires function LifecycleEventArgs::getObject
      */
     public function testGetObjectFromArgs(): void
     {
@@ -28,12 +21,12 @@ class PHPCRAdapterTest extends TestCase
 
         $args = $this->createMock(LifecycleEventArgs::class);
         $args
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getObject')
             ->willReturn($entity);
 
         $adapter = new PHPCRAdapter();
 
-        $this->assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
     }
 }

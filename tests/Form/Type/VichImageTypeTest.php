@@ -147,6 +147,7 @@ class VichImageTypeTest extends VichFileTypeTest
 
     /**
      * @dataProvider getLiipImagineBundleIntegrationData
+     * @requires function CacheManager::_construct
      */
     public function testLiipImagineBundleIntegration(
         string $field,
@@ -158,10 +159,6 @@ class VichImageTypeTest extends VichFileTypeTest
         string $imaginePattern,
         string $imagineResolvedPath
     ): void {
-        if (!\class_exists(CacheManager::class)) {
-            $this->markTestSkipped('LiipImagineBundle is not installed.');
-        }
-
         $storage = $this->createMock(StorageInterface::class);
         $storage
             ->expects($this->atLeastOnce())
@@ -192,7 +189,7 @@ class VichImageTypeTest extends VichFileTypeTest
         $cacheManager = $this->createMock(CacheManager::class);
 
         $cacheManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getBrowserPath')
             ->with($storageResolvedPath, $imaginePattern)
             ->willReturn($imagineResolvedPath);
@@ -223,7 +220,7 @@ class VichImageTypeTest extends VichFileTypeTest
         ];
 
         $type->buildView($view, $form, $options);
-        $this->assertEquals($vars, $view->vars);
+        self::assertEquals($vars, $view->vars);
     }
 
     public function getLiipImagineBundleIntegrationData(): array

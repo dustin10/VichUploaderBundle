@@ -35,13 +35,16 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
      */
     protected $adapter;
 
+    /**
+     * @return mixed
+     */
     abstract protected function createRegistry(FilesystemInterface $filesystem);
 
+    /**
+     * @requires function MountManager::__construct
+     */
     public static function setUpBeforeClass(): void
     {
-        if (!\class_exists(MountManager::class)) {
-            self::markTestSkipped('Flysystem is not installed.');
-        }
     }
 
     protected function getStorage(): StorageInterface
@@ -68,28 +71,28 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         $file = $this->getUploadedFileMock();
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getRealPath')
             ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt');
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn('originalName.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->willReturn($file);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('originalName.txt');
 
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('putStream')
             ->with(
                 'originalName.txt',
@@ -103,12 +106,12 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
     public function testRemove(): void
     {
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('delete')
             ->with('test.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('test.txt');
 
@@ -118,13 +121,13 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
     public function testRemoveOnNonExistentFile(): void
     {
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('delete')
             ->with('not_found.txt')
             ->will($this->throwException(new FileNotFoundException('dummy path')));
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('not_found.txt');
 
@@ -137,17 +140,17 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
     public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->willReturn($uploadDir);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -164,7 +167,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 
-        $this->assertEquals($expectedPath, $path);
+        self::assertEquals($expectedPath, $path);
     }
 
     public function pathProvider(): array
