@@ -67,7 +67,12 @@ class FlysystemStorage extends AbstractStorage
             return $path;
         }
 
-        return (string) $fs->getAdapter()->applyPathPrefix($path);
+        $adapter = $fs->getAdapter();
+        if (\is_callable([$adapter, 'applyPathPrefix'])) {
+            return (string) $adapter->applyPathPrefix($path);
+        }
+
+        return $path;
     }
 
     public function resolveStream($obj, string $fieldName, ?string $className = null)
