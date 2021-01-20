@@ -20,6 +20,10 @@ or
 
 ## Integrating with [thephpleague/flysystem-bundle](https://github.com/thephpleague/flysystem-bundle)
 
+**Note:**
+
+> At the moment, only version 1 of bundle is supported.
+
 To install the bundle, run the following command:
 
 ```
@@ -56,6 +60,10 @@ vich_uploader:
 ```
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
+
+**Note:**
+
+> At the moment, only version 3 of bundle is supported.
 
 To install the bundle, run the following command:
 
