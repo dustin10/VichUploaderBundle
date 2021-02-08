@@ -8,6 +8,7 @@ use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
+use Vich\UploaderBundle\Storage\FlysystemV2Storage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
 
@@ -48,7 +49,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
 
     protected function getStorage(): StorageInterface
     {
-        return new FlysystemStorage($this->factory, $this->registry);
+        return new FlysystemV2Storage($this->factory, $this->registry);
     }
 
     protected function setUp(): void
