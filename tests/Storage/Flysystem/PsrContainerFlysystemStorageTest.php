@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
  */
 final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTest
 {
-    protected function createRegistry(FilesystemInterface $filesystem): ContainerInterface
+    protected function createRegistry(FilesystemOperator $filesystem): ContainerInterface
     {
         $locator = $this
             ->getMockBuilder(ContainerInterface::class)

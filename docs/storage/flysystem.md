@@ -22,7 +22,7 @@ or
 
 **Note:**
 
-> At the moment, only version 1 of bundle is supported.
+> At the moment, only version 2 of bundle is supported.
 
 To install the bundle, run the following command:
 
@@ -63,7 +63,7 @@ vich_uploader:
 
 **Note:**
 
-> At the moment, only version 3 of bundle is supported.
+> At the moment, no version of bundle is supported.
 
 To install the bundle, run the following command:
 

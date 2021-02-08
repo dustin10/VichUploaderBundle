@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
@@ -42,9 +42,9 @@ final class VichUploaderBundleTest extends TestCase
         self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
 
         // Test the upload
-        /** @var FilesystemInterface $filesystem */
+        /** @var FilesystemOperator $filesystem */
         $filesystem = $kernel->getContainer()->get('test.uploads.storage');
-        self::assertFalse($filesystem->has('filename.txt'));
+        self::assertFalse($filesystem->fileExists('filename.txt'));
 
         /** @var FlysystemStorage $storage */
         $storage = $kernel->getContainer()->get('test.vich_uploader.storage');
@@ -79,9 +79,9 @@ final class VichUploaderBundleTest extends TestCase
 
         $storage->upload($object, $mapping);
 
-        /** @var FilesystemInterface $filesystem */
+        /** @var FilesystemOperator $filesystem */
         $filesystem = $kernel->getContainer()->get('test.uploads.storage');
-        self::assertTrue($filesystem->has('filename.txt'));
+        self::assertTrue($filesystem->fileExists('filename.txt'));
     }
 
     public function testFlysystemOneUpKernel(): void
@@ -92,9 +92,9 @@ final class VichUploaderBundleTest extends TestCase
         self::assertArrayHasKey('VichUploaderBundle', $kernel->getBundles());
 
         // Test the upload
-        /** @var FilesystemInterface $filesystem */
+        /** @var FilesystemOperator $filesystem */
         $filesystem = $kernel->getContainer()->get('oneup_flysystem.product_image_fs_filesystem');
-        self::assertFalse($filesystem->has('filename.txt'));
+        self::assertFalse($filesystem->fileExists('filename.txt'));
 
         /** @var FlysystemStorage $storage */
         $storage = $kernel->getContainer()->get('test.vich_uploader.storage');
@@ -129,9 +129,9 @@ final class VichUploaderBundleTest extends TestCase
 
         $storage->upload($object, $mapping);
 
-        /** @var FilesystemInterface $filesystem */
+        /** @var FilesystemOperator $filesystem */
         $filesystem = $kernel->getContainer()->get('oneup_flysystem.product_image_fs_filesystem');
-        self::assertTrue($filesystem->has('filename.txt'));
+        self::assertTrue($filesystem->fileExists('filename.txt'));
     }
 
     private function createUploadedFile(): UploadedFile

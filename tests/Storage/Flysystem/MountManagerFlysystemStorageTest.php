@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 
 /**
@@ -11,7 +11,7 @@ use League\Flysystem\MountManager;
  */
 final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTest
 {
-    protected function createRegistry(FilesystemInterface $filesystem): MountManager
+    protected function createRegistry(FilesystemOperator $filesystem): MountManager
     {
         $mountManager = $this
             ->getMockBuilder(MountManager::class)
