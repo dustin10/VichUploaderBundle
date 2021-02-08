@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
+use Psr\Container\ContainerInterface;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
