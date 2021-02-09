@@ -68,6 +68,9 @@
         "symfony/asset": "To generate better links",
         "symfony/yaml": "To use YAML mapping"
     },
+    "conflict": {
+        "league/flysystem-bundle": "<2.0"
+    },
     "config": {
         "platform": {
             "ext-mongo": "1.8.2"
