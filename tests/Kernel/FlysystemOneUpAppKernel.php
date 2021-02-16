@@ -34,7 +34,7 @@ class FlysystemOneUpAppKernel extends Kernel
             ]);
 
             $container->loadFromExtension('oneup_flysystem', [
-                'adapters' => ['memory_adapter' => ['memory' => null]],
+                'adapters' => ['memory_adapter' => ['memory' => []]],
                 'filesystems' => [
                     'product_image_fs' => ['adapter' => 'memory_adapter', 'mount' => 'product_image_fs'],
                 ],
