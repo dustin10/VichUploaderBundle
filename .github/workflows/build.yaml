@@ -2,6 +2,9 @@ name: build
 
 on: [push, pull_request]
 
+env:
+  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
     phpstan:
         runs-on: ubuntu-20.04
