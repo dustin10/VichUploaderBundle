@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests;
 
 use League\Flysystem\FilesystemOperator;
+use Oneup\FlysystemBundle\OneupFlysystemBundle;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
@@ -86,6 +87,9 @@ final class VichUploaderBundleTest extends TestCase
 
     public function testFlysystemOneUpKernel(): void
     {
+        if (!\class_exists(OneupFlysystemBundle::class)) {
+            return;
+        }
         $kernel = new FlysystemOneUpAppKernel('test', true);
         $kernel->boot();
 

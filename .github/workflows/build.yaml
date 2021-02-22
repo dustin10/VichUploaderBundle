@@ -41,17 +41,20 @@ jobs:
                       composer_option: '--prefer-lowest'
                       validate_docs: true
                       with_imagine: false
+                      with_oneupbundle: false
                     - description: '7.4'
                       php: '7.4'
                       with_imagine: true
                       validate_docs: false
+                      with_oneupbundle: true
                     - description: '8.0'
                       php: '8.0'
-                      # needed because doctrine/mongodb-odm doesn't support php8 yet 
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet
                       composer_option: '--ignore-platform-reqs'
                       symfony: 5.2.*
                       validate_docs: false
                       with_imagine: false
+                      with_oneupbundle: true
         name: PHP ${{ matrix.php }} tests (${{ matrix.description }})
         steps:
             - name: Checkout
@@ -71,6 +74,8 @@ jobs:
               if: matrix.symfony
             - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
               if: matrix.with_imagine
+            - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
+              if: matrix.with_oneupbundle
             - run: composer require --dev --no-update kphoen/rusty:"dev-update-php-parser"
               if: matrix.validate_docs
             - run: composer update --no-interaction --no-progress --ansi ${{ matrix.composer_option }}
