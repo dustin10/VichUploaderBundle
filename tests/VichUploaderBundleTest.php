@@ -112,14 +112,9 @@ final class VichUploaderBundleTest extends TestCase
 
         $mapping
             ->expects(self::once())
-            ->method('getUploadDestination')
-            ->willReturn('product_image_fs');
-
-        $mapping
-            ->expects(self::once())
             ->method('getUploadName')
             ->with($object)
-            ->willReturn('filename.txt');
+            ->willReturn('oneup_flysystem.product_image_fs_filesystem://filename.txt');
 
         $mapping
             ->expects(self::once())
