@@ -22,7 +22,7 @@ or
 
 **Note:**
 
-> At the moment, only version 2 of bundle is supported.
+> Since VichUploaderBundle v1.17, version 2 of bundle is supported. Version 1 is supported until VichUploaderBundle v1.16.
 
 To install the bundle, run the following command:
 
@@ -63,7 +63,7 @@ vich_uploader:
 
 **Note:**
 
-> At the moment, no version of bundle is supported.
+> Since VichUploaderBundle v1.17, version 4 of bundle is supported. Version 3 is supported until VichUploaderBundle v1.16.
 
 To install the bundle, run the following command:
 
