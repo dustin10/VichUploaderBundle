@@ -18,7 +18,11 @@ class FlysystemOneUpAppKernel extends Kernel
 
     public function registerBundles(): array
     {
-        return [new FrameworkBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
+        if (\class_exists(OneupFlysystemBundle::class)) {
+            return [new FrameworkBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
+        }
+
+        return [new FrameworkBundle(), new VichUploaderBundle()];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
