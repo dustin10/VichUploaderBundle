@@ -18,7 +18,11 @@ class FlysystemOneUpAppKernel extends Kernel
 
     public function registerBundles(): array
     {
-        return [new FrameworkBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
+        if (\class_exists(OneupFlysystemBundle::class)) {
+            return [new FrameworkBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
+        }
+
+        return [new FrameworkBundle(), new VichUploaderBundle()];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
@@ -34,7 +38,7 @@ class FlysystemOneUpAppKernel extends Kernel
             ]);
 
             $container->loadFromExtension('oneup_flysystem', [
-                'adapters' => ['memory_adapter' => ['memory' => null]],
+                'adapters' => ['memory_adapter' => ['memory' => []]],
                 'filesystems' => [
                     'product_image_fs' => ['adapter' => 'memory_adapter', 'mount' => 'product_image_fs'],
                 ],

@@ -2,11 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
+use League\Flysystem\UnableToDeleteFile;
 use Psr\Container\ContainerInterface;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -31,14 +31,14 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
     protected $filesystem;
 
     /**
-     * @var AbstractAdapter&\PHPUnit\Framework\MockObject\MockObject
+     * @var FilesystemAdapter&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
 
     /**
      * @return mixed
      */
-    abstract protected function createRegistry(FilesystemInterface $filesystem);
+    abstract protected function createRegistry(FilesystemOperator $filesystem);
 
     /**
      * @requires function MountManager::__construct
@@ -55,7 +55,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
     protected function setUp(): void
     {
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->adapter = $this->createMock(AbstractAdapter::class);
+        $this->adapter = $this->createMock(FilesystemAdapter::class);
         $this->registry = $this->createRegistry($this->filesystem);
 
         parent::setUp();
@@ -124,7 +124,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
             ->expects(self::once())
             ->method('delete')
             ->with('not_found.txt')
-            ->will($this->throwException(new FileNotFoundException('dummy path')));
+            ->will($this->throwException(new UnableToDeleteFile('dummy path')));
 
         $this->mapping
             ->expects(self::once())
@@ -154,16 +154,6 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
-
-        $this->filesystem
-            ->expects($this->any())
-            ->method('getAdapter')
-            ->willReturn($this->adapter);
-
-        $this->adapter
-            ->expects($this->any())
-            ->method('applyPathPrefix')
-            ->willReturn($uploadDir ? '/absolute/'.$uploadDir.'/file.txt' : '/absolute/file.txt');
 
         $path = $this->storage->resolvePath($this->object, 'file_field', null, $relative);
 
