@@ -5,7 +5,10 @@
 
 {%- block vich_file_widget -%}
     <div class="vich-file">
-        {{- form_widget(form.file) -}}
+        {%- if errors|length > 0 -%}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+        {%- endif -%}
+        {{- form_widget(form.file, {attr: attr}) -}}
         {%- if form.delete is defined -%}
             {{- form_row(form.delete) -}}
         {%- endif -%}
@@ -25,7 +28,10 @@
 
 {%- block vich_image_widget -%}
     <div class="vich-image">
-        {{- form_widget(form.file) -}}
+        {%- if errors|length > 0 -%}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+        {%- endif -%}
+        {{- form_widget(form.file, {attr: attr}) -}}
         {%- if form.delete is defined -%}
             {{- form_row(form.delete) -}}
         {%- endif -%}
