@@ -90,6 +90,7 @@ final class VichUploaderBundleTest extends TestCase
         if (!\class_exists(OneupFlysystemBundle::class)) {
             $this->markTestSkipped('OneupFlysystemBundle supports only PHP > 7.4');
         }
+
         $kernel = new FlysystemOneUpAppKernel('test', true);
         $kernel->boot();
 
@@ -116,9 +117,14 @@ final class VichUploaderBundleTest extends TestCase
 
         $mapping
             ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('oneup_flysystem.product_image_fs_filesystem');
+
+        $mapping
+            ->expects(self::once())
             ->method('getUploadName')
             ->with($object)
-            ->willReturn('oneup_flysystem.product_image_fs_filesystem://filename.txt');
+            ->willReturn('filename.txt');
 
         $mapping
             ->expects(self::once())
