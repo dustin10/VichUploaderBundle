@@ -61,8 +61,8 @@ make tests #PHP 7.3 env
 TARGET=74 make tests #PHP 7.4 env
 TARGET=80 make tests #PHP 8.0 env
 
-make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.3 env
-TARGET=74 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 7.4 env
-TARGET=80 make test TEST="Tests/Util/FilenameUtilsTest.php" #PHP 8.0 env
+make test TEST="tests/Util/FilenameUtilsTest.php" #PHP 7.3 env
+TARGET=74 make test TEST="tests/Util/FilenameUtilsTest.php" #PHP 7.4 env
+TARGET=80 make test TEST="tests/Util/FilenameUtilsTest.php" #PHP 8.0 env
 ```
 
