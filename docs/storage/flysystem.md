@@ -74,14 +74,14 @@ composer require oneup/flysystem-bundle
 Here is a sample configuration that stores your file in your local filesystem,
 but you can use your preferred adapters and FS (for details on this topic you
 should refer to
-[the bundle documentation](https://github.com/1up-lab/OneupFlysystemBundle/blob/master/docs/index.md)).
+[the bundle documentation](https://github.com/1up-lab/OneupFlysystemBundle/blob/master/doc/index.md)).
 
 ``` yaml
 oneup_flysystem:
     adapters:
         product_adapter:
             local:
-                directory: '%kernel.project_dir%/public/images/products'
+                location: '%kernel.project_dir%/public/images/products'
 
     filesystems:
         product_image_fs:
