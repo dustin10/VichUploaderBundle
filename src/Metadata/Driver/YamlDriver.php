@@ -38,6 +38,9 @@ class YamlDriver extends AbstractFileDriver
         return $classMetadata;
     }
 
+    /**
+     * @return mixed
+     */
     protected function loadMappingFile(string $file)
     {
         return YmlParser::parse(\file_get_contents($file));
@@ -48,7 +51,7 @@ class YamlDriver extends AbstractFileDriver
         return 'yml';
     }
 
-    protected function guessClassName($file, array $config, \ReflectionClass $class = null)
+    protected function guessClassName(string $file, array $config, \ReflectionClass $class = null): string
     {
         if (null === $class) {
             return \current(\array_keys($config));

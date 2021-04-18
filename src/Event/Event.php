@@ -12,10 +12,13 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class Event extends ContractEvent
 {
+    /** @var object */
     protected $object;
 
+    /** @var PropertyMapping */
     protected $mapping;
 
+    /** @var bool */
     protected $cancel = false;
 
     public function __construct($object, PropertyMapping $mapping)

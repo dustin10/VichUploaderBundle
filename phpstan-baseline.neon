@@ -1,22 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addGeneralSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Adapter\\\\AdapterInterface\\:\\:recomputeChangeSet\\(\\) has no return typehint specified\\.$#"
 			count: 1
-			path: src/DependencyInjection/Configuration.php
+			path: src/Adapter/AdapterInterface.php
 
 		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMetadataSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMappingsSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:scalarNode\\(\\)\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
@@ -26,9 +16,49 @@ parameters:
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:scalarNode\\(\\)\\.$#"
 			count: 1
 			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addGeneralSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMappingsSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMetadataSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Method Vich\\\\UploaderBundle\\\\Event\\\\Event\\:\\:__construct\\(\\) has parameter \\$object with no typehint specified\\.$#"
+			count: 1
+			path: src/Event/Event.php
+
+		-
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:clean\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			count: 1
+			path: src/Handler/UploadHandler.php
+
+		-
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:inject\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			count: 1
+			path: src/Handler/UploadHandler.php
+
+		-
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:remove\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			count: 1
+			path: src/Handler/UploadHandler.php
+
+		-
+			message: "#^Method Vich\\\\UploaderBundle\\\\Naming\\\\ConfigurableInterface\\:\\:configure\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Naming/ConfigurableInterface.php
 
 		-
 			message: "#^Call to an undefined method Gaufrette\\\\FilesystemInterface\\:\\:getAdapter\\(\\)\\.$#"

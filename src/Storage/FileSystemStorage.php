@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
@@ -12,7 +13,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class FileSystemStorage extends AbstractStorage
 {
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): ?File
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
 
@@ -23,7 +24,7 @@ class FileSystemStorage extends AbstractStorage
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
-        return \file_exists($file) ? \unlink($file) : false;
+        return \file_exists($file) && \unlink($file);
     }
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string

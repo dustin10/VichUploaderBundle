@@ -24,6 +24,9 @@ abstract class AbstractStorage implements StorageInterface
         $this->factory = $factory;
     }
 
+    /**
+     * @return mixed
+     */
     abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name);
 
     public function upload($obj, PropertyMapping $mapping): void

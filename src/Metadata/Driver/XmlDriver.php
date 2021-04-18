@@ -40,15 +40,12 @@ class XmlDriver extends AbstractFileDriver
         return $classMetadata;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getExtension(): string
     {
         return 'xml';
     }
 
-    protected function guessClassName($file, \SimpleXMLElement $elem, \ReflectionClass $class = null)
+    protected function guessClassName(string $file, \SimpleXMLElement $elem, \ReflectionClass $class = null): string
     {
         if (null === $class) {
             return (string) $elem->attributes()->class;

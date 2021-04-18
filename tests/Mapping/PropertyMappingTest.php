@@ -157,7 +157,7 @@ class PropertyMappingTest extends TestCase
         $object->setImageName('generated.jpeg');
         $object->setOriginalNameField('original.jpeg');
         $object->setMimeTypeField('image/jpeg');
-        $object->setSizeField(100);
+        $object->setSizeField('100');
 
         $prop = new PropertyMapping(
             'image',

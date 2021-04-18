@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 
 class VichImageTypeTest extends VichFileTypeTest
 {
-    const TESTED_TYPE = VichImageType::class;
+    protected const TESTED_TYPE = VichImageType::class;
 
     public function buildViewDataProvider(): array
     {

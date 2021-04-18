@@ -22,6 +22,9 @@ class FlysystemStorage extends AbstractStorage
      */
     protected $registry;
 
+    /**
+     * @param MountManager|ContainerInterface|mixed $registry
+     */
     public function __construct(PropertyMappingFactory $factory, $registry)
     {
         parent::__construct($factory);
@@ -33,9 +36,6 @@ class FlysystemStorage extends AbstractStorage
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): void
     {
         $fs = $this->getFilesystem($mapping);

@@ -13,41 +13,46 @@ class DummyEntity
 {
     /**
      * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
+     *
+     * @var object|null
      */
     protected $file;
 
+    /** @var string|null */
     protected $fileName;
 
+    /** @var int|null */
     protected $size;
 
+    /** @var string|null */
     public $someProperty;
 
-    public function getFile()
+    public function getFile(): ?object
     {
         return $this->file;
     }
 
-    public function setFile($file): void
+    public function setFile(?object $file): void
     {
         $this->file = $file;
     }
 
-    public function getFileName()
+    public function getFileName(): ?string
     {
         return $this->fileName;
     }
 
-    public function setFileName($fileName): void
+    public function setFileName(?string $fileName): void
     {
         $this->fileName = $fileName;
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function setSize($size): void
+    public function setSize(?int $size): void
     {
         $this->size = $size;
     }

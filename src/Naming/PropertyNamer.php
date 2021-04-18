@@ -84,7 +84,10 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         return $name;
     }
 
-    private function getPropertyValue($object, $propertyPath)
+    /**
+     * @return mixed|null
+     */
+    private function getPropertyValue(object $object, string $propertyPath)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 

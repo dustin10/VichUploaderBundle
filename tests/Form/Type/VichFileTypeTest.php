@@ -17,14 +17,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 
 class VichFileTypeTest extends TestCase
 {
-    const TESTED_TYPE = VichFileType::class;
+    protected const TESTED_TYPE = VichFileType::class;
 
     /**
      * @dataProvider configureOptionsBCDataProvider
      * @group legacy
      * @expectedDeprecation The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.
      */
-    public function testConfigureOptionsBC($options, $resolvedOptions): void
+    public function testConfigureOptionsBC(array $options, array $resolvedOptions): void
     {
         $optionsResolver = new OptionsResolver();
 

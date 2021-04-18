@@ -13,8 +13,10 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
+    /** @var string */
     private $algorithm = 'sha1';
 
+    /** @var int */
     private $length;
 
     /**

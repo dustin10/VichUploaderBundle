@@ -73,7 +73,7 @@ class DownloadHandler extends AbstractHandler
         $disposition = $response->headers->makeDisposition(
             $forceDownload ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,
-            \filter_var($filename, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)
+            \filter_var($filename, \FILTER_SANITIZE_STRING, \FILTER_FLAG_STRIP_HIGH)
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', $mimeType ?: 'application/octet-stream');
