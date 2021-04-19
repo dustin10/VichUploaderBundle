@@ -13,7 +13,7 @@ trait FileExtensionTrait
     {
         $originalName = $file->getClientOriginalName();
 
-        if ('' !== ($extension = \pathinfo($originalName, PATHINFO_EXTENSION))) {
+        if ('' !== ($extension = \pathinfo($originalName, \PATHINFO_EXTENSION))) {
             return $extension;
         }
 

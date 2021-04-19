@@ -66,7 +66,7 @@ class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Configur
         } else {
             // see https://github.com/dustin10/VichUploaderBundle/issues/992
             $msg = 'Not passing "date_time_property" option is deprecated and will be removed in version 2.';
-            @\trigger_error($msg, E_USER_DEPRECATED);
+            @\trigger_error($msg, \E_USER_DEPRECATED);
             $dateTime = $this->dateTimeHelper->getTimestamp();
         }
 

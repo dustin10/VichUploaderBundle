@@ -12,6 +12,7 @@ class MappingDebugCommand extends Command
 {
     protected static $defaultName = 'vich:mapping:debug';
 
+    /** @var array */
     private $mappings;
 
     public function __construct(array $mappings)

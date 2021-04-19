@@ -79,7 +79,7 @@ class VichFileType extends AbstractType
 
         $downloadUriNormalizer = static function (Options $options, $downloadUri) {
             if (null !== $options['download_link']) {
-                @\trigger_error('The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.', E_USER_DEPRECATED);
+                @\trigger_error('The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.', \E_USER_DEPRECATED);
 
                 return $options['download_link'];
             }
@@ -167,7 +167,12 @@ class VichFileType extends AbstractType
         return 'vich_file';
     }
 
-    protected function resolveUriOption($uriOption, $object, FormInterface $form)
+    /**
+     * @param bool|callable $uriOption
+     *
+     * @return string|bool|null
+     */
+    protected function resolveUriOption($uriOption, object $object, FormInterface $form)
     {
         if (true === $uriOption) {
             return $this->storage->resolveUri($object, $form->getName());
@@ -180,7 +185,10 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    protected function resolveDownloadLabel($downloadLabel, $object, FormInterface $form): array
+    /**
+     * @param bool|callable|object $downloadLabel
+     */
+    protected function resolveDownloadLabel($downloadLabel, object $object, FormInterface $form): array
     {
         if (true === $downloadLabel) {
             $mapping = $this->factory->fromField($object, $form->getName());

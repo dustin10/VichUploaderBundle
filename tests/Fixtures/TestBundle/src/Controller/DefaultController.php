@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Form\Type as VichType;
 
 class DefaultController extends AbstractController
 {
-    public function uploadAction($formType): Response
+    public function uploadAction(string $formType): Response
     {
         $form = $this->getForm($this->getImage());
 
@@ -22,7 +22,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    public function editAction($formType, $imageId): Response
+    public function editAction(string $formType, ?int $imageId): Response
     {
         $form = $this->getForm($this->getImage($imageId));
 
@@ -33,7 +33,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    public function submitAction(Request $request, $formType, $imageId = null): Response
+    public function submitAction(Request $request, string $formType, ?int $imageId = null): Response
     {
         $image = $this->getImage($imageId);
         $form = $this->getForm($image)->handleRequest($request);
@@ -66,7 +66,7 @@ class DefaultController extends AbstractController
         ;
     }
 
-    private function getImage($imageId = null): Image
+    private function getImage(?int $imageId = null): Image
     {
         if (null === $imageId) {
             return new Image();

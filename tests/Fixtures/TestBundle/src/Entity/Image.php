@@ -16,34 +16,40 @@ class Image
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int|null
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
+     *
+     * @var string|null
      */
     protected $title;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime|null
      */
     protected $updatedAt;
 
     /**
      * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
      *
-     * @var File
+     * @var File|\Symfony\Component\HttpFoundation\File\UploadedFile|null
      */
     protected $imageFile;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     protected $imageName;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -55,7 +61,7 @@ class Image
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $image
      */
     public function setImageFile(File $image = null): void
     {
@@ -66,42 +72,27 @@ class Image
         }
     }
 
-    /**
-     * @return File
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    /**
-     * @param string $imageName
-     */
-    public function setImageName($imageName): void
+    public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
     }
 
-    /**
-     * @return string
-     */
-    public function getImageName()
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }

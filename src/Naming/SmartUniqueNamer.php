@@ -28,8 +28,8 @@ final class SmartUniqueNamer implements NamerInterface
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
         $originalName = $this->transliterator->transliterate($originalName);
-        $originalExtension = \strtolower(\pathinfo($originalName, PATHINFO_EXTENSION));
-        $originalBasename = \pathinfo($originalName, PATHINFO_FILENAME);
+        $originalExtension = \strtolower(\pathinfo($originalName, \PATHINFO_EXTENSION));
+        $originalBasename = \pathinfo($originalName, \PATHINFO_FILENAME);
         $uniqId = \str_replace('.', '', \uniqid('-', true));
         $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);

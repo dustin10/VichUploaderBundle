@@ -14,8 +14,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
+    /** @var array<int, string> */
     private $supportedDbDrivers = ['orm', 'mongodb', 'phpcr'];
 
+    /** @var array<int, string> */
     private $supportedStorages = ['gaufrette', 'flysystem', 'file_system'];
 
     public function getConfigTreeBuilder(): TreeBuilder

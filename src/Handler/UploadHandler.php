@@ -117,7 +117,7 @@ class UploadHandler extends AbstractHandler
         $this->dispatcher->dispatch($event, $eventName);
     }
 
-    protected function hasUploadedFile($obj, PropertyMapping $mapping): bool
+    protected function hasUploadedFile(object $obj, PropertyMapping $mapping): bool
     {
         $file = $mapping->getFile($obj);
 

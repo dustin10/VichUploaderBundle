@@ -13,39 +13,48 @@ class Article
 {
     /**
      * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
+     *
+     * @var object|null
      */
     protected $attachment;
 
+    /** @var string */
     protected $attachmentName;
 
     /**
      * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName", originalName="originalNameField", mimeType="mimeTypeField", size="sizeField")
+     *
+     * @var object|null
      */
     protected $image;
 
+    /** @var string|null */
     protected $imageName;
 
+    /** @var string|null */
     protected $originalNameField;
 
+    /** @var string|null */
     protected $mimeTypeField;
 
+    /** @var string|null */
     protected $sizeField;
 
     public function getAttachment(): void
     {
     }
 
-    public function setAttachment($attachment): void
+    public function setAttachment(?object $attachment): void
     {
         $this->attachment = $attachment;
     }
 
-    public function getAttachmentName()
+    public function getAttachmentName(): ?string
     {
         return $this->attachmentName;
     }
 
-    public function setAttachmentName($attachmentName): void
+    public function setAttachmentName(?string $attachmentName): void
     {
         $this->attachmentName = $attachmentName;
     }
@@ -54,47 +63,47 @@ class Article
     {
     }
 
-    public function setImage($image): void
+    public function setImage(?object $image): void
     {
         $this->image = $image;
     }
 
-    public function getImageName()
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    public function setImageName($imageName): void
+    public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
     }
 
-    public function getOriginalNameField()
+    public function getOriginalNameField(): ?string
     {
         return $this->originalNameField;
     }
 
-    public function setOriginalNameField($originalNameField): void
+    public function setOriginalNameField(?string $originalNameField): void
     {
         $this->originalNameField = $originalNameField;
     }
 
-    public function getMimeTypeField()
+    public function getMimeTypeField(): ?string
     {
         return $this->mimeTypeField;
     }
 
-    public function setMimeTypeField($mimeTypeField): void
+    public function setMimeTypeField(?string $mimeTypeField): void
     {
         $this->mimeTypeField = $mimeTypeField;
     }
 
-    public function getSizeField()
+    public function getSizeField(): ?string
     {
         return $this->sizeField;
     }
 
-    public function setSizeField($sizeField): void
+    public function setSizeField(?string $sizeField): void
     {
         $this->sizeField = $sizeField;
     }

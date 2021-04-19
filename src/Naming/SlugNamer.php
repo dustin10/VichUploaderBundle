@@ -38,8 +38,8 @@ final class SlugNamer implements NamerInterface
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
-        $extension = \strtolower(\pathinfo($originalName, PATHINFO_EXTENSION));
-        $basename = \substr(\pathinfo($originalName, PATHINFO_FILENAME), 0, 240);
+        $extension = \strtolower(\pathinfo($originalName, \PATHINFO_EXTENSION));
+        $basename = \substr(\pathinfo($originalName, \PATHINFO_FILENAME), 0, 240);
         $basename = \strtolower($this->transliterator->transliterate($basename));
         $slug = \sprintf('%s.%s', $basename, $extension);
 

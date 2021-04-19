@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
+use Vich\UploaderBundle\EventListener\Doctrine;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -43,6 +44,9 @@ abstract class ListenerTestCase extends TestCase
      */
     public $object;
 
+    /**
+     * @var Doctrine\CleanListener|Doctrine\InjectListener|Doctrine\RemoveListener|Doctrine\UploadListener|null
+     */
     protected $listener;
 
     /**
