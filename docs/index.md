@@ -42,6 +42,14 @@ Don't worry, it will be quick and easy (I promise!):
 
 ### Forms-related
 
+> The Symfony Form component allows you to easily create, process and reuse HTML forms.
+
+To install the package, run the following command:
+
+```
+composer require symfony/form
+```
+
   * [Using the bundled file form type](form/vich_file_type.md)
   * [Using the bundled image form type](form/vich_image_type.md)
 
