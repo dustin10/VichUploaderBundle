@@ -28,13 +28,13 @@ If `image` is your only mapped field, you can omit it and use simply `$helper->a
 In a Twig template you can use the `vich_uploader_asset` function:
 
 ``` twig
-<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}" />
+<img src="{{ vich_uploader_asset(product, 'image') }}" alt="{{ product.name }}">
 ```
 
 Or, in the simpler case of a single mapped field:
 
 ``` twig
-<img src="{{ vich_uploader_asset(product) }}" alt="{{ product.name }}" />
+<img src="{{ vich_uploader_asset(product) }}" alt="{{ product.name }}">
 
 ```
 

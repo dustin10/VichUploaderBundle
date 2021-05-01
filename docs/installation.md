@@ -10,7 +10,7 @@ your Symfony project:
 composer require vich/uploader-bundle
 ```
 
-Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.12"` to your composer.json and run `composer update`.
+Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.17"` to your composer.json and run `composer update`.
 This could be useful when the installation of VichUploaderBundle is not compatible with some currently installed dependencies.
 Anyway, the previous option is the preferred way, since composer can pick the best requirement constraint for you.
 
@@ -55,4 +55,4 @@ vich_uploader:
 ## That was it!
 
 Yeah, the bundle is installed! Move onto the [usage section](usage.md) to find out how
-to configure and setup your first upload.
+to configure and set up your first upload.
