@@ -51,7 +51,7 @@ want to make uploadable.
 
 We already created an abstract representation of the filesystem (the mapping),
 so we just have to tell the bundle which entity should use which mapping. In
-this guide we'll use annotations to achieve this but you can also use
+this guide we'll use annotations to achieve this, but you can also use
 [YAML](mapping/yaml.md) or [XML](mapping/xml.md).
 
 First, annotate your class with the `Uploadable` annotation. This is really like

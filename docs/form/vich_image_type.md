@@ -72,7 +72,7 @@ $builder->add('genericFile', VichImageType::class, [
 
 ```
 
-Can be callable
+Can be a callable
 
 ```php
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -107,9 +107,7 @@ Can be callable
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 $builder->add('genericFile', VichImageType::class, [
-    'download_label' => static function (Product $product) {
-        return $product->getTitle();
-    },
+    'download_label' => static fn (Product $product): string => $product->getTitle(),
 ]);
 
 ```

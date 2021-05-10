@@ -32,12 +32,12 @@ Thank you!
 ## Running the test suite
 
 Tests suite uses Docker environments in order to be idempotent to OS's. More than this 
-PHP version is written inside the Dockerfile; this assure to tests the bundle with
-the same resources. No need to have php or Mongo installed. 
+PHP version is written inside the Dockerfile; this assures to test the bundle with
+the same resources. No need to have PHP or Mongo installed. 
 
 You only need Docker set it up.
 
-To allow testing environments more smooth we implemented **Makefile** 
+To allow testing environments more smooth we implemented **Makefile**.
 You have two commands available:
 
 ```bash
@@ -50,7 +50,7 @@ which will execute all tests inside the docker.
 make test TEST="Tests/Util/FilenameUtilsTest.php"
 ```
 
-will allow to tests single Test Classes.
+will allow testing single Test Classes.
 
 There are 3 environments available: PHP 7.3, 7.4 and 8.0.
 Default environment is *PHP 7.4* if you want to execute it against 

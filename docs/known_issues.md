@@ -1,7 +1,7 @@
 Known issues
 ============
 
-## The file is not updated if there are not other changes in the entity
+## The file is not updated if there are no other changes in the entity
 
 As the bundle is listening to Doctrine `prePersist` and `preUpdate` events, which are not fired
 when there is no change on field mapped by Doctrine, the file upload is not handled if the image field
@@ -62,7 +62,7 @@ Vendor\Bundle\CoolBundle\Entity\CoolEntity:
 
 An upload will only be triggered if an instance of `Symfony\Component\HttpFoundation\File\UploadedFile`
 is injected into the setter for the `Vich\UploadableField` property of your class. Normally this is done
-automatically if using Symfony Form but if your application logic is attempting to do this manually and you
+automatically if using Symfony Form but if your application logic is attempting to do this manually, and you
 inject an instance of `Symfony\Component\HttpFoundation\File\File` *instead* the bundle will silently ignore
 your attempted upload.
 Consider the following class:
@@ -107,7 +107,7 @@ class Product
 
 If the bundle's configuration parameter `inject_on_load` is set to `true` the `Product::setImageFile()`
 method above must take an instance of `File` as when this class is hydrated by Doctrine this
-bundle will automatically inject an instance of `File` there. However if you were to change
+bundle will automatically inject an instance of `File` there. However, if you were to change
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
 image to sucessfully trigger the upload.

@@ -109,9 +109,7 @@ Can be callable
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 $builder->add('genericFile', VichFileType::class, [
-    'download_label' => static function (Product $product) {
-        return $product->getTitle();
-    },
+    'download_label' => static fn (Product $product): string => $product->getTitle(),
 ]);
 
 ```

@@ -1,5 +1,5 @@
-Upgrading from v1.17.1 to ...
-================================
+Upgrading from v1.17.0 to v1.18.0
+=================================
 
 - the "symfony/form" package is now a suggestion. Make sure to explicitly require this package if you use Symfony forms.
 

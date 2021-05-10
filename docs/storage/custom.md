@@ -1,7 +1,7 @@
 Custom Storage
 ==============
 
-The bundle supports some built-in storage but you can also create your own 
+The bundle supports some built-in storage, but you can also create your own 
 by implementing the `Vich\UploaderBundle\Storage\StorageInterface` or by
 extending the `Vich\UploaderBundle\Storage\AbstractStorage`.
 

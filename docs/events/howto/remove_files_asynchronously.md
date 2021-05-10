@@ -23,15 +23,14 @@ namespace App\Message;
 
 class RemoveProductImageMessage
 {
-
-    private $filename;
+    private string $filename;
 
     public function __construct(string $filename)
     {
         $this->filename = $filename;
     }
 
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
@@ -51,7 +50,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RemoveProductImageMessageHandler implements MessageHandlerInterface
 {
-    public function __invoke(RemoveProductImageMessage $message)
+    public function __invoke(RemoveProductImageMessage $message): void
     {
         $filename = $message->getFilename();
 
@@ -84,7 +83,7 @@ class RemoveFileEventSubscriber implements EventSubscriberInterface
         $this->messageBus = $messageBus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::PRE_REMOVE => ['onPreRemove'],
