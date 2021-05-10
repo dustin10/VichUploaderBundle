@@ -1,10 +1,8 @@
-/.gitattributes   export-ignore
-/.github          export-ignore
-/.gitignore       export-ignore
-/.php_cs          export-ignore
+/.git*            export-ignore
+/.php-cs-fixer*   export-ignore
 /CONTRIBUTING.md  export-ignore
 /Makefile         export-ignore
-/phpstan*         export-ignore
+/phpstan*.neon    export-ignore
 /README.md        export-ignore
 /UPGRADE.md       export-ignore
 /phpunit.xml.dist export-ignore
