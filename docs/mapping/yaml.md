@@ -5,7 +5,7 @@ You can choose to describe your entities in YAML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
 
 ```yaml
-# config/vich_uploader/Entity.Product.yml
+# config/vich_uploader/Entity.Product.yaml
 Acme\DemoBundle\Entity\Product:
     imageFile:
         mapping: product_image        # required
@@ -34,13 +34,13 @@ vich_uploader:
 
 #### Naming YAML Files
 
-The `namespace_prefix` parameter, combined with the .yml file name in `config/vich_uploader` must
+The `namespace_prefix` parameter, combined with the .yaml file name in `config/vich_uploader` must
 combine to form the FQCN of your entity. For example an entity of `MyApp\MyBundle\Entity\Customer`
 should be configured using either of the following:
 
-`namespace_prefix: 'MyApp\MyBundle'` and then have a config file `Entity.Customer.yml`
+`namespace_prefix: 'MyApp\MyBundle'` and then have a config file `Entity.Customer.yaml`
 
-`namespace_prefix: 'MyApp\MyBundle\Entity'` and then have a config file `Customer.yml`
+`namespace_prefix: 'MyApp\MyBundle\Entity'` and then have a config file `Customer.yaml`
 
 **N.B:**
 

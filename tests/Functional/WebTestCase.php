@@ -37,14 +37,14 @@ abstract class WebTestCase extends BaseWebTestCase
         return $client->getKernel()->getProjectDir().'/app/Resources/images';
     }
 
-    protected function getContainer(KernelBrowser $client): ContainerInterface
+    protected static function getContainer(KernelBrowser $client): ContainerInterface
     {
         return $client->getKernel()->getContainer();
     }
 
     protected function loadFixtures(KernelBrowser $client): void
     {
-        $container = $this->getContainer($client);
+        $container = self::getContainer($client);
         $registry = $container->get('doctrine');
         if ($registry instanceof ManagerRegistry) {
             $om = $registry->getManager();

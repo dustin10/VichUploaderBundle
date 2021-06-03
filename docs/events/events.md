@@ -25,7 +25,7 @@ Create a listener class:
 ```php
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
 use Vich\UploaderBundle\Event\Event;
 
@@ -45,7 +45,7 @@ class FooListener
 Configure it in your configuration:
 
 ```yaml
-# app/config/services.yml
+# config/services.yaml or app/config/services.yml
 services:
     AppBundle\EventListener\FooListener:
         tags:
