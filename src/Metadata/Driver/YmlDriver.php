@@ -2,10 +2,10 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-final class YamlDriver extends AbstractYamlDriver
+final class YmlDriver extends AbstractYamlDriver
 {
     protected function getExtension(): string
     {
-        return 'yaml';
+        return 'yml';
     }
 }

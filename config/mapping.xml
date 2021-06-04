@@ -20,6 +20,10 @@
             <argument type="service" id="vich_uploader.metadata.file_locator" />
         </service>
 
+        <service id="vich_uploader.metadata_driver.yml" class="Vich\UploaderBundle\Metadata\Driver\YmlDriver" public="false">
+            <argument type="service" id="vich_uploader.metadata.file_locator" />
+        </service>
+
         <service id="vich_uploader.metadata_driver.yaml" class="Vich\UploaderBundle\Metadata\Driver\YamlDriver" public="false">
             <argument type="service" id="vich_uploader.metadata.file_locator" />
         </service>

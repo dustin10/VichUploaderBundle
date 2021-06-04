@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use Metadata\Driver\DriverInterface;
 use Metadata\Driver\FileLocatorInterface;
+use Vich\UploaderBundle\Metadata\Driver\AbstractYamlDriver;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 /**
@@ -21,7 +22,7 @@ final class YamlDriverTest extends FileDriverTestCase
         $fileLocator
             ->expects(self::once())
             ->method('findFileForClass')
-            ->with(self::equalTo($rClass), self::equalTo('yml'))
+            ->with(self::equalTo($rClass), self::equalTo('yaml'))
             ->willReturn('something not null');
 
         $driver = new TestableYamlDriver($fileLocator);
@@ -33,7 +34,7 @@ final class YamlDriverTest extends FileDriverTestCase
 
     protected function getExtension(): string
     {
-        return 'yml';
+        return 'yaml';
     }
 
     protected function getDriver(\ReflectionClass $reflectionClass, ?string $file): DriverInterface
@@ -42,7 +43,7 @@ final class YamlDriverTest extends FileDriverTestCase
     }
 }
 
-final class TestableYamlDriver extends YamlDriver
+final class TestableYamlDriver extends AbstractYamlDriver
 {
     /**
      * @var array
@@ -52,5 +53,10 @@ final class TestableYamlDriver extends YamlDriver
     protected function loadMappingFile(string $file): array
     {
         return $this->mappingContent;
+    }
+
+    protected function getExtension(): string
+    {
+        return 'yaml';
     }
 }
