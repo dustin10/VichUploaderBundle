@@ -10,6 +10,7 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class UploadableField
 {
     /**
@@ -51,11 +52,25 @@ class UploadableField
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $options)
-    {
-        if (empty($options['mapping'])) {
+    public function __construct(
+        array $options = [],
+        string $mapping = null,
+        string $fileNameProperty = null,
+        string $size = null,
+        string $mimeType = null,
+        string $originalName = null,
+        array $dimensions = null
+    ) {
+        if (empty($options['mapping']) && empty($mapping)) {
             throw new \InvalidArgumentException('The "mapping" attribute of UploadableField is required.');
         }
+
+        $this->mapping = $mapping ?? $this->mapping;
+        $this->fileNameProperty = $fileNameProperty;
+        $this->size = $size;
+        $this->mimeType = $mimeType;
+        $this->originalName = $originalName;
+        $this->dimensions = $dimensions;
 
         foreach ($options as $property => $value) {
             if (!\property_exists($this, $property)) {
@@ -71,7 +86,7 @@ class UploadableField
      *
      * @return string The mapping name
      */
-    public function getMapping()
+    public function getMapping(): string
     {
         return $this->mapping;
     }
@@ -79,41 +94,29 @@ class UploadableField
     /**
      * Gets the file name property.
      *
-     * @return string The file name property
+     * @return string|null The file name property
      */
-    public function getFileNameProperty()
+    public function getFileNameProperty(): ?string
     {
         return $this->fileNameProperty;
     }
 
-    /**
-     * @return string
-     */
-    public function getSize()
+    public function getSize(): ?string
     {
         return $this->size;
     }
 
-    /**
-     * @return string
-     */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
 
-    /**
-     * @return string
-     */
-    public function getOriginalName()
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getDimensions()
+    public function getDimensions(): ?array
     {
         return $this->dimensions;
     }
