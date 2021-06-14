@@ -10,6 +10,7 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Uploadable
 {
 }
