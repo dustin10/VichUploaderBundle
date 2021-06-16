@@ -13,7 +13,10 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
  */
 abstract class AbstractYamlDriver extends AbstractFileDriver
 {
-    protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?JMSClassMetadata
+    /**
+     * @param string $file
+     */
+    protected function loadMetadataFromFile(\ReflectionClass $class, $file): ?JMSClassMetadata
     {
         $config = $this->loadMappingFile($file);
         $className = $this->guessClassName($file, $config, $class);
