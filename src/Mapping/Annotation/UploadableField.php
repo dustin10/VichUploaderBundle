@@ -65,7 +65,7 @@ class UploadableField
             throw new \InvalidArgumentException('The "mapping" attribute of UploadableField is required.');
         }
 
-        $this->mapping = $mapping ?? $this->mapping;
+        $this->mapping = $mapping;
         $this->fileNameProperty = $fileNameProperty;
         $this->size = $size;
         $this->mimeType = $mimeType;
