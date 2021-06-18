@@ -4,6 +4,9 @@ namespace Vich\UploaderBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
+/**
+ * @final
+ */
 class FileTransformer implements DataTransformerInterface
 {
     public function transform($file): array

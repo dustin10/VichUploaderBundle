@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
+/**
+ * @internal
+ */
 final class MappingCollector extends DataCollector
 {
     /**

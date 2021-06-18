@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Util\Transliterator;
  * This namer uses a slug to keep original name when possibile.
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
+ * @final
  */
 final class SlugNamer implements NamerInterface
 {

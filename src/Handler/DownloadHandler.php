@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Exception\NoFileFoundException;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @final
  */
 class DownloadHandler extends AbstractHandler
 {

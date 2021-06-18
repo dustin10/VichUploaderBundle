@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * FileSystemStorage.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
  */
 class FileSystemStorage extends AbstractStorage
 {

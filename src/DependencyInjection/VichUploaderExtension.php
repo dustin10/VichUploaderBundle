@@ -14,6 +14,8 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ *
+ * @internal
  */
 final class VichUploaderExtension extends Extension
 {

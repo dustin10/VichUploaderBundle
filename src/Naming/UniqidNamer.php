@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * UniqidNamer.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
+ * @final
  */
 class UniqidNamer implements NamerInterface
 {
