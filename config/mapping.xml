@@ -11,9 +11,12 @@
             <argument type="collection" /><!-- namespace prefixes mapping to directories, injected by extension -->
         </service>
 
+        <!-- reader -->
+        <service id="vich_uploader.metadata.attribute_reader" class="Vich\UploaderBundle\Metadata\Driver\AttributeReader" public="false" />
+
         <!-- drivers -->
         <service id="vich_uploader.metadata_driver.annotation" class="Vich\UploaderBundle\Metadata\Driver\AnnotationDriver" public="false">
-            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="vich_uploader.metadata.reader" />
         </service>
 
         <service id="vich_uploader.metadata_driver.xml" class="Vich\UploaderBundle\Metadata\Driver\XmlDriver" public="false">

@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Mapping\Annotation;
 
+use Vich\UploaderBundle\Mapping\AnnotationInterface;
+
 /**
  * UploadableField.
  *
@@ -11,7 +13,7 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class UploadableField
+class UploadableField implements AnnotationInterface
 {
     /**
      * @var string

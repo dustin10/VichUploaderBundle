@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Mapping\Annotation;
 
+use Vich\UploaderBundle\Mapping\AnnotationInterface;
+
 /**
  * Uploadable.
  *
@@ -11,6 +13,6 @@ namespace Vich\UploaderBundle\Mapping\Annotation;
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Uploadable
+class Uploadable implements AnnotationInterface
 {
 }

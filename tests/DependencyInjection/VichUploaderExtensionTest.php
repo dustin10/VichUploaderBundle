@@ -2,9 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
+use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
@@ -149,5 +151,27 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'twig.form.resources',
             ['@VichUploader/Form/fields.html.twig', 'form_div_layout.html.twig', '@Ololo/trololo.html.twig']
         );
+    }
+
+    public function testMetadataAnnotation(): void
+    {
+        $this->load([
+            'metadata' => [
+                'type' => 'annotation',
+            ],
+        ]);
+
+        self::assertContainerBuilderHasService('vich_uploader.metadata.reader', AnnotationReader::class);
+    }
+
+    public function testMetadataAttribute(): void
+    {
+        $this->load([
+            'metadata' => [
+                'type' => 'attribute',
+            ],
+        ]);
+
+        self::assertContainerBuilderHasService('vich_uploader.metadata.reader', AttributeReader::class);
     }
 }
