@@ -25,7 +25,7 @@ class AnnotationDriver implements AdvancedDriverInterface
      */
     public const UPLOADABLE_FIELD_ANNOTATION = UploadableField::class;
 
-    /** @var AnnotationReader */
+    /** @var AnnotationReader|AttributeReader */
     protected $reader;
 
     public function __construct(AnnotationReader $reader)

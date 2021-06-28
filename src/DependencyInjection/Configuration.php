@@ -76,6 +76,7 @@ final class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('directory', 'directories')
                     ->children()
                         ->scalarNode('cache')->defaultValue('file')->end()
+                        ->scalarNode('type')->defaultValue('annotation')->end()
                         ->arrayNode('file_cache')
                             ->addDefaultsIfNotSet()
                             ->children()
