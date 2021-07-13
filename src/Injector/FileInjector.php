@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * FileInjector.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
  */
 class FileInjector implements FileInjectorInterface
 {

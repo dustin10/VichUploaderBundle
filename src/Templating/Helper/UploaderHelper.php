@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * UploaderHelper.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
  */
 class UploaderHelper
 {

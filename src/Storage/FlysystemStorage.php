@@ -14,6 +14,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Titouan Galopin <galopintitouan@gmail.com>
+ * @final
  */
 class FlysystemStorage extends AbstractStorage
 {

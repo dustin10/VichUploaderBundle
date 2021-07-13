@@ -16,6 +16,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * @author Kévin Gomez <contact@kevingomez.fr>
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Massimiliano Arione <max.arione@gmail.com>
+ * @final
  */
 class VichImageType extends VichFileType
 {

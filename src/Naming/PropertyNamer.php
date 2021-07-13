@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Util\Transliterator;
  * PropertyNamer.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @final
  */
 class PropertyNamer implements NamerInterface, ConfigurableInterface
 {

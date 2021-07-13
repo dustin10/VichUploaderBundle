@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * Directory namer wich can create subfolder depends on current datetime.
  *
  * @author Vyacheslav Startsev <vyacheslav.startsev@gmail.com>
+ * @final
  */
 class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {

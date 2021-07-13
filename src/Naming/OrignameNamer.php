@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Util\Transliterator;
  * OrignameNamer.
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
+ * @final
  */
 class OrignameNamer implements NamerInterface, ConfigurableInterface
 {
@@ -37,9 +38,6 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function name($object, PropertyMapping $mapping): string
     {
         /* @var $file UploadedFile */

@@ -8,6 +8,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+ * @internal
+ */
 final class RegisterSluggerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void

@@ -4,6 +4,9 @@ namespace Vich\UploaderBundle\Metadata;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
+/**
+ * @internal
+ */
 final class CacheWarmer implements CacheWarmerInterface
 {
     /** @var string */

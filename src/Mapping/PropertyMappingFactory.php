@@ -14,6 +14,9 @@ use Vich\UploaderBundle\Util\ClassUtils;
  * PropertyMappingFactory.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
+ *
+ * @internal
  */
 class PropertyMappingFactory
 {
