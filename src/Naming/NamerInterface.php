@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * NamerInterface.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
  */
 interface NamerInterface
 {

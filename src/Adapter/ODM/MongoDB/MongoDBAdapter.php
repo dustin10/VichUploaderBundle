@@ -8,6 +8,9 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  * MongoDBAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
+ *
+ * @internal
  */
 class MongoDBAdapter implements AdapterInterface
 {

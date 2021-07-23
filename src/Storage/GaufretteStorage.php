@@ -14,6 +14,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  * GaufretteStorage.
  *
  * @author Stefan Zerkalica <zerkalica@gmail.com>
+ * @final
  */
 class GaufretteStorage extends AbstractStorage
 {

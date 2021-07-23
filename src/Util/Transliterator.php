@@ -6,6 +6,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @internal
+ * @final
  */
 class Transliterator
 {

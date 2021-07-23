@@ -8,6 +8,9 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  * DoctrineORMAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
+ *
+ * @internal
  */
 class DoctrineORMAdapter implements AdapterInterface
 {

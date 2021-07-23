@@ -11,6 +11,9 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
  * Exposes a simple interface to read objects metadata.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @final
+ *
+ * @internal
  */
 class MetadataReader
 {

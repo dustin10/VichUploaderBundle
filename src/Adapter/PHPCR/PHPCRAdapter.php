@@ -6,6 +6,9 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
  * @author Ben Glassman <bglassman@gmail.com>
+ * @final
+ *
+ * @internal
  */
 class PHPCRAdapter implements AdapterInterface
 {

@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
+/**
+ * @final
+ */
 class MappingListClassesCommand extends Command
 {
     protected static $defaultName = 'vich:mapping:list-classes';

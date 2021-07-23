@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Titouan Galopin <galopintitouan@gmail.com>
+ *
+ * @internal
  */
 final class RegisterFlysystemRegistryPass implements CompilerPassInterface
 {

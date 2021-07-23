@@ -6,6 +6,8 @@ namespace Vich\UploaderBundle\Adapter;
  * AdapterInterface.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ *
+ * @internal
  */
 interface AdapterInterface
 {

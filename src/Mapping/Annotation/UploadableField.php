@@ -11,6 +11,9 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  * @Target({"PROPERTY"})
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+ * @final
+ *
+ * @internal
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class UploadableField implements AnnotationInterface

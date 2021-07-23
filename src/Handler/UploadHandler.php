@@ -15,6 +15,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * Upload handler.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ * @final
  */
 class UploadHandler extends AbstractHandler
 {
