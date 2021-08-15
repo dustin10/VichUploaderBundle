@@ -17,6 +17,7 @@ class CleanListenerTest extends ListenerTestCase
      */
     protected function setUp(): void
     {
+        self::$usePreUpdateEventArgs = true;
         parent::setUp();
 
         $this->listener = new CleanListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
@@ -44,17 +45,24 @@ class CleanListenerTest extends ListenerTestCase
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
             ->willReturn([
-                ['propertyName' => 'field_name'],
+                'field_name' => ['propertyName' => 'field_name', 'fileNameProperty' => 'path_name'],
+            ]);
+
+        $this->event
+            ->method('getEntityChangeSet')
+            ->willReturn([
+                'path_name' => [
+                    0 => 'dummy.jpg',
+                ],
             ]);
 
         $this->handler
             ->expects(self::once())
             ->method('clean')
-            ->with($this->object, 'field_name');
+            ->with($this->object, 'field_name', 'dummy.jpg');
 
         $this->adapter
             ->expects(self::once())

@@ -45,7 +45,7 @@ class UploadListener extends BaseListener
     }
 
     /**
-     * @param EventArgs $event The event
+     * @param EventArgs|\Doctrine\ORM\Event\PreUpdateEventArgs $event The event
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */

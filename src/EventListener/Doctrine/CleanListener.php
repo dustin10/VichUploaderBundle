@@ -25,6 +25,9 @@ class CleanListener extends BaseListener
         ];
     }
 
+    /**
+     * @param EventArgs|\Doctrine\ORM\Event\PreUpdateEventArgs $event
+     */
     public function preUpdate(EventArgs $event): void
     {
         $object = $this->adapter->getObjectFromArgs($event);
@@ -33,8 +36,14 @@ class CleanListener extends BaseListener
             return;
         }
 
-        foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->clean($object, $field);
+        $changeSet = $event->getEntityChangeSet();
+
+        foreach ($this->getUploadableFilenameFields($object) as $field => $fileName) {
+            if (!isset($changeSet[$fileName])) {
+                continue;
+            }
+
+            $this->handler->clean($object, $field, $changeSet[$fileName][0]);
         }
 
         $this->adapter->recomputeChangeSet($event);
