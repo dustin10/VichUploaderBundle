@@ -20,6 +20,9 @@ abstract class ListenerTestCase extends TestCase
 {
     public const MAPPING_NAME = 'dummy_mapping';
 
+    /**
+     * @var bool
+     */
     public static $usePreUpdateEventArgs = false;
 
     /**

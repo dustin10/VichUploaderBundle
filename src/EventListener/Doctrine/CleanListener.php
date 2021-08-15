@@ -26,7 +26,7 @@ class CleanListener extends BaseListener
     }
 
     /**
-     * @param EventArgs|\Doctrine\ORM\Event\PreUpdateEventArgs $event
+     * @param \Doctrine\ORM\Event\PreUpdateEventArgs $event
      */
     public function preUpdate(EventArgs $event): void
     {
