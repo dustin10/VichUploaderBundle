@@ -46,7 +46,7 @@ class UploadableField implements AnnotationInterface
     protected $originalName;
 
     /**
-     * @var array
+     * @var string
      */
     protected $dimensions;
 
@@ -64,7 +64,7 @@ class UploadableField implements AnnotationInterface
         string $size = null,
         string $mimeType = null,
         string $originalName = null,
-        array $dimensions = null
+        string $dimensions = null
     ) {
         if (empty($options['mapping']) && empty($mapping)) {
             throw new \InvalidArgumentException('The "mapping" attribute of UploadableField is required.');
@@ -121,7 +121,7 @@ class UploadableField implements AnnotationInterface
         return $this->originalName;
     }
 
-    public function getDimensions(): ?array
+    public function getDimensions(): ?string
     {
         return $this->dimensions;
     }
