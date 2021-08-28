@@ -84,9 +84,9 @@ oneup_flysystem:
                 location: '%kernel.project_dir%/public/images/products'
 
     filesystems:
-        product_image_fs:
+        product_image:
             adapter: product_adapter
-            mount: product_image_fs
+            mount: product_image
 
 vich_uploader:
     db_driver: orm
@@ -95,7 +95,7 @@ vich_uploader:
     mappings:
         product_image:
             uri_prefix: /images/products
-            upload_destination: product_image_fs
+            upload_destination: oneup_flysystem.product_image_filesystem
 ```
 
 ## That was it!
