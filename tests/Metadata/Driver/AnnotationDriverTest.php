@@ -30,10 +30,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::at(1))
             ->method('getPropertyAnnotation')
-            ->willReturn(new UploadableField([
-                'mapping' => 'dummy_file',
-                'fileNameProperty' => 'fileName',
-            ]));
+            ->willReturn(new UploadableField('dummy_file', 'fileName'));
 
         $driver = new AnnotationDriver($reader);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
@@ -85,21 +82,17 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->at(1))
             ->method('getPropertyAnnotation')
-            ->willReturn(new UploadableField([
-                'mapping' => 'dummy_file',
-                'fileNameProperty' => 'attachmentName',
-            ]));
+            ->willReturn(new UploadableField('dummy_file', 'attachmentName'));
         $reader
             ->expects($this->at(3))
             ->method('getPropertyAnnotation')
-            ->willReturn(new UploadableField([
-                'mapping' => 'dummy_image',
-                'fileNameProperty' => 'imageName',
-                'size' => 'sizeField',
-                'mimeType' => 'mimeTypeField',
-                'originalName' => 'originalNameField',
-                'dimensions' => null,
-            ]));
+            ->willReturn(new UploadableField(
+                'dummy_image',
+                'imageName',
+                'sizeField',
+                'mimeTypeField',
+                'originalNameField'
+            ));
 
         $driver = new AnnotationDriver($reader);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
@@ -156,7 +149,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects($this->at(4))
             ->method('getPropertyAnnotation')
-            ->willReturn(new UploadableField(['mapping' => 'dummyFile_file', 'fileNameProperty' => 'fileName']));
+            ->willReturn(new UploadableField('dummyFile_file', 'fileName'));
 
         $driver = new AnnotationDriver($reader);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
