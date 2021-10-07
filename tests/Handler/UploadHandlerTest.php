@@ -289,7 +289,7 @@ final class UploadHandlerTest extends TestCase
 
     protected function expectEvents(array $events): void
     {
-        $arguments = array_map(function (string $event) {
+        $arguments = array_map(function (string $event): array {
             return [$this->validEvent(), $event];
         }, $events);
 
