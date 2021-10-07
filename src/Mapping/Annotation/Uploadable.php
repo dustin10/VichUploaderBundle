@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Mapping\Annotation;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Vich\UploaderBundle\Mapping\AnnotationInterface;
 
 /**
@@ -9,6 +10,7 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  *
  * @Annotation
  * @Target({"CLASS"})
+ * @NamedArgumentConstructor
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  * @final

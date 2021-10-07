@@ -52,7 +52,7 @@ final class AttributeReaderTest extends TestCase
 
         $this->assertEquals(
             [
-                UploadableField::class => new UploadableField([], 'dummy_file', 'fileName'),
+                UploadableField::class => new UploadableField('dummy_file', 'fileName'),
             ],
             $reader->getPropertyAnnotations($class)
         );
@@ -64,7 +64,7 @@ final class AttributeReaderTest extends TestCase
         $class = new \ReflectionProperty(DummyAttributeEntity::class, 'file');
 
         $this->assertEquals(
-            new UploadableField([], 'dummy_file', 'fileName'),
+            new UploadableField('dummy_file', 'fileName'),
             $reader->getPropertyAnnotation($class, UploadableField::class)
         );
 

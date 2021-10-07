@@ -71,6 +71,7 @@
         "symfony/yaml": "To use YAML mapping"
     },
     "conflict": {
+        "doctrine/annotations": "<1.12",
         "league/flysystem": "<2.0"
     },
     "config": {

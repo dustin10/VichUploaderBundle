@@ -10,20 +10,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class DummyAttributeEntity
 {
-    /**
-     * @var object|null
-     */
-    #[Vich\UploadableField(mapping: 'dummy_file', fileNameProperty: 'fileName')]
-    protected $file;
+    #[Vich\UploadableField('dummy_file', fileNameProperty: 'fileName')]
+    protected ?object $file = null;
 
-    /** @var string|null */
-    protected $fileName;
+    protected ?string $fileName = null;
 
-    /** @var int|null */
-    protected $size;
+    protected ?int $size = null;
 
-    /** @var string|null */
-    public $someProperty;
+    public ?string $someProperty = null;
 
     public function getFile(): ?object
     {
