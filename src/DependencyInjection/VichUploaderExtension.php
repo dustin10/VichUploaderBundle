@@ -91,6 +91,14 @@ final class VichUploaderExtension extends Extension
         // directories
         $directories = [];
         if ($config['metadata']['auto_detection']) {
+            $projectDir = $container->getParameter('kernel.project_dir');
+            if (\is_string($projectDir)) {
+                $appConfigDirectory = $projectDir.'/config/vich_uploader';
+                if (\is_dir($appConfigDirectory)) {
+                    $directories['App'] = $appConfigDirectory;
+                }
+            }
+
             foreach ($bundles as $class) {
                 $ref = new \ReflectionClass($class);
                 $directory = \dirname($ref->getFileName()).'/../config/vich_uploader';
