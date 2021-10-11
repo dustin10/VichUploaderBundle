@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine;
@@ -20,6 +21,11 @@ abstract class ListenerTestCase extends TestCase
     public const MAPPING_NAME = 'dummy_mapping';
 
     /**
+     * @var bool
+     */
+    public static $usePreUpdateEventArgs = false;
+
+    /**
      * @var AdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $adapter;
@@ -35,7 +41,7 @@ abstract class ListenerTestCase extends TestCase
     protected $handler;
 
     /**
-     * @var EventArgs|\PHPUnit\Framework\MockObject\MockObject
+     * @var EventArgs|PreUpdateEventArgs|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $event;
 
@@ -58,13 +64,12 @@ abstract class ListenerTestCase extends TestCase
         $this->metadata = $this->getMetadataReaderMock();
         $this->handler = $this->getHandlerMock();
         $this->object = new DummyEntity();
-        $this->event = $this->getEventMock();
+        $this->event = self::$usePreUpdateEventArgs ? $this->getPreEventMock() : $this->getEventMock();
 
         $that = $this;
 
         // the adapter is always used to return the object
         $this->adapter
-            ->expects($this->any())
             ->method('getObjectFromArgs')
             ->with($this->event)
             ->willReturnCallback(function () use ($that) {
@@ -106,6 +111,16 @@ abstract class ListenerTestCase extends TestCase
     protected function getEventMock(): EventArgs
     {
         return $this->getMockBuilder(EventArgs::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * @return PreUpdateEventArgs&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getPreEventMock(): PreUpdateEventArgs
+    {
+        return $this->getMockBuilder(PreUpdateEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -36,6 +36,11 @@ parameters:
 			path: src/Event/Event.php
 
 		-
+			message: "#^Call to an undefined method Doctrine\\\\Common\\\\EventArgs\\:\\:getEntityChangeSet\\(\\)\\.$#"
+			count: 1
+			path: src/EventListener/Doctrine/CleanListener.php
+
+		-
 			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:clean\\(\\) has parameter \\$obj with no typehint specified\\.$#"
 			count: 1
 			path: src/Handler/UploadHandler.php

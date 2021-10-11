@@ -24,7 +24,7 @@ interface StorageInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
      */
-    public function remove($obj, PropertyMapping $mapping): ?bool;
+    public function remove($obj, PropertyMapping $mapping, ?string $forcedFilename = null): ?bool;
 
     /**
      * Resolves the path for a file based on the specified object
