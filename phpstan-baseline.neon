@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Adapter\\\\AdapterInterface\\:\\:recomputeChangeSet\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Adapter\\\\AdapterInterface\\:\\:recomputeChangeSet\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Adapter/AdapterInterface.php
 
@@ -31,7 +31,7 @@ parameters:
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Event\\\\Event\\:\\:__construct\\(\\) has parameter \\$object with no typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Event\\\\Event\\:\\:__construct\\(\\) has parameter \\$object with no type specified\\.$#"
 			count: 1
 			path: src/Event/Event.php
 
@@ -41,22 +41,22 @@ parameters:
 			path: src/EventListener/Doctrine/CleanListener.php
 
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:clean\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:clean\\(\\) has parameter \\$obj with no type specified\\.$#"
 			count: 1
 			path: src/Handler/UploadHandler.php
 
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:inject\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:inject\\(\\) has parameter \\$obj with no type specified\\.$#"
 			count: 1
 			path: src/Handler/UploadHandler.php
 
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:remove\\(\\) has parameter \\$obj with no typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\:\\:remove\\(\\) has parameter \\$obj with no type specified\\.$#"
 			count: 1
 			path: src/Handler/UploadHandler.php
 
 		-
-			message: "#^Method Vich\\\\UploaderBundle\\\\Naming\\\\ConfigurableInterface\\:\\:configure\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Vich\\\\UploaderBundle\\\\Naming\\\\ConfigurableInterface\\:\\:configure\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Naming/ConfigurableInterface.php
 
