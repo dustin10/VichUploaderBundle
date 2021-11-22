@@ -65,8 +65,17 @@ jobs:
                       with_imagine: false
                       with_oneupbundle: true
 
-                    - description: '8.0 with Symfony 5.4'
+                    - description: 'Symfony 6.0, PHP 8'
                       php: '8.0'
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet
+                      composer_option: '--ignore-platform-reqs'
+                      symfony: 6.0.*
+                      validate_docs: false
+                      with_imagine: false
+                      with_oneupbundle: true
+
+                    - description: 'Symfony 6.0, PHP 8.1'
+                      php: '8.1'
                       # needed because doctrine/mongodb-odm doesn't support php8 yet
                       composer_option: '--ignore-platform-reqs'
                       symfony: 6.0.*
