@@ -55,15 +55,43 @@ jobs:
                       validate_docs: false
                       with_imagine: false
                       with_oneupbundle: true
+
+                    - description: '8.0 with Symfony 5.4'
+                      php: '8.0'
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet
+                      composer_option: '--ignore-platform-reqs'
+                      symfony: 5.4.*
+                      validate_docs: false
+                      with_imagine: false
+                      with_oneupbundle: true
+
+                    - description: 'Symfony 6.0, PHP 8'
+                      php: '8.0'
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet
+                      composer_option: '--ignore-platform-reqs'
+                      symfony: 6.0.*
+                      validate_docs: false
+                      with_imagine: false
+                      with_oneupbundle: true
+
+                    - description: 'Symfony 6.0, PHP 8.1'
+                      php: '8.1'
+                      # needed because doctrine/mongodb-odm doesn't support php8 yet
+                      composer_option: '--ignore-platform-reqs'
+                      symfony: 6.0.*
+                      validate_docs: false
+                      with_imagine: false
+                      with_oneupbundle: true
+
         name: PHP ${{ matrix.php }} tests (${{ matrix.description }})
         steps:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Cache
               uses: actions/cache@v2
-              with: 
+              with:
                   path: ~/.composer/cache/files
-                  key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.composer_option }} 
+                  key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.composer_option }}
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:

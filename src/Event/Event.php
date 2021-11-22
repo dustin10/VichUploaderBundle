@@ -21,7 +21,7 @@ class Event extends ContractEvent
     /** @var bool */
     protected $cancel = false;
 
-    public function __construct($object, PropertyMapping $mapping)
+    public function __construct(object $object, PropertyMapping $mapping)
     {
         $this->object = $object;
         $this->mapping = $mapping;
