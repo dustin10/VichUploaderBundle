@@ -25,5 +25,5 @@ interface AdapterInterface
      *
      * @param object $event The event
      */
-    public function recomputeChangeSet($event): void;
+    public function recomputeChangeSet($event);
 }
