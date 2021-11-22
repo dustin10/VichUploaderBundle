@@ -14,21 +14,21 @@ class ClassMetadata extends BaseClassMetadata
     /** @var array */
     public $fields = [];
 
-    public function serialize(): string
+    protected function serializeToArray(): array
     {
-        return \serialize([
+        return [
             $this->fields,
-            parent::serialize(),
-        ]);
+            parent::serializeToArray(),
+        ];
     }
 
-    public function unserialize($str): void
+    protected function unserializeFromArray(array $data): void
     {
         [
             $this->fields,
-            $parentStr
-            ] = \unserialize($str);
+            $parentData
+        ] = $data;
 
-        parent::unserialize($parentStr);
+        parent::unserializeFromArray($parentData);
     }
 }
