@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable
  */
+#[ORM\Embeddable]
 class File
 {
     /**
@@ -14,6 +15,7 @@ class File
      *
      * @var string
      */
+    #[ORM\Column(name: "name", nullable: true)]
     protected $name;
 
     /**
@@ -21,6 +23,7 @@ class File
      *
      * @var string
      */
+    #[ORM\Column(name: "original_name", nullable: true)]
     protected $originalName;
 
     /**
@@ -28,6 +31,7 @@ class File
      *
      * @var string
      */
+    #[ORM\Column(name: "mime_type", nullable: true)]
     protected $mimeType;
 
     /**
@@ -35,6 +39,7 @@ class File
      *
      * @var int
      */
+    #[ORM\Column(name: "size", type: "integer", nullable: true)]
     protected $size;
 
     /**
@@ -42,6 +47,7 @@ class File
      *
      * @var array<int, int>
      */
+    #[ORM\Column(name: "dimensions", type: "simple_array", nullable: true)]
     protected $dimensions;
 
     public function getName(): ?string
