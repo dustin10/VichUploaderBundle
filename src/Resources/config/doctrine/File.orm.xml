@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Copy of the file in config/doctrine, if update is done there this should be updated too -->
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+    <embeddable name="Vich\UploaderBundle\Entity\File">
+        <field name="name" nullable="true"/>
+        <field name="originalName" column="original_name" nullable="true"/>
+        <field name="mimeType" column="mime_type" nullable="true"/>
+        <field name="size" type="integer" nullable="true"/>
+        <field name="dimensions" type="simple_array" nullable="true"/>
+    </embeddable>
+</doctrine-mapping>
