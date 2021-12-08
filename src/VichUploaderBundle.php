@@ -23,9 +23,4 @@ final class VichUploaderBundle extends Bundle
         $container->addCompilerPass(new RegisterFlysystemRegistryPass());
         $container->addCompilerPass(new RegisterSluggerPass());
     }
-
-    public function getPath(): string
-    {
-        return \dirname(__DIR__);
-    }
 }
