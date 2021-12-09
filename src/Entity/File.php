@@ -2,44 +2,29 @@
 
 namespace Vich\UploaderBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Embeddable
- */
 class File
 {
     /**
-     * @ORM\Column(name="name", nullable=true)
-     *
      * @var string
      */
     protected $name;
 
     /**
-     * @ORM\Column(name="original_name", nullable=true)
-     *
      * @var string
      */
     protected $originalName;
 
     /**
-     * @ORM\Column(name="mime_type", nullable=true)
-     *
      * @var string
      */
     protected $mimeType;
 
     /**
-     * @ORM\Column(name="size", type="integer", nullable=true)
-     *
      * @var int
      */
     protected $size;
 
     /**
-     * @ORM\Column(name="dimensions", type="simple_array", nullable=true)
-     *
      * @var array<int, int>
      */
     protected $dimensions;
