@@ -13,6 +13,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
+            - name: Update project dependencies
+              uses: ramsey/composer-install@v1
             - name: PHPStan
               uses: docker://oskarstark/phpstan-ga
               env:
@@ -54,20 +56,16 @@ jobs:
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
-
-# Cannot be enabled yet because knplabs/knp-gaufrette-bundle doesn't support SF6 yet
-#                    - php: '8.0'
-#                      symfony: '6.0.*'
-#                      dependencies: highest
-#                      with_imagine: false
-#                      with_oneupbundle: true
-#
-#                    - description: 'Symfony 6.0, PHP 8.1'
-#                      php: '8.1'
-#                      symfony: '6.0.*'
-#                      dependencies: highest
-#                      with_imagine: false
-#                      with_oneupbundle: true
+                    - php: '8.0'
+                      symfony: '6.0.*'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: true
+                    - php: '8.1'
+                      symfony: '6.0.*'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: true
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies${{ matrix.extra }}
         steps:
             - name: Checkout
