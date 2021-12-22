@@ -13,6 +13,9 @@ use Vich\UploaderBundle\Form\Type as VichType;
 
 class DefaultController extends AbstractController
 {
+    /**
+     * @var ManagerRegistry
+     */
     private $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
