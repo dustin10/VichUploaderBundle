@@ -70,3 +70,12 @@ parameters:
 			count: 1
 			path: tests/Mapping/PropertyMappingFactoryTest.php
 
+		-
+			message: "#^Comparison operation \"\\>\" between 6 and 4 is always true\\.$#"
+			count: 1
+			path: tests/Fixtures/App/app/AppKernel.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: tests/Fixtures/App/app/AppKernel.php

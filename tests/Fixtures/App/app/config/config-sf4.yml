@@ -1,19 +1,19 @@
 # Symfony Configuration
 framework:
-    secret:                 Hell yeah!
+    secret:          Hell yeah!
     router:
         resource: "%kernel.project_dir%/app/config/routing.yml"
         utf8: false
-    form:                   true
-    csrf_protection:        true
-    default_locale:         en
-    translator:             { fallback: en }
-    test:                   ~
+    form:            true
+    csrf_protection: true
+    default_locale:  en
+    translator:      { fallback: en }
+    test:            ~
     session:
-        storage_factory_id: session.storage.factory.mock_file
+        storage_id:  session.storage.mock_file
     profiler:
         collect: false
-    fragments:              ~
+    fragments:       ~
 
 # Twig Configuration
 twig:

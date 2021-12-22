@@ -2,35 +2,25 @@
 
 namespace Vich\TestBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity
  * @Vich\Uploadable
  */
 class Image
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
      * @var int|null
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
-     *
      * @var string|null
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @var \DateTime|null
      */
     protected $updatedAt;
@@ -43,8 +33,6 @@ class Image
     protected $imageFile;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     *
      * @var string|null
      */
     protected $imageName;

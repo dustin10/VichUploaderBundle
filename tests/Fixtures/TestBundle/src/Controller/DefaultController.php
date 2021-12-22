@@ -2,6 +2,7 @@
 
 namespace Vich\TestBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormInterface;
@@ -12,6 +13,16 @@ use Vich\UploaderBundle\Form\Type as VichType;
 
 class DefaultController extends AbstractController
 {
+    /**
+     * @var ManagerRegistry
+     */
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     public function uploadAction(string $formType): Response
     {
         $form = $this->getForm($this->getImage());
@@ -39,7 +50,7 @@ class DefaultController extends AbstractController
         $form = $this->getForm($image)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->doctrine->getManager();
 
             $em->persist($image);
             $em->flush();
@@ -72,6 +83,6 @@ class DefaultController extends AbstractController
             return new Image();
         }
 
-        return $this->getDoctrine()->getRepository(Image::class)->find($imageId);
+        return $this->doctrine->getRepository(Image::class)->find($imageId);
     }
 }
