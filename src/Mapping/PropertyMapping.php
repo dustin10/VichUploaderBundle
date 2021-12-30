@@ -13,8 +13,6 @@ use Vich\UploaderBundle\Naming\NamerInterface;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  * @final
- *
- * @internal
  */
 class PropertyMapping
 {
