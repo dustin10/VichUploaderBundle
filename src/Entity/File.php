@@ -106,7 +106,7 @@ class File
      *
      * Usage in twig template:
      * ```twig
-     * <img src="..." alt="..." {{ image.htmlDimensions }}>
+     * <img src="..." alt="..." {{ image.htmlDimensions|raw }}>
      * <!-- Will render: -->
      * <img src="..." alt="..." width="..." height="...">
      * ```
@@ -116,7 +116,7 @@ class File
     public function getHtmlDimensions(): ?string
     {
         if (null !== $this->dimensions) {
-            return \sprintf('width=%s height=%s', $this->getWidth(), $this->getHeight());
+            return \sprintf('width="%s" height="%s"', $this->getWidth(), $this->getHeight());
         }
 
         return null;
