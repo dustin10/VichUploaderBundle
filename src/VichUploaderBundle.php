@@ -10,8 +10,6 @@ use Vich\UploaderBundle\DependencyInjection\Compiler\RegisterSluggerPass;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
- *
- * @internal
  */
 final class VichUploaderBundle extends Bundle
 {
