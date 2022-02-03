@@ -121,7 +121,7 @@ final class RemoveListenerTest extends ListenerTestCase
     }
 
     /**
-     * @return Proxy&\PHPUnit\Framework\MockObject\MockObject
+     * @return Proxy|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getEntityProxyMock(): Proxy
     {
