@@ -39,10 +39,10 @@ class RemoveListener extends BaseListener
         $object = $this->adapter->getObjectFromArgs($event);
 
         if ($this->isUploadable($object)) {
-            if  ($object instanceof Proxy) {
+            if ($object instanceof Proxy) {
                 $object->__load();
             }
-            $this->entities[]  = $object;
+            $this->entities[] = $object;
         }
     }
 
