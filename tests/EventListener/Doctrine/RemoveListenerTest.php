@@ -27,21 +27,22 @@ final class RemoveListenerTest extends ListenerTestCase
     {
         $events = $this->listener->getSubscribedEvents();
 
-        self::assertSame(['preRemove', 'postRemove'], $events);
+        self::assertSame(['preRemove', 'postFlush'], $events);
     }
 
     public function testPreRemove(): void
     {
         $this->object = $this->getEntityProxyMock();
-        $this->object
-            ->expects(self::once())
-            ->method('__load');
 
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
             ->willReturn(true);
+
+        $this->object
+            ->expects(self::once())
+            ->method('__load');
 
         $this->listener->preRemove($this->event);
     }
@@ -62,46 +63,61 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
     }
 
-    public function testPostRemove(): void
+    public function testPostFlush(): void
     {
+        // isUploadable
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
+        $this->listener->preRemove($this->event);
+
         $this->metadata
             ->expects(self::once())
             ->method('getUploadableFields')
-            ->with(DummyEntity::class, self::MAPPING_NAME)
-            ->willReturn([
-                ['propertyName' => 'field_name'],
-            ]);
+            ->with(DummyEntity::class)
+            ->willReturn([['propertyName' => 'field_name']])
+        ;
 
         $this->handler
             ->expects(self::once())
             ->method('remove')
-            ->with($this->object, 'field_name');
+            ->with($this->object, 'field_name')
+        ;
 
-        $this->listener->postRemove($this->event);
+        $this->listener->postFlush();
     }
 
     /**
      * Test that postRemove skips non uploadable entity.
      */
-    public function testPostRemoveSkipsNonUploadable(): void
+    public function testPostFlushSkipsNonUploadable(): void
     {
+        // isUploadable
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(false);
 
-        $this->handler
-            ->expects($this->never())
-            ->method('remove');
+        $this->listener->preRemove($this->event);
 
-        $this->listener->postRemove($this->event);
+        $this->metadata
+            ->expects(self::never())
+            ->method('getUploadableFields')
+            ->with(DummyEntity::class)
+            ->willReturn([['propertyName' => 'field_name']])
+        ;
+
+        $this->handler
+            ->expects(self::never())
+            ->method('remove')
+            ->with($this->object, 'field_name')
+        ;
+
+        $this->listener->postFlush();
     }
 
     /**
