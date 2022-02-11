@@ -14,6 +14,7 @@ use Doctrine\Persistence\Proxy;
  */
 class RemoveListener extends BaseListener
 {
+    /** @var array */
     private $entities = [];
 
     /**
