@@ -2,7 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
-use Doctrine\Persistence\Proxy;
+use Doctrine\Common\Proxy\Proxy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -121,9 +122,9 @@ final class RemoveListenerTest extends ListenerTestCase
     }
 
     /**
-     * @return Proxy|\PHPUnit\Framework\MockObject\MockObject
+     * @return Proxy&MockObject
      */
-    protected function getEntityProxyMock(): Proxy
+    protected function getEntityProxyMock(): MockObject
     {
         return $this->getMockBuilder(Proxy::class)
             ->setMockClassName('VichUploaderEntityProxy')
