@@ -14,6 +14,9 @@ use Doctrine\Persistence\Proxy;
  */
 class RemoveListener extends BaseListener
 {
+    /** @var array */
+    private $entities = [];
+
     /**
      * The events the listener is subscribed to.
      *
@@ -23,12 +26,12 @@ class RemoveListener extends BaseListener
     {
         return [
             'preRemove',
-            'postRemove',
+            'postFlush',
         ];
     }
 
     /**
-     * Ensures a proxy will be usable in the postRemove.
+     * Ensures a proxy will be usable in the postFlush (when transaction has ended).
      *
      * @param EventArgs $event The event
      */
@@ -36,26 +39,20 @@ class RemoveListener extends BaseListener
     {
         $object = $this->adapter->getObjectFromArgs($event);
 
-        if ($this->isUploadable($object) && $object instanceof Proxy) {
-            $object->__load();
+        if ($this->isUploadable($object)) {
+            if ($object instanceof Proxy) {
+                $object->__load();
+            }
+            $this->entities[] = $object;
         }
     }
 
-    /**
-     * @param EventArgs $event The event
-     *
-     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
-     */
-    public function postRemove(EventArgs $event): void
+    public function postFlush(): void
     {
-        $object = $this->adapter->getObjectFromArgs($event);
-
-        if (!$this->isUploadable($object)) {
-            return;
-        }
-
-        foreach ($this->getUploadableFields($object) as $field) {
-            $this->handler->remove($object, $field);
+        foreach ($this->entities as $object) {
+            foreach ($this->getUploadableFields($object) as $field) {
+                $this->handler->remove($object, $field);
+            }
         }
     }
 }
