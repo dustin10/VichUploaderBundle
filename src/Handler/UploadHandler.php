@@ -94,11 +94,6 @@ class UploadHandler extends AbstractHandler
         $mapping = $this->getMapping($obj, $fieldName);
         $oldFilename = $mapping->getFileName($obj);
 
-        // nothing to remove, avoid dispatching useless events
-        if (empty($oldFilename)) {
-            return;
-        }
-
         $preEvent = new Event($obj, $mapping);
 
         $this->dispatch(Events::PRE_REMOVE, $preEvent);
