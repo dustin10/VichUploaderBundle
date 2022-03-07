@@ -239,20 +239,6 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testRemoveWithEmptyObject(): void
-    {
-        $this->dispatcher
-            ->expects($this->never())
-            ->method('dispatch');
-
-        $this->storage
-            ->expects($this->never())
-            ->method('remove')
-            ->with($this->object, $this->mapping);
-
-        $this->handler->remove($this->object, self::FILE_FIELD);
-    }
-
     /**
      * @return StorageInterface&\PHPUnit\Framework\MockObject\MockObject
      */
