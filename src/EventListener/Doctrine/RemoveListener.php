@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
-use Doctrine\Common\EventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 
 /**
@@ -33,11 +33,11 @@ class RemoveListener extends BaseListener
     /**
      * Ensures a proxy will be usable in the postFlush (when transaction has ended).
      *
-     * @param EventArgs $event The event
+     * @param LifecycleEventArgs $event The event
      */
-    public function preRemove(EventArgs $event): void
+    public function preRemove(LifecycleEventArgs $event): void
     {
-        $object = $this->adapter->getObjectFromArgs($event);
+        $object = $event->getObject();
 
         if ($this->isUploadable($object)) {
             if ($object instanceof Proxy) {

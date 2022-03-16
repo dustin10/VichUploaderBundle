@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Adapter\PHPCR;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ODM\PHPCR\Event\PreUpdateEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -12,17 +14,20 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  */
 class PHPCRAdapter implements AdapterInterface
 {
-    public function getObjectFromArgs($event)
+    public function recomputeChangeSet(LifecycleEventArgs $event): void
     {
-        return $event->getObject();
+        $object = $event->getObject();
+
+        $objectManager = $event->getObjectManager();
+        $uow = $objectManager->getUnitOfWork();
+        $uow->computeSingleDocumentChangeSet($object);
     }
 
-    public function recomputeChangeSet($event): void
+    /**
+     * @param PreUpdateEventArgs $event
+     */
+    public function getChangeSet(LifecycleEventArgs $event): array
     {
-        $object = $this->getObjectFromArgs($event);
-
-        $dm = $event->getObjectManager();
-        $uow = $dm->getUnitOfWork();
-        $uow->computeSingleDocumentChangeSet($object);
+        return $event->getDocumentChangeSet();
     }
 }

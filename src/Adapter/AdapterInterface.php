@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Adapter;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+
 /**
  * AdapterInterface.
  *
@@ -12,18 +14,14 @@ namespace Vich\UploaderBundle\Adapter;
 interface AdapterInterface
 {
     /**
-     * Gets the mapped object from an event.
-     *
-     * @param object $event The event
-     *
-     * @return object The mapped object
+     * Recomputes the change set for the object.
      */
-    public function getObjectFromArgs($event);
+    public function recomputeChangeSet(LifecycleEventArgs $event): void;
 
     /**
-     * Recomputes the change set for the object.
+     * Gets object change set.
      *
-     * @param object $event The event
+     * @return array<string, array{mixed, mixed}>
      */
-    public function recomputeChangeSet($event);
+    public function getChangeSet(LifecycleEventArgs $event): array;
 }

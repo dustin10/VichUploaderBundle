@@ -2,7 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ODM\MongoDB;
 
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -14,23 +15,19 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class MongoDBAdapterTest extends TestCase
 {
-    /**
-     * @requires function LifecycleEventArgs::getDocument
-     */
-    public function testGetObjectFromArgs(): void
+    public function testGetChangeSet(): void
     {
         $entity = new DummyEntity();
-
-        $args = $this->getMockBuilder(LifecycleEventArgs::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $args
-            ->expects(self::once())
-            ->method('getDocument')
-            ->willReturn($entity);
+        $changeSet = [
+            'fileName' => [
+                'test.csv',
+                'test2.csv',
+            ],
+        ];
+        $event = new PreUpdateEventArgs($entity, $this->createStub(DocumentManager::class), $changeSet);
 
         $adapter = new MongoDBAdapter();
 
-        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertSame($changeSet, $adapter->getChangeSet($event));
     }
 }

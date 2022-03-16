@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
-use Doctrine\Common\EventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * InjectListener.
@@ -26,13 +26,13 @@ class InjectListener extends BaseListener
     }
 
     /**
-     * @param EventArgs $event The event
+     * @param LifecycleEventArgs $event The event
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function postLoad(EventArgs $event): void
+    public function postLoad(LifecycleEventArgs $event): void
     {
-        $object = $this->adapter->getObjectFromArgs($event);
+        $object = $event->getObject();
 
         if (!$this->isUploadable($object)) {
             return;

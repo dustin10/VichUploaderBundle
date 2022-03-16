@@ -2,7 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\UnitOfWork;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -14,23 +17,47 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class DoctrineORMAdapterTest extends TestCase
 {
-    /**
-     * @requires function LifecycleEventArgs::getEntity
-     */
-    public function testGetObjectFromArgs(): void
+    public function testGetChangeSet(): void
     {
         $entity = new DummyEntity();
-
-        $args = $this->getMockBuilder(LifecycleEventArgs::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $args
-            ->expects(self::once())
-            ->method('getEntity')
-            ->willReturn($entity);
+        $changeSet = [
+            'fileName' => [
+                'test.csv',
+                'test2.csv',
+            ],
+        ];
+        $event = new PreUpdateEventArgs($entity, $this->createStub(EntityManager::class), $changeSet);
 
         $adapter = new DoctrineORMAdapter();
 
-        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertSame($changeSet, $adapter->getChangeSet($event));
+    }
+
+    public function testRecomputeChangeSet(): void
+    {
+        $entity = new DummyEntity();
+        $changeSet = [];
+
+        $uow = $this->createMock(UnitOfWork::class);
+        $em = $this->createMock(EntityManager::class);
+        $metadata = $this->createMock(ClassMetadata::class);
+
+        $em->expects(self::once())
+            ->method('getUnitOfWork')
+            ->willReturn($uow);
+
+        $em->expects(self::once())
+            ->method('getClassMetadata')
+            ->with(DummyEntity::class)
+            ->willReturn($metadata);
+
+        $uow->expects(self::once())
+            ->method('recomputeSingleEntityChangeSet')
+            ->with($metadata, $entity);
+
+        $event = new PreUpdateEventArgs($entity, $em, $changeSet);
+
+        $adapter = new DoctrineORMAdapter();
+        $adapter->recomputeChangeSet($event);
     }
 }

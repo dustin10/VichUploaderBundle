@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Adapter\ODM\MongoDB;
 
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs as BaseLifecycleEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -14,18 +17,24 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  */
 class MongoDBAdapter implements AdapterInterface
 {
-    public function getObjectFromArgs($event)
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function recomputeChangeSet(BaseLifecycleEventArgs $event): void
     {
-        return $event->getDocument();
-    }
-
-    public function recomputeChangeSet($event): void
-    {
-        $object = $this->getObjectFromArgs($event);
+        $object = $event->getObject();
 
         $dm = $event->getDocumentManager();
         $uow = $dm->getUnitOfWork();
         $metadata = $dm->getClassMetadata(\get_class($object));
         $uow->recomputeSingleDocumentChangeSet($metadata, $object);
+    }
+
+    /**
+     * @param PreUpdateEventArgs $event
+     */
+    public function getChangeSet(BaseLifecycleEventArgs $event): array
+    {
+        return $event->getDocumentChangeSet();
     }
 }

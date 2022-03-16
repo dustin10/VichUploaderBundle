@@ -2,8 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
-use Doctrine\Common\EventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine;
@@ -41,7 +41,7 @@ abstract class ListenerTestCase extends TestCase
     protected $handler;
 
     /**
-     * @var EventArgs|PreUpdateEventArgs|\PHPUnit\Framework\MockObject\MockObject
+     * @var LifecycleEventArgs|PreUpdateEventArgs|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $event;
 
@@ -65,16 +65,7 @@ abstract class ListenerTestCase extends TestCase
         $this->handler = $this->getHandlerMock();
         $this->object = new DummyEntity();
         $this->event = $this->getEventMock();
-
-        $that = $this;
-
-        // the adapter is always used to return the object
-        $this->adapter
-            ->method('getObjectFromArgs')
-            ->with($this->event)
-            ->willReturnCallback(function () use ($that) {
-                return $that->object;
-            });
+        $this->event->method('getObject')->willReturn($this->object);
     }
 
     /**
@@ -106,11 +97,11 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return EventArgs&\PHPUnit\Framework\MockObject\MockObject
+     * @return LifecycleEventArgs&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getEventMock(): EventArgs
+    protected function getEventMock(): LifecycleEventArgs
     {
-        return $this->getMockBuilder(EventArgs::class)
+        return $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

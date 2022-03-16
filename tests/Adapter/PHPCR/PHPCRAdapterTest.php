@@ -2,7 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\PHPCR;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\PHPCR\PHPCRAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -12,21 +13,19 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class PHPCRAdapterTest extends TestCase
 {
-    /**
-     * @requires function LifecycleEventArgs::getObject
-     */
-    public function testGetObjectFromArgs(): void
+    public function testGetChangeSet(): void
     {
         $entity = new DummyEntity();
-
-        $args = $this->createMock(LifecycleEventArgs::class);
-        $args
-            ->expects(self::once())
-            ->method('getObject')
-            ->willReturn($entity);
+        $changeSet = [
+            'fileName' => [
+                'test.csv',
+                'test2.csv',
+            ],
+        ];
+        $event = new PreUpdateEventArgs($entity, $this->createStub(ObjectManager::class), $changeSet);
 
         $adapter = new PHPCRAdapter();
 
-        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
+        self::assertSame($changeSet, $adapter->getChangeSet($event));
     }
 }
