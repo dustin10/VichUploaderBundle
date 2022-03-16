@@ -9,6 +9,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  * Doctrine InjectListener test.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @extends ListenerTestCase<InjectListener>
  */
 class InjectListenerTest extends ListenerTestCase
 {

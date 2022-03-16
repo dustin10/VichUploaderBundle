@@ -9,6 +9,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  * Doctrine CleanListener test.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @extends ListenerTestCase<CleanListener>
  */
 class CleanListenerTest extends ListenerTestCase
 {

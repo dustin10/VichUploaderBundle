@@ -11,6 +11,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  * Doctrine RemoveListener test.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @extends ListenerTestCase<RemoveListener>
  */
 final class RemoveListenerTest extends ListenerTestCase
 {
@@ -45,6 +47,9 @@ final class RemoveListenerTest extends ListenerTestCase
             ->expects(self::once())
             ->method('__load');
 
+        $this->event = $this->getEventMock();
+        $this->event->method('getObject')->willReturn($this->object);
+
         $this->listener->preRemove($this->event);
     }
 
@@ -60,6 +65,9 @@ final class RemoveListenerTest extends ListenerTestCase
             ->method('isUploadable')
             ->with('VichUploaderEntityProxy')
             ->willReturn(false);
+
+        $this->event = $this->getEventMock();
+        $this->event->method('getObject')->willReturn($this->object);
 
         $this->listener->preRemove($this->event);
     }

@@ -9,6 +9,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  * Doctrine UploadListener test.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @extends ListenerTestCase<UploadListener>
  */
 class UploadListenerTest extends ListenerTestCase
 {

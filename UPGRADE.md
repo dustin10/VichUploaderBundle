@@ -1,3 +1,8 @@
+# Upgrading from v2.1.0 to v2.2.0
+
+* the `AdapterInterface` no longer requires `getObjectFromArgs` method.
+* the `AdapterInterface::recomputeChangeSet()` accepts `Doctrine\Persistence\Event\LifecycleEventArgs` as argument.
+
 # Upgrading from v2.0.1 to v2.1.0
 
 * the internal class `FilenameUtils` has been removed.
