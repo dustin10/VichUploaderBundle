@@ -116,7 +116,7 @@ class VichFileType extends AbstractType
             if (null === $parent) {
                 return;
             }
-            $object = $parent->getData();
+            $object = $this->getUploadableObject($form);
 
             // no object or no uploaded file: no delete button
             if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
@@ -134,7 +134,7 @@ class VichFileType extends AbstractType
         // delete file if needed
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $object = $this->getUploadableObject($form);
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
@@ -147,7 +147,7 @@ class VichFileType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
+        $object = $this->getUploadableObject($form);
         $view->vars['object'] = $object;
 
         $view->vars['download_uri'] = null;
@@ -213,5 +213,22 @@ class VichFileType extends AbstractType
         }
 
         return ['download_label' => $downloadLabel];
+    }
+
+    protected function getUploadableObject(FormInterface $form): ?object
+    {
+        if (!$parent = $form->getParent()) {
+            throw new \RuntimeException(__CLASS__ . ' cannot be used directly without Uploadable object');
+        }
+
+        $data = $parent->getData();
+        $propertyPath = $form->getConfig()->getOption('property_path');
+        if ($propertyPath) {
+            // if property_path is defined, parent object should be Uploadable
+            $propertyPath = new PropertyPath($propertyPath);
+            return $this->propertyAccessor->getValue($data, $propertyPath->getParent());
+        }
+
+        return $data;
     }
 }
