@@ -118,8 +118,8 @@ class VichFileType extends AbstractType
             }
             $object = $parent->getData();
 
-            // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
+            // no object and no uploaded file: no delete button
+            if (null === $object && null === $this->storage->resolveUri($object, $form->getName())) {
                 return;
             }
 
