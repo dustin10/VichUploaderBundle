@@ -36,14 +36,8 @@ class CleanListener extends BaseListener
             return;
         }
 
-        $changeSet = $event->getEntityChangeSet();
-
-        foreach ($this->getUploadableFilenameFields($object) as $field => $fileName) {
-            if (!isset($changeSet[$fileName])) {
-                continue;
-            }
-
-            $this->handler->clean($object, $field, $changeSet[$fileName][0]);
+        foreach ($this->getUploadableFields($object) as $field) {
+            $this->handler->clean($object, $field);
         }
 
         $this->adapter->recomputeChangeSet($event);

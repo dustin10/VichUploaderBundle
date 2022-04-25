@@ -77,7 +77,7 @@ class UploadHandler extends AbstractHandler
         $this->dispatch(Events::POST_INJECT, new Event($obj, $mapping));
     }
 
-    public function clean($obj, string $fieldName, ?string $forcedFilename = null): void
+    public function clean($obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
 
@@ -86,10 +86,10 @@ class UploadHandler extends AbstractHandler
             return;
         }
 
-        $this->remove($obj, $fieldName, $forcedFilename);
+        $this->remove($obj, $fieldName);
     }
 
-    public function remove($obj, string $fieldName, ?string $forcedFilename = null): void
+    public function remove($obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
         $oldFilename = $mapping->getFileName($obj);
@@ -107,7 +107,7 @@ class UploadHandler extends AbstractHandler
             return;
         }
 
-        $this->storage->remove($obj, $mapping, $forcedFilename);
+        $this->storage->remove($obj, $mapping);
         $mapping->erase($obj);
 
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
