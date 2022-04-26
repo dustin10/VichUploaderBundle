@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Adapter\PHPCR;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ODM\PHPCR\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -28,6 +28,6 @@ class PHPCRAdapter implements AdapterInterface
      */
     public function getChangeSet(LifecycleEventArgs $event): array
     {
-        return $event->getDocumentChangeSet();
+        return $event->getEntityChangeSet();
     }
 }
