@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * CleanListener.
