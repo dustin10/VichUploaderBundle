@@ -24,7 +24,7 @@ interface StorageInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
      */
-    public function remove($obj, PropertyMapping $mapping, ?string $forcedFilename = null): ?bool;
+    public function remove($obj, PropertyMapping $mapping): ?bool;
 
     /**
      * Resolves the path for a file based on the specified object
@@ -39,7 +39,7 @@ interface StorageInterface
      */
     public function resolvePath($obj, ?string $fieldName = null, ?string $className = null, ?bool $relative = false): ?string;
 
-    //TODO: inconsistency - use PropertyMapping instead of fieldName+className
+    // TODO: inconsistency - use PropertyMapping instead of fieldName+className
 
     /**
      * Resolves the uri based on the specified object and mapping name.
@@ -57,7 +57,7 @@ interface StorageInterface
      *
      * @param object|array $obj       The object
      * @param string       $fieldName The field to use
-     * @param string       $className The object's class. Mandatory if $obj can't be used to determine it
+     * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return resource|null The resolved resource or null if file not stored
      */

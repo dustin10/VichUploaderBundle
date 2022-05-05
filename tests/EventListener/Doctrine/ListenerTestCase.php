@@ -64,7 +64,7 @@ abstract class ListenerTestCase extends TestCase
         $this->metadata = $this->getMetadataReaderMock();
         $this->handler = $this->getHandlerMock();
         $this->object = new DummyEntity();
-        $this->event = self::$usePreUpdateEventArgs ? $this->getPreEventMock() : $this->getEventMock();
+        $this->event = $this->getEventMock();
 
         $that = $this;
 
@@ -111,16 +111,6 @@ abstract class ListenerTestCase extends TestCase
     protected function getEventMock(): EventArgs
     {
         return $this->getMockBuilder(EventArgs::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @return PreUpdateEventArgs&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getPreEventMock(): PreUpdateEventArgs
-    {
-        return $this->getMockBuilder(PreUpdateEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -289,12 +289,12 @@ final class UploadHandlerTest extends TestCase
 
     protected function expectEvents(array $events): void
     {
-        $arguments = array_map(function (string $event): array {
+        $arguments = \array_map(function (string $event): array {
             return [$this->validEvent(), $event];
         }, $events);
 
         $this->dispatcher
-            ->expects(self::exactly(count($events)))
+            ->expects(self::exactly(\count($events)))
             ->method('dispatch')
             ->withConsecutive(...$arguments)
         ;

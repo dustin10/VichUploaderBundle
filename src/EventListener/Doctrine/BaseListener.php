@@ -70,20 +70,4 @@ abstract class BaseListener implements EventSubscriber
             return $data['propertyName'];
         }, $fields);
     }
-
-    /**
-     * Returns a list of uploadable fields for the given object and mapping.
-     *
-     * @return array<string, string> A map with property name as key and file name as value
-     *
-     * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
-     */
-    protected function getUploadableFilenameFields(object $object): array
-    {
-        $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
-
-        return \array_map(static function (array $data): string {
-            return $data['fileNameProperty'];
-        }, $fields);
-    }
 }

@@ -56,7 +56,7 @@ abstract class AbstractStorage implements StorageInterface
 
     abstract protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool;
 
-    public function remove($obj, PropertyMapping $mapping, ?string $forcedFilename = null): ?bool
+    public function remove($obj, PropertyMapping $mapping): ?bool
     {
         $name = $mapping->getFileName($obj);
 
@@ -64,7 +64,7 @@ abstract class AbstractStorage implements StorageInterface
             return false;
         }
 
-        return $this->doRemove($mapping, $mapping->getUploadDir($obj), $forcedFilename ?? $name);
+        return $this->doRemove($mapping, $mapping->getUploadDir($obj), $name);
     }
 
     /**
