@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * @author Dustin Dobervich <ddobervich@gmail.com>
  * @final
  */
-class UploaderHelper
+class UploaderHelper implements UploaderHelperInterface
 {
     /**
      * @var StorageInterface

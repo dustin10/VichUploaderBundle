@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 /**
  * UploaderExtension.
@@ -14,11 +14,11 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 final class UploaderExtension extends AbstractExtension
 {
     /**
-     * @var UploaderHelper
+     * @var UploaderHelperInterface
      */
     private $helper;
 
-    public function __construct(UploaderHelper $helper)
+    public function __construct(UploaderHelperInterface $helper)
     {
         $this->helper = $helper;
     }
