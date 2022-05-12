@@ -261,9 +261,9 @@ class Product
 }
 ```
 
-Alternatively you can use `Vich\UploaderBundle\Entity\File` embeddable for storing file info in your ORM entity:
+⚠️ Don't forget to add `vich_uploader.metadata.type: attribute` to the config.
 
-- Don't forget to add `vich_uploader.metadata.type: attribute` to the config.
+Alternatively you can use `Vich\UploaderBundle\Entity\File` embeddable for storing file info in your ORM entity:
 
 ``` php
 <?php
