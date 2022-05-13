@@ -41,8 +41,8 @@ final class UploadHelperTest extends TestCase
         $this->storage
             ->expects(self::once())
             ->method('resolveUri')
-            ->with($obj, 'file', 'ClassName');
+            ->with($obj, 'file');
 
-        $this->helper->asset($obj, 'file', 'ClassName');
+        $this->helper->asset($obj, 'file');
     }
 }

@@ -44,8 +44,8 @@ final class UploaderExtensionTest extends TestCase
         $this->helper
             ->expects(self::once())
             ->method('asset')
-            ->with($obj, 'file', 'ClassName');
+            ->with($obj, 'file');
 
-        $this->extension->asset($obj, 'file', 'ClassName');
+        $this->extension->asset($obj, 'file');
     }
 }
