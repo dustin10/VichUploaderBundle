@@ -261,7 +261,7 @@ class Product
 }
 ```
 
-⚠️ Don't forget to add to your config `config/packages/vich_uploader.yaml`:
+⚠️ Don't forget to add to your config (in `config/packages/vich_uploader.yaml` if VichUploaderBundle has been installed with Symfony Flex):
 
 ```yaml
 vich_uploader:
