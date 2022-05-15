@@ -261,9 +261,16 @@ class Product
 }
 ```
 
-Alternatively you can use `Vich\UploaderBundle\Entity\File` embeddable for storing file info in your ORM entity:
+⚠️ Don't forget to add to your config (in `config/packages/vich_uploader.yaml` if VichUploaderBundle has been installed with Symfony Flex):
 
-- Don't forget to add `vich_uploader.metadata.type: attribute` to the config.
+```yaml
+vich_uploader:
+    # ...
+    metadata:
+        type: attribute
+```
+
+Alternatively you can use `Vich\UploaderBundle\Entity\File` embeddable for storing file info in your ORM entity:
 
 ``` php
 <?php
