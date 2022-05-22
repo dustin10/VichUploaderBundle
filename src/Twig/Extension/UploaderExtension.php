@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 /**
@@ -41,13 +42,15 @@ final class UploaderExtension extends AbstractExtension
      */
     public function asset($object, ?string $fieldName = null, ?string $className = null): ?string
     {
-        if (!\is_object($object)) {
-            $msg = 'Not passing an object option is deprecated and will be removed in version 2.';
-            @\trigger_error($msg, \E_USER_DEPRECATED);
-        }
-        if (\func_num_args() > 2) {
-            $msg = 'Passing a classname is deprecated and will be removed in version 2.';
-            @\trigger_error($msg, \E_USER_DEPRECATED);
+        if (!$this->helper instanceof UploaderHelper) {
+            if (!\is_object($object)) {
+                $msg = 'Not passing an object option is deprecated and will be removed in version 2.';
+                @\trigger_error($msg, \E_USER_DEPRECATED);
+            }
+            if (\func_num_args() > 2) {
+                $msg = 'Passing a classname is deprecated and will be removed in version 2.';
+                @\trigger_error($msg, \E_USER_DEPRECATED);
+            }
         }
 
         // @phpstan-ignore-next-line
