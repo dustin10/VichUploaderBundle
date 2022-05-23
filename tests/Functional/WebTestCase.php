@@ -52,11 +52,6 @@ abstract class WebTestCase extends BaseWebTestCase
             $om = $registry->getEntityManager();
         }
 
-        $cacheDriver = $om->getMetadataFactory()->getCacheDriver();
-        if (null !== $cacheDriver) {
-            $cacheDriver->deleteAll();
-        }
-
         $connection = $om->getConnection();
         $params = $connection->getParams();
         $name = isset($params['path']) ? $params['path'] : (isset($params['dbname']) ? $params['dbname'] : false);

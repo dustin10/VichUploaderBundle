@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * @author Dustin Dobervich <ddobervich@gmail.com>
  * @final
  */
-class UploaderHelper
+class UploaderHelper implements UploaderHelperInterface
 {
     /**
      * @var StorageInterface
@@ -39,6 +39,15 @@ class UploaderHelper
      */
     public function asset($obj, ?string $fieldName = null, ?string $className = null)
     {
+        if (!\is_object($obj)) {
+            $msg = 'Not passing an object option is deprecated and will be removed in version 2.';
+            @\trigger_error($msg, \E_USER_DEPRECATED);
+        }
+        if (\func_num_args() > 2) {
+            $msg = 'Passing a classname is deprecated and will be removed in version 2.';
+            @\trigger_error($msg, \E_USER_DEPRECATED);
+        }
+
         return $this->storage->resolveUri($obj, $fieldName, $className);
     }
 }
