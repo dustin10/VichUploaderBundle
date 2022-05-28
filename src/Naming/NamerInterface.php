@@ -8,7 +8,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * NamerInterface.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
+ *
+ * @phpstan-template T of object
  */
 interface NamerInterface
 {
@@ -19,6 +20,8 @@ interface NamerInterface
      * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
      * @return string The file name
+     *
+     * @phpstan-param T $object
      */
     public function name($object, PropertyMapping $mapping): string;
 }
