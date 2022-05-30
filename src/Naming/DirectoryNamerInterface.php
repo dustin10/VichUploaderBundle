@@ -8,6 +8,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * NamerInterface.
  *
  * @author Kevin bond <kevinbond@gmail.com>
+ *
+ * @phpstan-template T of object
  */
 interface DirectoryNamerInterface
 {
@@ -18,6 +20,8 @@ interface DirectoryNamerInterface
      * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
      * @return string The directory name
+     *
+     * @phpstan-param T $object
      */
     public function directoryName($object, PropertyMapping $mapping): string;
 }
