@@ -111,12 +111,7 @@ class VichFileType extends AbstractType
         // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
-            $parent = $form->getParent();
-            // no object: no delete button
-            if (null === $parent) {
-                return;
-            }
-            $object = $parent->getData();
+            $object = $this->getUploadableObject($form);
 
             // no object or no uploaded file: no delete button
             if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
@@ -134,7 +129,7 @@ class VichFileType extends AbstractType
         // delete file if needed
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+            $object = $this->getUploadableObject($form);
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
@@ -147,7 +142,7 @@ class VichFileType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
+        $object = $this->getUploadableObject($form);
         $view->vars['object'] = $object;
 
         $view->vars['download_uri'] = null;
@@ -165,6 +160,25 @@ class VichFileType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'vich_file';
+    }
+
+    final protected function getUploadableObject(FormInterface $form): ?object
+    {
+        $parent = $form->getParent();
+        if (null === $parent) {
+            return null;
+        }
+
+        $data = $parent->getData();
+        $propertyPath = $form->getConfig()->getOption('property_path');
+        if (null !== $propertyPath) {
+            // if property_path is defined, parent object should be Uploadable
+            $propertyPath = new PropertyPath($propertyPath);
+
+            return $this->propertyAccessor->getValue($data, $propertyPath->getParent());
+        }
+
+        return $data;
     }
 
     /**
