@@ -111,10 +111,14 @@ class VichFileType extends AbstractType
         // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
-            $object = $this->getUploadableObject($form);
+            $parent = $form->getParent();
+            if (null === $parent) {
+                return;
+            }
+            $object = $parent->getData();
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
+            if (null === $object || null === $this->storage->resolveUri($object, $this->getFieldName($form))) {
                 return;
             }
 
@@ -129,20 +133,20 @@ class VichFileType extends AbstractType
         // delete file if needed
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
-            $object = $this->getUploadableObject($form);
+            $object = $form->getParent()->getData();
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
                 return;
             }
 
-            $this->handler->remove($object, $form->getName());
+            $this->handler->remove($object, $this->getFieldName($form));
         });
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $this->getUploadableObject($form);
+        $object = $form->getParent()->getData();
         $view->vars['object'] = $object;
 
         $view->vars['download_uri'] = null;
@@ -162,23 +166,9 @@ class VichFileType extends AbstractType
         return 'vich_file';
     }
 
-    final protected function getUploadableObject(FormInterface $form): ?object
+    final protected function getFieldName(FormInterface $form): string
     {
-        $parent = $form->getParent();
-        if (null === $parent) {
-            return null;
-        }
-
-        $data = $parent->getData();
-        $propertyPath = $form->getConfig()->getOption('property_path');
-        if (null !== $propertyPath) {
-            // if property_path is defined, parent object should be Uploadable
-            $propertyPath = new PropertyPath($propertyPath);
-
-            return $this->propertyAccessor->getValue($data, $propertyPath->getParent());
-        }
-
-        return $data;
+        return $form->getConfig()->getOption('property_path') ?? $form->getName();
     }
 
     /**
@@ -189,11 +179,11 @@ class VichFileType extends AbstractType
     protected function resolveUriOption($uriOption, object $object, FormInterface $form)
     {
         if (true === $uriOption) {
-            return $this->storage->resolveUri($object, $form->getName());
+            return $this->storage->resolveUri($object, $this->getFieldName($form));
         }
 
         if (\is_callable($uriOption)) {
-            return $uriOption($object, $this->storage->resolveUri($object, $form->getName()));
+            return $uriOption($object, $this->storage->resolveUri($object, $this->getFieldName($form)));
         }
 
         return $uriOption;
@@ -205,7 +195,7 @@ class VichFileType extends AbstractType
     protected function resolveDownloadLabel($downloadLabel, object $object, FormInterface $form): array
     {
         if (true === $downloadLabel) {
-            $mapping = $this->factory->fromField($object, $form->getName());
+            $mapping = $this->factory->fromField($object, $this->getFieldName($form));
 
             return ['download_label' => $mapping->readProperty($object, 'originalName'), 'translation_domain' => false];
         }
