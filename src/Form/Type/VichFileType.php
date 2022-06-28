@@ -112,6 +112,7 @@ class VichFileType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
             $parent = $form->getParent();
+            // no object: no delete button
             if (null === $parent) {
                 return;
             }
