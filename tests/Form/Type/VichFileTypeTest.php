@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -98,6 +99,14 @@ class VichFileTypeTest extends TestCase
             ->method('getData')
             ->willReturn($object);
 
+        $config = $this->createMock(FormConfigInterface::class);
+        $config
+            ->expects($this->any())
+            ->method('getOption')
+            ->willReturnCallback(function (string $key) use ($options) {
+                return $options[$key] ?? null;
+            });
+
         $form = $this->createMock(FormInterface::class);
         $form
             ->expects($this->any())
@@ -107,6 +116,10 @@ class VichFileTypeTest extends TestCase
             ->expects($this->any())
             ->method('getName')
             ->willReturn($field);
+        $form
+            ->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($config);
 
         $uploadHandler = $this->createMock(UploadHandler::class);
         $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
