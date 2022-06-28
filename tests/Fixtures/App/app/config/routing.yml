@@ -3,17 +3,37 @@ upload:
     methods: GET
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::uploadAction }
 
+upload_with_property_path:
+    path: /upload_with_property_path/{formType}
+    methods: GET
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::uploadWithPropertyPathAction }
+
 upload_send:
     path: /upload/{formType}/send
     methods: POST
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitAction }
+
+upload_send_with_property_path:
+    path: /upload_with_property_path/{formType}/send
+    methods: POST
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitWithPropertyPathAction }
 
 upload_edit:
     path: /upload/{formType}/send/{imageId}
     methods: POST
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitAction }
 
+upload_edit_with_property_path:
+    path: /upload_with_property_path/{formType}/send/{imageId}
+    methods: POST
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::submitWithPropertyPathAction }
+
 view:
     path: /upload/{imageId}/{formType}
     methods: GET
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::editAction }
+
+view_with_property_path:
+    path: /upload_with_property_path/{imageId}/{formType}
+    methods: GET
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::editWithPropertyPathAction }
