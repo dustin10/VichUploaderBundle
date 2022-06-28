@@ -3,6 +3,11 @@ upload:
     methods: GET
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::uploadAction }
 
+upload_with_property_path:
+    path: /upload_with_property_path/{formType}
+    methods: GET
+    defaults: { _controller: Vich\TestBundle\Controller\DefaultController::uploadWithPropertyPathAction }
+
 upload_send:
     path: /upload/{formType}/send
     methods: POST

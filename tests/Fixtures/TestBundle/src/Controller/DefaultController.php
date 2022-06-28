@@ -33,6 +33,16 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    public function uploadWithPropertyPathAction(string $formType): Response
+    {
+        $form = $this->getFormWithPropertyPath($this->getImage());
+
+        return $this->render('default/upload.html.twig', [
+            'formType' => $formType,
+            'form' => $form->createView(),
+        ]);
+    }
+
     public function editAction(string $formType, ?int $imageId): Response
     {
         $form = $this->getForm($this->getImage($imageId));
@@ -72,6 +82,16 @@ class DefaultController extends AbstractController
         return $this->createFormBuilder($image)
             ->add('title', Type\TextType::class)
             ->add('imageFile', VichType\VichImageType::class)
+            ->add('save', Type\SubmitType::class)
+            ->getForm()
+        ;
+    }
+
+    private function getFormWithPropertyPath(Image $image): FormInterface
+    {
+        return $this->createFormBuilder($image)
+            ->add('title', Type\TextType::class)
+            ->add('image_file', VichType\VichImageType::class, ['property_path' => 'imageFile'])
             ->add('save', Type\SubmitType::class)
             ->getForm()
         ;
