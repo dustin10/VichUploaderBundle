@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Naming;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
@@ -40,7 +41,7 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
 
     public function name($object, PropertyMapping $mapping): string
     {
-        /* @var $file UploadedFile */
+        /* @var $file UploadedFile|ReplacingFile */
         $file = $mapping->getFile($object);
         $name = $file->getClientOriginalName();
 

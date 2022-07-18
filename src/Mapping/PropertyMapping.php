@@ -72,7 +72,7 @@ class PropertyMapping
      *
      * @param object $obj The object
      *
-     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null The file
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|\Vich\UploaderBundle\FileAbstraction\ReplacingFile|null The file
      *
      * @throws \InvalidArgumentException
      */

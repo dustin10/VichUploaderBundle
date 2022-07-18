@@ -6,7 +6,7 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\FilesystemInterface;
 use Gaufrette\FilesystemMapInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
@@ -43,7 +43,7 @@ class GaufretteStorage extends AbstractStorage
         $this->protocol = $protocol;
     }
 
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): void
+    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
