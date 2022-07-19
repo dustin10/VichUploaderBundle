@@ -85,6 +85,7 @@ jobs:
                   php-version: ${{ matrix.php }}
                   extensions: mongodb-stable, pdo_sqlite
             - run: |
+                  composer global config --no-plugins allow-plugins.symfony/flex true
                   composer global require --no-interaction --no-progress symfony/flex:^1.11
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
