@@ -48,6 +48,10 @@ class UploaderHelper implements UploaderHelperInterface
             @\trigger_error($msg, \E_USER_DEPRECATED);
         }
 
+        if (null === $className) {
+            return $this->storage->resolveUri($obj, $fieldName);
+        }
+
         return $this->storage->resolveUri($obj, $fieldName, $className);
     }
 }

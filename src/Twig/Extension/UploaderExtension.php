@@ -53,6 +53,10 @@ final class UploaderExtension extends AbstractExtension
             }
         }
 
+        if (null === $className) {
+            return $this->helper->asset($object, $fieldName);
+        }
+
         // @phpstan-ignore-next-line
         return $this->helper->asset($object, $fieldName, $className);
     }
