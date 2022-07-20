@@ -68,6 +68,9 @@ abstract class StorageTestCase extends TestCase
             'uploads' => [
                 'test.txt' => 'some content',
             ],
+            'storage' => [
+                'vich_uploader_bundle' => [],
+            ],
         ]);
     }
 
