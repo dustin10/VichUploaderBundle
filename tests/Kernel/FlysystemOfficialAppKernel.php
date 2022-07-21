@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Kernel;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use League\FlysystemBundle\FlysystemBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -18,7 +19,7 @@ class FlysystemOfficialAppKernel extends Kernel
 
     public function registerBundles(): array
     {
-        return [new FrameworkBundle(), new FlysystemBundle(), new VichUploaderBundle()];
+        return [new FrameworkBundle(), new DoctrineBundle(), new FlysystemBundle(), new VichUploaderBundle()];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
@@ -30,6 +31,14 @@ class FlysystemOfficialAppKernel extends Kernel
                     'resource' => 'kernel::loadRoutes',
                     'type' => 'service',
                     'utf8' => false,
+                ],
+            ]);
+
+            $container->loadFromExtension('doctrine', [
+                'dbal' => [
+                    'driver' => 'pdo_sqlite',
+                    'memory' => true,
+                    'charset' => 'UTF8',
                 ],
             ]);
 

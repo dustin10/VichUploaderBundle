@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Doctrine\Persistence\ManagerRegistry;
 use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
@@ -28,9 +29,13 @@ class AnnotationDriver implements AdvancedDriverInterface
     /** @var AnnotationReader|AttributeReader */
     protected $reader;
 
-    public function __construct(AnnotationReader $reader)
+    /** @var ManagerRegistry */
+    private $managerRegistry;
+
+    public function __construct(AnnotationReader $reader, ManagerRegistry $managerRegistry)
     {
         $this->reader = $reader;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public function loadMetadataForClass(\ReflectionClass $class): ?JMSClassMetadata
@@ -59,7 +64,7 @@ class AnnotationDriver implements AdvancedDriverInterface
                 continue;
             }
             /* @var $uploadableField UploadableField */
-            //TODO: try automatically determinate target fields if embeddable used
+            // TODO: try automatically determinate target fields if embeddable used
 
             $fieldMetadata = [
                 'mapping' => $uploadableField->getMapping(),
@@ -71,7 +76,7 @@ class AnnotationDriver implements AdvancedDriverInterface
                 'dimensions' => $uploadableField->getDimensions(),
             ];
 
-            //TODO: store UploadableField object instead of array
+            // TODO: store UploadableField object instead of array
             $classMetadata->fields[$property->getName()] = $fieldMetadata;
         }
 
@@ -80,7 +85,24 @@ class AnnotationDriver implements AdvancedDriverInterface
 
     public function getAllClassNames(): array
     {
-        return [];
+        $classes = [];
+        $metadata = [];
+
+        $managers = $this->managerRegistry->getManagers();
+        foreach ($managers as $manager) {
+            $metadata[] = $manager->getMetadataFactory()->getAllMetadata();
+        }
+
+        $metadata = array_merge(...$metadata);
+
+        /** @var \Doctrine\Persistence\Mapping\ClassMetadata $classMeta */
+        foreach ($metadata as $classMeta) {
+            if ($this->isUploadable(new \ReflectionClass($classMeta->getName()))) {
+                $classes[] = $classMeta->getName();
+            }
+        }
+
+        return $classes;
     }
 
     protected function isUploadable(\ReflectionClass $class): bool
