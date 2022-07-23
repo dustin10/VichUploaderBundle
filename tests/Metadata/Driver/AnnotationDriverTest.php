@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Annotations\Reader;
 use Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +22,27 @@ use Vich\UploaderBundle\Tests\DummyFile;
  */
 final class AnnotationDriverTest extends TestCase
 {
+    /** @var Connection|\PHPUnit\Framework\MockObject\MockObject */
+    private $connection;
+
+    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $entityManager;
+
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $managerRegistry;
+
+    protected function setUp(): void
+    {
+        // setup ManagerRegistry mock like Symfony\Bridge\Doctrine tests
+        $this->connection = $this->createMock(Connection::class);
+
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager->method('getConnection')->willReturn($this->connection);
+
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
+        $this->managerRegistry->method('getManager')->willReturn($this->entityManager);
+    }
+
     public function testReadUploadableAnnotation(): void
     {
         $entity = new DummyEntity();
@@ -35,7 +59,7 @@ final class AnnotationDriverTest extends TestCase
                 return 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null;
             });
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
@@ -67,7 +91,7 @@ final class AnnotationDriverTest extends TestCase
             ->expects($this->never())
             ->method('getPropertyAnnotation');
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertNull($metadata);
@@ -104,7 +128,7 @@ final class AnnotationDriverTest extends TestCase
                 return null;
             });
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
@@ -140,7 +164,7 @@ final class AnnotationDriverTest extends TestCase
             ->method('getClassAnnotation')
             ->willReturn('something not null');
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
@@ -163,7 +187,7 @@ final class AnnotationDriverTest extends TestCase
                 return 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null;
             });
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
@@ -198,7 +222,7 @@ final class AnnotationDriverTest extends TestCase
             ->expects($this->never())
             ->method('getPropertyAnnotation');
 
-        $driver = new AnnotationDriver($reader);
+        $driver = new AnnotationDriver($reader, $this->managerRegistry);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertNull($metadata);

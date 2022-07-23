@@ -24,7 +24,4 @@ Searches for uploadable classes.
 php bin/console vich:mapping:list-classes
 ```
 
-> **NOTE** Only classes configured using XML or YAML are displayed.
-
-
 [Return to the index](index.md)
