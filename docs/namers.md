@@ -35,11 +35,11 @@ property will be used:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image_fs
+        products:
+            upload_destination: products_fs
             namer:
                 service: Vich\UploaderBundle\Naming\PropertyNamer
-                options: { property: 'slug' } # supposing that the object contains a "slug" attribute or a "getSlug" method
+                options: { property: 'slug' } # supposing that the object contains a "slug" property or a "getSlug" method
 ```
 
 **HashNamer** will use a hash of random string to name the file. You also can specify
@@ -48,8 +48,8 @@ hash `algorithm` and result `length` of the file:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image_fs
+        products:
+            upload_destination: products_fs
             namer:
                 service: Vich\UploaderBundle\Naming\HashNamer
                 options: { algorithm: 'sha256', length: 50 }
@@ -85,8 +85,8 @@ services:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image_fs
+        products:
+            upload_destination: products_fs
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer # or any other namer listed above
 ```
 
@@ -133,8 +133,8 @@ configuration option of your mapping:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image
+        products:
+            upload_destination: products
             directory_namer: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
 ```
 
@@ -144,8 +144,8 @@ Or provide configuration:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image
+        products:
+            upload_destination: products
             directory_namer:
                 service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
                 options: { chars_per_dir: 1, dirs: 2 } # will create directory "a/b" for "abcdef.jpg"
@@ -161,11 +161,11 @@ optionally you can use the `transliterate` option to remove special chars from d
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image
+        products:
+            upload_destination: products
             directory_namer:
                 service: vich_uploader.namer_directory_property
-                options: { property: 'slug', transliterate: true } # supposing that the object contains a "slug" attribute or a "getSlug" method
+                options: { property: 'slug', transliterate: true } # supposing that the object contains a "slug" property or a "getSlug" method
 ```
 
 **CurrentDateTimeDirectoryNamer** creates subdirs depending on the current locale datetime. By default, it will be
@@ -182,8 +182,8 @@ configuration option of your mapping:
 vich_uploader:
     # ...
     mappings:
-        product_image:
-            upload_destination: product_image
+        products:
+            upload_destination: products
             directory_namer:
                 service: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
                 options:

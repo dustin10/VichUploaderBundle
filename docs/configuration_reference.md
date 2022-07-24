@@ -17,7 +17,7 @@ vich_uploader:
         cache: file
         type: annotation    # or attribute
     mappings:
-        product_image:
+        products:
             uri_prefix: /uploads    # uri prefix to resource
             upload_destination: ~   # gaufrette storage fs id, required
             namer: ~                # specify a file namer service for this entity, null default
