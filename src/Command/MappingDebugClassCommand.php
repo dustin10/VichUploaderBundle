@@ -49,7 +49,13 @@ class MappingDebugClassCommand extends Command
 
         $output->writeln(\sprintf('Introspecting class <info>%s</info>:', $fqcn));
         foreach ($uploadableFields as $data) {
-            $output->writeln(\sprintf('Found field "<comment>%s</comment>", storing file name in <comment>"%s</comment>" and using mapping "<comment>%s</comment>"', $data['propertyName'], $data['fileNameProperty'], $data['mapping']));
+            $output->writeln(\sprintf('Found field "<comment>%s</comment>":', $data['propertyName']));
+            $output->writeln(\sprintf("\t<comment>mapping</comment>: %s", $data['mapping']));
+            $output->writeln(\sprintf("\t<comment>file name</comment>: %s", $data['fileNameProperty'] ?? '<error>not set</error>'));
+            $output->writeln(\sprintf("\t<comment>original name</comment>: %s", $data['originalName'] ?? '<error>not set</error>'));
+            $output->writeln(\sprintf("\t<comment>size</comment>: %s", $data['size'] ?? '<error>not set</error>'));
+            $output->writeln(\sprintf("\t<comment>mime type</comment>: %s", $data['mimeType'] ?? '<error>not set</error>'));
+            $output->writeln(\sprintf("\t<comment>dimensions</comment>: %s", $data['dimensions'] ?? '<error>not set</error>'));
         }
 
         return 0;
