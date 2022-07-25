@@ -10,6 +10,9 @@ is the only updated.
 A workaround to solve this issue is to manually generate a change:
 
 ```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -17,12 +20,8 @@ class Product
 {
     // ...
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTimeInterface|null
-     */
-    private $updatedAt;
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $updatedAt = null;
 
     // ...
 
@@ -76,18 +75,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity
- * @Vich\Uploadable
- */
+#[ORM\Entity]
+#[Vich\Uploadable]
 class Product
 {
-    /**
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName")
-     *
-     * @var File|null
-     */
-    private $imageFile;
+    #[Vich\UploadableField(mapping: "products", fileNameProperty: "imageName")]
+    private ?File $imageFile = null;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance

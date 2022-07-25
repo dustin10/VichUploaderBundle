@@ -1,6 +1,6 @@
 #/bin/bash
 
-TARGET?=74
+TARGET?=81
 
 .PHONY: tests
 tests:

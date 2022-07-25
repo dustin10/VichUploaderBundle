@@ -95,7 +95,7 @@ class RemoveFileEventSubscriber implements EventSubscriberInterface
         $mapping = $event->getMapping();
         $mappingName = $mapping->getMappingName();
 
-        if ('product_image' === $mappingName) {
+        if ('products' === $mappingName) {
             $this->dispatch(RemoveProductImageMessage::class, $event);
         }
     }
