@@ -415,4 +415,6 @@ When you submit and save, the uploaded file will automatically be moved to the
 location you configured and the `imageName` field will be set to the filename of
 the uploaded file.
 
+Alternatively, you can use `ReplacingFile` to [inject files coming from other sources](other_usages/replacing_file.md).
+
 [Return to the index to explore the other possibilities of the bundle.](index.md)
