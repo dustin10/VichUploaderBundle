@@ -38,7 +38,7 @@
         "league/flysystem-bundle": "^2.0",
         "league/flysystem-memory": "^2.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "mikey179/vfsstream": "^1.6",
+        "mikey179/vfsstream": "^1.6.8",
         "phpunit/phpunit": "^9.5",
         "symfony/asset": "^4.4 || ^5.0 || ^6.0",
         "symfony/browser-kit": "^4.4 || ^5.0 || ^6.0",
