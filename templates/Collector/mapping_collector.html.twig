@@ -28,13 +28,16 @@
 
 {% block panel %}
     <h2>VichUploaderBundle Mappings</h2>
-    <p class="help"><strong>Note</strong>: Only classes configured using XML or YAML are displayed.</p>
     <table>
         <thead>
             <tr>
                 <th scope="col">Field</th>
                 <th scope="col">Mapping</th>
                 <th scope="col">Filename property</th>
+                <th scope="col">Size property</th>
+                <th scope="col">Mime Type property</th>
+                <th scope="col">Original Name property</th>
+                <th scope="col">Dimensions property</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +49,13 @@
                     <tr>
                         <td>{{ mdata.propertyName }}</td>
                         <td>{{ mdata.mapping }}</td>
-                        <td>{{ mdata.fileNameProperty }}</td>
+                        <td>{{ mdata.fileNameProperty|default('<span class="text-danger">Not Set</span>')|raw }}</td>
+                        <td>{{ mdata.size|default('<span class="text-danger">Not Set</span>')|raw }}</td>
+                        <td>{{ mdata.mimeType|default('<span class="text-danger">Not Set</span>')|raw }}</td>
+                        <td>{{ mdata.originalName|default('<span class="text-danger">Not Set</span>')|raw }}</td>
+                        <td>{{ mdata.dimensions|default('<span class="text-danger">Not Set</span>')|raw }}</td>
                     </tr>
                 {% endfor %}
-                {# TODO size, mimeType, originalName,dimesions? #}
             {% endfor %}
         </tbody>
     </table>

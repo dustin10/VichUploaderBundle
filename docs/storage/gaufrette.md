@@ -25,7 +25,7 @@ knp_gaufrette:
                 directory: '%kernel.project_dir%/public/images/products'
 
     filesystems:
-        product_image_fs:
+        products_fs:
             adapter: product_adapter
 
 vich_uploader:
@@ -33,9 +33,9 @@ vich_uploader:
     storage: gaufrette
 
     mappings:
-        product_image:
+        products:
             uri_prefix: /images/products
-            upload_destination: product_image_fs
+            upload_destination: products_fs
 ```
 
 Using `Vich\UploaderBundle\Storage\GaufretteStorage` as the storage service,

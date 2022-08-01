@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -24,5 +25,31 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         $command = new MappingDebugClassCommand($reader);
         $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => Image::class]);
         self::assertStringContainsString('Introspecting class', $output);
+    }
+
+    /**
+     * @dataProvider provideCompletionSuggestions
+     */
+    public function testComplete(array $input, array $expectedSuggestions): void
+    {
+        if (!class_exists(CommandCompletionTester::class)) {
+            $this->markTestSkipped('Test command completion requires symfony/console 5.4+.');
+        }
+
+        $reader = $this->createMock(MetadataReader::class);
+        $reader->expects(self::once())->method('getUploadableClasses')->willReturn([Image::class]);
+        $tester = new CommandCompletionTester(new MappingDebugClassCommand($reader));
+
+        $this->assertEqualsCanonicalizing($expectedSuggestions, $tester->complete($input));
+    }
+
+    public function provideCompletionSuggestions(): \Generator
+    {
+        yield 'fqcn' => [
+            [''],
+            [
+                Image::class,
+            ],
+        ];
     }
 }

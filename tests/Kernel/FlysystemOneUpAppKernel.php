@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Kernel;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Oneup\FlysystemBundle\OneupFlysystemBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -19,7 +20,7 @@ class FlysystemOneUpAppKernel extends Kernel
     public function registerBundles(): array
     {
         if (\class_exists(OneupFlysystemBundle::class)) {
-            return [new FrameworkBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
+            return [new FrameworkBundle(), new DoctrineBundle(), new OneupFlysystemBundle(), new VichUploaderBundle()];
         }
 
         return [new FrameworkBundle(), new VichUploaderBundle()];
@@ -34,6 +35,14 @@ class FlysystemOneUpAppKernel extends Kernel
                     'resource' => 'kernel::loadRoutes',
                     'type' => 'service',
                     'utf8' => false,
+                ],
+            ]);
+
+            $container->loadFromExtension('doctrine', [
+                'dbal' => [
+                    'driver' => 'pdo_sqlite',
+                    'memory' => true,
+                    'charset' => 'UTF8',
                 ],
             ]);
 

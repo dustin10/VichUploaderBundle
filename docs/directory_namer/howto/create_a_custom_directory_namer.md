@@ -16,7 +16,7 @@ the service id for the `directory_namer` configuration option of your mapping. A
 vich_uploader:
     # ...
     mappings:
-        product_image:
+        products:
             upload_destination: product_image
             directory_namer: my.directory_namer.product
 ```

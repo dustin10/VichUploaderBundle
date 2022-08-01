@@ -43,7 +43,7 @@ class RemoveListener extends BaseListener
             if ($object instanceof Proxy) {
                 $object->__load();
             }
-            $this->entities[] = $object;
+            $this->entities[] = clone $object;
         }
     }
 
@@ -54,5 +54,6 @@ class RemoveListener extends BaseListener
                 $this->handler->remove($object, $field);
             }
         }
+        $this->entities = [];
     }
 }

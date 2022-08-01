@@ -119,7 +119,7 @@ class VichFileType extends AbstractType
             $object = $parent->getData();
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolveUri($object, $form->getName())) {
+            if (null === $object || null === $this->storage->resolveUri($object, $this->getFieldName($form))) {
                 return;
             }
 
@@ -141,7 +141,7 @@ class VichFileType extends AbstractType
                 return;
             }
 
-            $this->handler->remove($object, $form->getName());
+            $this->handler->remove($object, $this->getFieldName($form));
         });
     }
 
@@ -167,6 +167,11 @@ class VichFileType extends AbstractType
         return 'vich_file';
     }
 
+    final protected function getFieldName(FormInterface $form): string
+    {
+        return $form->getConfig()->getOption('property_path') ?? $form->getName();
+    }
+
     /**
      * @param bool|callable $uriOption
      *
@@ -175,11 +180,11 @@ class VichFileType extends AbstractType
     protected function resolveUriOption($uriOption, object $object, FormInterface $form)
     {
         if (true === $uriOption) {
-            return $this->storage->resolveUri($object, $form->getName());
+            return $this->storage->resolveUri($object, $this->getFieldName($form));
         }
 
         if (\is_callable($uriOption)) {
-            return $uriOption($object, $this->storage->resolveUri($object, $form->getName()));
+            return $uriOption($object, $this->storage->resolveUri($object, $this->getFieldName($form)));
         }
 
         return $uriOption;
@@ -191,7 +196,7 @@ class VichFileType extends AbstractType
     protected function resolveDownloadLabel($downloadLabel, object $object, FormInterface $form): array
     {
         if (true === $downloadLabel) {
-            $mapping = $this->factory->fromField($object, $form->getName());
+            $mapping = $this->factory->fromField($object, $this->getFieldName($form));
 
             return ['download_label' => $mapping->readProperty($object, 'originalName'), 'translation_domain' => false];
         }

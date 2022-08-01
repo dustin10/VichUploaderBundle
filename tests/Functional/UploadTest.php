@@ -4,12 +4,15 @@ namespace Vich\UploaderBundle\Tests\Functional;
 
 final class UploadTest extends WebTestCase
 {
-    public function testFileIsUploadedWithFileType(): void
+    /**
+     * @dataProvider uploadTypeDataProvider
+     */
+    public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
         $client = static::createClient();
         $this->loadFixtures($client);
 
-        $crawler = $client->request('GET', '/upload/vich_file');
+        $crawler = $client->request('GET', sprintf('/%s/vich_file', $uploadType));
         self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();
@@ -18,7 +21,7 @@ final class UploadTest extends WebTestCase
         $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
-                'imageFile' => ['file' => $image],
+                $imageFieldName => ['file' => $image],
             ],
         ]);
 
@@ -35,19 +38,22 @@ final class UploadTest extends WebTestCase
         $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
-                'imageFile' => ['delete' => true],
+                $imageFieldName => ['delete' => true],
             ],
         ]);
         self::assertTrue($client->getResponse()->isRedirect());
         self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
     }
 
-    public function testFileIsUploadedWithImageType(): void
+    /**
+     * @dataProvider uploadTypeDataProvider
+     */
+    public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
         $client = static::createClient();
         $this->loadFixtures($client);
 
-        $crawler = $client->request('GET', '/upload/vich_image');
+        $crawler = $client->request('GET', sprintf('/%s/vich_image', $uploadType));
         self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();
@@ -56,7 +62,7 @@ final class UploadTest extends WebTestCase
         $crawler = $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
-                'imageFile' => ['file' => $image],
+                $imageFieldName => ['file' => $image],
             ],
         ]);
 
@@ -73,10 +79,21 @@ final class UploadTest extends WebTestCase
         $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
-                'imageFile' => ['delete' => true],
+                $imageFieldName => ['delete' => true],
             ],
         ]);
         self::assertTrue($client->getResponse()->isRedirect());
         self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
+    }
+
+    /**
+     * @return array<array{string, string}>
+     */
+    public function uploadTypeDataProvider(): array
+    {
+        return [
+            ['upload', 'imageFile'],
+            ['upload_with_property_path', 'image_file'],
+        ];
     }
 }

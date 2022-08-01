@@ -111,13 +111,13 @@ class VichImageType extends VichFileType
     private function resolvePath(int $storageResolveMethod, object $object, FormInterface $form): ?string
     {
         if (static::STORAGE_RESOLVE_URI === $storageResolveMethod) {
-            return $this->storage->resolveUri($object, $form->getName());
+            return $this->storage->resolveUri($object, $this->getFieldName($form));
         }
         if (static::STORAGE_RESOLVE_PATH_ABSOLUTE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $form->getName());
+            return $this->storage->resolvePath($object, $this->getFieldName($form));
         }
         if (static::STORAGE_RESOLVE_PATH_RELATIVE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $form->getName(), null, true);
+            return $this->storage->resolvePath($object, $this->getFieldName($form), null, true);
         }
 
         return null;

@@ -87,7 +87,7 @@ class File
      */
     public function getWidth(): ?int
     {
-        return null !== $this->dimensions ? $this->dimensions[0] : null;
+        return $this->dimensions[0] ?? null;
     }
 
     /**
@@ -98,7 +98,7 @@ class File
      */
     public function getHeight(): ?int
     {
-        return null !== $this->dimensions ? $this->dimensions[1] : null;
+        return $this->dimensions[1] ?? null;
     }
 
     /**

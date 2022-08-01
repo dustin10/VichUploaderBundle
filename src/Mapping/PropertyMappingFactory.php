@@ -142,7 +142,7 @@ class PropertyMappingFactory
     protected function checkUploadable(string $class): void
     {
         if (!$this->metadata->isUploadable($class)) {
-            throw new NotUploadableException(\sprintf('The class "%s" is not uploadable. If you use annotations to configure VichUploaderBundle, you probably just forgot to add `@Vich\Uploadable` on top of your entity. If you don\'t use annotations, check that the configuration files are in the right place. In both cases, clearing the cache can also solve the issue.', $class));
+            throw new NotUploadableException(\sprintf('The class "%s" is not uploadable. If you use attributes to configure VichUploaderBundle, you probably just forgot to add `#[Vich\Uploadable]` on top of your entity. If you don\'t use attributes, check that the configuration files are in the right place. In both cases, clearing the cache can also solve the issue.', $class));
         }
     }
 

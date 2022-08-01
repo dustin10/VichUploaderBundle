@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -287,6 +288,10 @@ class VichImageTypeTest extends VichFileTypeTest
             ->expects($this->any())
             ->method('getParent')
             ->willReturn($parentForm);
+        $form
+            ->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($this->createMock(FormConfigInterface::class));
 
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);

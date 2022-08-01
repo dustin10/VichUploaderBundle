@@ -20,7 +20,7 @@ the service for the `namer` configuration option of your mapping. An example:
 vich_uploader:
     # ...
     mappings:
-        product_image:
+        products:
             upload_destination: product_image
             namer: App\Naming\MyNamer
 ```

@@ -8,7 +8,7 @@ format and comes with the following syntax to declare your uploadable fields:
 # config/vich_uploader/Entity.Product.yaml
 Acme\DemoBundle\Entity\Product:
     imageFile:
-        mapping: product_image        # required
+        mapping: products             # required
         filename_property: imageName  # required
         size: imageSize
         mime_type: imageMimeType

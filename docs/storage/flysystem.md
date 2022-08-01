@@ -54,7 +54,7 @@ vich_uploader:
     storage: flysystem
 
     mappings:
-        product_image:
+        products:
             uri_prefix: /images/products
             upload_destination: default.storage # Use the name you defined for your storage here
 ```
@@ -84,21 +84,21 @@ oneup_flysystem:
                 location: '%kernel.project_dir%/public/images/products'
 
     filesystems:
-        product_image:
+        products:
             adapter: product_adapter
-            mount: product_image
+            mount: products
 
 vich_uploader:
     db_driver: orm
     storage: flysystem
 
     mappings:
-        product_image:
+        products:
             uri_prefix: /images/products
             # For Oneup/FlysystemBundle v4
-            upload_destination: oneup_flysystem.product_image_filesystem
+            upload_destination: oneup_flysystem.products_filesystem
             # For Oneup/FlysystemBundle v3
-            # upload_destination: product_image
+            # upload_destination: products
 ```
 
 ## That was it!

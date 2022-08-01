@@ -44,6 +44,9 @@ services:
 vich_uploader:
     db_driver: orm
 
+    metadata:
+        type: annotation
+
     mappings:
         image_mapping:
             uri_prefix:         /images
