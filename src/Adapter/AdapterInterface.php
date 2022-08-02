@@ -17,11 +17,4 @@ interface AdapterInterface
      * Recomputes the change set for the object.
      */
     public function recomputeChangeSet(LifecycleEventArgs $event): void;
-
-    /**
-     * Gets object change set.
-     *
-     * @return array<string, array{mixed, mixed}>
-     */
-    public function getChangeSet(LifecycleEventArgs $event): array;
 }

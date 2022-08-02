@@ -17,22 +17,6 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class DoctrineORMAdapterTest extends TestCase
 {
-    public function testGetChangeSet(): void
-    {
-        $entity = new DummyEntity();
-        $changeSet = [
-            'fileName' => [
-                'test.csv',
-                'test2.csv',
-            ],
-        ];
-        $event = new PreUpdateEventArgs($entity, $this->createStub(EntityManager::class), $changeSet);
-
-        $adapter = new DoctrineORMAdapter();
-
-        self::assertSame($changeSet, $adapter->getChangeSet($event));
-    }
-
     public function testRecomputeChangeSet(): void
     {
         $entity = new DummyEntity();

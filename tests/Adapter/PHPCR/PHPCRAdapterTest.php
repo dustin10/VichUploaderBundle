@@ -13,19 +13,26 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class PHPCRAdapterTest extends TestCase
 {
-    public function testGetChangeSet(): void
+    public function testRecomputeChangeSet(): void
     {
         $entity = new DummyEntity();
-        $changeSet = [
-            'fileName' => [
-                'test.csv',
-                'test2.csv',
-            ],
-        ];
-        $event = new PreUpdateEventArgs($entity, $this->createStub(ObjectManager::class), $changeSet);
+        $changeSet = [];
+
+        $uow = $this->createMock(\stdClass::class);
+        $om = $this->createMock(ObjectManager::class);
+
+        $this->markTestIncomplete();
+        $om->expects(self::once())
+            ->method('getUnitOfWork')
+            ->willReturn($uow);
+
+        $uow->expects(self::once())
+            ->method('recomputeSingleEntityChangeSet')
+            ->with($entity);
+
+        $event = new PreUpdateEventArgs($entity, $om, $changeSet);
 
         $adapter = new PHPCRAdapter();
-
-        self::assertSame($changeSet, $adapter->getChangeSet($event));
+        $adapter->recomputeChangeSet($event);
     }
 }

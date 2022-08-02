@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Adapter\ORM;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs as BaseLifecycleEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
@@ -28,13 +27,5 @@ class DoctrineORMAdapter implements AdapterInterface
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata(\get_class($object));
         $uow->recomputeSingleEntityChangeSet($metadata, $object);
-    }
-
-    /**
-     * @param PreUpdateEventArgs $event
-     */
-    public function getChangeSet($event): array
-    {
-        return $event->getEntityChangeSet();
     }
 }
