@@ -95,7 +95,10 @@ vich_uploader:
     mappings:
         products:
             uri_prefix: /images/products
+            # For Oneup/FlysystemBundle v4
             upload_destination: oneup_flysystem.products_filesystem
+            # For Oneup/FlysystemBundle v3
+            # upload_destination: products
 ```
 
 ## That was it!
