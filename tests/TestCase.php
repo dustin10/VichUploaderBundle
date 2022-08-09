@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Util\Transliterator;
@@ -18,6 +19,16 @@ class TestCase extends BaseTestCase
     {
         return $this->getMockBuilder(UploadedFile::class)
             ->setConstructorArgs(['lala', 'lala', $mimeType = null, $error = 9, $test = true])
+            ->getMock();
+    }
+
+    /**
+     * @return ReplacingFile&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getReplacingFileMock(): ReplacingFile
+    {
+        return $this->getMockBuilder(ReplacingFile::class)
+            ->setConstructorArgs(['lala', false])
             ->getMock();
     }
 

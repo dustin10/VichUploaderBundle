@@ -301,6 +301,46 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
+    /**
+     * @group upload
+     */
+    public function testReplacingFileIsCorrectlyUploaded(): void
+    {
+        $file = $this->getReplacingFileMock();
+
+        $file
+            ->method('getClientOriginalName')
+            ->willReturn('filename.txt');
+        $file
+            ->method('getPathname')
+            ->willReturn($this->getValidUploadDir().'/test.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFile')
+            ->with($this->object)
+            ->willReturn($file);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'storage');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->willReturn('test.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->with($this->object)
+            ->willReturn('vich_uploader_bundle');
+
+        $this->storage->upload($this->object, $this->mapping);
+    }
+
     public function filenameWithDirectoriesDataProvider(): array
     {
         return [

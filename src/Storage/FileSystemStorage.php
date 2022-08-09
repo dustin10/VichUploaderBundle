@@ -14,11 +14,20 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class FileSystemStorage extends AbstractStorage
 {
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): ?File
+    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): ?File
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
 
-        return $file->move($uploadDir, $name);
+        if ($file instanceof UploadedFile) {
+            return $file->move($uploadDir, $name);
+        } else {
+            $targetPathname = $uploadDir.\DIRECTORY_SEPARATOR.$name;
+            if (!\copy($file->getPathname(), $targetPathname)) {
+                throw new \Exception('Could not copy file');
+            }
+
+            return new File($targetPathname);
+        }
     }
 
     protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool

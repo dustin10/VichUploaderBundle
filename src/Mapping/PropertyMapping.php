@@ -72,7 +72,7 @@ class PropertyMapping
      *
      * @param object $obj The object
      *
-     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null The file
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|\Vich\UploaderBundle\FileAbstraction\ReplacingFile|null The file
      *
      * @throws \InvalidArgumentException
      */
@@ -368,7 +368,7 @@ class PropertyMapping
 
     protected function getAccessor(): PropertyAccessor
     {
-        //TODO: reuse original property accessor from forms
+        // TODO: reuse original property accessor from forms
         if (null !== $this->accessor) {
             return $this->accessor;
         }

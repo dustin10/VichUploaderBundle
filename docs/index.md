@@ -53,6 +53,10 @@ composer require symfony/form
   * [Using the bundled file form type](form/vich_file_type.md)
   * [Using the bundled image form type](form/vich_image_type.md)
 
+### Other usages
+
+  * [Inject files from other sources](other_usages/replacing_file.md)
+
 ### Download-related
 
   * [Serving files with a controller](downloads/serving_files_with_a_controller.md)

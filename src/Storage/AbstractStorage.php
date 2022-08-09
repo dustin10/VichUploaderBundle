@@ -2,8 +2,10 @@
 
 namespace Vich\UploaderBundle\Storage;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
@@ -27,13 +29,12 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * @return mixed
      */
-    abstract protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name);
+    abstract protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name);
 
     public function upload($obj, PropertyMapping $mapping): void
     {
         $file = $mapping->getFile($obj);
-
-        if (null === $file || !($file instanceof UploadedFile)) {
+        if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
             throw new \LogicException('No uploadable file found');
         }
 
