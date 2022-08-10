@@ -1,3 +1,9 @@
+Upgrading from v1.21.0 to v1.22.0
+=================================
+
+- the `AdapterInterface` no longer requires `getObjectFromArgs` method.
+- the `AdapterInterface::recomputeChangeSet()` accepts `Doctrine\Persistence\Event\LifecycleEventArgs` as argument.
+
 Upgrading from v1.17.0 to v1.18.0
 =================================
 
