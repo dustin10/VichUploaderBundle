@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 use Doctrine\ODM\MongoDB\Hydrator\HydratorFactory;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
@@ -29,6 +30,7 @@ final class MongoDBAdapterTest extends TestCase
             ],
         ];
         $dm = $this->createStub(DocumentManager::class);
+        $dm->method('getClassMetadata')->willReturn(new ClassMetadata(DummyEntity::class));
         $event = new PreUpdateEventArgs($entity, $dm, $changeSet);
 
         $adapter = new MongoDBAdapter();
