@@ -29,13 +29,13 @@ class AnnotationDriver implements AdvancedDriverInterface
     /** @var AnnotationReader|AttributeReader */
     protected $reader;
 
-    /** @var ManagerRegistry */
-    private $managerRegistry;
+    /** @var ManagerRegistry[] */
+    private $managerRegistryList;
 
-    public function __construct(AnnotationReader $reader, ManagerRegistry $managerRegistry)
+    public function __construct(AnnotationReader $reader, array $managerRegistryList)
     {
         $this->reader = $reader;
-        $this->managerRegistry = $managerRegistry;
+        $this->managerRegistryList = $managerRegistryList;
     }
 
     public function loadMetadataForClass(\ReflectionClass $class): ?JMSClassMetadata
@@ -88,12 +88,14 @@ class AnnotationDriver implements AdvancedDriverInterface
         $classes = [];
         $metadata = [];
 
-        $managers = $this->managerRegistry->getManagers();
-        foreach ($managers as $manager) {
-            $metadata[] = $manager->getMetadataFactory()->getAllMetadata();
+        foreach ($this->managerRegistryList as $managerRegisty) {
+            $managers = $managerRegisty->getManagers();
+            foreach ($managers as $manager) {
+                $metadata[] = $manager->getMetadataFactory()->getAllMetadata();
+            }
         }
 
-        $metadata = array_merge(...$metadata);
+        $metadata = \array_merge(...$metadata);
 
         /** @var \Doctrine\Persistence\Mapping\ClassMetadata $classMeta */
         foreach ($metadata as $classMeta) {

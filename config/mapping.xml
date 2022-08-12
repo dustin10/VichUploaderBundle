@@ -17,7 +17,7 @@
         <!-- drivers -->
         <service id="vich_uploader.metadata_driver.annotation" class="Vich\UploaderBundle\Metadata\Driver\AnnotationDriver" public="false">
             <argument key="$reader" type="service" id="vich_uploader.metadata.reader" />
-            <argument key="$managerRegistry" type="service" id="doctrine" />
+            <argument key="$managerRegistryList" /> <!-- replaced by compiler pass -->
         </service>
 
         <service id="vich_uploader.metadata_driver.xml" class="Vich\UploaderBundle\Metadata\Driver\XmlDriver" public="false">
