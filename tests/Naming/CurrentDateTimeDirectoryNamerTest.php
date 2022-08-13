@@ -4,7 +4,6 @@ namespace Vich\UploaderBundle\Tests\Naming;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer;
-use Vich\UploaderBundle\Naming\DateTimeHelper;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 

@@ -16,7 +16,9 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
-            - run: composer require --no-update liip/imagine-bundle:"^2.0"
+            - run: |
+                composer require --no-update liip/imagine-bundle:"^2.0"
+                composer global config --no-plugins allow-plugins.phpstan/extension-installer true
             - name: Update project dependencies
               uses: ramsey/composer-install@v1
             - name: PHPStan
@@ -81,7 +83,7 @@ jobs:
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
-            - run: composer require --dev --no-update kphoen/rusty:"dev-update-php-parser"
+            - run: composer require --dev --no-update kphoen/rusty:"dev-allow-sf6"
               if: matrix.validate_docs
             - name: Update project dependencies
               uses: ramsey/composer-install@v1
