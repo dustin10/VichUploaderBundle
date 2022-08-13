@@ -8,9 +8,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * Directory namer wich can create subfolder depends on generated filename.
  *
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
- * @final
  */
-class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+final class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
     /** @var int */
     private $charsPerDir = 2;
@@ -31,9 +30,9 @@ class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInter
         $this->dirs = $options['dirs'];
     }
 
-    public function directoryName($object, PropertyMapping $mapping): string
+    public function directoryName(object $object, PropertyMapping $mapping): string
     {
-        $fileName = $mapping->getFileName($object);
+        $fileName = $mapping->getFilename($object);
 
         $parts = [];
         for ($i = 0, $start = 0; $i < $this->dirs; $i++, $start += $this->charsPerDir) {

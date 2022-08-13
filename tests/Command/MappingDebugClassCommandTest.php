@@ -14,7 +14,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         $reader = $this->createMock(MetadataReader::class);
         $reader->expects(self::once())->method('isUploadable')->willReturn(false);
         $command = new MappingDebugClassCommand($reader);
-        $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => 'stdClass']);
+        $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => \stdClass::class]);
         self::assertStringContainsString('is not uploadable', $output);
     }
 
@@ -32,7 +32,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
      */
     public function testComplete(array $input, array $expectedSuggestions): void
     {
-        if (!class_exists(CommandCompletionTester::class)) {
+        if (!\class_exists(CommandCompletionTester::class)) {
             $this->markTestSkipped('Test command completion requires symfony/console 5.4+.');
         }
 

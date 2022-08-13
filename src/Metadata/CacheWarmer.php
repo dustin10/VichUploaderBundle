@@ -9,22 +9,11 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
  */
 final class CacheWarmer implements CacheWarmerInterface
 {
-    /** @var string */
-    private $dir;
-
-    /** @var MetadataReader */
-    private $metadataReader;
-
-    public function __construct(string $dir, MetadataReader $metadataReader)
+    public function __construct(private readonly string $dir, private readonly MetadataReader $metadataReader)
     {
-        $this->dir = $dir;
-        $this->metadataReader = $metadataReader;
     }
 
-    /**
-     * @param string $cacheDir
-     */
-    public function warmUp($cacheDir): array
+    public function warmUp(string $cacheDir): array
     {
         if (empty($this->dir)) {
             return [];

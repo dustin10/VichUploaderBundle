@@ -12,9 +12,8 @@ use Vich\UploaderBundle\Util\Transliterator;
  * PropertyNamer.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
- * @final
  */
-class PropertyNamer implements NamerInterface, ConfigurableInterface
+final class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
@@ -23,19 +22,10 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
      */
     private $propertyPath;
 
-    /**
-     * @var bool
-     */
-    private $transliterate = false;
+    private bool $transliterate = false;
 
-    /**
-     * @var Transliterator
-     */
-    private $transliterator;
-
-    public function __construct(Transliterator $transliterator)
+    public function __construct(private readonly Transliterator $transliterator)
     {
-        $this->transliterator = $transliterator;
     }
 
     /**
@@ -55,7 +45,7 @@ class PropertyNamer implements NamerInterface, ConfigurableInterface
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');

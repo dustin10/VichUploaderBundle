@@ -28,10 +28,7 @@ final class DownloadHandlerTest extends TestCase
      */
     protected $object;
 
-    /**
-     * @var DownloadHandler
-     */
-    protected $handler;
+    protected \Vich\UploaderBundle\Handler\DownloadHandler $handler;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMapping

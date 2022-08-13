@@ -15,8 +15,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.0
-            - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
+                  php-version: 8.1
+            - run: composer require --no-update liip/imagine-bundle:"^2.0"
             - name: Update project dependencies
               uses: ramsey/composer-install@v1
             - name: PHPStan
@@ -39,8 +39,6 @@ jobs:
         strategy:
             matrix:
                 php:
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
                 dependencies: [highest]
                 symfony: ['*']
@@ -48,25 +46,15 @@ jobs:
                 with_imagine: [false]
                 with_oneupbundle: [true]
                 include:
-                    - extra: ', validate docs with lowest deps on PHP 7.4'
-                      php: '7.4' # PHP 8 not yet supported by rusty
-                      symfony: '*'
+                    - extra:
+                      php: '8.1'
+                      symfony: '5.4.*'
                       validate_docs: true
                       dependencies: lowest
                       with_imagine: false
                       with_oneupbundle: false
-                    - php: '8.0'
-                      symfony: '5.4.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: true
-                    - php: '8.0'
-                      symfony: '6.0.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: true
                     - php: '8.1'
-                      symfony: '6.0.*'
+                      symfony: '6.1.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
@@ -86,10 +74,10 @@ jobs:
                   extensions: mongodb-stable, pdo_sqlite
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:^1.11
+                  composer global require --no-interaction --no-progress symfony/flex:^2.2
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
-            - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
+            - run: composer require --no-update liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle

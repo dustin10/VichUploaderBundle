@@ -52,14 +52,11 @@ class PropertyMappingFactoryTest extends TestCase
     }
 
     /**
-     * Test the fromObject method with one uploadable
-     * field.
-     *
-     * @param object|array $object
+     * Test the fromObject method with one uploadable field.
      *
      * @dataProvider fromObjectProvider
      */
-    public function testFromObjectOneField($object, ?string $givenClassName, string $expectedClassName): void
+    public function testFromObjectOneField(object|array $object, ?string $givenClassName, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [

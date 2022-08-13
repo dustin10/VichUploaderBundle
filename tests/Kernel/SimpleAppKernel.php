@@ -31,6 +31,7 @@ class SimpleAppKernel extends Kernel
                     'type' => 'service',
                     'utf8' => false,
                 ],
+                'http_method_override' => false,
             ]);
 
             $container->loadFromExtension('doctrine', [

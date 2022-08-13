@@ -42,11 +42,6 @@ vich_uploader:
 This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
-**Note:**
-> The old default behaviour of not defining `namer` (and so using the original name of the
-> uploaded file) is deprecated, you should always use a [namer](namers.md).
-
-
 ## Step 2: link the upload mapping to an entity
 
 The final step is to create a link between the filesystem and the entity you
@@ -160,7 +155,7 @@ class Product
 }
 ```
 
-Or, with PHP 7 annotations :
+Or, with annotations :
 
 ``` php
 <?php

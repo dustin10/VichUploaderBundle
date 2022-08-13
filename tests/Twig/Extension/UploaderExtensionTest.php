@@ -18,10 +18,7 @@ final class UploaderExtensionTest extends TestCase
      */
     protected $helper;
 
-    /**
-     * @var UploaderExtension
-     */
-    protected $extension;
+    protected \Vich\UploaderBundle\Twig\Extension\UploaderExtension $extension;
 
     protected function setUp(): void
     {

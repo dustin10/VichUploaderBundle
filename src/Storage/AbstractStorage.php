@@ -16,22 +16,16 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  */
 abstract class AbstractStorage implements StorageInterface
 {
-    /**
-     * @var PropertyMappingFactory
-     */
-    protected $factory;
-
-    public function __construct(PropertyMappingFactory $factory)
+    public function __construct(protected PropertyMappingFactory $factory)
     {
-        $this->factory = $factory;
     }
 
     /**
-     * @return mixed
+     * @return mixed|void
      */
     abstract protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name);
 
-    public function upload($obj, PropertyMapping $mapping): void
+    public function upload(object $obj, PropertyMapping $mapping): void
     {
         $file = $mapping->getFile($obj);
         if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
@@ -46,7 +40,7 @@ abstract class AbstractStorage implements StorageInterface
         $mapping->writeProperty($obj, 'mimeType', $mimeType);
         $mapping->writeProperty($obj, 'originalName', $file->getClientOriginalName());
 
-        if (null !== $mimeType && false !== \strpos($mimeType, 'image/') && 'image/svg+xml' !== $mimeType && false !== $dimensions = @\getimagesize($file)) {
+        if (null !== $mimeType && \str_contains($mimeType, 'image/') && 'image/svg+xml' !== $mimeType && false !== $dimensions = @\getimagesize($file)) {
             $mapping->writeProperty($obj, 'dimensions', \array_splice($dimensions, 0, 2));
         }
 
@@ -57,7 +51,7 @@ abstract class AbstractStorage implements StorageInterface
 
     abstract protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool;
 
-    public function remove($obj, PropertyMapping $mapping): ?bool
+    public function remove(object $obj, PropertyMapping $mapping): ?bool
     {
         $name = $mapping->getFileName($obj);
 
@@ -78,7 +72,7 @@ abstract class AbstractStorage implements StorageInterface
      */
     abstract protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string;
 
-    public function resolvePath($obj, ?string $fieldName = null, ?string $className = null, ?bool $relative = false): ?string
+    public function resolvePath(object|array $obj, ?string $fieldName = null, ?string $className = null, ?bool $relative = false): ?string
     {
         [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
@@ -89,7 +83,7 @@ abstract class AbstractStorage implements StorageInterface
         return $this->doResolvePath($mapping, $mapping->getUploadDir($obj), $filename, $relative);
     }
 
-    public function resolveUri($obj, ?string $fieldName = null, ?string $className = null): ?string
+    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
     {
         [$mapping, $filename] = $this->getFilename($obj, $fieldName, $className);
 
@@ -103,7 +97,7 @@ abstract class AbstractStorage implements StorageInterface
         return $mapping->getUriPrefix().'/'.$path;
     }
 
-    public function resolveStream($obj, string $fieldName, ?string $className = null)
+    public function resolveStream(object|array $obj, string $fieldName, ?string $className = null)
     {
         $path = $this->resolvePath($obj, $fieldName, $className);
 
@@ -117,13 +111,11 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * note: extension point.
      *
-     * @param object $obj
-     *
      * @throws MappingNotFoundException
      * @throws \RuntimeException
      * @throws \Vich\UploaderBundle\Exception\NotUploadableException
      */
-    protected function getFilename($obj, ?string $fieldName = null, ?string $className = null): array
+    protected function getFilename(object $obj, ?string $fieldName = null, ?string $className = null): array
     {
         $mapping = null === $fieldName ?
             $this->factory->fromFirstField($obj, $className) :

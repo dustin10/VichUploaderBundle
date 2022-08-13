@@ -72,9 +72,7 @@ abstract class ListenerTestCase extends TestCase
         $this->adapter
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->willReturnCallback(function () use ($that) {
-                return $that->object;
-            });
+            ->willReturnCallback(fn () => $that->object);
     }
 
     /**

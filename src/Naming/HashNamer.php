@@ -32,7 +32,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
         $this->length = $options['length'];
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 
@@ -50,6 +50,6 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomString(): string
     {
-        return \microtime(true).\random_int(0, 9999999);
+        return \microtime(true).\random_int(0, 9_999_999);
     }
 }

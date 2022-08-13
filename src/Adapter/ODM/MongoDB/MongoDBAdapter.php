@@ -8,24 +8,23 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  * MongoDBAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  *
  * @internal
  */
-class MongoDBAdapter implements AdapterInterface
+final class MongoDBAdapter implements AdapterInterface
 {
-    public function getObjectFromArgs($event)
+    public function getObjectFromArgs(object $event): object
     {
         return $event->getDocument();
     }
 
-    public function recomputeChangeSet($event): void
+    public function recomputeChangeSet(object $event): void
     {
         $object = $this->getObjectFromArgs($event);
 
         $dm = $event->getDocumentManager();
         $uow = $dm->getUnitOfWork();
-        $metadata = $dm->getClassMetadata(\get_class($object));
+        $metadata = $dm->getClassMetadata($object::class);
         $uow->recomputeSingleDocumentChangeSet($metadata, $object);
     }
 }

@@ -5,14 +5,11 @@ namespace Vich\UploaderBundle\Metadata;
 use Metadata\ClassMetadata as BaseClassMetadata;
 
 /**
- * @final
- *
  * @internal
  */
-class ClassMetadata extends BaseClassMetadata
+final class ClassMetadata extends BaseClassMetadata
 {
-    /** @var array */
-    public $fields = [];
+    public array $fields = [];
 
     public function serialize(): string
     {

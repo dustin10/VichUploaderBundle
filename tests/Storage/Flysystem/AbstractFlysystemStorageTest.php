@@ -18,7 +18,7 @@ use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
  */
 abstract class AbstractFlysystemStorageTest extends StorageTestCase
 {
-    public const FS_KEY = 'filesystemKey';
+    final public const FS_KEY = 'filesystemKey';
 
     /**
      * @var (MountManager|ContainerInterface)&\PHPUnit\Framework\MockObject\MockObject
@@ -61,7 +61,6 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         parent::setUp();
 
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn(self::FS_KEY);
     }

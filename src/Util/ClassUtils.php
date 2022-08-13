@@ -4,9 +4,8 @@ namespace Vich\UploaderBundle\Util;
 
 /**
  * @internal
- * @final
  */
-class ClassUtils
+final class ClassUtils
 {
     /**
      * This class should not be instantiated.
@@ -24,7 +23,7 @@ class ClassUtils
      */
     public static function getClass(object $object): string
     {
-        $className = \get_class($object);
+        $className = $object::class;
         $positionPm = 0;
 
         // see original code @ https://github.com/api-platform/core/blob/6e9ccf7418bf973d273b125d55ccc521b89afb06/src/Util/ClassInfoTrait.php#L38

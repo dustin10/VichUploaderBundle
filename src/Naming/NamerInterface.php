@@ -23,5 +23,5 @@ interface NamerInterface
      *
      * @phpstan-param T $object
      */
-    public function name($object, PropertyMapping $mapping): string;
+    public function name(object $object, PropertyMapping $mapping): string;
 }

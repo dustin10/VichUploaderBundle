@@ -6,18 +6,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @internal
- * @final
  */
-class Transliterator
+final class Transliterator
 {
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
-
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(private readonly SluggerInterface $slugger)
     {
-        $this->slugger = $slugger;
     }
 
     /**

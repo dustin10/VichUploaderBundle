@@ -18,10 +18,7 @@ final class UploadHelperTest extends TestCase
      */
     protected $storage;
 
-    /**
-     * @var UploaderHelper
-     */
-    protected $helper;
+    protected \Vich\UploaderBundle\Templating\Helper\UploaderHelper $helper;
 
     protected function setUp(): void
     {

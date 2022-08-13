@@ -8,13 +8,12 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * UniqidNamer.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
- * @final
  */
-class UniqidNamer implements NamerInterface
+final class UniqidNamer implements NamerInterface
 {
     use Polyfill\FileExtensionTrait;
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $name = \str_replace('.', '', \uniqid('', true));

@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
-use Doctrine\Persistence\ManagerRegistry;
 use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
@@ -17,25 +16,10 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 class AnnotationDriver implements AdvancedDriverInterface
 {
     /**
-     * @deprecated
+     * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
      */
-    public const UPLOADABLE_ANNOTATION = Uploadable::class;
-
-    /**
-     * @deprecated
-     */
-    public const UPLOADABLE_FIELD_ANNOTATION = UploadableField::class;
-
-    /** @var AnnotationReader|AttributeReader */
-    protected $reader;
-
-    /** @var ManagerRegistry[] */
-    private $managerRegistryList;
-
-    public function __construct(AnnotationReader $reader, array $managerRegistryList)
+    public function __construct(protected AnnotationReader $reader, private readonly array $managerRegistryList)
     {
-        $this->reader = $reader;
-        $this->managerRegistryList = $managerRegistryList;
     }
 
     public function loadMetadataForClass(\ReflectionClass $class): ?JMSClassMetadata
@@ -52,10 +36,10 @@ class AnnotationDriver implements AdvancedDriverInterface
             $classes[] = $class;
             $class = $class->getParentClass();
         } while (false !== $class);
-        $classes = \array_reverse($classes, false);
+        $classes = \array_reverse($classes);
         $properties = [];
-        foreach ($classes as $class) {
-            $properties = \array_merge($properties, $class->getProperties());
+        foreach ($classes as $cls) {
+            $properties = [...$properties, ...$cls->getProperties()];
         }
 
         foreach ($properties as $property) {

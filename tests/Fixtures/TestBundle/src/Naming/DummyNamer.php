@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 
 final class DummyNamer implements NamerInterface
 {
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
         $file = $mapping->getFile($object);

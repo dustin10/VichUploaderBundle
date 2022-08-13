@@ -11,25 +11,18 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
  * Exposes a simple interface to read objects metadata.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
- * @final
  *
  * @internal
  */
-class MetadataReader
+final class MetadataReader
 {
-    /**
-     * @var AdvancedMetadataFactoryInterface
-     */
-    protected $reader;
-
     /**
      * Constructs a new instance of the MetadataReader.
      *
      * @param AdvancedMetadataFactoryInterface $reader The "low-level" metadata reader
      */
-    public function __construct(AdvancedMetadataFactoryInterface $reader)
+    public function __construct(private readonly AdvancedMetadataFactoryInterface $reader)
     {
-        $this->reader = $reader;
     }
 
     /**
@@ -96,9 +89,7 @@ class MetadataReader
         }
 
         if (null !== $mapping) {
-            $uploadableFields = \array_filter($uploadableFields, static function (array $fieldMetadata) use ($mapping): bool {
-                return $fieldMetadata['mapping'] === $mapping;
-            });
+            $uploadableFields = \array_filter($uploadableFields, static fn (array $fieldMetadata): bool => $fieldMetadata['mapping'] === $mapping);
         }
 
         return $uploadableFields;

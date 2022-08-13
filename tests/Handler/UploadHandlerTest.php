@@ -42,15 +42,9 @@ final class UploadHandlerTest extends TestCase
      */
     protected $mapping;
 
-    /**
-     * @var Article
-     */
-    protected $object;
+    protected \Vich\TestBundle\Entity\Article $object;
 
-    /**
-     * @var UploadHandler
-     */
-    protected $handler;
+    protected \Vich\UploaderBundle\Handler\UploadHandler $handler;
 
     private const FILE_FIELD = 'image';
 
@@ -282,16 +276,12 @@ final class UploadHandlerTest extends TestCase
         $object = $this->object;
         $mapping = $this->mapping;
 
-        return self::callback(static function ($event) use ($object, $mapping) {
-            return $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping;
-        });
+        return self::callback(static fn ($event) => $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping);
     }
 
     protected function expectEvents(array $events): void
     {
-        $arguments = \array_map(function (string $event): array {
-            return [$this->validEvent(), $event];
-        }, $events);
+        $arguments = \array_map(fn (string $event): array => [$this->validEvent(), $event], $events);
 
         $this->dispatcher
             ->expects(self::exactly(\count($events)))

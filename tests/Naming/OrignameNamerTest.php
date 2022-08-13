@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-class OrignameNamerTest extends TestCase
+final class OrignameNamerTest extends TestCase
 {
     public function fileDataProvider(): array
     {

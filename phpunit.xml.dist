@@ -24,6 +24,10 @@
         </include>
     </coverage>
 
+    <extensions>
+        <extension class="Vich\UploaderBundle\Tests\BypassFinalHook"/>
+    </extensions>
+
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>

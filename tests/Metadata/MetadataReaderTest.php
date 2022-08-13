@@ -8,10 +8,7 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
 
 final class MetadataReaderTest extends TestCase
 {
-    /**
-     * @var MetadataReader
-     */
-    protected $reader;
+    protected \Vich\UploaderBundle\Metadata\MetadataReader $reader;
 
     /**
      * @var AdvancedMetadataFactoryInterface|\PHPUnit\Framework\MockObject\MockObject

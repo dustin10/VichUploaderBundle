@@ -146,7 +146,6 @@ class GaufretteStorageTest extends StorageTestCase
     public function testThatRemoveMethodDoesDeleteFile(): void
     {
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
@@ -176,7 +175,6 @@ class GaufretteStorageTest extends StorageTestCase
     public function testRemoveNotFoundFile(): void
     {
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
@@ -244,7 +242,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('setMetadata');
 
         $filesystem
-            ->expects($this->any())
             ->method('getAdapter')
             ->willReturn($adapter);
 
@@ -300,7 +297,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->willReturn($filesystem);
 
         $filesystem
-            ->expects($this->any())
             ->method('getAdapter')
             ->willReturn($adapter);
 

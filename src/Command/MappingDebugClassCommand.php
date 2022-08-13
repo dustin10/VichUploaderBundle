@@ -10,20 +10,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
-/**
- * @final
- */
-class MappingDebugClassCommand extends Command
+final class MappingDebugClassCommand extends Command
 {
-    protected static $defaultName = 'vich:mapping:debug-class';
-
-    /** @var MetadataReader */
-    private $metadataReader;
-
-    public function __construct(MetadataReader $metadataReader)
+    public function __construct(private readonly MetadataReader $metadataReader)
     {
         parent::__construct();
-        $this->metadataReader = $metadataReader;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return 'vich:mapping:debug-class';
     }
 
     protected function configure(): void
@@ -42,7 +38,7 @@ class MappingDebugClassCommand extends Command
         if (!$this->metadataReader->isUploadable($fqcn)) {
             $output->writeln(\sprintf('<error>"%s" is not uploadable.</error>', $fqcn));
 
-            return 1;
+            return self::FAILURE;
         }
 
         $uploadableFields = $this->metadataReader->getUploadableFields($fqcn);
@@ -58,7 +54,7 @@ class MappingDebugClassCommand extends Command
             $output->writeln(\sprintf("\t<comment>dimensions</comment>: %s", $data['dimensions'] ?? '<error>not set</error>'));
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void

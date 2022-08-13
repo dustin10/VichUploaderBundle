@@ -23,5 +23,5 @@ interface DirectoryNamerInterface
      *
      * @phpstan-param T $object
      */
-    public function directoryName($object, PropertyMapping $mapping): string;
+    public function directoryName(object $object, PropertyMapping $mapping): string;
 }

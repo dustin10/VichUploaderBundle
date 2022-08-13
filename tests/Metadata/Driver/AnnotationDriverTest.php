@@ -55,9 +55,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static function (ReflectionProperty $property): ?UploadableField {
-                return 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null;
-            });
+            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
@@ -183,9 +181,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static function (ReflectionProperty $property): ?UploadableField {
-                return 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null;
-            });
+            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */

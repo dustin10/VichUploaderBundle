@@ -10,7 +10,7 @@ class ClassMetadataTest extends TestCase
     public function testFieldsAreSerialized(): void
     {
         $fields = ['foo', 'bar', 'baz'];
-        $metadata = new ClassMetadata('DateTime');
+        $metadata = new ClassMetadata(\DateTime::class);
         $metadata->fields = $fields;
 
         $deserializedMetadata = \unserialize(\serialize($metadata));

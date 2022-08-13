@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -13,7 +14,7 @@ use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
-class VichImageTypeTest extends VichFileTypeTest
+final class VichImageTypeTest extends TestCase
 {
     protected const TESTED_TYPE = VichImageType::class;
 
@@ -126,9 +127,7 @@ class VichImageTypeTest extends VichFileTypeTest
                 [
                     'download_label' => 'download',
                     'download_uri' => 'custom-uri',
-                    'image_uri' => static function (Product $product, $resolvedUri) {
-                        return 'prefix-'.$resolvedUri;
-                    },
+                    'image_uri' => static fn (Product $product, $resolvedUri) => 'prefix-'.$resolvedUri,
                     'imagine_pattern' => null,
                     'asset_helper' => false,
                 ],
@@ -169,17 +168,14 @@ class VichImageTypeTest extends VichFileTypeTest
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
-            ->expects($this->any())
             ->method('getData')
             ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
-            ->expects($this->any())
             ->method('getParent')
             ->willReturn($parentForm);
         $form
-            ->expects($this->any())
             ->method('getName')
             ->willReturn($field);
 
@@ -195,7 +191,7 @@ class VichImageTypeTest extends VichFileTypeTest
             ->with($storageResolvedPath, $imaginePattern)
             ->willReturn($imagineResolvedPath);
 
-        $testedType = static::TESTED_TYPE;
+        $testedType = self::TESTED_TYPE;
 
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor, $cacheManager);
@@ -270,7 +266,7 @@ class VichImageTypeTest extends VichFileTypeTest
 
         $object = new Product();
 
-        $testedType = static::TESTED_TYPE;
+        $testedType = self::TESTED_TYPE;
 
         $storage = $this->createMock(StorageInterface::class);
         $uploadHandler = $this->createMock(UploadHandler::class);
@@ -279,17 +275,14 @@ class VichImageTypeTest extends VichFileTypeTest
 
         $parentForm = $this->createMock(FormInterface::class);
         $parentForm
-            ->expects($this->any())
             ->method('getData')
             ->willReturn($object);
 
         $form = $this->createMock(FormInterface::class);
         $form
-            ->expects($this->any())
             ->method('getParent')
             ->willReturn($parentForm);
         $form
-            ->expects($this->any())
             ->method('getConfig')
             ->willReturn($this->createMock(FormConfigInterface::class));
 

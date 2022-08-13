@@ -58,7 +58,6 @@ abstract class StorageTestCase extends TestCase
         $this->storage = $this->getStorage();
 
         $this->factory
-            ->expects($this->any())
             ->method('fromObject')
             ->with($this->object)
             ->willReturn([$this->mapping]);

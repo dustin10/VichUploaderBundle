@@ -7,20 +7,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
-/**
- * @final
- */
-class MappingListClassesCommand extends Command
+final class MappingListClassesCommand extends Command
 {
-    protected static $defaultName = 'vich:mapping:list-classes';
-
-    /** @var MetadataReader */
-    private $metadataReader;
-
-    public function __construct(MetadataReader $metadataReader)
+    public function __construct(private readonly MetadataReader $metadataReader)
     {
         parent::__construct();
-        $this->metadataReader = $metadataReader;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return 'vich:mapping:list-classes';
     }
 
     protected function configure(): void
@@ -41,8 +37,8 @@ class MappingListClassesCommand extends Command
             $output->writeln(\sprintf('Found <comment>%s</comment>', $class));
         }
 
-        $output->writeln(\sprintf('Found <comment>%d</comment> classes.', \count($uploadableClasses)));
+        $output->writeln(\sprintf('Found <comment>%d</comment> classes.', \count((array) $uploadableClasses)));
 
-        return 0;
+        return self::SUCCESS;
     }
 }

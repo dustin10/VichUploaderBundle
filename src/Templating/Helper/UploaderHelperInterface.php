@@ -12,5 +12,5 @@ interface UploaderHelperInterface
      *
      * @return string|null The public asset path or null if file not stored
      */
-    public function asset($obj, ?string $fieldName = null);
+    public function asset(object $obj, ?string $fieldName = null): ?string;
 }

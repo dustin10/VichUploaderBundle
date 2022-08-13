@@ -2,10 +2,8 @@ Namers
 ======
 
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
-implements the `Vich\UploaderBundle\Naming\NamerInterface` interface. If no namer is
-configured for a mapping, the bundle will simply use the name of the file that
-was uploaded (this is deprecated).
-If should change this, you can use one of the provided namers or implement a custom one.
+implements the `Vich\UploaderBundle\Naming\NamerInterface` interface.
+You must use one of the provided namers or implement a custom one.
 
 ## File Namer
 
@@ -89,13 +87,6 @@ vich_uploader:
             upload_destination: products_fs
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer # or any other namer listed above
 ```
-
-If no namer is configured for a mapping, the bundle will simply use the name of the file that
-was uploaded. This is deprecated and will be removed in next major version.
-
-**Warning:** it means that if two files having the same name are uploaded, one
-will override the other.
-
 
 ### How-to
 
@@ -190,13 +181,6 @@ vich_uploader:
                     date_time_format: 'Y/d/m' # will create directory "2018/23/09" for current date "2018-09-23"
                     date_time_property: uploadTimestamp # see above example
 ```
-
-**Note**:
-
-> Not passing `date_time_property` to CurrentDateTimeDirectoryNamer is deprecated since version 1.9 and
-> will be removed in version 2.
-> You should always use an object property, otherwise the namer will fallback to current timestamp,
-> losing name predictability.
 
 If no directory namer is configured for a mapping, the bundle will simply use
 the `upload_destination` configuration option.

@@ -20,5 +20,5 @@ interface FileInjectorInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to populate
      */
-    public function injectFile($obj, PropertyMapping $mapping): void;
+    public function injectFile(object $obj, PropertyMapping $mapping): void;
 }

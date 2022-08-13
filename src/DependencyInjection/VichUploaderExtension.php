@@ -21,10 +21,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 final class VichUploaderExtension extends Extension
 {
-    /**
-     * @var array
-     */
-    protected $tagMap = [
+    protected array $tagMap = [
         'orm' => 'doctrine.event_subscriber',
         'mongodb' => 'doctrine_mongodb.odm.event_subscriber',
         'phpcr' => 'doctrine_phpcr.event_subscriber',
@@ -42,8 +39,8 @@ final class VichUploaderExtension extends Extension
         $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
 
-        if (0 === \strpos($config['storage'], '@')) {
-            $container->setAlias('vich_uploader.storage', \substr($config['storage'], 1));
+        if (\str_starts_with((string) $config['storage'], '@')) {
+            $container->setAlias('vich_uploader.storage', \substr((string) $config['storage'], 1));
         } else {
             $container->setAlias('vich_uploader.storage', 'vich_uploader.storage.'.$config['storage']);
         }
@@ -104,13 +101,6 @@ final class VichUploaderExtension extends Extension
                 $directory = \dirname($ref->getFileName()).'/../config/vich_uploader';
 
                 if (!\is_dir($directory)) {
-                    $directory = \dirname($ref->getFileName()).'/Resources/config/vich_uploader';
-                    if (\is_dir($directory)) {
-                        @\trigger_error('Using Resources/config/vich_uploader for auto config discovery is deprecated use ../config/vich_uploader, relative to the Bundle class, instead', \E_USER_DEPRECATED);
-                    }
-                }
-
-                if (!\is_dir($directory)) {
                     continue;
                 }
 
@@ -119,7 +109,7 @@ final class VichUploaderExtension extends Extension
         }
 
         foreach ($config['metadata']['directories'] as $directory) {
-            $directory['path'] = \rtrim(\str_replace('\\', '/', $directory['path']), '/');
+            $directory['path'] = \rtrim(\str_replace('\\', '/', (string) $directory['path']), '/');
 
             if ('@' === $directory['path'][0]) {
                 $bundleName = \substr($directory['path'], 1, \strpos($directory['path'], '/') - 1);
@@ -132,7 +122,7 @@ final class VichUploaderExtension extends Extension
                 $directory['path'] = \dirname($ref->getFileName()).\substr($directory['path'], \strlen('@'.$bundleName));
             }
 
-            $directories[\rtrim($directory['namespace_prefix'], '\\')] = \rtrim($directory['path'], '\\/');
+            $directories[\rtrim((string) $directory['namespace_prefix'], '\\')] = \rtrim($directory['path'], '\\/');
         }
 
         $container

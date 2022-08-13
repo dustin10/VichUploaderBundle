@@ -13,9 +13,8 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  * @NamedArgumentConstructor
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Uploadable implements AnnotationInterface
+final class Uploadable implements AnnotationInterface
 {
 }

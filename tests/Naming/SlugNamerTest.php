@@ -49,7 +49,7 @@ final class SlugNamerTest extends TestCase
         ;
         $repo
             ->method('findOneBySlug')
-            ->willReturnMap([['lala.jpeg', null], ['lala.mp3', new \StdClass()]])
+            ->willReturnMap([['lala.jpeg', null], ['lala.mp3', new \stdClass()]])
         ;
 
         $namer = new SlugNamer($this->getTransliterator(), $repo, 'findOneBySlug');

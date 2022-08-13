@@ -9,33 +9,14 @@ use Vich\UploaderBundle\Util\Transliterator;
  * This namer uses a slug to keep original name when possibile.
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
- * @final
  */
 final class SlugNamer implements NamerInterface
 {
-    /**
-     * @var Transliterator
-     */
-    private $transliterator;
-
-    /**
-     * @var object
-     */
-    private $service;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    public function __construct(Transliterator $transliterator, object $service, string $method)
+    public function __construct(private readonly Transliterator $transliterator, private readonly object $service, private readonly string $method)
     {
-        $this->transliterator = $transliterator;
-        $this->service = $service;
-        $this->method = $method;
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();

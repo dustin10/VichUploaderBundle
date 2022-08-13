@@ -9,22 +9,19 @@ use Vich\UploaderBundle\Exception\NoFileFoundException;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
- * @final
  */
-class DownloadHandler extends AbstractHandler
+final class DownloadHandler extends AbstractHandler
 {
     /**
      * Create a response object that will trigger the download of a file.
      *
-     * @param object|array $object
-     * @param string       $className
-     * @param string|true  $fileName  True to return original file name
+     * @param string|true $fileName True to return original file name
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      * @throws NoFileFoundException
      * @throws \InvalidArgumentException
      */
-    public function downloadObject($object, string $field, ?string $className = null, $fileName = null, bool $forceDownload = true): StreamedResponse
+    public function downloadObject(object|array $object, string $field, ?string $className = null, string|bool $fileName = null, bool $forceDownload = true): StreamedResponse
     {
         $mapping = $this->getMapping($object, $field, $className);
         $stream = $this->storage->resolveStream($object, $field, $className);
@@ -45,7 +42,7 @@ class DownloadHandler extends AbstractHandler
                 if (null !== $file) {
                     $mimeType = $file->getMimeType();
                 }
-            } catch (FileNotFoundException $exception) {
+            } catch (FileNotFoundException) {
                 $mimeType = null;
             }
         }

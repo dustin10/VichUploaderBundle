@@ -32,7 +32,7 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
         }
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 

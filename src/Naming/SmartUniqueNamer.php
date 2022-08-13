@@ -13,17 +13,11 @@ use Vich\UploaderBundle\Util\Transliterator;
  */
 final class SmartUniqueNamer implements NamerInterface
 {
-    /**
-     * @var Transliterator
-     */
-    private $transliterator;
-
-    public function __construct(Transliterator $transliterator)
+    public function __construct(private readonly Transliterator $transliterator)
     {
-        $this->transliterator = $transliterator;
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();

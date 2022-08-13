@@ -14,20 +14,9 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  * GaufretteStorage.
  *
  * @author Stefan Zerkalica <zerkalica@gmail.com>
- * @final
  */
-class GaufretteStorage extends AbstractStorage
+final class GaufretteStorage extends AbstractStorage
 {
-    /**
-     * @var FilesystemMapInterface
-     */
-    protected $filesystemMap;
-
-    /**
-     * @var string
-     */
-    protected $protocol;
-
     /**
      * Constructs a new instance of FileSystemStorage.
      *
@@ -35,12 +24,9 @@ class GaufretteStorage extends AbstractStorage
      * @param FilesystemMapInterface $filesystemMap Gaufrete filesystem factory
      * @param string                 $protocol      Gaufrette stream wrapper protocol
      */
-    public function __construct(PropertyMappingFactory $factory, FilesystemMapInterface $filesystemMap, string $protocol = 'gaufrette')
+    public function __construct(PropertyMappingFactory $factory, protected FilesystemMapInterface $filesystemMap, protected string $protocol = 'gaufrette')
     {
         parent::__construct($factory);
-
-        $this->filesystemMap = $filesystemMap;
-        $this->protocol = $protocol;
     }
 
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
@@ -62,7 +48,7 @@ class GaufretteStorage extends AbstractStorage
 
         try {
             return $filesystem->delete($path);
-        } catch (FileNotFound $e) {
+        } catch (FileNotFound) {
             return false;
         }
     }

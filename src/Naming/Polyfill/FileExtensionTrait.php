@@ -14,7 +14,7 @@ trait FileExtensionTrait
     private function getExtension(File $file): ?string
     {
         if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
-            throw new \InvalidArgumentException('Unexpected type for $file: '.get_class($file));
+            throw new \InvalidArgumentException('Unexpected type for $file: '.$file::class);
         }
         $originalName = $file->getClientOriginalName();
 

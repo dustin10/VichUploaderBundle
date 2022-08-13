@@ -11,23 +11,13 @@ use Vich\UploaderBundle\Util\Transliterator;
  * OrignameNamer.
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
- * @final
  */
-class OrignameNamer implements NamerInterface, ConfigurableInterface
+final class OrignameNamer implements NamerInterface, ConfigurableInterface
 {
-    /**
-     * @var bool
-     */
-    private $transliterate = false;
+    private bool $transliterate = false;
 
-    /**
-     * @var Transliterator
-     */
-    private $transliterator;
-
-    public function __construct(Transliterator $transliterator)
+    public function __construct(private readonly Transliterator $transliterator)
     {
-        $this->transliterator = $transliterator;
     }
 
     /**
@@ -39,7 +29,7 @@ class OrignameNamer implements NamerInterface, ConfigurableInterface
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function name($object, PropertyMapping $mapping): string
+    public function name(object $object, PropertyMapping $mapping): string
     {
         /* @var $file UploadedFile|ReplacingFile */
         $file = $mapping->getFile($object);

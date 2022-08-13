@@ -11,16 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Form\Type as VichType;
 
-class DefaultController extends AbstractController
+final class DefaultController extends AbstractController
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(private readonly ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
     }
 
     public function uploadAction(string $formType): Response
