@@ -1,0 +1,6 @@
+{
+  "default": true,
+  "header-style": { "style": "atx" },
+  "line-length": { "line_length": 115, "code_block_line_length": 150 },
+  "no-trailing-punctuation": { "punctuation": ".,;:" }
+}

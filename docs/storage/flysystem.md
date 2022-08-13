@@ -1,14 +1,13 @@
-Flysystem
-=========
+# Flysystem
 
-> Flysystem is a filesystem abstraction library for PHP. It provides an abstraction 
-> for the filesystem in order to change the storage backend depending on the execution 
+> Flysystem is a filesystem abstraction library for PHP. It provides an abstraction
+> for the filesystem in order to change the storage backend depending on the execution
 > environment (local files in development, cloud storage in production and memory in tests)
 > and your configuration.
 
 [Read the official library documentation](https://flysystem.thephpleague.com)
 
-VichUploaderBundle can use Flysystem as a storage engine by relying on one of two bundles: 
+VichUploaderBundle can use Flysystem as a storage engine by relying on one of two bundles:
 [thephpleague/flysystem-bundle](https://github.com/thephpleague/flysystem-bundle)
 or
 [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle).
@@ -20,13 +19,9 @@ or
 
 ## Integrating with [thephpleague/flysystem-bundle](https://github.com/thephpleague/flysystem-bundle)
 
-**Note:**
-
-> Since VichUploaderBundle v1.17, version 2 of bundle is supported. Version 1 is supported until VichUploaderBundle v1.16.
-
 To install the bundle, run the following command:
 
-```
+```bash
 composer require league/flysystem-bundle
 ```
 
@@ -43,7 +38,7 @@ flysystem:
                 directory: '%kernel.project_dir%/var/storage/default'
 ```
 
-You can adapt this configuration to your needs by reading the 
+You can adapt this configuration to your needs by reading the
 [bundle documentation](https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md).
 
 Once you have a storage ready, you can use it in your VichUploaderBundle configuration:
@@ -61,13 +56,9 @@ vich_uploader:
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
 
-**Note:**
-
-> Since VichUploaderBundle v1.17, version 4 of bundle is supported. Version 3 is supported until VichUploaderBundle v1.16.
-
 To install the bundle, run the following command:
 
-```
+```bash
 composer require oneup/flysystem-bundle
 ```
 

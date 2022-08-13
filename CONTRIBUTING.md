@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 First of all, **thank you** for contributing, **you are awesome**!
 
@@ -31,9 +30,9 @@ Thank you!
 
 ## Running the test suite
 
-Tests suite uses Docker environments in order to be idempotent to OS's. More than this 
+Tests suite uses Docker environments in order to be idempotent to OS's. More than this
 PHP version is written inside the Dockerfile; this assures to test the bundle with
-the same resources. No need to have PHP or Mongo installed. 
+the same resources. No need to have PHP or Mongo installed.
 
 You only need Docker set it up.
 
@@ -53,7 +52,7 @@ make test TEST="Tests/Util/FilenameUtilsTest.php"
 will allow testing single Test Classes.
 
 There is only one environment available: PHP 8.1.
-Default environment is *PHP 8.1*. If you want to execute it against 
+Default environment is *PHP 8.1*. If you want to execute it against
 other (future) PHP version, please use environment variables as this:
 
 ```bash
@@ -63,4 +62,3 @@ TARGET=82 make tests #PHP 8.2 env
 make test TEST="tests/Util/FilenameUtilsTest.php" #PHP 8.1 env
 TARGET=82 make test TEST="tests/Util/FilenameUtilsTest.php" #PHP 8.2 env
 ```
-

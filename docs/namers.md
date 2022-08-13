@@ -1,5 +1,4 @@
-Namers
-======
+# Namers
 
 The bundle uses namers to name the files and directories it saves to the filesystem. A namer
 implements the `Vich\UploaderBundle\Naming\NamerInterface` interface.
@@ -11,13 +10,13 @@ You must use one of the provided namers or implement a custom one.
 
 At the moment there are several available namers:
 
-  * `Vich\UploaderBundle\Naming\UniqidNamer`
-  * `Vich\UploaderBundle\Naming\OrignameNamer`
-  * `Vich\UploaderBundle\Naming\PropertyNamer`
-  * `Vich\UploaderBundle\Naming\HashNamer`
-  * `Vich\UploaderBundle\Naming\Base64Namer`
-  * `Vich\UploaderBundle\Naming\SmartUniqueNamer`
-  * `Vich\UploaderBundle\Naming\SlugNamer`
+* `Vich\UploaderBundle\Naming\UniqidNamer`
+* `Vich\UploaderBundle\Naming\OrignameNamer`
+* `Vich\UploaderBundle\Naming\PropertyNamer`
+* `Vich\UploaderBundle\Naming\HashNamer`
+* `Vich\UploaderBundle\Naming\Base64Namer`
+* `Vich\UploaderBundle\Naming\SmartUniqueNamer`
+* `Vich\UploaderBundle\Naming\SlugNamer`
 
 **UniqidNamer** will rename your uploaded files using a uniqueid for the name and
 keep the extension. Using this namer, "foo.jpg" will be uploaded as something like "0eb3db03971550eb3b0371.jpg".
@@ -42,6 +41,7 @@ vich_uploader:
 
 **HashNamer** will use a hash of random string to name the file. You also can specify
 hash `algorithm` and result `length` of the file:
+
 ``` yaml
 vich_uploader:
     # ...
@@ -52,8 +52,6 @@ vich_uploader:
                 service: Vich\UploaderBundle\Naming\HashNamer
                 options: { algorithm: 'sha256', length: 50 }
 ```
-
-
 
 **Base64Namer** will generate a URL-safe base64 decodable random string to name the file.
 You can specify the `length` of the random string. Using this namer, "foo.jpg" will be uploaded as something
@@ -67,6 +65,7 @@ applying a transliteration. Using this namer, "a Strange name.jpg" will be uploa
 will append a progresive number (to ensure uniqueness). This is useful when you want to keep your names as closer
 as possible to original ones, but is also limited to simple situations (i.e. when you're using a single mapped entity).
 To use it, you just have to specify the service for the `namer` configuration option of your mapping:
+
 ``` yaml
 # config/services.yaml
 services:
@@ -90,8 +89,7 @@ vich_uploader:
 
 ### How-to
 
-  * [Create a custom file namer](file_namer/howto/create_a_custom_file_namer.md)
-
+* [Create a custom file namer](file_namer/howto/create_a_custom_file_namer.md)
 
 ## Directory Namer
 
@@ -109,9 +107,9 @@ uploaded files will be stored.
 
 At the moment there are several available namers:
 
-  * `Vich\UploaderBundle\Naming\SubdirDirectoryNamer`
-  * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
-  * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
+* `Vich\UploaderBundle\Naming\SubdirDirectoryNamer`
+* `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
+* `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
 
 **SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be
 stored in a folder `ab`. It is also possible to configure how many chars use per directory name and
@@ -164,7 +162,8 @@ created in the `Y/m/d` format. It is possible to configure the datetime format u
 For details of datetime formats see <http://php.net/manual/en/function.date.php>.
 You should also pass to this namer an option declaring a property where uploading datetime is stored in your object.
 Such property will be accessed via ProperyAccessor, so it can be a public property or a getter method.
-For example, if your object has a `getUploadTimestamp(): \DateTimeInterface` method, you can pass `date_time_property: uploadTimestamp` to namer.
+For example, if your object has a `getUploadTimestamp(): \DateTimeInterface` method, you can pass
+`date_time_property: uploadTimestamp` to namer.
 
 To use it, you just have to specify the service for the `directory_namer`
 configuration option of your mapping:
@@ -185,10 +184,9 @@ vich_uploader:
 If no directory namer is configured for a mapping, the bundle will simply use
 the `upload_destination` configuration option.
 
-### How-to
+### How-tos
 
-  * [Writing a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
-
+* [Writing a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
 
 ## That was it!
 

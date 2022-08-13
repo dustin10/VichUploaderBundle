@@ -1,5 +1,4 @@
-Create a custom directory namer
-===============================
+# Create a custom directory namer
 
 To create a custom directory namer, simply implement
 `Vich\UploaderBundle\Naming\DirectoryNamerInterface`

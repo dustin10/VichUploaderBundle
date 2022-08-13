@@ -1,7 +1,4 @@
-Configuration Reference
-=======================
-
-## Configuration Reference
+# Configuration Reference
 
 Below is the full default configuration for the bundle:
 

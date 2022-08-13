@@ -5,16 +5,16 @@
 Show entity file mapping metadata for class.
 
 ```bash
-php bin/console vich:mapping:debug-class App\\Entity\\Foo 
-``` 
+php bin/console vich:mapping:debug-class App\\Entity\\Foo
+```
 
 ## Debug mapping
 
 Show mapping details.
 
 ```bash
-php bin/console vich:mapping:debug foo_mapping 
-``` 
+php bin/console vich:mapping:debug foo_mapping
+```
 
 ## Uploadable classes
 

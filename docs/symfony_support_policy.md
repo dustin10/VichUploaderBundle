@@ -1,5 +1,4 @@
-Symfony support policy
-======================
+# Symfony support policy
 
 As indicated by the contraints defined in the `composer.json` file, this bundle
 supports Symfony `^5.4 || ^6.0` in its latest versions (>=`2.0.*`).

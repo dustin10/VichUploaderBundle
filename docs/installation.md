@@ -1,5 +1,4 @@
-Installation
-============
+# Installation
 
 ## Get the bundle using composer
 
@@ -10,9 +9,10 @@ your Symfony project:
 composer require vich/uploader-bundle
 ```
 
-Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.17"` to your composer.json and run `composer update`.
-This could be useful when the installation of VichUploaderBundle is not compatible with some currently installed dependencies.
-Anyway, the previous option is the preferred way, since composer can pick the best requirement constraint for you.
+Alternatively, you can add the requirement `"vich/uploader-bundle": "^1.17"` to your composer.json and run
+`composer update`. This could be useful when the installation of VichUploaderBundle is not compatible with some
+currently installed dependencies. Anyway, the previous option is the preferred way, since composer can pick the
+best requirement constraint for you.
 
 ## Enable the bundle
 
@@ -34,14 +34,13 @@ class AppKernel extends Kernel
 }
 ```
 
-
 ## Choose and configure a persistence engine
 
 Three engines are currently supported:
 
-  * [orm](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/index.html)
-  * [mongodb](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/1.2/index.html)
-  * [phpcr](https://www.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html)
+* [orm](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/index.html)
+* [mongodb](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/1.2/index.html)
+* [phpcr](https://www.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html)
 
 Once the chosen persistence engine is installed and configured, tell
 VichUploaderBundle that you want to use it.

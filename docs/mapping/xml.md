@@ -1,5 +1,4 @@
-XML mappings
-============
+# XML mappings
 
 You can choose to describe your entities in XML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
@@ -44,7 +43,6 @@ vich_uploader:
 
 > In order to be able to use this format, make sure that the `simplexml`
 > extension is enabled (it is by default).
-
 
 ## That was it!
 

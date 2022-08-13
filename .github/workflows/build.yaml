@@ -36,6 +36,16 @@ jobs:
               uses: actions/checkout@v2
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
+    validate-markdown:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Validate
+              uses: avto-dev/markdown-lint@v1
+              with:
+                  config: './.github/workflows/config/config.json'
+                  args: './docs ./CONTRIBUTING.md ./README.md ./UPDATE.md'
     tests:
         runs-on: ubuntu-20.04
         strategy:
@@ -44,17 +54,17 @@ jobs:
                     - '8.1'
                 dependencies: [highest]
                 symfony: ['*']
-                validate_docs: [false]
                 with_imagine: [false]
                 with_oneupbundle: [true]
                 include:
                     - extra:
                       php: '8.1'
                       symfony: '5.4.*'
-                      validate_docs: true
                       dependencies: lowest
                       with_imagine: false
                       with_oneupbundle: false
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: 'max[self]=9'
                     - php: '8.1'
                       symfony: '6.1.*'
                       dependencies: highest
@@ -83,12 +93,8 @@ jobs:
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
-            - run: composer require --dev --no-update kphoen/rusty:"dev-allow-sf6"
-              if: matrix.validate_docs
             - name: Update project dependencies
               uses: ramsey/composer-install@v1
               with:
                 dependency-versions: ${{ matrix.dependencies }}
             - run: vendor/bin/phpunit
-            - run: vendor/bin/rusty check --no-execute ./docs
-              if: matrix.validate_docs

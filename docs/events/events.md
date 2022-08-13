@@ -1,5 +1,4 @@
-Events
-======
+# Events
 
 [Events](https://symfony.com/doc/current/event_dispatcher.html) offer a way to hook into
 the flux of other code, in this case into the flux of VichUploaderBundle.
@@ -15,10 +14,10 @@ The following is a list of events you can listen to:
 |`vich_uploader.pre_remove`|`Events::PRE_REMOVE`|before a file is removed|
 |`vich_uploader.post_remove`|`Events::POST_REMOVE`|after a file is removed|
 
-The `vich_uploader.pre_remove` event is cancelable, that means that the actual remove request will not take place, and you have to take action.
+The `vich_uploader.pre_remove` event is cancelable, that means that the actual remove request will not take place,
+and you have to take action.
 
-Example
--------
+## Example
 
 Create a listener class:
 
