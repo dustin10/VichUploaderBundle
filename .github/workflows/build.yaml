@@ -56,6 +56,7 @@ jobs:
                 symfony: ['*']
                 with_imagine: [false]
                 with_oneupbundle: [true]
+                max_deprecations: [0]
                 include:
                     - extra:
                       php: '8.1'
@@ -63,14 +64,14 @@ jobs:
                       dependencies: lowest
                       with_imagine: false
                       with_oneupbundle: false
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: 'max[self]=9'
+                      max_deprecations: 5
                     - php: '8.1'
                       symfony: '6.1.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
-        name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies${{ matrix.extra }}
+                      max_deprecations: 0
+        name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -97,4 +98,7 @@ jobs:
               uses: ramsey/composer-install@v1
               with:
                 dependency-versions: ${{ matrix.dependencies }}
-            - run: vendor/bin/phpunit
+            - name: Run tests
+              run: vendor/bin/phpunit
+              env:
+                 SYMFONY_DEPRECATIONS_HELPER: max[self]=${{matrix.max_deprecations}}
