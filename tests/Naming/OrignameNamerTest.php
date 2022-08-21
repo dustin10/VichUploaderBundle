@@ -34,9 +34,7 @@ final class OrignameNamerTest extends TestCase
 
         $entity = new \DateTime();
 
-        $mapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)

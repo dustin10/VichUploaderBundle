@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Templating\Helper;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -13,12 +14,9 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  */
 final class UploadHelperTest extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface|MockObject $storage;
 
-    protected \Vich\UploaderBundle\Templating\Helper\UploaderHelper $helper;
+    protected UploaderHelper $helper;
 
     protected function setUp(): void
     {

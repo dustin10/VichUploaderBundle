@@ -16,16 +16,11 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
-            - run: composer require --no-update liip/imagine-bundle:"^2.0"
-            - name: Update project dependencies
-              uses: ramsey/composer-install@v1
-            - name: PHPStan
-              uses: docker://oskarstark/phpstan-ga
-              env:
-                  CHECK_PLATFORM_REQUIREMENTS: false
-                  REQUIRE_DEV: true
-              with:
-                  args: analyse
+            - run: |
+                  composer require --no-update liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit 
+                  composer config --no-plugins allow-plugins.phpstan/extension-installer true
+                  composer install --ignore-platform-reqs
+                  vendor/bin/phpstan
     cs-fixer:
         runs-on: ubuntu-20.04
         name: PHP-CS-Fixer

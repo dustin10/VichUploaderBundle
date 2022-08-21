@@ -21,9 +21,7 @@ final class MongoDBAdapterTest extends TestCase
     {
         $entity = new DummyEntity();
 
-        $args = $this->getMockBuilder(LifecycleEventArgs::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $args = $this->createMock(LifecycleEventArgs::class);
         $args
             ->expects(self::once())
             ->method('getDocument')

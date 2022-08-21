@@ -2,9 +2,12 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Handler\DownloadHandler;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -13,27 +16,15 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class DownloadHandlerTest extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory
-     */
-    protected $factory;
+    protected MockObject|PropertyMappingFactory $factory;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
-     */
-    protected $storage;
+    protected MockObject|StorageInterface $storage;
 
-    /**
-     * @var Product
-     */
-    protected $object;
+    protected Product $object;
 
-    protected \Vich\UploaderBundle\Handler\DownloadHandler $handler;
+    protected DownloadHandler $handler;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
+    protected MockObject|PropertyMapping $mapping;
 
     protected function setUp(): void
     {

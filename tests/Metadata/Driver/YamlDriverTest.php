@@ -45,10 +45,7 @@ final class YamlDriverTest extends FileDriverTestCase
 
 final class TestableYamlDriver extends AbstractYamlDriver
 {
-    /**
-     * @var array
-     */
-    public $mappingContent;
+    public array $mappingContent = [];
 
     protected function loadMappingFile(string $file): array
     {

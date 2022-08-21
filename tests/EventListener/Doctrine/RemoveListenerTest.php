@@ -121,10 +121,7 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->postFlush();
     }
 
-    /**
-     * @return Proxy&MockObject
-     */
-    protected function getEntityProxyMock(): MockObject
+    protected function getEntityProxyMock(): Proxy|MockObject
     {
         return $this->getMockBuilder(Proxy::class)
             ->setMockClassName('VichUploaderEntityProxy')

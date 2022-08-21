@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
@@ -9,6 +10,7 @@ use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -17,34 +19,19 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class UploadHandlerTest extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory
-     */
-    protected $factory;
+    protected MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface|MockObject $storage;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|FileInjectorInterface
-     */
-    protected $injector;
+    protected FileInjectorInterface|MockObject $injector;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
-     */
-    protected $dispatcher;
+    protected MockObject|EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
+    protected MockObject|PropertyMapping $mapping;
 
-    protected \Vich\TestBundle\Entity\Article $object;
+    protected Article $object;
 
-    protected \Vich\UploaderBundle\Handler\UploadHandler $handler;
+    protected UploadHandler $handler;
 
     private const FILE_FIELD = 'image';
 
@@ -248,7 +235,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return StorageInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return StorageInterface&MockObject
      */
     protected function getStorageMock(): StorageInterface
     {
@@ -256,7 +243,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return FileInjectorInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return FileInjectorInterface&MockObject
      */
     protected function getInjectorMock(): FileInjectorInterface
     {
@@ -264,7 +251,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return EventDispatcherInterface&MockObject
      */
     protected function getDispatcherMock(): EventDispatcherInterface
     {

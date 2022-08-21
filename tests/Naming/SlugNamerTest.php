@@ -32,10 +32,7 @@ final class SlugNamerTest extends TestCase
 
         $entity = new \stdClass();
 
-        $mapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)

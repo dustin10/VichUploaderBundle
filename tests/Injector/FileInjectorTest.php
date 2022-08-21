@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Injector;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Injector\FileInjector;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -15,17 +16,11 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class FileInjectorTest extends TestCase
 {
-    /**
-     * @var GaufretteStorage|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $storage;
+    protected GaufretteStorage|MockObject $storage;
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp(): void
     {
-        $this->storage = $this->getMockStorage();
+        $this->storage = $this->createMock(GaufretteStorage::class);
     }
 
     /**
@@ -35,9 +30,7 @@ final class FileInjectorTest extends TestCase
     {
         $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $fileMapping = $this->createMock(PropertyMapping::class);
         $fileMapping
             ->expects(self::once())
             ->method('getFilePropertyName')
@@ -64,9 +57,7 @@ final class FileInjectorTest extends TestCase
     {
         $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $fileMapping = $this->createMock(PropertyMapping::class);
 
         $this->storage
             ->expects(self::once())
@@ -75,17 +66,5 @@ final class FileInjectorTest extends TestCase
 
         $inject = new FileInjector($this->storage);
         $inject->injectFile($obj, $fileMapping);
-    }
-
-    /**
-     * Gets a mock storage.
-     *
-     * @return GaufretteStorage
-     */
-    protected function getMockStorage()
-    {
-        return $this->getMockBuilder(GaufretteStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }
