@@ -18,8 +18,10 @@ class AnnotationDriver implements AdvancedDriverInterface
     /**
      * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
      */
-    public function __construct(protected AnnotationReader $reader, private readonly array $managerRegistryList)
-    {
+    public function __construct(
+        protected readonly AnnotationReader $reader,
+        private readonly array $managerRegistryList
+    ) {
     }
 
     public function loadMetadataForClass(\ReflectionClass $class): ?JMSClassMetadata

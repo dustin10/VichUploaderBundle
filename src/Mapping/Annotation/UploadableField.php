@@ -23,7 +23,8 @@ final class UploadableField implements AnnotationInterface
     public function __construct(
         private readonly string $mapping,
         private readonly ?string $fileNameProperty = null,
-        private readonly ?string $size = null, private readonly ?string $mimeType = null,
+        private readonly ?string $size = null,
+        private readonly ?string $mimeType = null,
         private readonly ?string $originalName = null,
         private readonly ?string $dimensions = null
     ) {

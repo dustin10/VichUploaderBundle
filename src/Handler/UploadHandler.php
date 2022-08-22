@@ -22,8 +22,8 @@ final class UploadHandler extends AbstractHandler
     public function __construct(
         PropertyMappingFactory $factory,
         StorageInterface $storage,
-        protected FileInjectorInterface $injector,
-        protected EventDispatcherInterface $dispatcher
+        protected readonly FileInjectorInterface $injector,
+        protected readonly EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($factory, $storage);
     }

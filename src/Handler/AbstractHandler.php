@@ -12,8 +12,10 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 abstract class AbstractHandler
 {
-    public function __construct(protected PropertyMappingFactory $factory, protected StorageInterface $storage)
-    {
+    public function __construct(
+        protected readonly PropertyMappingFactory $factory,
+        protected readonly StorageInterface $storage,
+    ) {
     }
 
     /**

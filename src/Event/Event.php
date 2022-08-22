@@ -14,7 +14,7 @@ class Event extends ContractEvent
 {
     protected bool $cancel = false;
 
-    public function __construct(protected object $object, protected PropertyMapping $mapping)
+    public function __construct(protected readonly object $object, protected readonly PropertyMapping $mapping)
     {
     }
 

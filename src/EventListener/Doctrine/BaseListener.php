@@ -15,8 +15,12 @@ use Vich\UploaderBundle\Util\ClassUtils;
  */
 abstract class BaseListener implements EventSubscriber
 {
-    public function __construct(protected string $mapping, protected AdapterInterface $adapter, protected MetadataReader $metadata, protected UploadHandler $handler)
-    {
+    public function __construct(
+        protected readonly string $mapping,
+        protected readonly AdapterInterface $adapter,
+        protected readonly MetadataReader $metadata,
+        protected readonly UploadHandler $handler,
+    ) {
     }
 
     /**

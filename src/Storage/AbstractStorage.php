@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  */
 abstract class AbstractStorage implements StorageInterface
 {
-    public function __construct(protected PropertyMappingFactory $factory)
+    public function __construct(protected readonly PropertyMappingFactory $factory)
     {
     }
 

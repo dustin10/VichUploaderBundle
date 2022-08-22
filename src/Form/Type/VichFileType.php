@@ -25,12 +25,12 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class VichFileType extends AbstractType
 {
-    protected PropertyAccessorInterface $propertyAccessor;
+    protected readonly PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(
-        protected StorageInterface $storage,
-        protected UploadHandler $handler,
-        protected PropertyMappingFactory $factory,
+        protected readonly StorageInterface $storage,
+        protected readonly UploadHandler $handler,
+        protected readonly PropertyMappingFactory $factory,
         PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
