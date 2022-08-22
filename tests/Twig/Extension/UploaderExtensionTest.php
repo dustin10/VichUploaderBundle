@@ -3,8 +3,8 @@
 namespace Vich\UploaderBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Vich\UploaderBundle\Tests\TestCase;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
 /**

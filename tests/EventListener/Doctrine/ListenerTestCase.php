@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 use Doctrine\Common\EventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 use Vich\UploaderBundle\EventListener\Doctrine\InjectListener;
@@ -14,6 +13,7 @@ use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * Doctrine listener test case.
@@ -44,8 +44,8 @@ abstract class ListenerTestCase extends TestCase
     protected function setUp(): void
     {
         $this->adapter = $this->createMock(AdapterInterface::class);
-        $this->metadata = $this->createMock(MetadataReader::class);
-        $this->handler = $this->createMock(UploadHandler::class);
+        $this->metadata = $this->getMetadataReaderMock();
+        $this->handler = $this->getUploadHandlerMock();
         $this->object = new DummyEntity();
         $this->event = $this->createMock(EventArgs::class);
 

@@ -4,13 +4,13 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * PropertyMappingFactoryTest.
@@ -396,10 +396,5 @@ class PropertyMappingFactoryTest extends TestCase
     protected function getContainerMock(): ContainerInterface|MockObject
     {
         return $this->createMock(ContainerInterface::class);
-    }
-
-    protected function getMetadataReaderMock(): MetadataReader|MockObject
-    {
-        return $this->createMock(MetadataReader::class);
     }
 }

@@ -3,16 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Tests\TestCase;
 
 final class VichImageTypeTest extends TestCase
 {
@@ -179,8 +177,8 @@ final class VichImageTypeTest extends TestCase
             ->method('getName')
             ->willReturn($field);
 
-        $uploadHandler = $this->createMock(UploadHandler::class);
-        $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $uploadHandler = $this->getUploadHandlerMock();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
 
         $propertyAccessor = $this->createMock(PropertyAccessor::class);
         $cacheManager = $this->createMock(CacheManager::class);
@@ -269,8 +267,8 @@ final class VichImageTypeTest extends TestCase
         $testedType = self::TESTED_TYPE;
 
         $storage = $this->createMock(StorageInterface::class);
-        $uploadHandler = $this->createMock(UploadHandler::class);
-        $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $uploadHandler = $this->getUploadHandlerMock();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
         $propertyAccessor = $this->createMock(PropertyAccessor::class);
 
         $parentForm = $this->createMock(FormInterface::class);

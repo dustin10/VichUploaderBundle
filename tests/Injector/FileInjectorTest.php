@@ -3,11 +3,10 @@
 namespace Vich\UploaderBundle\Tests\Injector;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Injector\FileInjector;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * FileInjectorTest.
@@ -30,7 +29,7 @@ final class FileInjectorTest extends TestCase
     {
         $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->createMock(PropertyMapping::class);
+        $fileMapping = $this->getPropertyMappingMock();
         $fileMapping
             ->expects(self::once())
             ->method('getFilePropertyName')
@@ -57,7 +56,7 @@ final class FileInjectorTest extends TestCase
     {
         $obj = $this->createMock(DummyEntity::class);
 
-        $fileMapping = $this->createMock(PropertyMapping::class);
+        $fileMapping = $this->getPropertyMappingMock();
 
         $this->storage
             ->expects(self::once())

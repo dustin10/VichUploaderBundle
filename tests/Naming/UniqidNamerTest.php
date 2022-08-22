@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\UniqidNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -42,7 +41,7 @@ final class UniqidNamerTest extends TestCase
 
         $entity = new \DateTime();
 
-        $mapping = $this->createMock(PropertyMapping::class);
+        $mapping = $this->getPropertyMappingMock();
         $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)

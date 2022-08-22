@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -11,10 +10,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
-use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Tests\TestCase;
 
 final class VichFileTypeTest extends TestCase
 {
@@ -25,8 +22,8 @@ final class VichFileTypeTest extends TestCase
         $optionsResolver = new OptionsResolver();
 
         $storage = $this->createMock(StorageInterface::class);
-        $uploadHandler = $this->createMock(UploadHandler::class);
-        $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $uploadHandler = $this->getUploadHandlerMock();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
         $propertyAccessor = $this->createMock(PropertyAccessor::class);
 
         $testedType = static::TESTED_TYPE;
@@ -77,14 +74,14 @@ final class VichFileTypeTest extends TestCase
             ->method('getConfig')
             ->willReturn($config);
 
-        $uploadHandler = $this->createMock(UploadHandler::class);
-        $propertyMappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $uploadHandler = $this->getUploadHandlerMock();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
 
         $propertyAccessor = $this->createMock(PropertyAccessor::class);
 
         if (isset($options['download_label'])) {
             if (true === $options['download_label']) {
-                $mapping = $this->createMock(PropertyMapping::class);
+                $mapping = $this->getPropertyMappingMock();
                 $mapping
                     ->expects(self::once())
                     ->method('readProperty')

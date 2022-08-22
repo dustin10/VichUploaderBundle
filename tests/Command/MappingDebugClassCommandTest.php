@@ -5,13 +5,12 @@ namespace Vich\UploaderBundle\Tests\Command;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
-use Vich\UploaderBundle\Metadata\MetadataReader;
 
 final class MappingDebugClassCommandTest extends AbstractCommandTestCase
 {
     public function testNotUploadableClass(): void
     {
-        $reader = $this->createMock(MetadataReader::class);
+        $reader = $this->mockMetadataReader();
         $reader->expects(self::once())->method('isUploadable')->willReturn(false);
         $command = new MappingDebugClassCommand($reader);
         $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => \stdClass::class]);
@@ -20,7 +19,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
 
     public function testUploadableClass(): void
     {
-        $reader = $this->createMock(MetadataReader::class);
+        $reader = $this->mockMetadataReader();
         $reader->expects(self::once())->method('isUploadable')->willReturn(true);
         $command = new MappingDebugClassCommand($reader);
         $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => Image::class]);
@@ -36,7 +35,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
             $this->markTestSkipped('Test command completion requires symfony/console 5.4+.');
         }
 
-        $reader = $this->createMock(MetadataReader::class);
+        $reader = $this->mockMetadataReader();
         $reader->expects(self::once())->method('getUploadableClasses')->willReturn([Image::class]);
         $tester = new CommandCompletionTester(new MappingDebugClassCommand($reader));
 
