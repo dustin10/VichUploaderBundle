@@ -20,7 +20,7 @@ final class CacheWarmer implements CacheWarmerInterface
         }
         $files = [];
         if (!\is_dir($this->dir)) {
-            if (!\mkdir($concurrentDirectory = $this->dir, 0777, true) && !\is_dir($concurrentDirectory)) {
+            if (!\mkdir($concurrentDirectory = $this->dir, 0o777, true) && !\is_dir($concurrentDirectory)) {
                 throw new \RuntimeException(\sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
         }

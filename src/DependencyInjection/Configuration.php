@@ -107,9 +107,7 @@ final class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v) {
-                                        return ['service' => $v, 'options' => []];
-                                    })
+                                    ->then(static fn ($v) => ['service' => $v, 'options' => []])
                                 ->end()
                                 ->children()
                                 ->scalarNode('service')->defaultNull()->end()
@@ -120,9 +118,7 @@ final class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v) {
-                                        return ['service' => $v, 'options' => []];
-                                    })
+                                    ->then(static fn ($v) => ['service' => $v, 'options' => []])
                                 ->end()
                                 ->children()
                                 ->scalarNode('service')->defaultNull()->end()
@@ -136,9 +132,7 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultNull()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v) {
-                                        return \strtolower($v);
-                                    })
+                                    ->then(static fn ($v) => \strtolower($v))
                                 ->end()
                                 ->validate()
                                     ->ifNotInArray($this->supportedDbDrivers)
