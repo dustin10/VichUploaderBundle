@@ -15,17 +15,12 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.0
-            - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
-            - name: Update project dependencies
-              uses: ramsey/composer-install@v1
-            - name: PHPStan
-              uses: docker://oskarstark/phpstan-ga
-              env:
-                  CHECK_PLATFORM_REQUIREMENTS: false
-                  REQUIRE_DEV: true
-              with:
-                  args: analyse
+                  php-version: 8.1
+            - run: |
+                  composer require --no-update liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit 
+                  composer config --no-plugins allow-plugins.phpstan/extension-installer true
+                  composer install --ignore-platform-reqs
+                  vendor/bin/phpstan
     cs-fixer:
         runs-on: ubuntu-20.04
         name: PHP-CS-Fixer
@@ -34,43 +29,42 @@ jobs:
               uses: actions/checkout@v2
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
+    validate-markdown:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Validate
+              uses: avto-dev/markdown-lint@v1
+              with:
+                  config: './.github/workflows/config/config.json'
+                  args: './docs ./CONTRIBUTING.md ./README.md ./UPDATE.md'
     tests:
         runs-on: ubuntu-20.04
         strategy:
             matrix:
                 php:
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
                 dependencies: [highest]
                 symfony: ['*']
-                validate_docs: [false]
                 with_imagine: [false]
                 with_oneupbundle: [true]
+                max_deprecations: [0]
                 include:
-                    - extra: ', validate docs with lowest deps on PHP 7.4'
-                      php: '7.4' # PHP 8 not yet supported by rusty
-                      symfony: '*'
-                      validate_docs: true
+                    - extra:
+                      php: '8.1'
+                      symfony: '5.4.*'
                       dependencies: lowest
                       with_imagine: false
                       with_oneupbundle: false
-                    - php: '8.0'
-                      symfony: '5.4.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: true
-                    - php: '8.0'
-                      symfony: '6.0.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: true
+                      max_deprecations: 5
                     - php: '8.1'
-                      symfony: '6.0.*'
+                      symfony: '6.1.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
-        name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies${{ matrix.extra }}
+                      max_deprecations: 0
+        name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -86,19 +80,18 @@ jobs:
                   extensions: mongodb-stable, pdo_sqlite
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:^1.11
+                  composer global require --no-interaction --no-progress symfony/flex:^2.2
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
-            - run: composer require --no-update liip/imagine-bundle:"^1.7 || ^2.0"
+            - run: composer require --no-update liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
-            - run: composer require --dev --no-update kphoen/rusty:"dev-update-php-parser"
-              if: matrix.validate_docs
             - name: Update project dependencies
               uses: ramsey/composer-install@v1
               with:
                 dependency-versions: ${{ matrix.dependencies }}
-            - run: vendor/bin/phpunit
-            - run: vendor/bin/rusty check --no-execute ./docs
-              if: matrix.validate_docs
+            - name: Run tests
+              run: vendor/bin/phpunit
+              env:
+                 SYMFONY_DEPRECATIONS_HELPER: max[self]=${{matrix.max_deprecations}}

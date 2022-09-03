@@ -3,13 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Doctrine\Persistence\Proxy;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * PropertyMappingFactoryTest.
@@ -18,15 +19,9 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 class PropertyMappingFactoryTest extends TestCase
 {
-    /**
-     * @var ContainerInterface&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $container;
+    protected ContainerInterface|MockObject $container;
 
-    /**
-     * @var MetadataReader&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $metadata;
+    protected MockObject|MetadataReader $metadata;
 
     protected function setUp(): void
     {
@@ -52,14 +47,11 @@ class PropertyMappingFactoryTest extends TestCase
     }
 
     /**
-     * Test the fromObject method with one uploadable
-     * field.
-     *
-     * @param object|array $object
+     * Test the fromObject method with one uploadable field.
      *
      * @dataProvider fromObjectProvider
      */
-    public function testFromObjectOneField($object, ?string $givenClassName, string $expectedClassName): void
+    public function testFromObjectOneField(object|array $object, ?string $givenClassName, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -401,25 +393,8 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertTrue($mapping->hasDirectoryNamer());
     }
 
-    /**
-     * Creates a mock container.
-     *
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getContainerMock()
+    protected function getContainerMock(): ContainerInterface|MockObject
     {
         return $this->createMock(ContainerInterface::class);
-    }
-
-    /**
-     * Creates a mock metadata reader.
-     *
-     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getMetadataReaderMock()
-    {
-        return $this->getMockBuilder(MetadataReader::class)
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }

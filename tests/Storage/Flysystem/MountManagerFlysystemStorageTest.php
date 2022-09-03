@@ -13,10 +13,7 @@ final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTes
 {
     protected function createRegistry(FilesystemOperator $filesystem): MountManager
     {
-        $mountManager = $this
-            ->getMockBuilder(MountManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mountManager = $this->createMock(MountManager::class);
 
         $mountManager
             ->method('getFilesystem')

@@ -10,20 +10,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
-/**
- * @final
- */
-class MappingDebugCommand extends Command
+final class MappingDebugCommand extends Command
 {
-    protected static $defaultName = 'vich:mapping:debug';
-
-    /** @var array */
-    private $mappings;
-
-    public function __construct(array $mappings)
+    public function __construct(private readonly array $mappings)
     {
         parent::__construct();
-        $this->mappings = $mappings;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return 'vich:mapping:debug';
     }
 
     protected function configure(): void
@@ -49,7 +45,7 @@ class MappingDebugCommand extends Command
             $output->writeln(\sprintf('<comment>%s</comment>: %s', $key, \var_export($value, true)));
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void

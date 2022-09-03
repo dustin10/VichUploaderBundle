@@ -1,5 +1,4 @@
-Create a custom file namer
-==========================
+# Create a custom file namer
 
 To create a custom file namer, simply implement the `Vich\UploaderBundle\Naming\NamerInterface`
 and in the `name` method of your class return the desired file name. Since your entity
@@ -32,7 +31,6 @@ Where `App\Naming\MyNamer` is the configured service class.
 > The namer service must be public.
 > If you're using default configuration, make sure to explicit public visibility
 > for your namer service
-
 
 ## That was it!
 

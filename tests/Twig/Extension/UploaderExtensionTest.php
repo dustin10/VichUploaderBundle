@@ -2,8 +2,9 @@
 
 namespace Vich\UploaderBundle\Tests\Twig\Extension;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Vich\UploaderBundle\Tests\TestCase;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 
 /**
@@ -13,19 +14,13 @@ use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
  */
 final class UploaderExtensionTest extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UploaderHelper
-     */
-    protected $helper;
+    protected UploaderHelper|MockObject $helper;
 
-    /**
-     * @var UploaderExtension
-     */
-    protected $extension;
+    protected UploaderExtension $extension;
 
     protected function setUp(): void
     {
-        $this->helper = $this->getMockBuilder(UploaderHelper::class)->disableOriginalConstructor()->getMock();
+        $this->helper = $this->createMock(UploaderHelper::class);
         $this->extension = new UploaderExtension($this->helper);
     }
 

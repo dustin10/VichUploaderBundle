@@ -1,5 +1,4 @@
-Generating URLs
-===============
+# Generating URLs
 
 ## Generating a URL in a Controller
 
@@ -21,7 +20,6 @@ If `image` is your only mapped field, you can omit it and use simply `$helper->a
 
 > The path returned is relative to the public directory which is specified
 > using the `uri_prefix` configuration parameter.
-
 
 ## Generating a URL in a Twig Template
 
@@ -46,7 +44,6 @@ Or, in the simpler case of a single mapped field:
 ```html+jinja
 {{ vich_uploader_asset(product, 'image', 'FooBundle\\Entity\\Product') }}
 ```
-
 
 ## That was it!
 

@@ -8,16 +8,15 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  * DoctrineORMAdapter.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  *
  * @internal
  */
-class DoctrineORMAdapter implements AdapterInterface
+final class DoctrineORMAdapter implements AdapterInterface
 {
     /**
      * @param \Doctrine\ORM\Event\LifecycleEventArgs $event
      */
-    public function getObjectFromArgs($event)
+    public function getObjectFromArgs(object $event): object
     {
         return $event->getEntity();
     }
@@ -25,13 +24,13 @@ class DoctrineORMAdapter implements AdapterInterface
     /**
      * @param \Doctrine\ORM\Event\PreUpdateEventArgs $event
      */
-    public function recomputeChangeSet($event): void
+    public function recomputeChangeSet(object $event): void
     {
         $object = $this->getObjectFromArgs($event);
 
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
-        $metadata = $em->getClassMetadata(\get_class($object));
+        $metadata = $em->getClassMetadata($object::class);
         $uow->recomputeSingleEntityChangeSet($metadata, $object);
     }
 }

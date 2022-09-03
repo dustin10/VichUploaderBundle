@@ -1,13 +1,14 @@
 # Inject files from other sources
 
-The bundle provides a way to inject files into entities coming from other sources than [HTTP uploads via forms](../form/vich_file_type.md).
+The bundle provides a way to inject files into entities coming from other sources than
+[HTTP uploads via forms](../form/vich_file_type.md).
 
-When you have configured your entity like laid out in the [usage page](../usage.md), you can use code like the one below to inject files which are coming from other sources like
+When you have configured your entity like laid out in the [usage page](../usage.md), you can use code like the one
+below to inject files which are coming from other sources like
 
 - already a file on the server,
 - downloaded with curl/wget or
 - migrate old uploads.
-
 
 ## Example
 

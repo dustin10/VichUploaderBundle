@@ -6,18 +6,17 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
  * @author Ben Glassman <bglassman@gmail.com>
- * @final
  *
  * @internal
  */
-class PHPCRAdapter implements AdapterInterface
+final class PHPCRAdapter implements AdapterInterface
 {
-    public function getObjectFromArgs($event)
+    public function getObjectFromArgs(object $event): object
     {
         return $event->getObject();
     }
 
-    public function recomputeChangeSet($event): void
+    public function recomputeChangeSet(object $event): void
     {
         $object = $this->getObjectFromArgs($event);
 

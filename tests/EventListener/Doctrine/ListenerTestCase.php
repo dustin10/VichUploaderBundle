@@ -4,12 +4,16 @@ namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\EventListener\Doctrine;
+use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
+use Vich\UploaderBundle\EventListener\Doctrine\InjectListener;
+use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
+use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\TestCase;
 
 /**
  * Doctrine listener test case.
@@ -20,51 +24,30 @@ abstract class ListenerTestCase extends TestCase
 {
     public const MAPPING_NAME = 'dummy_mapping';
 
-    /**
-     * @var bool
-     */
-    public static $usePreUpdateEventArgs = false;
+    public static bool $usePreUpdateEventArgs = false;
 
-    /**
-     * @var AdapterInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $adapter;
+    protected AdapterInterface|MockObject $adapter;
 
-    /**
-     * @var MetadataReader|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $metadata;
+    protected MetadataReader|MockObject $metadata;
 
-    /**
-     * @var UploadHandler|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $handler;
+    protected UploadHandler|MockObject $handler;
 
-    /**
-     * @var EventArgs|PreUpdateEventArgs|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $event;
+    protected EventArgs|PreUpdateEventArgs|MockObject $event;
 
-    /**
-     * @var DummyEntity|\PHPUnit\Framework\MockObject\MockObject
-     */
-    public $object;
+    public DummyEntity|MockObject $object;
 
-    /**
-     * @var Doctrine\CleanListener|Doctrine\InjectListener|Doctrine\RemoveListener|Doctrine\UploadListener|null
-     */
-    protected $listener;
+    protected CleanListener|InjectListener|RemoveListener|UploadListener|null $listener;
 
     /**
      * Sets up the test.
      */
     protected function setUp(): void
     {
-        $this->adapter = $this->getAdapterMock();
+        $this->adapter = $this->createMock(AdapterInterface::class);
         $this->metadata = $this->getMetadataReaderMock();
-        $this->handler = $this->getHandlerMock();
+        $this->handler = $this->getUploadHandlerMock();
         $this->object = new DummyEntity();
-        $this->event = $this->getEventMock();
+        $this->event = $this->createMock(EventArgs::class);
 
         $that = $this;
 
@@ -72,46 +55,6 @@ abstract class ListenerTestCase extends TestCase
         $this->adapter
             ->method('getObjectFromArgs')
             ->with($this->event)
-            ->willReturnCallback(function () use ($that) {
-                return $that->object;
-            });
-    }
-
-    /**
-     * @return AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getAdapterMock(): AdapterInterface
-    {
-        return $this->createMock(AdapterInterface::class);
-    }
-
-    /**
-     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getMetadataReaderMock(): MetadataReader
-    {
-        return $this->getMockBuilder(MetadataReader::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @return UploadHandler&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getHandlerMock(): UploadHandler
-    {
-        return $this->getMockBuilder(UploadHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @return EventArgs&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getEventMock(): EventArgs
-    {
-        return $this->getMockBuilder(EventArgs::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->willReturnCallback(fn () => $that->object);
     }
 }

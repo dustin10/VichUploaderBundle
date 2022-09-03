@@ -13,60 +13,21 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  * @NamedArgumentConstructor
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class UploadableField implements AnnotationInterface
+final class UploadableField implements AnnotationInterface
 {
-    /**
-     * @var string
-     */
-    protected $mapping;
-
-    /**
-     * @var string
-     */
-    protected $fileNameProperty;
-
-    //TODO: replace "fileNameProperty" with just "name"
-
-    /**
-     * @var string
-     */
-    protected $size;
-
-    /**
-     * @var string
-     */
-    protected $mimeType;
-
-    /**
-     * @var string
-     */
-    protected $originalName;
-
-    /**
-     * @var string
-     */
-    protected $dimensions;
-
     /**
      * Constructs a new instance of UploadableField.
      */
     public function __construct(
-        string $mapping,
-        string $fileNameProperty = null,
-        string $size = null,
-        string $mimeType = null,
-        string $originalName = null,
-        string $dimensions = null
+        private readonly string $mapping,
+        private readonly ?string $fileNameProperty = null,
+        private readonly ?string $size = null,
+        private readonly ?string $mimeType = null,
+        private readonly ?string $originalName = null,
+        private readonly ?string $dimensions = null
     ) {
-        $this->mapping = $mapping;
-        $this->fileNameProperty = $fileNameProperty;
-        $this->size = $size;
-        $this->mimeType = $mimeType;
-        $this->originalName = $originalName;
-        $this->dimensions = $dimensions;
     }
 
     /**

@@ -14,14 +14,13 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Titouan Galopin <galopintitouan@gmail.com>
- * @final
  */
-class FlysystemStorage extends AbstractStorage
+final class FlysystemStorage extends AbstractStorage
 {
     /**
      * @var MountManager|ContainerInterface a registry to get FilesystemInterface instances
      */
-    protected $registry;
+    protected MountManager|ContainerInterface $registry;
 
     /**
      * @param MountManager|ContainerInterface|mixed $registry
@@ -31,7 +30,7 @@ class FlysystemStorage extends AbstractStorage
         parent::__construct($factory);
 
         if (!$registry instanceof MountManager && !$registry instanceof ContainerInterface) {
-            throw new \TypeError(\sprintf('Argument 2 passed to %s::__construct() must be an instance of %s or an instance of %s, %s given.', __CLASS__, MountManager::class, ContainerInterface::class, \is_object($registry) ? \get_class($registry) : \gettype($registry)));
+            throw new \TypeError(\sprintf('Argument 2 passed to %s::__construct() must be an instance of %s or an instance of %s, %s given.', self::class, MountManager::class, ContainerInterface::class, \get_debug_type($registry)));
         }
 
         $this->registry = $registry;
@@ -61,7 +60,7 @@ class FlysystemStorage extends AbstractStorage
             $fs->delete($path);
 
             return true;
-        } catch (FilesystemException $e) {
+        } catch (FilesystemException) {
             return false;
         }
     }
@@ -90,7 +89,7 @@ class FlysystemStorage extends AbstractStorage
 
         try {
             return $fs->readStream($path);
-        } catch (FilesystemException $e) {
+        } catch (FilesystemException) {
             return null;
         }
     }

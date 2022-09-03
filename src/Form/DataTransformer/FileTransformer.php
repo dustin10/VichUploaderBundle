@@ -5,30 +5,25 @@ namespace Vich\UploaderBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @final
- */
-class FileTransformer implements DataTransformerInterface
+final class FileTransformer implements DataTransformerInterface
 {
     /**
-     * @param UploadedFile $file
+     * @param UploadedFile $value
      *
      * @return array<string, UploadedFile>
      */
-    public function transform($file): array
+    public function transform($value): array
     {
         return [
-            'file' => $file,
+            'file' => $value,
         ];
     }
 
     /**
-     * @param array<string, UploadedFile> $data
-     *
-     * @return UploadedFile
+     * @param array<string, UploadedFile> $value
      */
-    public function reverseTransform($data)
+    public function reverseTransform($value): ?UploadedFile
     {
-        return $data['file'];
+        return $value['file'];
     }
 }

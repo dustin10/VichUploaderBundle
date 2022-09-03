@@ -8,11 +8,9 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @final
- *
  * @internal
  */
-class RegisterMappingDriversPass implements CompilerPassInterface
+final class RegisterMappingDriversPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {

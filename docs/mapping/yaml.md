@@ -1,5 +1,4 @@
-YAML mappings
-=============
+# YAML mappings
 
 You can choose to describe your entities in YAML. This bundle supports this
 format and comes with the following syntax to declare your uploadable fields:
@@ -16,7 +15,7 @@ Acme\DemoBundle\Entity\Product:
         dimensions: imageDimensions
 ```
 
-To be automatically found, the mapping configuration MUST be in the `config/vich_uploader` directory 
+To be automatically found, the mapping configuration MUST be in the `config/vich_uploader` directory
 of your symfony application, and the root namespace MUST be the de-facto standard `App` namespace.
 Third-party bundles providing configuration must follow the same rule in their own directory.
 
@@ -43,7 +42,7 @@ vich_uploader:
             - {path: '%kernel.project_dir%/config/acme', namespace_prefix: 'Acme'}
 ```
 
-#### Naming YAML Files
+## Naming YAML Files
 
 The `namespace_prefix` parameter, combined with the .yaml file name in `config/vich_uploader` must
 combine to form the FQCN of your entity. For example an entity of `MyApp\MyBundle\Entity\Customer`

@@ -12,34 +12,21 @@ use Vich\UploaderBundle\Naming\NamerInterface;
  * PropertyMapping.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  */
-class PropertyMapping
+final class PropertyMapping
 {
-    /**
-     * @var NamerInterface|null
-     */
-    protected $namer;
+    private ?NamerInterface $namer = null;
 
-    /**
-     * @var DirectoryNamerInterface
-     */
-    protected $directoryNamer;
+    private ?DirectoryNamerInterface $directoryNamer = null;
 
-    /**
-     * @var array
-     */
-    protected $mapping;
+    private ?array $mapping = null;
 
-    /**
-     * @var string
-     */
-    protected $mappingName;
+    private ?string $mappingName = null;
 
     /**
      * @var array<string, string|null>
      */
-    protected $propertyPaths = [
+    private array $propertyPaths = [
         'file' => null,
         'name' => null,
         'size' => null,
@@ -48,10 +35,7 @@ class PropertyMapping
         'dimensions' => null,
     ];
 
-    /**
-     * @var PropertyAccessor
-     */
-    protected $accessor;
+    private ?PropertyAccessor $accessor = null;
 
     /**
      * @param string         $filePropertyPath     The path to the "file" property
@@ -76,7 +60,7 @@ class PropertyMapping
      *
      * @throws \InvalidArgumentException
      */
-    public function getFile($obj): ?File
+    public function getFile(object $obj): ?File
     {
         return $this->readProperty($obj, 'file');
     }
@@ -90,7 +74,7 @@ class PropertyMapping
      * @throws \InvalidArgumentException
      * @throws \TypeError
      */
-    public function setFile($obj, File $file): void
+    public function setFile(object $obj, File $file): void
     {
         $this->writeProperty($obj, 'file', $file);
     }
@@ -100,11 +84,11 @@ class PropertyMapping
      *
      * @param object $obj The object
      *
-     * @return string The filename
+     * @return string|null The filename
      *
      * @throws \InvalidArgumentException
      */
-    public function getFileName($obj): ?string
+    public function getFileName(object $obj): ?string
     {
         return $this->readProperty($obj, 'name');
     }
@@ -117,7 +101,7 @@ class PropertyMapping
      * @throws \InvalidArgumentException
      * @throws \TypeError
      */
-    public function setFileName($obj, string $value): void
+    public function setFileName(object $obj, string $value): void
     {
         $this->writeProperty($obj, 'name', $value);
     }
@@ -130,7 +114,7 @@ class PropertyMapping
      * @throws \InvalidArgumentException
      * @throws \TypeError
      */
-    public function erase($obj): void
+    public function erase(object $obj): void
     {
         foreach (['name', 'size', 'mimeType', 'originalName', 'dimensions'] as $property) {
             $this->writeProperty($obj, $property, null);
@@ -145,11 +129,9 @@ class PropertyMapping
      * @param object $obj      The object from which read
      * @param string $property The property to read
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException
      */
-    public function readProperty($obj, $property)
+    public function readProperty(object $obj, string $property): mixed
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
             throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
@@ -168,16 +150,16 @@ class PropertyMapping
     /**
      * Modifies property of the given object.
      *
-     * @internal
-     *
      * @param object $obj      The object to which write
      * @param string $property The property to write
      * @param mixed  $value    The value which should be written
      *
      * @throws \InvalidArgumentException
      * @throws \TypeError
+     *
+     * @internal
      */
-    public function writeProperty($obj, string $property, $value): void
+    public function writeProperty(object $obj, string $property, mixed $value): void
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
             throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
@@ -291,17 +273,12 @@ class PropertyMapping
     /**
      * Gets the upload name for a given file (uses The file namers).
      *
-     * @param object $obj
-     *
      * @return string The upload name
      */
-    public function getUploadName($obj): string
+    public function getUploadName(object $obj): string
     {
         if (!$this->hasNamer()) {
-            $msg = 'Not using a namer is deprecated and will be removed in version 2.';
-            @\trigger_error($msg, \E_USER_DEPRECATED);
-
-            return $this->getFile($obj)->getClientOriginalName();
+            throw new \RuntimeException('A namer must be configured.');
         }
 
         return $this->getNamer()->name($obj, $this);
@@ -323,9 +300,7 @@ class PropertyMapping
         $dir = $this->getDirectoryNamer()->directoryName($obj, $this);
 
         // strip the trailing directory separator if needed
-        $dir = $dir ? \rtrim($dir, '/\\') : $dir;
-
-        return $dir;
+        return $dir ? \rtrim($dir, '/\\') : $dir;
     }
 
     /**
@@ -357,7 +332,7 @@ class PropertyMapping
      *
      * @return string The fixed property path
      */
-    protected function fixPropertyPath($object, string $propertyPath): string
+    private function fixPropertyPath($object, string $propertyPath): string
     {
         if (!\is_array($object)) {
             return $propertyPath;
@@ -366,7 +341,7 @@ class PropertyMapping
         return '[' === $propertyPath[0] ? $propertyPath : \sprintf('[%s]', $propertyPath);
     }
 
-    protected function getAccessor(): PropertyAccessor
+    private function getAccessor(): PropertyAccessor
     {
         // TODO: reuse original property accessor from forms
         if (null !== $this->accessor) {

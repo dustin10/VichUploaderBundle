@@ -19,9 +19,7 @@
             <argument type="service" id="property_accessor" on-invalid="null"/>
             <argument type="service" id="Vich\UploaderBundle\Util\Transliterator"/>
         </service>
-        <service id="vich_uploader.current_date_time_helper" class="Vich\UploaderBundle\Naming\CurrentDateTimeHelper" public="false"/>
         <service id="Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer" public="true">
-            <argument type="service" id="vich_uploader.current_date_time_helper" on-invalid="null"/>
             <argument type="service" id="property_accessor" on-invalid="null"/>
         </service>
         <service id="Vich\UploaderBundle\Naming\SmartUniqueNamer" public="true">

@@ -1,5 +1,4 @@
-VichImageType Field
-===================
+# VichImageType Field
 
 The bundle provides a custom form type in order to ease the upload, deletion and
 download of images.
@@ -31,13 +30,12 @@ class Form extends AbstractType
 }
 ```
 
-allow_delete
-------------
+## allow_delete
+
 **type**: `bool` **default**: `true`
 
+## delete_label
 
-delete_label
---------------
 **type**: `string` **default**: `vich_uploader.form_label.delete_confirm`
 
 ```php
@@ -46,17 +44,16 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'delete_label' => 'Remove Image',
 ]);
-
 ```
 
-asset_helper
-------------
+## asset_helper
+
 **type**: `bool` **default**: `false`
 
 If set to `true`, download uri will be generated with `asset()` method from `symfony/asset` component.
 
-download_uri
-------------
+## download_uri
+
 **type**: `bool`, `string`, `callable` **default**: `true`
 
 If set to `true`, download uri will automatically resolved using storage.
@@ -69,7 +66,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_uri' => $router->generateUrl('acme_download_image', $product->getId()),
 ]);
-
 ```
 
 Can be a callable
@@ -82,23 +78,22 @@ $builder->add('genericFile', VichImageType::class, [
         return $router->generateUrl('acme_download_image', $product->getId());
     },
 ]);
-
 ```
 
-download_label
---------------
+## download_label
+
 **type**: `bool`, `string`, `callable`, `Symfony\Component\PropertyAccess\PropertyPath` **default**: `'download'`
 
 If set to `true`, download label will use original file name.
 
-Can be string 
+Can be string
+
 ```php
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 $builder->add('genericFile', VichImageType::class, [
     'download_label' => 'download_file',
 ]);
-
 ```
 
 Can be callable
@@ -109,10 +104,10 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_label' => static fn (Product $product): string => $product->getTitle(),
 ]);
-
 ```
 
-Can be property path 
+Can be property path
+
 ```php
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -120,11 +115,10 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'download_label' => new PropertyPath('title'),
 ]);
-
 ```
 
-image_uri
----------
+## image_uri
+
 **type**: `bool`, `string`, `callable` **default**: `true`
 
 If set to `true`, download uri will automatically resolved using storage.
@@ -155,11 +149,10 @@ $builder->add('genericFile', VichImageType::class, [
         );
     },
 ]);
-
 ```
 
-imagine_pattern
-------------
+## imagine_pattern
+
 **type**: `string` **default**: `null`
 
 If set, image will automatically transformed using [LiipImagineBundle](https://github.com/liip/LiipImagineBundle/).
@@ -172,16 +165,15 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('photo', VichImageType::class, [
     'imagine_pattern' => 'product_photo_320x240',
 ]);
-
 ```
 
-storage_resolve_method
-------------
+## storage_resolve_method
+
 **type**: `int` **default**: `0`
 
 Allowed values:
 
-```
+```php
 VichImageType::STORAGE_RESOLVE_URI = 0;
 VichImageType::STORAGE_RESOLVE_PATH_ABSOLUTE = 1;
 VichImageType::STORAGE_RESOLVE_PATH_RELATIVE = 2;
@@ -195,7 +187,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('photo', VichImageType::class, [
     'storage_resolve_method' => VichImageType::STORAGE_RESOLVE_PATH_RELATIVE,
 ]);
-
 ```
 
 ## That was it!

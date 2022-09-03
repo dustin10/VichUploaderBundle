@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
@@ -9,6 +10,7 @@ use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -17,40 +19,19 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class UploadHandlerTest extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory
-     */
-    protected $factory;
+    protected MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface|MockObject $storage;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|FileInjectorInterface
-     */
-    protected $injector;
+    protected FileInjectorInterface|MockObject $injector;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
-     */
-    protected $dispatcher;
+    protected MockObject|EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Vich\UploaderBundle\Mapping\PropertyMapping
-     */
-    protected $mapping;
+    protected MockObject|PropertyMapping $mapping;
 
-    /**
-     * @var Article
-     */
-    protected $object;
+    protected Article $object;
 
-    /**
-     * @var UploadHandler
-     */
-    protected $handler;
+    protected UploadHandler $handler;
 
     private const FILE_FIELD = 'image';
 
@@ -254,7 +235,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return StorageInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return StorageInterface&MockObject
      */
     protected function getStorageMock(): StorageInterface
     {
@@ -262,7 +243,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return FileInjectorInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return FileInjectorInterface&MockObject
      */
     protected function getInjectorMock(): FileInjectorInterface
     {
@@ -270,7 +251,7 @@ final class UploadHandlerTest extends TestCase
     }
 
     /**
-     * @return EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return EventDispatcherInterface&MockObject
      */
     protected function getDispatcherMock(): EventDispatcherInterface
     {
@@ -282,16 +263,12 @@ final class UploadHandlerTest extends TestCase
         $object = $this->object;
         $mapping = $this->mapping;
 
-        return self::callback(static function ($event) use ($object, $mapping) {
-            return $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping;
-        });
+        return self::callback(static fn ($event) => $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping);
     }
 
     protected function expectEvents(array $events): void
     {
-        $arguments = \array_map(function (string $event): array {
-            return [$this->validEvent(), $event];
-        }, $events);
+        $arguments = \array_map(fn (string $event): array => [$this->validEvent(), $event], $events);
 
         $this->dispatcher
             ->expects(self::exactly(\count($events)))

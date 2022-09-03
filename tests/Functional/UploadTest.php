@@ -12,7 +12,7 @@ final class UploadTest extends WebTestCase
         $client = static::createClient();
         $this->loadFixtures($client);
 
-        $crawler = $client->request('GET', sprintf('/%s/vich_file', $uploadType));
+        $crawler = $client->request('GET', \sprintf('/%s/vich_file', $uploadType));
         self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();
@@ -53,7 +53,7 @@ final class UploadTest extends WebTestCase
         $client = static::createClient();
         $this->loadFixtures($client);
 
-        $crawler = $client->request('GET', sprintf('/%s/vich_image', $uploadType));
+        $crawler = $client->request('GET', \sprintf('/%s/vich_image', $uploadType));
         self::assertTrue($client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('form_save')->form();

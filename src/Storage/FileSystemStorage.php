@@ -10,9 +10,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  * FileSystemStorage.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  */
-class FileSystemStorage extends AbstractStorage
+final class FileSystemStorage extends AbstractStorage
 {
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): ?File
     {
@@ -20,14 +19,13 @@ class FileSystemStorage extends AbstractStorage
 
         if ($file instanceof UploadedFile) {
             return $file->move($uploadDir, $name);
-        } else {
-            $targetPathname = $uploadDir.\DIRECTORY_SEPARATOR.$name;
-            if (!\copy($file->getPathname(), $targetPathname)) {
-                throw new \Exception('Could not copy file');
-            }
-
-            return new File($targetPathname);
         }
+        $targetPathname = $uploadDir.\DIRECTORY_SEPARATOR.$name;
+        if (!\copy($file->getPathname(), $targetPathname)) {
+            throw new \RuntimeException('Could not copy file');
+        }
+
+        return new File($targetPathname);
     }
 
     protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
@@ -48,7 +46,7 @@ class FileSystemStorage extends AbstractStorage
         return $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$path;
     }
 
-    public function resolveUri($obj, ?string $fieldName = null, ?string $className = null): ?string
+    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
     {
         [$mapping, $name] = $this->getFilename($obj, $fieldName, $className);
 

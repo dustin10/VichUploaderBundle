@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\SmartUniqueNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -41,10 +40,7 @@ final class SmartUniqidNamerTest extends TestCase
 
         $entity = new \stdClass();
 
-        $mapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $mapping = $this->getPropertyMappingMock();
         $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)

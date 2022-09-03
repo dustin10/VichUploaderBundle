@@ -1,5 +1,4 @@
-Serving files with a controller
-===============================
+# Serving files with a controller
 
 There are a few use-cases for which serving uploaded files through a controller
 instead directly serving them from the HTTP server can be useful. It could be
@@ -10,7 +9,7 @@ download of the file** instead of opening it in the same browser tab, …
 For all these reasons, the bundle provides a [`DownloadHandler`](https://github.com/dustin10/VichUploaderBundle/blob/master/Handler/DownloadHandler.php)
 that can be used in your controllers.
 
-### Usage
+## Usage
 
 This handler is exposed in the container as a service named `Vich\UploaderBundle\Handler\DownloadHandler`.
 The entry point will be the `downloadObject` method, taking an object and the
@@ -27,7 +26,7 @@ class AcmeController extends AbstractController
 }
 ```
 
-### Displaying inline
+## Displaying inline
 
 Instead of forcing the file to be downloaded by you browser, you can set it as an **inline** content.
 Depending on the capabilities of the browser, the file should be displayed inside the browser.
@@ -46,7 +45,7 @@ class AcmeController extends AbstractController
 }
 ```
 
-### Renaming files
+## Renaming files
 
 This handler can also be used to rename the downloaded files.
 

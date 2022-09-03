@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\OrignameNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -11,7 +10,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-class OrignameNamerTest extends TestCase
+final class OrignameNamerTest extends TestCase
 {
     public function fileDataProvider(): array
     {
@@ -34,9 +33,7 @@ class OrignameNamerTest extends TestCase
 
         $entity = new \DateTime();
 
-        $mapping = $this->getMockBuilder(PropertyMapping::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mapping = $this->getPropertyMappingMock();
         $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)

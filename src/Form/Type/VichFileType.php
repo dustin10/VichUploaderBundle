@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -26,35 +25,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class VichFileType extends AbstractType
 {
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
-     * @var UploadHandler
-     */
-    protected $handler;
-
-    /**
-     * @var PropertyMappingFactory
-     */
-    protected $factory;
-
-    /**
-     * @var PropertyAccessorInterface
-     */
-    protected $propertyAccessor;
+    protected readonly PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(
-        StorageInterface $storage,
-        UploadHandler $handler,
-        PropertyMappingFactory $factory,
+        protected readonly StorageInterface $storage,
+        protected readonly UploadHandler $handler,
+        protected readonly PropertyMappingFactory $factory,
         PropertyAccessorInterface $propertyAccessor = null
     ) {
-        $this->storage = $storage;
-        $this->handler = $handler;
-        $this->factory = $factory;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
@@ -63,7 +41,6 @@ class VichFileType extends AbstractType
         $resolver->setDefaults([
             'allow_delete' => true,
             'asset_helper' => false,
-            'download_link' => null,
             'download_uri' => true,
             'download_label' => 'vich_uploader.link.download',
             'delete_label' => 'vich_uploader.form_label.delete_confirm',
@@ -72,22 +49,9 @@ class VichFileType extends AbstractType
 
         $resolver->setAllowedTypes('allow_delete', 'bool');
         $resolver->setAllowedTypes('asset_helper', 'bool');
-        $resolver->setAllowedTypes('download_link', ['null', 'bool']);
         $resolver->setAllowedTypes('download_uri', ['bool', 'string', 'callable']);
         $resolver->setAllowedTypes('download_label', ['bool', 'string', 'callable', PropertyPath::class]);
         $resolver->setAllowedTypes('error_bubbling', 'bool');
-
-        $downloadUriNormalizer = static function (Options $options, $downloadUri) {
-            if (null !== $options['download_link']) {
-                @\trigger_error('The "download_link" option is deprecated since version 1.6 and will be removed in 2.0. You should use "download_uri" instead.', \E_USER_DEPRECATED);
-
-                return $options['download_link'];
-            }
-
-            return $downloadUri;
-        };
-
-        $resolver->setNormalizer('download_uri', $downloadUriNormalizer);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -172,12 +136,7 @@ class VichFileType extends AbstractType
         return $form->getConfig()->getOption('property_path') ?? $form->getName();
     }
 
-    /**
-     * @param bool|callable $uriOption
-     *
-     * @return string|bool|null
-     */
-    protected function resolveUriOption($uriOption, object $object, FormInterface $form)
+    protected function resolveUriOption(mixed $uriOption, object $object, FormInterface $form): string|bool|null
     {
         if (true === $uriOption) {
             return $this->storage->resolveUri($object, $this->getFieldName($form));
@@ -190,13 +149,14 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    /**
-     * @param bool|callable|object $downloadLabel
-     */
-    protected function resolveDownloadLabel($downloadLabel, object $object, FormInterface $form): array
+    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form): array
     {
         if (true === $downloadLabel) {
-            $mapping = $this->factory->fromField($object, $this->getFieldName($form));
+            $fieldName = $this->getFieldName($form);
+            $mapping = $this->factory->fromField($object, $fieldName);
+            if (null === $mapping) {
+                throw new \UnexpectedValueException(\sprintf('Cannot find mapping for "%s" field', $fieldName));
+            }
 
             return ['download_label' => $mapping->readProperty($object, 'originalName'), 'translation_domain' => false];
         }

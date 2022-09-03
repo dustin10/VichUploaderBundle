@@ -4,10 +4,12 @@ namespace Vich\UploaderBundle\Tests\Functional;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
@@ -54,7 +56,7 @@ abstract class WebTestCase extends BaseWebTestCase
 
         $connection = $om->getConnection();
         $params = $connection->getParams();
-        $name = isset($params['path']) ? $params['path'] : (isset($params['dbname']) ? $params['dbname'] : false);
+        $name = $params['path'] ?? $params['dbname'] ?? false;
 
         if (!$name) {
             throw new \InvalidArgumentException("Connection does not contain a 'path' or 'dbname' parameter and cannot be dropped.");
@@ -67,5 +69,10 @@ abstract class WebTestCase extends BaseWebTestCase
         if (!empty($metadatas)) {
             $schemaTool->createSchema($metadatas);
         }
+    }
+
+    protected function mockMetadataReader(): MetadataReader|MockObject
+    {
+        return $this->createMock(MetadataReader::class);
     }
 }

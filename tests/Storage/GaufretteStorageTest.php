@@ -7,6 +7,7 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -17,10 +18,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class GaufretteStorageTest extends StorageTestCase
 {
-    /**
-     * @var FilesystemMap&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $filesystemMap;
+    protected FilesystemMap|MockObject $filesystemMap;
 
     protected function getStorage(): StorageInterface
     {
@@ -29,7 +27,7 @@ class GaufretteStorageTest extends StorageTestCase
 
     protected function setUp(): void
     {
-        $this->filesystemMap = $this->getFilesystemMapMock();
+        $this->filesystemMap = $this->createMock(FilesystemMap::class);
 
         parent::setUp();
     }
@@ -146,7 +144,6 @@ class GaufretteStorageTest extends StorageTestCase
     public function testThatRemoveMethodDoesDeleteFile(): void
     {
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
@@ -176,7 +173,6 @@ class GaufretteStorageTest extends StorageTestCase
     public function testRemoveNotFoundFile(): void
     {
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
@@ -244,7 +240,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('setMetadata');
 
         $filesystem
-            ->expects($this->any())
             ->method('getAdapter')
             ->willReturn($adapter);
 
@@ -300,7 +295,6 @@ class GaufretteStorageTest extends StorageTestCase
             ->willReturn($filesystem);
 
         $filesystem
-            ->expects($this->any())
             ->method('getAdapter')
             ->willReturn($adapter);
 
@@ -312,25 +306,8 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    /**
-     * @return FilesystemMap&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getFilesystemMapMock(): FilesystemMap
+    protected function getFilesystemMock(): Filesystem|MockObject
     {
-        return $this
-            ->getMockBuilder(FilesystemMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @return Filesystem&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getFilesystemMock(): Filesystem
-    {
-        return $this
-            ->getMockBuilder(Filesystem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createMock(Filesystem::class);
     }
 }

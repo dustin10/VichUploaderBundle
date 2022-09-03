@@ -16,9 +16,8 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * @author Kévin Gomez <contact@kevingomez.fr>
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Massimiliano Arione <max.arione@gmail.com>
- * @final
  */
-class VichImageType extends VichFileType
+final class VichImageType extends VichFileType
 {
     public const STORAGE_RESOLVE_URI = 0;
 
@@ -26,20 +25,14 @@ class VichImageType extends VichFileType
 
     public const STORAGE_RESOLVE_PATH_RELATIVE = 2;
 
-    /**
-     * @var CacheManager|null
-     */
-    private $cacheManager;
-
     public function __construct(
         StorageInterface $storage,
         UploadHandler $handler,
         PropertyMappingFactory $factory,
         PropertyAccessorInterface $propertyAccessor = null,
-        CacheManager $cacheManager = null
+        private readonly ?CacheManager $cacheManager = null
     ) {
         parent::__construct($storage, $handler, $factory, $propertyAccessor);
-        $this->cacheManager = $cacheManager;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -49,23 +42,21 @@ class VichImageType extends VichFileType
         $resolver->setDefaults([
             'image_uri' => true,
             'imagine_pattern' => null,
-            'storage_resolve_method' => static::STORAGE_RESOLVE_URI,
+            'storage_resolve_method' => self::STORAGE_RESOLVE_URI,
         ]);
 
         $resolver->setAllowedValues(
             'storage_resolve_method',
             [
-                static::STORAGE_RESOLVE_URI,
-                static::STORAGE_RESOLVE_PATH_RELATIVE,
-                static::STORAGE_RESOLVE_PATH_ABSOLUTE,
+                self::STORAGE_RESOLVE_URI,
+                self::STORAGE_RESOLVE_PATH_RELATIVE,
+                self::STORAGE_RESOLVE_PATH_ABSOLUTE,
             ]
         );
 
         $resolver->setAllowedTypes('image_uri', ['bool', 'string', 'callable']);
 
-        $imageUriNormalizer = static function (Options $options, $imageUri) {
-            return $imageUri ?? $options['download_uri'];
-        };
+        $imageUriNormalizer = static fn (Options $options, $imageUri) => $imageUri ?? $options['download_uri'];
 
         $resolver->setNormalizer('image_uri', $imageUriNormalizer);
     }
@@ -97,9 +88,6 @@ class VichImageType extends VichFileType
 
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
         }
-        // required for BC
-        // TODO: remove for 2.0
-        $view->vars['show_download_link'] = !empty($view->vars['download_uri']);
         $view->vars['asset_helper'] = $options['asset_helper'];
     }
 
@@ -110,13 +98,13 @@ class VichImageType extends VichFileType
 
     private function resolvePath(int $storageResolveMethod, object $object, FormInterface $form): ?string
     {
-        if (static::STORAGE_RESOLVE_URI === $storageResolveMethod) {
+        if (self::STORAGE_RESOLVE_URI === $storageResolveMethod) {
             return $this->storage->resolveUri($object, $this->getFieldName($form));
         }
-        if (static::STORAGE_RESOLVE_PATH_ABSOLUTE === $storageResolveMethod) {
+        if (self::STORAGE_RESOLVE_PATH_ABSOLUTE === $storageResolveMethod) {
             return $this->storage->resolvePath($object, $this->getFieldName($form));
         }
-        if (static::STORAGE_RESOLVE_PATH_RELATIVE === $storageResolveMethod) {
+        if (self::STORAGE_RESOLVE_PATH_RELATIVE === $storageResolveMethod) {
             return $this->storage->resolvePath($object, $this->getFieldName($form), null, true);
         }
 

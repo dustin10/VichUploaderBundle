@@ -12,27 +12,16 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class Event extends ContractEvent
 {
-    /** @var object */
-    protected $object;
+    protected bool $cancel = false;
 
-    /** @var PropertyMapping */
-    protected $mapping;
-
-    /** @var bool */
-    protected $cancel = false;
-
-    public function __construct($object, PropertyMapping $mapping)
+    public function __construct(protected readonly object $object, protected readonly PropertyMapping $mapping)
     {
-        $this->object = $object;
-        $this->mapping = $mapping;
     }
 
     /**
      * Accessor to the object being manipulated.
-     *
-     * @return object
      */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }

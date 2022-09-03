@@ -1,5 +1,4 @@
-VichFileType Field
-==================
+# VichFileType Field
 
 The bundle provides a custom form type in order to ease the upload, deletion and
 download of files.
@@ -29,12 +28,12 @@ class Form extends AbstractType
 }
 ```
 
-allow_delete
-------------
+## allow_delete
+
 **type**: `bool` **default**: `true`
 
-delete_label
---------------
+## delete_label
+
 **type**: `string` **default**: `vich_uploader.form_label.delete_confirm`
 
 ```php
@@ -43,17 +42,16 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 $builder->add('genericFile', VichImageType::class, [
     'delete_label' => 'Remove file',
 ]);
-
 ```
 
-asset_helper
-------------
+## asset_helper
+
 **type**: `bool` **default**: `false`
 
 If set to `true`, download uri will be generated with `asset()` method from `symfony/asset` component.
 
-download_uri
-------------
+## download_uri
+
 **type**: `bool`, `string`, `callable` **default**: `true`
 
 If set to `true`, download uri will automatically resolved using storage.
@@ -66,7 +64,6 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_uri' => $router->generateUrl('acme_download_image', $product->getId()),
 ]);
-
 ```
 
 Can be callable
@@ -79,11 +76,10 @@ $builder->add('genericFile', VichFileType::class, [
         return $router->generateUrl('acme_download_image', $product->getId());
     },
 ]);
-
 ```
 
-download_label
---------------
+## download_label
+
 **type**: `bool`, `string`, `callable`, `Symfony\Component\PropertyAccess\PropertyPath` **default**: `'download'`
 
 If set to `true`, download label will use original file name.
@@ -93,14 +89,12 @@ Otherwise, you can pass `translation_domain` option, setting it to `false` (no t
 
 See [Symfony documentation](https://symfony.com/doc/current/translation.html) for more informations.
 
-
 ```php
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 $builder->add('genericFile', VichFileType::class, [
     'download_label' => 'download_file',
 ]);
-
 ```
 
 Can be callable
@@ -111,10 +105,10 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_label' => static fn (Product $product): string => $product->getTitle(),
 ]);
-
 ```
 
-Can be property path 
+Can be property path
+
 ```php
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -122,7 +116,6 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 $builder->add('genericFile', VichFileType::class, [
     'download_label' => new PropertyPath('title'),
 ]);
-
 ```
 
 ## That was it!

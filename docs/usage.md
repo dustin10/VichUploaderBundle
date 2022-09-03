@@ -1,5 +1,4 @@
-Usage
-=====
+# Usage
 
 This guide will show you how to handle a file upload, store the file on the file
 system (or on some remote server if you prefer) and persist the stored filename
@@ -7,9 +6,9 @@ to the database.
 
 Here is a summary of what you will have to do:
 
-  * [configure an upload mapping](#step-1-configure-an-upload-mapping) ;
-  * [link the upload mapping to an entity](#step-2-link-the-upload-mapping-to-an-entity) ;
-  * [configure the lifecycle events](#step-3-configure-the-lifecycle-events-optional-step) (optional step).
+* [configure an upload mapping](#step-1-configure-an-upload-mapping) ;
+* [link the upload mapping to an entity](#step-2-link-the-upload-mapping-to-an-entity) ;
+* [configure the lifecycle events](#step-3-configure-the-lifecycle-events-optional-step) (optional step).
 
 **Note:**
 
@@ -42,11 +41,6 @@ vich_uploader:
 This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
-**Note:**
-> The old default behaviour of not defining `namer` (and so using the original name of the
-> uploaded file) is deprecated, you should always use a [namer](namers.md).
-
-
 ## Step 2: link the upload mapping to an entity
 
 The final step is to create a link between the filesystem and the entity you
@@ -70,15 +64,14 @@ Next, you have to create the two fields needed for the bundle to work:
 
 The `UploadableField` annotation has a few options. They are as follows:
 
-  * `mapping`: required, the mapping name specified in the bundle configuration to use;
-  * `fileNameProperty`: required, the property that will contain the name of the uploaded file;
-  * `size`: the property that will contain the size in bytes of the uploaded file;
-  * `mimeType`: the property that will contain the mime type of the uploaded file;
-  * `originalName`: the property that will contain the original name of the uploaded file.
-  * `dimensions`: the property that will contain the dimensions of uploaded **image file**
+* `mapping`: required, the mapping name specified in the bundle configuration to use;
+* `fileNameProperty`: required, the property that will contain the name of the uploaded file;
+* `size`: the property that will contain the size in bytes of the uploaded file;
+* `mimeType`: the property that will contain the mime type of the uploaded file;
+* `originalName`: the property that will contain the original name of the uploaded file.
+* `dimensions`: the property that will contain the dimensions of uploaded **image file**
 
 Let's look at an example using a fictional `Product` ORM entity:
-
 
 ``` php
 <?php
@@ -90,7 +83,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity]
-#[Vich\Uploadable] 
+#[Vich\Uploadable]
 class Product
 {
     #[ORM\Id]
@@ -147,7 +140,7 @@ class Product
     {
         return $this->imageName;
     }
-    
+
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
@@ -160,7 +153,7 @@ class Product
 }
 ```
 
-Or, with PHP 7 annotations :
+Or, with annotations :
 
 ``` php
 <?php
@@ -188,9 +181,9 @@ class Product
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
+     *
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
-     * 
+     *
      * @var File|null
      */
     private $imageFile;
@@ -250,7 +243,7 @@ class Product
     {
         return $this->imageName;
     }
-    
+
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
@@ -276,7 +269,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity]
-#[Vich\Uploadable] 
+#[Vich\Uploadable]
 class Product
 {
     #[ORM\Id]
@@ -337,7 +330,6 @@ class Product
 
 > Don't forget to clear the cache once your entity is configured: `php bin/console cache:clear`
 
-
 ## Step 3: configure the lifecycle events (optional step)
 
 Even if the previous mapping is fully working, you might want to customize the
@@ -363,16 +355,15 @@ vich_uploader:
 
 All options are listed below:
 
-  * `delete_on_remove`: default `true`, should the file be deleted when the entity is removed ;
-  * `delete_on_update`: default `true`, should the file be deleted when a new file is uploaded ;
-  * `inject_on_load`: default `false`, should the file be injected into the uploadable entity
+* `delete_on_remove`: default `true`, should the file be deleted when the entity is removed ;
+* `delete_on_update`: default `true`, should the file be deleted when a new file is uploaded ;
+* `inject_on_load`: default `false`, should the file be injected into the uploadable entity
     when it is loaded from the data store. The object will be an instance of
     `Symfony\Component\HttpFoundation\File\File`.
 
 **Note:**
 
 > The values used for the last three configuration options are the default ones.
-
 
 ## That was it!
 

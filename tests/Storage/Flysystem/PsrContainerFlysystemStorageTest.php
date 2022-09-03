@@ -12,10 +12,7 @@ final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTes
 {
     protected function createRegistry(FilesystemOperator $filesystem): ContainerInterface
     {
-        $locator = $this
-            ->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $locator = $this->createMock(ContainerInterface::class);
 
         $locator
             ->method('get')

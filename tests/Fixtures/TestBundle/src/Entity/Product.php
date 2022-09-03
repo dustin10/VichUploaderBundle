@@ -6,35 +6,17 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class Product
 {
-    /**
-     * @var File
-     */
-    private $image;
+    private ?\Symfony\Component\HttpFoundation\File\File $image = null;
 
-    /**
-     * @var string
-     */
-    private $imageName;
+    private ?string $imageName = null;
 
-    /**
-     * @var string
-     */
-    private $imageSize;
+    private ?string $imageSize = null;
 
-    /**
-     * @var string|null
-     */
-    private $imageMimeType;
+    private ?string $imageMimeType = null;
 
-    /**
-     * @var string
-     */
-    private $imageOriginalName;
+    private ?string $imageOriginalName = null;
 
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
 
     public function getImage(): File
     {

@@ -12,28 +12,16 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 abstract class AbstractHandler
 {
-    /**
-     * @var PropertyMappingFactory
-     */
-    protected $factory;
-
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    public function __construct(PropertyMappingFactory $factory, StorageInterface $storage)
-    {
-        $this->factory = $factory;
-        $this->storage = $storage;
+    public function __construct(
+        protected readonly PropertyMappingFactory $factory,
+        protected readonly StorageInterface $storage,
+    ) {
     }
 
     /**
-     * @param object|array $obj
-     *
      * @throws MappingNotFoundException
      */
-    protected function getMapping($obj, string $fieldName, ?string $className = null): ?PropertyMapping
+    protected function getMapping(object|array $obj, string $fieldName, ?string $className = null): ?PropertyMapping
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 

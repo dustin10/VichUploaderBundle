@@ -12,14 +12,8 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
  */
 final class MappingCollector extends DataCollector
 {
-    /**
-     * @var MetadataReader
-     */
-    private $metadataReader;
-
-    public function __construct(MetadataReader $metadataReader)
+    public function __construct(private readonly MetadataReader $metadataReader)
     {
-        $this->metadataReader = $metadataReader;
     }
 
     public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
@@ -49,7 +43,7 @@ final class MappingCollector extends DataCollector
 
     public function getMappingsCount(): int
     {
-        return \count($this->data['mappings']);
+        return \is_countable($this->data['mappings']) ? \count($this->data['mappings']) : 0;
     }
 
     public function getMappings(): array

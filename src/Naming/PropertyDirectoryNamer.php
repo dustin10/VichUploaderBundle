@@ -13,34 +13,18 @@ use Vich\UploaderBundle\Util\Transliterator;
  * Directory namer which can create subfolder depends on property.
  *
  * @author Raynald Coupé <raynald@easi-services.fr>
- * @final
  */
-class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+final class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
-    /**
-     * @var string
-     */
-    private $propertyPath;
+    private ?string $propertyPath = null;
 
-    /**
-     * @var bool
-     */
-    private $transliterate = false;
+    private bool $transliterate = false;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    protected $propertyAccessor;
+    private readonly PropertyAccessorInterface $propertyAccessor;
 
-    /**
-     * @var Transliterator
-     */
-    private $transliterator;
-
-    public function __construct(?PropertyAccessorInterface $propertyAccessor, Transliterator $transliterator)
+    public function __construct(?PropertyAccessorInterface $propertyAccessor, private readonly Transliterator $transliterator)
     {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
-        $this->transliterator = $transliterator;
     }
 
     /**
@@ -60,7 +44,7 @@ class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInt
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function directoryName($object, PropertyMapping $mapping): string
+    public function directoryName(object $object, PropertyMapping $mapping): string
     {
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');

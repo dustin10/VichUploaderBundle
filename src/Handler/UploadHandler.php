@@ -16,30 +16,16 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * Upload handler.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
- * @final
  */
-class UploadHandler extends AbstractHandler
+final class UploadHandler extends AbstractHandler
 {
-    /**
-     * @var FileInjectorInterface
-     */
-    protected $injector;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
-
     public function __construct(
         PropertyMappingFactory $factory,
         StorageInterface $storage,
-        FileInjectorInterface $injector,
-        EventDispatcherInterface $dispatcher
+        protected readonly FileInjectorInterface $injector,
+        protected readonly EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($factory, $storage);
-
-        $this->injector = $injector;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -50,7 +36,7 @@ class UploadHandler extends AbstractHandler
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    public function upload($obj, string $fieldName): void
+    public function upload(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
 
@@ -67,7 +53,7 @@ class UploadHandler extends AbstractHandler
         $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
     }
 
-    public function inject($obj, string $fieldName): void
+    public function inject(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
 
@@ -78,7 +64,7 @@ class UploadHandler extends AbstractHandler
         $this->dispatch(Events::POST_INJECT, new Event($obj, $mapping));
     }
 
-    public function clean($obj, string $fieldName): void
+    public function clean(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
 
@@ -90,7 +76,7 @@ class UploadHandler extends AbstractHandler
         $this->remove($obj, $fieldName);
     }
 
-    public function remove($obj, string $fieldName): void
+    public function remove(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
         $oldFilename = $mapping->getFileName($obj);

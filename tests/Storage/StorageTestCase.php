@@ -17,15 +17,9 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class StorageTestCase extends TestCase
 {
-    /**
-     * @var PropertyMappingFactory&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $factory;
+    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject$factory;
 
-    /**
-     * @var PropertyMapping&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mapping;
+    protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
     /**
      * @var DummyEntity
@@ -58,7 +52,6 @@ abstract class StorageTestCase extends TestCase
         $this->storage = $this->getStorage();
 
         $this->factory
-            ->expects($this->any())
             ->method('fromObject')
             ->with($this->object)
             ->willReturn([$this->mapping]);

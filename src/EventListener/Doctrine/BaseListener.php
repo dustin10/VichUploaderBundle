@@ -15,32 +15,12 @@ use Vich\UploaderBundle\Util\ClassUtils;
  */
 abstract class BaseListener implements EventSubscriber
 {
-    /**
-     * @var string
-     */
-    protected $mapping;
-
-    /**
-     * @var AdapterInterface
-     */
-    protected $adapter;
-
-    /**
-     * @var MetadataReader
-     */
-    protected $metadata;
-
-    /**
-     * @var UploadHandler
-     */
-    protected $handler;
-
-    public function __construct(string $mapping, AdapterInterface $adapter, MetadataReader $metadata, UploadHandler $handler)
-    {
-        $this->mapping = $mapping;
-        $this->adapter = $adapter;
-        $this->metadata = $metadata;
-        $this->handler = $handler;
+    public function __construct(
+        protected readonly string $mapping,
+        protected readonly AdapterInterface $adapter,
+        protected readonly MetadataReader $metadata,
+        protected readonly UploadHandler $handler,
+    ) {
     }
 
     /**
@@ -48,7 +28,7 @@ abstract class BaseListener implements EventSubscriber
      *
      * @param object $object The object to test
      */
-    protected function isUploadable($object): bool
+    protected function isUploadable(object $object): bool
     {
         return $this->metadata->isUploadable(ClassUtils::getClass($object), $this->mapping);
     }
@@ -62,12 +42,10 @@ abstract class BaseListener implements EventSubscriber
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException
      */
-    protected function getUploadableFields($object): array
+    protected function getUploadableFields(object $object): array
     {
         $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
 
-        return \array_map(static function (array $data): string {
-            return $data['propertyName'];
-        }, $fields);
+        return \array_map(static fn (array $data): string => $data['propertyName'], $fields);
     }
 }

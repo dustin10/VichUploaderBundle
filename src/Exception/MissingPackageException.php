@@ -2,10 +2,7 @@
 
 namespace Vich\UploaderBundle\Exception;
 
-/**
- * @final
- */
-class MissingPackageException extends \RuntimeException implements VichUploaderExceptionInterface
+final class MissingPackageException extends \RuntimeException implements VichUploaderExceptionInterface
 {
     public function __construct(string $message = '', \Throwable $previous = null)
     {

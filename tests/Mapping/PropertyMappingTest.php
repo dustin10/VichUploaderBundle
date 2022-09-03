@@ -120,25 +120,6 @@ class PropertyMappingTest extends TestCase
         self::assertEquals('123', $prop->getUploadName($object));
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetUploadNameWithoutNamer(): void
-    {
-        $object = new DummyEntity();
-        $prop = new PropertyMapping('file', 'fileName');
-
-        $file = $this->getUploadedFileMock();
-        $file
-            ->expects(self::once())
-            ->method('getClientOriginalName')
-            ->willReturn('filename');
-
-        $object->setFile($file);
-
-        self::assertEquals('filename', $prop->getUploadName($object));
-    }
-
     public function directoryProvider(): array
     {
         return [

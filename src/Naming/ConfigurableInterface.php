@@ -16,5 +16,5 @@ interface ConfigurableInterface
      *
      * @param array $options The options
      */
-    public function configure(array $options);
+    public function configure(array $options): void;
 }

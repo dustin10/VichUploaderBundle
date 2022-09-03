@@ -1,7 +1,7 @@
-Remove files asynchronously
-=========================
+# Remove files asynchronously
 
-To remove files asynchronously, ensure you have the [Messenger](https://symfony.com/doc/current/messenger.html) installed.
+To remove files asynchronously, ensure you have the [Messenger](https://symfony.com/doc/current/messenger.html)
+installed.
 The messenger allows you to run tasks asynchronously, in our example the file removal.
 
 **Note**:

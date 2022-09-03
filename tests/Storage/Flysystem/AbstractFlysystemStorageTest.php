@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -18,27 +19,15 @@ use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
  */
 abstract class AbstractFlysystemStorageTest extends StorageTestCase
 {
-    public const FS_KEY = 'filesystemKey';
+    final public const FS_KEY = 'filesystemKey';
 
-    /**
-     * @var (MountManager|ContainerInterface)&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    protected MountManager|ContainerInterface $registry;
 
-    /**
-     * @var Filesystem&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $filesystem;
+    protected Filesystem|MockObject $filesystem;
 
-    /**
-     * @var FilesystemAdapter&\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $adapter;
+    protected FilesystemAdapter|MockObject $adapter;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function createRegistry(FilesystemOperator $filesystem);
+    abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
 
     /**
      * @requires function MountManager::__construct
@@ -61,7 +50,6 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         parent::setUp();
 
         $this->mapping
-            ->expects($this->any())
             ->method('getUploadDestination')
             ->willReturn(self::FS_KEY);
     }

@@ -18,12 +18,12 @@ interface AdapterInterface
      *
      * @return object The mapped object
      */
-    public function getObjectFromArgs($event);
+    public function getObjectFromArgs(object $event): object;
 
     /**
      * Recomputes the change set for the object.
      *
      * @param object $event The event
      */
-    public function recomputeChangeSet($event);
+    public function recomputeChangeSet(object $event): void;
 }

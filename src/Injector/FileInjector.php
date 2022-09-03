@@ -10,21 +10,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * FileInjector.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
- * @final
  */
-class FileInjector implements FileInjectorInterface
+final class FileInjector implements FileInjectorInterface
 {
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    public function __construct(StorageInterface $storage)
+    public function __construct(private readonly StorageInterface $storage)
     {
-        $this->storage = $storage;
     }
 
-    public function injectFile($obj, PropertyMapping $mapping): void
+    public function injectFile(object $obj, PropertyMapping $mapping): void
     {
         $path = $this->storage->resolvePath($obj, $mapping->getFilePropertyName());
 

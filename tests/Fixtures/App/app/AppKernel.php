@@ -19,11 +19,7 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        if (Kernel::MAJOR_VERSION > 4) {
-            $loader->load(__DIR__.'/config/config.yml');
-        } else {
-            $loader->load(__DIR__.'/config/config-sf4.yml');
-        }
+        $loader->load(__DIR__.'/config/config.yml');
     }
 
     public function getCacheDir(): string

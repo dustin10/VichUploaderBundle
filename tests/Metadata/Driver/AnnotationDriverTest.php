@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Metadata\ClassMetadata;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use Vich\TestBundle\Entity\Article;
@@ -22,14 +23,11 @@ use Vich\UploaderBundle\Tests\DummyFile;
  */
 final class AnnotationDriverTest extends TestCase
 {
-    /** @var Connection|\PHPUnit\Framework\MockObject\MockObject */
-    private $connection;
+    private Connection|MockObject $connection;
 
-    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $entityManager;
+    private EntityManagerInterface|MockObject $entityManager;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
-    private $managerRegistry;
+    private ManagerRegistry|MockObject $managerRegistry;
 
     protected function setUp(): void
     {
@@ -55,12 +53,9 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static function (ReflectionProperty $property): ?UploadableField {
-                return 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null;
-            });
+            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
-        /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
@@ -183,9 +178,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static function (ReflectionProperty $property): ?UploadableField {
-                return 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null;
-            });
+            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
