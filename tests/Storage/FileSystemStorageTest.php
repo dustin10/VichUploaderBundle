@@ -264,11 +264,13 @@ final class FileSystemStorageTest extends StorageTestCase
      */
     public function testUploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
     {
+        $uploadDir = $this->root->url().\DIRECTORY_SEPARATOR.$uploadDir;
+        $expectedDir = $this->root->url().\DIRECTORY_SEPARATOR.$expectedDir;
         $file = $this->getUploadedFileMock();
 
         $file
             ->method('getClientOriginalName')
-            ->willReturn('filename.txt');
+            ->willReturn('test.txt');
 
         $this->mapping
             ->expects(self::once())
@@ -285,7 +287,7 @@ final class FileSystemStorageTest extends StorageTestCase
             ->expects(self::once())
             ->method('getUploadName')
             ->with($this->object)
-            ->willReturn('filename.txt');
+            ->willReturn('test.txt');
 
         $this->mapping
             ->expects(self::once())
@@ -296,7 +298,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $file
             ->expects(self::once())
             ->method('move')
-            ->with($expectedDir, 'filename.txt');
+            ->with($expectedDir, 'test.txt');
 
         $this->storage->upload($this->object, $this->mapping);
     }
@@ -309,7 +311,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $file = $this->getReplacingFileMock();
         $file
             ->method('getClientOriginalName')
-            ->willReturn('filename.txt');
+            ->willReturn('test.txt');
         $file
             ->method('getPathname')
             ->willReturn($this->getValidUploadDir().'/test.txt');
@@ -348,7 +350,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $file = $this->getReplacingFileMock();
         $file
             ->method('getClientOriginalName')
-            ->willReturn('filename.txt');
+            ->willReturn('test.txt');
         $file
             ->method('getPathname')
             ->willReturn($this->getValidUploadDir().'/test.txt');
@@ -383,20 +385,20 @@ final class FileSystemStorageTest extends StorageTestCase
     {
         return [
             // upload dir, dir, expected dir
-            [
-                '/root_dir',
+            'zero subdirectories' => [
+                '/storage/vich_uploader_bundle',
                 '',
-                '/root_dir/',
+                '/storage/vich_uploader_bundle/',
             ],
-            [
-                '/root_dir',
+            'one subdirectory' => [
+                '/storage/vich_uploader_bundle',
                 'dir_1',
-                '/root_dir/dir_1',
+                '/storage/vich_uploader_bundle/dir_1',
             ],
-            [
-                '/root_dir',
+            'two subdirectories' => [
+                '/storage/vich_uploader_bundle',
                 'dir_1/dir_2',
-                '/root_dir/dir_1/dir_2',
+                '/storage/vich_uploader_bundle/dir_1/dir_2',
             ],
         ];
     }
