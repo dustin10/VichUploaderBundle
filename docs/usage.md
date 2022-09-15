@@ -71,6 +71,10 @@ The `UploadableField` annotation has a few options. They are as follows:
 * `originalName`: the property that will contain the original name of the uploaded file.
 * `dimensions`: the property that will contain the dimensions of uploaded **image file**
 
+_Warning__
+Be sure that the return types (for getter methods) & the parameter types (for setter methods) use the "?" symbol.
+It is mandatory for removing correctly Symfony entity, with no error.
+
 Let's look at an example using a fictional `Product` ORM entity:
 
 ``` php
