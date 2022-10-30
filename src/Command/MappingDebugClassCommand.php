@@ -17,11 +17,6 @@ final class MappingDebugClassCommand extends Command
         parent::__construct();
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'vich:mapping:debug-class';
-    }
-
     protected function configure(): void
     {
         $this

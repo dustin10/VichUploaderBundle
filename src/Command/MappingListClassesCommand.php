@@ -14,11 +14,6 @@ final class MappingListClassesCommand extends Command
         parent::__construct();
     }
 
-    public static function getDefaultName(): string
-    {
-        return 'vich:mapping:list-classes';
-    }
-
     protected function configure(): void
     {
         $this
