@@ -25,6 +25,7 @@ class SimpleAppKernel extends Kernel
     {
         $loader->load(static function (ContainerBuilder $container): void {
             $container->loadFromExtension('framework', [
+                'http_method_override' => true,
                 'secret' => '$ecret',
                 'router' => [
                     'resource' => 'kernel::loadRoutes',

@@ -15,8 +15,6 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
  */
 class MappingDebugClassCommand extends Command
 {
-    protected static $defaultName = 'vich:mapping:debug-class';
-
     /** @var MetadataReader */
     private $metadataReader;
 

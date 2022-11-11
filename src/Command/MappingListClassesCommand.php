@@ -12,8 +12,6 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
  */
 class MappingListClassesCommand extends Command
 {
-    protected static $defaultName = 'vich:mapping:list-classes';
-
     /** @var MetadataReader */
     private $metadataReader;
 
