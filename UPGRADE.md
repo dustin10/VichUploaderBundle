@@ -6,6 +6,6 @@
 * all methods have now return types
 * all constructors now use property promotion
 * all deprecated features were removed
-* [BC BREAK] the new default type for mapping is "attribute". You can still use annotations, but you need an explicit definition (set "annotation" as value for vich_uploader.metadata.type config key)
+* the new default type for mapping is "attribute". You can still use annotations, but you need an explicit definition (set "annotation" as value for "vich_uploader.metadata.type" config key)
 * the service "vich_uploader.current_date_time_helper" has been removed. The `DateTimeHelper` interface has been
   removed as well.
