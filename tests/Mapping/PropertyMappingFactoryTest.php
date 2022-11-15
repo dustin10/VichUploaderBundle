@@ -6,6 +6,7 @@ use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
@@ -42,7 +43,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->method('isUploadable')
             ->willReturn(false);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, []);
+        $resolver = new PropertyMappingResolver($this->container, []);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject(new DummyEntity());
     }
 
@@ -81,7 +83,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with($expectedClassName)
             ->willReturn($expectedFields);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject($object, $givenClassName);
 
         self::assertCount(1, $mappings);
@@ -111,7 +114,8 @@ class PropertyMappingFactoryTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, []);
+        $resolver = new PropertyMappingResolver($this->container, []);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject([]);
     }
 
@@ -146,7 +150,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject($obj);
 
         self::assertCount(1, $mappings);
@@ -202,7 +207,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
 
         self::assertCount(1, $mappings);
@@ -241,7 +247,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject(new DummyEntity());
     }
 
@@ -278,7 +285,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with($expectedClassName, 'file')
             ->willReturn($expectedFields);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField($object, 'file', $className);
 
         self::assertEquals('dummy_file', $mapping->getMappingName());
@@ -315,7 +323,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(null);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, []);
+        $resolver = new PropertyMappingResolver($this->container, []);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField(new DummyEntity(), 'oops');
 
         self::assertNull($mapping);
@@ -342,7 +351,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(['mapping' => 'dummy_file', 'propertyName' => 'file']);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings, '_suffix');
+        $resolver = new PropertyMappingResolver($this->container, $mappings, '_suffix');
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField(new DummyEntity(), 'file');
 
         self::assertEquals('file_suffix', $mapping->getFileNamePropertyName());
@@ -380,7 +390,8 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(['file' => ['mapping' => 'dummy_file', 'propertyName' => 'file', 'fileNameProperty' => 'fileName']]);
 
-        $factory = new PropertyMappingFactory($this->container, $this->metadata, $mappings);
+        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject(new DummyEntity());
 
         self::assertCount(1, $mappings);
