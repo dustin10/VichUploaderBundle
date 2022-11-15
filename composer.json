@@ -27,7 +27,7 @@
         "symfony/http-kernel": "^5.4 || ^6.0",
         "symfony/mime": "^5.4 || ^6.0",
         "symfony/property-access": "^5.4 || ^6.0",
-        "symfony/string": "^6.0"
+        "symfony/string": "^5.4 || ^6.0"
     },
     "require-dev": {
         "ext-sqlite3": "*",
