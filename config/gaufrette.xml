@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="vich_uploader.storage.gaufrette" class="Vich\UploaderBundle\Storage\GaufretteStorage" public="false" lazy="true">
+        <service id="vich_uploader.storage.gaufrette" class="Vich\UploaderBundle\Storage\GaufretteStorage" public="false">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="knp_gaufrette.filesystem_map" />
             <argument>%knp_gaufrette.stream_wrapper.protocol%</argument>
