@@ -1,0 +1,32 @@
+<xs:schema
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://vich-uploader-bundle/schema/"
+>
+    <xs:element name="vich_uploader">
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element name="field">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute type="xs:string" name="name" use="required"/>
+                                <xs:attribute type="xs:string" name="mapping" use="required"/>
+                                <xs:attribute type="xs:string" name="filename_property" use="required"/>
+                                <xs:attribute type="xs:string" name="size"/>
+                                <xs:attribute type="xs:string" name="dimensions"/>
+                                <xs:attribute type="xs:string" name="mime_type"/>
+                                <xs:attribute type="xs:string" name="original_name"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+
+            <xs:attribute type="xs:string" name="class" use="required"/>
+
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
