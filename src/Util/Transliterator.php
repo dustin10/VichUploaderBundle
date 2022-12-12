@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Util;
 
 use Symfony\Component\String\Slugger\SluggerInterface;
+use function strtolower;
 
 /**
  * @internal
@@ -18,12 +19,12 @@ final class Transliterator
      */
     public function transliterate(string $string, string $separator = '-'): string
     {
-        [$filename, $extension] = FilenameUtils::spitNameByExtension($string);
+        [$filename, $extension] = FilenameUtils::splitNameByExtension($string);
         $transliterated = $this->slugger->slug($filename, $separator);
         if ('' !== $extension) {
             $transliterated .= '.'.$extension;
         }
 
-        return \strtolower($transliterated);
+        return strtolower($transliterated);
     }
 }
