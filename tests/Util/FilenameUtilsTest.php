@@ -8,14 +8,14 @@ use Vich\UploaderBundle\Util\FilenameUtils;
 final class FilenameUtilsTest extends TestCase
 {
     /**
-     * @dataProvider spitNameByExtensionProvider
+     * @dataProvider splitNameByExtensionProvider
      */
-    public function testSpitNameByExtension(string $filename, string $basename, string $extension): void
+    public function testSplitNameByExtension(string $filename, string $basename, string $extension): void
     {
-        self::assertSame([$basename, $extension], FilenameUtils::spitNameByExtension($filename));
+        self::assertSame([$basename, $extension], FilenameUtils::splitNameByExtension($filename));
     }
 
-    public function spitNameByExtensionProvider(): array
+    public function splitNameByExtension(): array
     {
         return [
             'simple filename with extension' => ['filename.extension', 'filename', 'extension'],
