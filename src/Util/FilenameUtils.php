@@ -41,8 +41,8 @@ final class FilenameUtils
      */
     public static function spitNameByExtension(string $filename): array
     {
-        trigger_deprecation('vich/uploader-bundle', '2.0.2', '"%s()" is deprecated, use "splitNameByExtension()" instead.', __METHOD__);
+        trigger_deprecation('vich/uploader-bundle', '2.1.0', '"%s()" is deprecated, use "splitNameByExtension()" instead.', __METHOD__);
 
-        return $this->splitNameByExtension($filename);
+        return self::splitNameByExtension($filename);
     }
 }
