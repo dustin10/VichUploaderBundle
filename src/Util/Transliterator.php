@@ -24,7 +24,7 @@ final class Transliterator
         [$filename, $extension] = $this->splitNameByExtension($string);
         $transliterated = $this->slugger->slug($filename, $separator);
         if ('' !== $extension) {
-            $transliterated .= '.' . $extension;
+            $transliterated .= '.'.$extension;
         }
 
         return strtolower($transliterated);
