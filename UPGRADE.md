@@ -1,6 +1,6 @@
 # Upgrading from v2.0.1 to v2.1.0
 
-* the internal class src/Util/FilenameUtils.php has been removed.
+* the internal class `FilenameUtils` has been removed.
 
 # Upgrading from v1 to v2.0.0
 
