@@ -48,7 +48,7 @@
         "symfony/dom-crawler": "^5.4 || ^6.0",
         "symfony/form": "^5.4 || ^6.0",
         "symfony/framework-bundle": "^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "^6.1",
+        "symfony/phpunit-bridge": "^6.2",
         "symfony/security-csrf": "^5.4 || ^6.0",
         "symfony/translation": "^5.4 || ^6.0",
         "symfony/twig-bridge": "^5.4 || ^6.0",
