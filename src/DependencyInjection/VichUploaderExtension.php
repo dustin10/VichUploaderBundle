@@ -38,6 +38,7 @@ final class VichUploaderExtension extends Extension
         // define a few parameters
         $container->setParameter('vich_uploader.default_filename_attribute_suffix', $config['default_filename_attribute_suffix']);
         $container->setParameter('vich_uploader.mappings', $config['mappings']);
+        $container->setParameter('vich_uploader.metadata_type', $config['metadata']['type']);
 
         if (\str_starts_with((string) $config['storage'], '@')) {
             $container->setAlias('vich_uploader.storage', \substr((string) $config['storage'], 1));

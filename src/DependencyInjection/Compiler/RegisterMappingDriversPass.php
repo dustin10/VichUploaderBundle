@@ -18,7 +18,9 @@ final class RegisterMappingDriversPass implements CompilerPassInterface
             new Reference('vich_uploader.metadata_driver.xml'),
         ];
 
-        if ($container->has('annotation_reader')) {
+        $metaDataType = $container->getParameter('vich_uploader.metadata_type');
+
+        if ('attribute' === $metaDataType || ('annotation' === $metaDataType && $container->has('annotation_reader'))) {
             $managers = [];
             if ($container->hasDefinition('doctrine_mongodb')) {
                 $managers[] = new Reference('doctrine_mongodb');
