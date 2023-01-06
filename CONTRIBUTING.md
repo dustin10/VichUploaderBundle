@@ -51,9 +51,9 @@ make test TEST="Tests/Util/FilenameUtilsTest.php"
 
 will allow testing single Test Classes.
 
-There is only one environment available: PHP 8.1.
+There are two environments available: PHP 8.1 and PHP 8.2.
 Default environment is *PHP 8.1*. If you want to execute it against
-other (future) PHP version, please use environment variables as this:
+other PHP versions, please use environment variables as this:
 
 ```bash
 make tests #PHP 8.1 env
