@@ -33,6 +33,7 @@
         "ext-sqlite3": "*",
         "dg/bypass-finals": "^1.3",
         "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/mongodb-odm": "^2.4",
         "doctrine/orm": "^2.13",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "league/flysystem-bundle": "^2.3",
