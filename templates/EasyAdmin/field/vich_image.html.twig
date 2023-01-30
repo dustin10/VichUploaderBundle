@@ -1,0 +1,11 @@
+{% if vich_uploader_asset(entity.instance, field.property) %}
+    {% if (field.formTypeOptions.imagine_pattern is defined and field.formTypeOptions.imagine_pattern is not empty) %}
+        <img src="{{ vich_uploader_asset(entity.instance, field.property)|ea_apply_filter_if_exists('imagine_filter', field.formTypeOptions.imagine_pattern) }}">
+    {% else %}
+        <img src="{{ vich_uploader_asset(entity.instance, field.property) }}" style="max-height: 150px;">
+    {% endif %}
+{% else %}
+    <span class="badge badge-secondary">
+        {{ 'Empty'|trans(domain = ea.i18n.translationDomain) }}
+    </span>
+{% endif %}

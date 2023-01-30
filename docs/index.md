@@ -52,6 +52,7 @@ composer require symfony/form
 ### Other usages
 
 * [Inject files from other sources](other_usages/replacing_file.md)
+* [Integrate with EasyAdmin](easyadmin/index.md)
 
 ### Download-related
 

@@ -1,0 +1,9 @@
+{% if vich_uploader_asset(entity.instance, field.property) %}
+    <a href="{{ vich_uploader_asset(entity.instance, field.property) }}" download>
+        {{ 'Download'|trans(domain = ea.i18n.translationDomain) }}
+    </a>
+{% else %}
+    <span class="badge badge-secondary">
+        {{ 'Empty'|trans(domain = ea.i18n.translationDomain) }}
+    </span>
+{% endif %}

@@ -55,7 +55,8 @@
         "symfony/twig-bundle": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
-        "symfony/yaml": "^5.4 || ^6.0"
+        "symfony/yaml": "^5.4 || ^6.0",
+        "easycorp/easyadmin-bundle": "^4.0"
     },
     "suggest": {
         "doctrine/annotations": "If your project use doctrine-bundle:>=2.8, this package is required to use annotations or attributes",
@@ -69,7 +70,8 @@
         "oneup/flysystem-bundle": "For integration with Flysystem",
         "symfony/asset": "To generate better links",
         "symfony/form": "To handle uploads in forms",
-        "symfony/yaml": "To use YAML mapping"
+        "symfony/yaml": "To use YAML mapping",
+        "easycorp/easyadmin-bundle": "To use the admin field"
     },
     "conflict": {
         "doctrine/annotations": "<1.12",
