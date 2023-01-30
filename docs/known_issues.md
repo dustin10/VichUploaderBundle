@@ -135,6 +135,7 @@ To summarize, [Gaufrette support for metadata is flawed](https://github.com/KnpL
 
 ## Doctrine/annotations package required when using doctrine-bundle >= 2.8
 
-If your project is using `doctrine-bundle:>=2.8`, you must require `doctrine/annotations` package from your project as
-it is not required in `doctrine-bundle` anymore from this version.  
-This bundle is using a `Reader` interface from this package in order to work for both annotations and attributes mapping.
+If your project is using `doctrine-bundle:>=2.8`, you must require `doctrine/annotations` package from 
+your project as it is not required in `doctrine-bundle` anymore from this version.  
+This bundle is using a `Reader` interface from this package in order to work for both annotations 
+and attributes mapping.
