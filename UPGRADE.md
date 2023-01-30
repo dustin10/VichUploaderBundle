@@ -13,3 +13,4 @@
 * the new default type for mapping is "attribute". You can still use annotations, but you need an explicit definition (set "annotation" as value for "vich_uploader.metadata.type" config key)
 * the service "vich_uploader.current_date_time_helper" has been removed. The `DateTimeHelper` interface has been
   removed as well.
+* if your project use `doctrine-bundle` >= 2.8 version, you must require `doctrine/annotations` in order to use annotations or attributes for mapping
