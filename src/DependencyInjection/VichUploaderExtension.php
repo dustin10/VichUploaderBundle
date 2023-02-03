@@ -135,7 +135,7 @@ final class VichUploaderExtension extends Extension
 
     protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
     {
-        if ($config['metadata']['type'] === 'attribute' || $config['metadata']['type'] === 'annotation') {
+        if ('attribute' === $config['metadata']['type'] || 'annotation' === $config['metadata']['type']) {
             if (!$container::willBeAvailable('doctrine/annotations', Reader::class, ['vich/uploader-bundle'])) {
                 throw new MissingPackageException('You cannot use annotation or attribute mapping as the Doctrine Annotations package is not installed. Try running "composer require doctrine/annotations".');
             }
