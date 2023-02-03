@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\DependencyInjection;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -11,6 +12,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -133,6 +135,12 @@ final class VichUploaderExtension extends Extension
 
     protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
     {
+        if ($config['metadata']['type'] === 'attribute' || $config['metadata']['type'] === 'annotation') {
+            if (!$container::willBeAvailable('doctrine/annotations', Reader::class, ['vich/uploader-bundle'])) {
+                throw new MissingPackageException('You cannot use annotation or attribute mapping as the Doctrine Annotations package is not installed. Try running "composer require doctrine/annotations".');
+            }
+        }
+
         if (!$container->has('vich_uploader.metadata_driver.annotation')) {
             return;
         }
