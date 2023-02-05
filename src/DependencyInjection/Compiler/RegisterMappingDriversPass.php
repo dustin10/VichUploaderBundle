@@ -18,18 +18,18 @@ final class RegisterMappingDriversPass implements CompilerPassInterface
             new Reference('vich_uploader.metadata_driver.xml'),
         ];
 
-        if ($container->has('annotation_reader')) {
-            $managers = [];
-            if ($container->hasDefinition('doctrine_mongodb')) {
-                $managers[] = new Reference('doctrine_mongodb');
-            }
-            if ($container->hasDefinition('doctrine')) {
-                $managers[] = new Reference('doctrine');
-            }
-            if ($container->hasDefinition('doctrine_phpcr')) {
-                $managers[] = new Reference('doctrine_phpcr');
-            }
+        $managers = [];
+        if ($container->hasDefinition('doctrine_mongodb')) {
+            $managers[] = new Reference('doctrine_mongodb');
+        }
+        if ($container->hasDefinition('doctrine')) {
+            $managers[] = new Reference('doctrine');
+        }
+        if ($container->hasDefinition('doctrine_phpcr')) {
+            $managers[] = new Reference('doctrine_phpcr');
+        }
 
+        if (count($managers) > 0) {
             $drivers[] = $container->getDefinition('vich_uploader.metadata_driver.annotation')
                 ->replaceArgument('$managerRegistryList', $managers);
         }
