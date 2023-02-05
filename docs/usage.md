@@ -87,8 +87,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class Product
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     // ... other fields
@@ -97,14 +97,14 @@ class Product
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -189,23 +189,23 @@ class Product
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(nullable="true")
      *
      * @var string|null
      */
     private $imageName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(nullable="true")
      *
      * @var int|null
      */
     private $imageSize;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(nullable="true")
      *
-     * @var \DateTimeInterface|null
+     * @var \DateTimeImmutable|null
      */
     private $updatedAt;
 
@@ -273,17 +273,17 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class Product
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     // ... other fields
 
-    #[ORM\Embedded(class: "Vich\UploaderBundle\Entity\File")]
+    #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private ?EmbeddedFile $image = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
