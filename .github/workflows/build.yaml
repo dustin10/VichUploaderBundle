@@ -7,7 +7,7 @@ env:
 
 jobs:
     phpstan:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         name: PHPStan
         steps:
             - name: Checkout
@@ -22,7 +22,7 @@ jobs:
                   composer install --ignore-platform-reqs
                   vendor/bin/phpstan
     cs-fixer:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         name: PHP-CS-Fixer
         steps:
             - name: Checkout
@@ -30,7 +30,7 @@ jobs:
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
     validate-markdown:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -40,7 +40,7 @@ jobs:
                   config: './.github/workflows/config/config.json'
                   args: './docs ./CONTRIBUTING.md ./README.md ./UPDATE.md'
     tests:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         strategy:
             matrix:
                 php:
@@ -76,7 +76,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
             - name: Cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ~/.composer/cache/files
                   key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.dependencies }}
