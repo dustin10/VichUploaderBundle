@@ -30,7 +30,7 @@ final class SubdirDirectoryNamer implements DirectoryNamerInterface, Configurabl
         $this->dirs = $options['dirs'];
     }
 
-    public function directoryName(object $object, PropertyMapping $mapping): string
+    public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         $fileName = $mapping->getFilename($object);
 
