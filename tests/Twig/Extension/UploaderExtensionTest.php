@@ -2,31 +2,20 @@
 
 namespace Vich\UploaderBundle\Tests\Twig\Extension;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Vich\UploaderBundle\Tests\TestCase;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
+use Vich\UploaderBundle\Twig\Extension\UploaderExtensionRuntime;
 
 /**
- * UploaderExtensionTest.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class UploaderExtensionTest extends TestCase
 {
-    protected UploaderHelper|MockObject $helper;
-
-    protected UploaderExtension $extension;
-
-    protected function setUp(): void
-    {
-        $this->helper = $this->createMock(UploaderHelper::class);
-        $this->extension = new UploaderExtension($this->helper);
-    }
-
     public function testAssetIsRegistered(): void
     {
-        $functions = $this->extension->getFunctions();
+        $extension = new UploaderExtension();
+        $functions = $extension->getFunctions();
 
         self::assertCount(1, $functions);
         self::assertSame('vich_uploader_asset', $functions[0]->getName());
@@ -34,13 +23,14 @@ final class UploaderExtensionTest extends TestCase
 
     public function testAssetForwardsCallsToTheHelper(): void
     {
-        $obj = new \stdClass();
+        $helper = $this->createMock(UploaderHelper::class);
+        $extension = new UploaderExtensionRuntime($helper);
+        $object = new \stdClass();
 
-        $this->helper
+        $helper
             ->expects(self::once())
             ->method('asset')
-            ->with($obj, 'file');
-
-        $this->extension->asset($obj, 'file');
+            ->with($object, 'file');
+        $extension->asset($object, 'file');
     }
 }
