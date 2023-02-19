@@ -83,7 +83,7 @@ final class PropertyMapping
     /**
      * Gets the fileName property of the given object.
      *
-     * @param object $obj The object or array
+     * @param object|array $obj The object or array
      *
      * @return string|null The filename
      *

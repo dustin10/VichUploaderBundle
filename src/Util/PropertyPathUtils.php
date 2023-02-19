@@ -2,8 +2,12 @@
 
 namespace Vich\UploaderBundle\Util;
 
-abstract class PropertyPathUtils
+final class PropertyPathUtils
 {
+    private function __construct()
+    {
+    }
+
     /**
      * Fixes a given propertyPath to make it usable both with arrays and
      * objects.
