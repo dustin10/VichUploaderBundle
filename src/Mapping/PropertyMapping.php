@@ -127,8 +127,8 @@ final class PropertyMapping
      *
      * @internal
      *
-     * @param object $obj      The object or array from which read
-     * @param string $property The property to read
+     * @param object|array $obj      The object or array from which read
+     * @param string       $property The property to read
      *
      * @throws \InvalidArgumentException
      */

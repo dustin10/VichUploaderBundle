@@ -17,9 +17,9 @@ final class UploaderExtensionRuntime implements RuntimeExtensionInterface
     /**
      * Gets the public path for the file associated with the uploadable object.
      *
-     * @param object      $object    The object or array
-     * @param string|null $fieldName The field name
-     * @param string|null $className The class name with the uploadable field. Mandatory if $object is an array
+     * @param object|array $object    The object or array
+     * @param string|null  $fieldName The field name
+     * @param string|null  $className The class name with the uploadable field. Mandatory if $object is an array
      *
      * @return string|null The public path or null if file not stored
      */
