@@ -90,7 +90,7 @@ final class PropertyMappingFactory
         return $this->resolver->resolve($obj, $field, $mappingData);
     }
 
-    public function fromFirstField(object $obj, ?string $className = null): ?PropertyMapping
+    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMapping
     {
         if ($obj instanceof Proxy) {
             $obj->__load();

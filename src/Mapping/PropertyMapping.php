@@ -7,6 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
+use Vich\UploaderBundle\Util\PropertyPathUtils;
 
 /**
  * PropertyMapping.
@@ -82,13 +83,13 @@ final class PropertyMapping
     /**
      * Gets the fileName property of the given object.
      *
-     * @param object $obj The object
+     * @param object|array $obj The object or array
      *
      * @return string|null The filename
      *
      * @throws \InvalidArgumentException
      */
-    public function getFileName(object $obj): ?string
+    public function getFileName(object|array $obj): ?string
     {
         return $this->readProperty($obj, 'name');
     }
@@ -126,12 +127,12 @@ final class PropertyMapping
      *
      * @internal
      *
-     * @param object $obj      The object from which read
-     * @param string $property The property to read
+     * @param object|array $obj      The object or array from which read
+     * @param string       $property The property to read
      *
      * @throws \InvalidArgumentException
      */
-    public function readProperty(object $obj, string $property): mixed
+    public function readProperty(object|array $obj, string $property): mixed
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
             throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
@@ -142,7 +143,7 @@ final class PropertyMapping
             return null;
         }
 
-        $propertyPath = $this->fixPropertyPath($obj, $this->propertyPaths[$property]);
+        $propertyPath = PropertyPathUtils::fixPropertyPath($obj, $this->propertyPaths[$property]);
 
         return $this->getAccessor()->getValue($obj, $propertyPath);
     }
@@ -170,7 +171,7 @@ final class PropertyMapping
             return;
         }
 
-        $propertyPath = $this->fixPropertyPath($obj, $this->propertyPaths[$property]);
+        $propertyPath = PropertyPathUtils::fixPropertyPath($obj, $this->propertyPaths[$property]);
         $this->getAccessor()->setValue($obj, $propertyPath, $value);
     }
 
@@ -319,26 +320,6 @@ final class PropertyMapping
     public function getUriPrefix(): string
     {
         return $this->mapping['uri_prefix'];
-    }
-
-    /**
-     * Fixes a given propertyPath to make it usable both with arrays and
-     * objects.
-     * Ie: if the given object is in fact an array, the property path must
-     * look like [myPath].
-     *
-     * @param object|array $object       The object to inspect
-     * @param string       $propertyPath The property path to fix
-     *
-     * @return string The fixed property path
-     */
-    private function fixPropertyPath($object, string $propertyPath): string
-    {
-        if (!\is_array($object)) {
-            return $propertyPath;
-        }
-
-        return '[' === $propertyPath[0] ? $propertyPath : \sprintf('[%s]', $propertyPath);
     }
 
     private function getAccessor(): PropertyAccessor

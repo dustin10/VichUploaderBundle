@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Naming;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Util\PropertyPathUtils;
 
 /**
  * Directory namer wich can create subfolder depends on current datetime.
@@ -38,13 +39,16 @@ final class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Co
         }
     }
 
-    public function directoryName(object $object, PropertyMapping $mapping): string
+    public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         if (empty($this->dateTimeFormat)) {
             throw new \LogicException('Option "date_time_format" is empty.');
         }
         if (null !== $this->dateTimeProperty) {
-            $dateTime = $this->propertyAccessor->getValue($object, $this->dateTimeProperty)->format('U');
+            $dateTime = $this->propertyAccessor->getValue(
+                $object,
+                PropertyPathUtils::fixPropertyPath($object, $this->dateTimeProperty)
+            )->format('U');
         } else {
             throw new \LogicException('Option "date_time_property" is mandatory.');
         }

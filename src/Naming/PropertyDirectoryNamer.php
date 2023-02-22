@@ -44,7 +44,7 @@ final class PropertyDirectoryNamer implements DirectoryNamerInterface, Configura
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function directoryName(object $object, PropertyMapping $mapping): string
+    public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');

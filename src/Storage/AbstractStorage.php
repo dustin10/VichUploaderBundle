@@ -115,7 +115,7 @@ abstract class AbstractStorage implements StorageInterface
      * @throws \RuntimeException
      * @throws \Vich\UploaderBundle\Exception\NotUploadableException
      */
-    protected function getFilename(object $obj, ?string $fieldName = null, ?string $className = null): array
+    protected function getFilename(object|array $obj, ?string $fieldName = null, ?string $className = null): array
     {
         $mapping = null === $fieldName ?
             $this->factory->fromFirstField($obj, $className) :
