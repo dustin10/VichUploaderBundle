@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-final class UploaderHelper implements UploaderHelperInterface
+class UploaderHelper implements UploaderHelperInterface
 {
     public function __construct(private readonly StorageInterface $storage)
     {

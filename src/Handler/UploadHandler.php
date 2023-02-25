@@ -17,14 +17,15 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class UploadHandler extends AbstractHandler
+class UploadHandler extends AbstractHandler
 {
     public function __construct(
         PropertyMappingFactory $factory,
         StorageInterface $storage,
         protected readonly FileInjectorInterface $injector,
         protected readonly EventDispatcherInterface $dispatcher
-    ) {
+    )
+    {
         parent::__construct($factory, $storage);
     }
 

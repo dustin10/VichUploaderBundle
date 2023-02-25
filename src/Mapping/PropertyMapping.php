@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Naming\NamerInterface;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-final class PropertyMapping
+class PropertyMapping
 {
     private ?NamerInterface $namer = null;
 

@@ -15,7 +15,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  *
  * @author Stefan Zerkalica <zerkalica@gmail.com>
  */
-final class GaufretteStorage extends AbstractStorage
+class GaufretteStorage extends AbstractStorage
 {
     /**
      * Constructs a new instance of FileSystemStorage.
@@ -32,7 +32,7 @@ final class GaufretteStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = !empty($dir) ? $dir . '/' . $name : $name;
 
         $filesystem->write($path, \file_get_contents($file->getPathname()), true);
 
@@ -44,7 +44,7 @@ final class GaufretteStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = !empty($dir) ? $dir . '/' . $name : $name;
 
         try {
             return $filesystem->delete($path);
@@ -55,13 +55,13 @@ final class GaufretteStorage extends AbstractStorage
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = !empty($dir) ? $dir . '/' . $name : $name;
 
         if ($relative) {
             return $path;
         }
 
-        return $this->protocol.'://'.$mapping->getUploadDestination().'/'.$path;
+        return $this->protocol . '://' . $mapping->getUploadDestination() . '/' . $path;
     }
 
     /**

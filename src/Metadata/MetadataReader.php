@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
  *
  * @internal
  */
-final class MetadataReader
+class MetadataReader
 {
     /**
      * Constructs a new instance of the MetadataReader.
@@ -89,7 +89,7 @@ final class MetadataReader
         }
 
         if (null !== $mapping) {
-            $uploadableFields = \array_filter($uploadableFields, static fn (array $fieldMetadata): bool => $fieldMetadata['mapping'] === $mapping);
+            $uploadableFields = \array_filter($uploadableFields, static fn(array $fieldMetadata): bool => $fieldMetadata['mapping'] === $mapping);
         }
 
         return $uploadableFields;
