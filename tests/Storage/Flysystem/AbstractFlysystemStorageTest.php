@@ -61,7 +61,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         $file
             ->expects(self::once())
             ->method('getRealPath')
-            ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt');
+            ->willReturn($this->root->url() . \DIRECTORY_SEPARATOR . 'uploads' . \DIRECTORY_SEPARATOR . 'test.txt');
 
         $file
             ->expects(self::once())
@@ -148,13 +148,13 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         self::assertEquals($expectedPath, $path);
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             //     dir,   path,                     relative
-            [null,  'file.txt',               true],
-            [null,  '/absolute/file.txt',     false],
-            ['foo', 'foo/file.txt',           true],
+            [null, 'file.txt', true],
+            [null, '/absolute/file.txt', false],
+            ['foo', 'foo/file.txt', true],
             ['foo', '/absolute/foo/file.txt', false],
         ];
     }

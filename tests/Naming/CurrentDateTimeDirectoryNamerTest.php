@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class CurrentDateTimeDirectoryNamerTest extends TestCase
 {
-    public function directoryNameDataProvider(): array
+    public static function directoryNameDataProvider(): array
     {
         return [
             [1_537_706_096, null, '2018/09/23'],

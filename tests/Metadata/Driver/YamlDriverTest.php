@@ -32,7 +32,7 @@ final class YamlDriverTest extends FileDriverTestCase
         $driver->loadMetadataForClass($rClass);
     }
 
-    protected function getExtension(): string
+    protected static function getExtension(): string
     {
         return 'yaml';
     }

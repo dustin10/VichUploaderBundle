@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class StorageTestCase extends TestCase
 {
-    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject$factory;
+    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject $factory;
 
     protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
@@ -67,7 +67,7 @@ abstract class StorageTestCase extends TestCase
         ]);
     }
 
-    public function emptyFilenameProvider(): array
+    public static function emptyFilenameProvider(): array
     {
         return [
             [null],
@@ -115,6 +115,6 @@ abstract class StorageTestCase extends TestCase
 
     protected function getValidUploadDir(): string
     {
-        return $this->root->url().\DIRECTORY_SEPARATOR.'uploads';
+        return $this->root->url() . \DIRECTORY_SEPARATOR . 'uploads';
     }
 }

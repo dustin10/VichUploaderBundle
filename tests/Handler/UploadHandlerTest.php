@@ -87,7 +87,7 @@ final class UploadHandlerTest extends TestCase
         $handler->$method($this->object, self::FILE_FIELD);
     }
 
-    public function methodProvider(): array
+    public static function methodProvider(): array
     {
         return [
             ['upload'],
@@ -263,12 +263,12 @@ final class UploadHandlerTest extends TestCase
         $object = $this->object;
         $mapping = $this->mapping;
 
-        return self::callback(static fn ($event) => $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping);
+        return self::callback(static fn($event) => $event instanceof Event && $event->getObject() === $object && $event->getMapping() === $mapping);
     }
 
     protected function expectEvents(array $events): void
     {
-        $arguments = \array_map(fn (string $event): array => [$this->validEvent(), $event], $events);
+        $arguments = \array_map(fn(string $event): array => [$this->validEvent(), $event], $events);
 
         $this->dispatcher
             ->expects(self::exactly(\count($events)))

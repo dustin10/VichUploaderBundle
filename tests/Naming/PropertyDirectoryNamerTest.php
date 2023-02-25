@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 class PropertyDirectoryNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
@@ -22,9 +22,9 @@ class PropertyDirectoryNamerTest extends TestCase
         $weirdEntity->someProperty = 'Yéô';
 
         return [
-            'plain' => ['foo',                       $entity,      'someProperty',     false],
-            'method call' => ['generated-file-name', $entity,      'generateFileName', false],
-            'translit.' => ['yeo',                   $weirdEntity, 'someProperty',     true],
+            'plain' => ['foo', $entity, 'someProperty', false],
+            'method call' => ['generated-file-name', $entity, 'generateFileName', false],
+            'translit.' => ['yeo', $weirdEntity, 'someProperty', true],
         ];
     }
 
@@ -36,7 +36,8 @@ class PropertyDirectoryNamerTest extends TestCase
         object $entity,
         string $propertyName,
         bool $transliterate
-    ): void {
+    ): void
+    {
         $mapping = $this->getPropertyMappingMock();
 
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());

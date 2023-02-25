@@ -40,7 +40,7 @@ final class DownloadHandlerTest extends TestCase
             ->willReturn($this->mapping);
     }
 
-    public function filenamesProvider(): array
+    public static function filenamesProvider(): array
     {
         return [
             ['file name', 'file name', null],

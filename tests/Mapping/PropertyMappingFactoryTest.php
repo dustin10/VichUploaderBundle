@@ -97,7 +97,7 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertFalse($mapping->hasNamer());
     }
 
-    public function fromObjectProvider(): array
+    public static function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
         $proxy = $this->createMock(Proxy::class);
@@ -292,11 +292,10 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertEquals('dummy_file', $mapping->getMappingName());
     }
 
-    public function fromFieldProvider(): array
+    public static function fromFieldProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = $this->createMock(Proxy::class);
-
+        $proxy = self::createProxyMock();
         return [
             [$obj, null, DummyEntity::class],
             [$obj, DummyEntity::class, DummyEntity::class],
@@ -374,8 +373,8 @@ class PropertyMappingFactoryTest extends TestCase
         $this->container
             ->method('get')
             ->willReturnMap([
-                ['my.custom.namer', /* invalid behavior */ 1, $namer],
-                ['my.custom.directory_namer', /* invalid behavior */ 1, $directoryNamer],
+                ['my.custom.namer', /* invalid behavior */1, $namer],
+                ['my.custom.directory_namer', /* invalid behavior */1, $directoryNamer],
             ]);
 
         $this->metadata
@@ -407,5 +406,12 @@ class PropertyMappingFactoryTest extends TestCase
     protected function getContainerMock(): ContainerInterface|MockObject
     {
         return $this->createMock(ContainerInterface::class);
+    }
+
+    protected static function createProxyMock(): MockObject
+    {
+
+        $self = new self();
+        return $self->createMock(Proxy::class);
     }
 }

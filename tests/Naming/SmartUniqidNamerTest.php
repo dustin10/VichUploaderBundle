@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 
 final class SmartUniqidNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             // case -> original name, result pattern
@@ -15,10 +15,12 @@ final class SmartUniqidNamerTest extends TestCase
             'accented' => ['làlà.mp3', '/lala-[[:xdigit:]]{22}\.mp3/'],
             'spaced' => ['a Foo Bar.txt', '/a-foo-bar-[[:xdigit:]]{22}\.txt/'],
             'special char' => ['yezz!.png', '/yezz-[[:xdigit:]]{22}\.png/'],
-            'long basename' => [\str_repeat('a', 256).'.txt', '/a{228}-[[:xdigit:]]{22}\.txt/'],
-            'long extension' => ['a.'.\str_repeat('a', 256), '/a-[[:xdigit:]]{22}\.a{230}/'],
-            'long basename and extension' => [\str_repeat('a', 256).'.txt'.\str_repeat('a', 256),
-                                              '/a{228}-[[:xdigit:]]{22}\.txt/', ],
+            'long basename' => [\str_repeat('a', 256) . '.txt', '/a{228}-[[:xdigit:]]{22}\.txt/'],
+            'long extension' => ['a.' . \str_repeat('a', 256), '/a-[[:xdigit:]]{22}\.a{230}/'],
+            'long basename and extension' => [
+                \str_repeat('a', 256) . '.txt' . \str_repeat('a', 256),
+                '/a{228}-[[:xdigit:]]{22}\.txt/',
+            ],
             'double extension' => ['lala.png.jpg', '/lala-png-[[:xdigit:]]{22}\.jpg/'],
             'uppercase extension' => ['lala.JPEG', '/lala-[[:xdigit:]]{22}\.jpeg/'],
             'double uppercase extension' => ['lala.JPEG.JPEG', '/lala-jpeg-[[:xdigit:]]{22}\.jpeg/'],

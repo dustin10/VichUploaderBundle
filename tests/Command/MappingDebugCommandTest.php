@@ -43,7 +43,7 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
         $this->assertEqualsCanonicalizing($expectedSuggestions, $tester->complete($input));
     }
 
-    public function provideCompletionSuggestions(): \Generator
+    public static function provideCompletionSuggestions(): \Generator
     {
         yield 'mapping' => [
             [''],

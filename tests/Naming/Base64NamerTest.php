@@ -18,7 +18,7 @@ class Base64Namer extends \Vich\UploaderBundle\Naming\Base64Namer
  */
 class Base64NamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             ['aaaaaaaaaa.jpg', 'jpg', null],

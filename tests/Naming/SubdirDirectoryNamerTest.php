@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class SubdirDirectoryNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             ['0123456789.jpg', '01', 2, 1],

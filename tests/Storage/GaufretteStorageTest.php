@@ -126,15 +126,15 @@ class GaufretteStorageTest extends StorageTestCase
         self::assertNull($path);
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             // protocol, fs identifier, upload dir, full path, relative
-            ['gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false],
-            ['data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false],
-            ['gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false],
-            ['gaufrette', 'filesystemKey', null,   'file.txt', true],
-            ['gaufrette', 'filesystemKey', 'foo',  'foo/file.txt', true],
+            ['gaufrette', 'filesystemKey', null, 'gaufrette://filesystemKey/file.txt', false],
+            ['data', 'filesystemKey', null, 'data://filesystemKey/file.txt', false],
+            ['gaufrette', 'filesystemKey', 'foo', 'gaufrette://filesystemKey/foo/file.txt', false],
+            ['gaufrette', 'filesystemKey', null, 'file.txt', true],
+            ['gaufrette', 'filesystemKey', 'foo', 'foo/file.txt', true],
         ];
     }
 
@@ -211,7 +211,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects(self::once())
             ->method('getPathname')
-            ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
+            ->willReturn($this->getValidUploadDir() . \DIRECTORY_SEPARATOR . 'test.txt');
 
         $this->mapping
             ->expects(self::once())
@@ -265,7 +265,7 @@ class GaufretteStorageTest extends StorageTestCase
         $file
             ->expects(self::once())
             ->method('getPathname')
-            ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
+            ->willReturn($this->getValidUploadDir() . \DIRECTORY_SEPARATOR . 'test.txt');
 
         $this->mapping
             ->expects(self::once())

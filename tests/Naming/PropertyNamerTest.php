@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 class PropertyNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         $entity = new DummyEntity();
         $entity->someProperty = 'foo';
@@ -23,10 +23,10 @@ class PropertyNamerTest extends TestCase
         $weirdEntity->someProperty = 'Yéô';
 
         return [
-            'with ext' => ['some-file-name.jpeg',    'foo.jpeg',                 $entity,      'someProperty',     false],
-            'without ext' => ['some-file-name',      'foo',                      $entity,      'someProperty',     false],
-            'method call' => ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,      'generateFileName', false],
-            'translit.' => ['some-file-name.jpeg',   'yeo.jpeg',                 $weirdEntity, 'someProperty',     true],
+            'with ext' => ['some-file-name.jpeg', 'foo.jpeg', $entity, 'someProperty', false],
+            'without ext' => ['some-file-name', 'foo', $entity, 'someProperty', false],
+            'method call' => ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity, 'generateFileName', false],
+            'translit.' => ['some-file-name.jpeg', 'yeo.jpeg', $weirdEntity, 'someProperty', true],
         ];
     }
 
@@ -39,7 +39,8 @@ class PropertyNamerTest extends TestCase
         object $entity,
         string $propertyName,
         bool $transliterate
-    ): void {
+    ): void
+    {
         $file = $this->getUploadedFileMock();
         $file
             ->method('getClientOriginalName')

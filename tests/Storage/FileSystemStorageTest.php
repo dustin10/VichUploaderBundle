@@ -68,7 +68,7 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn('test.txt');
 
         $this->storage->remove($this->object, $this->mapping);
-        self::assertFalse($this->root->hasChild('uploads'.\DIRECTORY_SEPARATOR.'test.txt'));
+        self::assertFalse($this->root->hasChild('uploads' . \DIRECTORY_SEPARATOR . 'test.txt'));
     }
 
     /**
@@ -218,7 +218,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects(self::once())
             ->method('getUploadDestination')
-            ->willReturn($this->root->url().'/uploads');
+            ->willReturn($this->root->url() . '/uploads');
 
         $this->mapping
             ->expects(self::once())
@@ -236,7 +236,7 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertNotEmpty($stream);
     }
 
-    public function resolveUriDataProvider(): array
+    public static function resolveUriDataProvider(): array
     {
         return [
             [
@@ -264,8 +264,8 @@ final class FileSystemStorageTest extends StorageTestCase
      */
     public function testUploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
     {
-        $uploadDir = $this->root->url().\DIRECTORY_SEPARATOR.$uploadDir;
-        $expectedDir = $this->root->url().\DIRECTORY_SEPARATOR.$expectedDir;
+        $uploadDir = $this->root->url() . \DIRECTORY_SEPARATOR . $uploadDir;
+        $expectedDir = $this->root->url() . \DIRECTORY_SEPARATOR . $expectedDir;
         $file = $this->getUploadedFileMock();
 
         $file
@@ -314,7 +314,7 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn('test.txt');
         $file
             ->method('getPathname')
-            ->willReturn($this->getValidUploadDir().'/test.txt');
+            ->willReturn($this->getValidUploadDir() . '/test.txt');
 
         $this->mapping
             ->expects(self::once())
@@ -325,7 +325,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects(self::once())
             ->method('getUploadDestination')
-            ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'storage');
+            ->willReturn($this->root->url() . \DIRECTORY_SEPARATOR . 'storage');
 
         $this->mapping
             ->expects(self::once())
@@ -353,7 +353,7 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn('test.txt');
         $file
             ->method('getPathname')
-            ->willReturn($this->getValidUploadDir().'/test.txt');
+            ->willReturn($this->getValidUploadDir() . '/test.txt');
 
         $this->mapping
             ->expects(self::once())
@@ -364,7 +364,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->mapping
             ->expects(self::once())
             ->method('getUploadDestination')
-            ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'storage');
+            ->willReturn($this->root->url() . \DIRECTORY_SEPARATOR . 'storage');
 
         $this->mapping
             ->expects(self::once())
@@ -381,7 +381,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function filenameWithDirectoriesDataProvider(): array
+    public static function filenameWithDirectoriesDataProvider(): array
     {
         return [
             // upload dir, dir, expected dir

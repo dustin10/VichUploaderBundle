@@ -26,12 +26,12 @@ abstract class FileDriverTestCase extends TestCase
         self::assertEquals($expectedMetadata, $metadata->fields);
     }
 
-    public function classesProvider(): array
+    public static function classesProvider(): array
     {
         $metadatas = [];
         $metadatas[] = [
             Product::class,
-            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Product.'.$this->getExtension(),
+            __DIR__ . '/../../Fixtures/TestBundle/config/vich_uploader/Entity.Product.' . self::getExtension(),
             [
                 'image' => [
                     'mapping' => 'product_image',
@@ -47,7 +47,7 @@ abstract class FileDriverTestCase extends TestCase
 
         $metadatas[] = [
             Article::class,
-            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Article.'.$this->getExtension(),
+            __DIR__ . '/../../Fixtures/TestBundle/config/vich_uploader/Entity.Article.' . self::getExtension(),
             [
                 'attachment' => [
                     'mapping' => 'dummy_file',
@@ -85,7 +85,7 @@ abstract class FileDriverTestCase extends TestCase
         return $fileLocator;
     }
 
-    abstract protected function getExtension(): string;
+    abstract static protected function getExtension(): string;
 
     abstract protected function getDriver(\ReflectionClass $reflectionClass, ?string $file): DriverInterface;
 }

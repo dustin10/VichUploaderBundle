@@ -30,7 +30,7 @@ final class UploadTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         self::assertTrue($client->getResponse()->isSuccessful());
-        self::assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
+        self::assertFileExists($this->getUploadsDir($client) . '/symfony_black_03.png', 'The file is uploaded');
 
         // test the delete feature
         self::assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
@@ -42,7 +42,7 @@ final class UploadTest extends WebTestCase
             ],
         ]);
         self::assertTrue($client->getResponse()->isRedirect());
-        self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
+        self::assertFileDoesNotExist($this->getUploadsDir($client) . '/symfony_black_03.png', 'The file is deleted');
     }
 
     /**
@@ -71,7 +71,7 @@ final class UploadTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         self::assertTrue($client->getResponse()->isSuccessful());
-        self::assertFileExists($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is uploaded');
+        self::assertFileExists($this->getUploadsDir($client) . '/symfony_black_03.png', 'The file is uploaded');
 
         // test the delete feature
         self::assertCount(1, $crawler->filter('input[type=checkbox]'), 'the delete checkbox is here');
@@ -83,13 +83,13 @@ final class UploadTest extends WebTestCase
             ],
         ]);
         self::assertTrue($client->getResponse()->isRedirect());
-        self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
+        self::assertFileDoesNotExist($this->getUploadsDir($client) . '/symfony_black_03.png', 'The file is deleted');
     }
 
     /**
      * @return array<array{string, string}>
      */
-    public function uploadTypeDataProvider(): array
+    public static function uploadTypeDataProvider(): array
     {
         return [
             ['upload', 'imageFile'],

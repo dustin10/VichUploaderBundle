@@ -120,7 +120,7 @@ class PropertyMappingTest extends TestCase
         self::assertEquals('123', $prop->getUploadName($object));
     }
 
-    public function directoryProvider(): array
+    public static function directoryProvider(): array
     {
         return [
             ['other_dir', 'other_dir'],

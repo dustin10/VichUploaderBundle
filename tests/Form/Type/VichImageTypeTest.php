@@ -16,7 +16,7 @@ final class VichImageTypeTest extends TestCase
 {
     protected const TESTED_TYPE = VichImageType::class;
 
-    public function buildViewDataProvider(): array
+    public static function buildViewDataProvider(): array
     {
         $object = new Product();
 
@@ -125,7 +125,7 @@ final class VichImageTypeTest extends TestCase
                 [
                     'download_label' => 'download',
                     'download_uri' => 'custom-uri',
-                    'image_uri' => static fn (Product $product, $resolvedUri) => 'prefix-'.$resolvedUri,
+                    'image_uri' => static fn(Product $product, $resolvedUri) => 'prefix-' . $resolvedUri,
                     'imagine_pattern' => null,
                     'asset_helper' => false,
                 ],
@@ -156,7 +156,8 @@ final class VichImageTypeTest extends TestCase
         string $storageResolvedPath,
         string $imaginePattern,
         string $imagineResolvedPath
-    ): void {
+    ): void
+    {
         $storage = $this->createMock(StorageInterface::class);
         $storage
             ->expects($this->atLeastOnce())
@@ -218,7 +219,7 @@ final class VichImageTypeTest extends TestCase
         self::assertEquals($vars, $view->vars);
     }
 
-    public function getLiipImagineBundleIntegrationData(): array
+    public static function getLiipImagineBundleIntegrationData(): array
     {
         $field = 'image';
         $object = new Product();

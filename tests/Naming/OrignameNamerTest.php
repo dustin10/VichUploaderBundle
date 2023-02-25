@@ -12,11 +12,11 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class OrignameNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             ['file.jpeg', '/[a-z0-9]{13}_file.jpeg/', false],
-            ['file',      '/[a-z0-9]{13}_file/',      false],
+            ['file', '/[a-z0-9]{13}_file/', false],
             ['Yéöù.jpeg', '/[a-z0-9]{13}_yeou.jpeg/', true],
         ];
     }
