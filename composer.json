@@ -40,7 +40,7 @@
         "league/flysystem-memory": "^2.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.3",
         "mikey179/vfsstream": "^1.6.8",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0",
         "symfony/asset": "^5.4 || ^6.0",
         "symfony/browser-kit": "^5.4 || ^6.0",
         "symfony/css-selector": "^5.4 || ^6.0",
