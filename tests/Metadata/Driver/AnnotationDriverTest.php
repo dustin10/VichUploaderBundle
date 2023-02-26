@@ -53,13 +53,13 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
+            ->willReturnCallback(static fn(ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertIsArray($metadata->fields);
         self::assertEquals([
             'file' => [
                 'mapping' => 'dummy_file',
@@ -178,14 +178,14 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
+            ->willReturnCallback(static fn(ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertIsArray($metadata->fields);
         self::assertEquals(
             [
                 'file' => [

@@ -100,7 +100,7 @@ class PropertyMappingFactoryTest extends TestCase
     public static function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = $this->createMock(Proxy::class);
+        $proxy = self::createProxyMock();
 
         return [
             [$obj, null, DummyEntity::class],

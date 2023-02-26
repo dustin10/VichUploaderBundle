@@ -22,7 +22,7 @@ abstract class FileDriverTestCase extends TestCase
         $metadata = $driver->loadMetadataForClass($reflectionClass);
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertIsArray($metadata->fields);
         self::assertEquals($expectedMetadata, $metadata->fields);
     }
 
