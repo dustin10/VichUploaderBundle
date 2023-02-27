@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
 final class MappingDebugCommandTest extends AbstractCommandTestCase
 {
-    public function testNotExistantMapping(): void
+    public function testNotExistentMapping(): void
     {
         $mappings = [];
         $command = new MappingDebugCommand($mappings);
@@ -16,7 +16,7 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
         $this->executeCommand('vich:mapping:debug', $command, ['mapping' => 'foo']);
     }
 
-    public function testExistantMapping(): void
+    public function testExistentMapping(): void
     {
         $mappings = ['image_mapping' => []];
         $command = new MappingDebugCommand($mappings);

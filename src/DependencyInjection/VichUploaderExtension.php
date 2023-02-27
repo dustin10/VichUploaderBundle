@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -138,16 +139,22 @@ final class VichUploaderExtension extends Extension
         }
 
         switch ($config['metadata']['type']) {
-            case 'attribute':
-                $container->setDefinition(
-                    'vich_uploader.metadata.reader',
-                    $container->getDefinition('vich_uploader.metadata.attribute_reader')
-                );
-                break;
-            default:
+            case 'annotation':
+                if (!class_exists(AnnotationReader::class) || !$container::willBeAvailable('doctrine/annotations', AnnotationReader::class, [])) {
+                    $msg = 'Annotations support missing. Try running "composer require doctrine/annotations".';
+                    throw new MissingPackageException($msg);
+                }
+
                 $container->setDefinition(
                     'vich_uploader.metadata.reader',
                     new Definition(AnnotationReader::class)
+                );
+                break;
+
+            default:
+                $container->setDefinition(
+                    'vich_uploader.metadata.reader',
+                    $container->getDefinition('vich_uploader.metadata.attribute_reader')
                 );
         }
     }

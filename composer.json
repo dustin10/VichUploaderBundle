@@ -58,7 +58,7 @@
         "symfony/yaml": "^5.4 || ^6.0"
     },
     "suggest": {
-        "doctrine/annotations": "If your project use doctrine-bundle:>=2.8, this package is required to use annotations or attributes",
+        "doctrine/annotations": "If you use doctrine/doctrine-bundle >2.7, this package is required to use annotations",
         "doctrine/doctrine-bundle": "For integration with Doctrine",
         "doctrine/mongodb-odm-bundle": "For integration with Doctrine ODM",
         "doctrine/orm": "For integration with Doctrine ORM",

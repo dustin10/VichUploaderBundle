@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-use Doctrine\Common\Annotations\Reader;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -12,7 +11,7 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
 /**
  * @internal
  */
-final class AttributeReader implements Reader
+final class AttributeReader
 {
     /** @return AnnotationInterface[] */
     public function getClassAnnotations(ReflectionClass $class): array
@@ -20,7 +19,7 @@ final class AttributeReader implements Reader
         return $this->convertToAttributeInstances($class->getAttributes());
     }
 
-    public function getClassAnnotation(ReflectionClass $class, $annotationName): ?AnnotationInterface
+    public function getClassAnnotation(ReflectionClass $class, string $annotationName): ?AnnotationInterface
     {
         return $this->getClassAnnotations($class)[$annotationName] ?? null;
     }
@@ -31,7 +30,7 @@ final class AttributeReader implements Reader
         return $this->convertToAttributeInstances($method->getAttributes());
     }
 
-    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?AnnotationInterface
+    public function getMethodAnnotation(ReflectionMethod $method, string $annotationName): ?AnnotationInterface
     {
         return $this->getMethodAnnotations($method)[$annotationName] ?? null;
     }
@@ -42,7 +41,7 @@ final class AttributeReader implements Reader
         return $this->convertToAttributeInstances($property->getAttributes());
     }
 
-    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?AnnotationInterface
+    public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): ?AnnotationInterface
     {
         return $this->getPropertyAnnotations($property)[$annotationName] ?? null;
     }
