@@ -172,10 +172,10 @@ class Product
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\Column()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     // ... other fields
 
@@ -183,31 +183,23 @@ class Product
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
-     *
-     * @var File|null
      */
-    private $imageFile;
+    private ?File $imageFile;
 
     /**
      * @ORM\Column(nullable="true")
-     *
-     * @var string|null
      */
-    private $imageName;
+    private ?string $imageName = null;
 
     /**
      * @ORM\Column(nullable="true")
-     *
-     * @var int|null
      */
-    private $imageSize;
+    private ?int $imageSize = null;
 
     /**
      * @ORM\Column(nullable="true")
-     *
-     * @var \DateTimeImmutable|null
      */
-    private $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
