@@ -9,7 +9,7 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $this->loadFixtures($client);
 
         $crawler = $client->request('GET', \sprintf('/%s/vich_file', $uploadType));
@@ -50,7 +50,7 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $this->loadFixtures($client);
 
         $crawler = $client->request('GET', \sprintf('/%s/vich_image', $uploadType));
@@ -59,7 +59,7 @@ final class UploadTest extends WebTestCase
         $form = $crawler->selectButton('form_save')->form();
         $image = $this->getUploadedFile($client, 'symfony_black_03.png');
 
-        $crawler = $client->submit($form, [
+        $client->submit($form, [
             'form' => [
                 'title' => 'Test image',
                 $imageFieldName => ['file' => $image],
@@ -89,7 +89,7 @@ final class UploadTest extends WebTestCase
     /**
      * @return array<array{string, string}>
      */
-    public function uploadTypeDataProvider(): array
+    public static function uploadTypeDataProvider(): array
     {
         return [
             ['upload', 'imageFile'],

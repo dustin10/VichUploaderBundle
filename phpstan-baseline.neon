@@ -55,8 +55,3 @@ parameters:
 			count: 4
 			path: tests/TestCase.php
 
-		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
-			count: 1
-			path: tests/Twig/Extension/UploaderExtensionTest.php
-

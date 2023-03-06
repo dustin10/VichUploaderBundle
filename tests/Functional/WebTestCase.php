@@ -25,7 +25,7 @@ abstract class WebTestCase extends BaseWebTestCase
         return new UploadedFile(
             $this->getImagesDir($client).\DIRECTORY_SEPARATOR.$name,
             $name,
-            $mimeType
+            $mimeType,
         );
     }
 
@@ -62,12 +62,12 @@ abstract class WebTestCase extends BaseWebTestCase
             throw new \InvalidArgumentException("Connection does not contain a 'path' or 'dbname' parameter and cannot be dropped.");
         }
 
-        $metadatas = $om->getMetadataFactory()->getAllMetadata();
+        $metadata = $om->getMetadataFactory()->getAllMetadata();
 
         $schemaTool = new SchemaTool($om);
         $schemaTool->dropDatabase();
-        if (!empty($metadatas)) {
-            $schemaTool->createSchema($metadatas);
+        if (!empty($metadata)) {
+            $schemaTool->createSchema($metadata);
         }
     }
 

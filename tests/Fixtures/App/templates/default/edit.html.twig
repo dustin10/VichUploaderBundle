@@ -2,4 +2,6 @@
 
 {% block body %}
 {{ form(form, {'action': path('upload_edit', {'formType': formType, 'imageId': imageId}), 'method': 'POST'}) }}
+
+{{ vich_uploader_asset(image) }}
 {% endblock %}
