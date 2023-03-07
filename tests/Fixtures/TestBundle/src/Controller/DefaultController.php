@@ -45,6 +45,7 @@ final class DefaultController extends AbstractController
             'imageId' => $imageId,
             'formType' => $formType,
             'form' => $form->createView(),
+            'image' => $this->getImage($imageId),
         ]);
     }
 
@@ -70,10 +71,10 @@ final class DefaultController extends AbstractController
             $em->persist($image);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('view', [
+            return $this->redirectToRoute('view', [
                 'formType' => $formType,
                 'imageId' => $image->getId(),
-            ]));
+            ]);
         }
 
         return $this->render('default/upload.html.twig', [
@@ -93,10 +94,10 @@ final class DefaultController extends AbstractController
             $em->persist($image);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('view_with_property_path', [
+            return $this->redirectToRoute('view_with_property_path', [
                 'formType' => $formType,
                 'imageId' => $image->getId(),
-            ]));
+            ]);
         }
 
         return $this->render('default/upload_with_property_path.html.twig', [

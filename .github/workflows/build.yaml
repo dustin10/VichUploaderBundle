@@ -17,10 +17,10 @@ jobs:
               with:
                   php-version: 8.1
             - run: |
-                  composer require --no-update liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit 
+                  composer require --no-update liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit phpstan/phpstan:1.9.* 
                   composer config --no-plugins allow-plugins.phpstan/extension-installer true
                   composer install --ignore-platform-reqs
-                  vendor/bin/phpstan
+                  XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:
         runs-on: ubuntu-22.04
         name: PHP-CS-Fixer

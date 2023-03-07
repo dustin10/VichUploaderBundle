@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Twig\Extension;
 
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtensionRuntime;
@@ -23,7 +23,7 @@ final class UploaderExtensionTest extends TestCase
 
     public function testAssetForwardsCallsToTheHelper(): void
     {
-        $helper = $this->createMock(UploaderHelper::class);
+        $helper = $this->createMock(UploaderHelperInterface::class);
         $extension = new UploaderExtensionRuntime($helper);
         $object = new \stdClass();
 
