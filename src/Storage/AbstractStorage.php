@@ -97,7 +97,7 @@ abstract class AbstractStorage implements StorageInterface
         return $mapping->getUriPrefix().'/'.$path;
     }
 
-    public function resolveStream(object|array $obj, string $fieldName, ?string $className = null)
+    public function resolveStream(object|array $obj, ?string $fieldName = null, ?string $className = null)
     {
         $path = $this->resolvePath($obj, $fieldName, $className);
 
