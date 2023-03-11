@@ -1,3 +1,7 @@
+# Upgrading from v2.1.1 to v2.2.0
+
+* The signature of `StorageInterface::resolveStream` method was changed. Nullable value of parameters `$fieldName`. 
+
 # Upgrading from v2.0.1 to v2.1.0
 
 * the internal class `FilenameUtils` has been removed.
