@@ -1,12 +1,12 @@
-# Upgrading from v2.1.1 to v2.2.0
+# Upgrading from v2.1 to v2.2
 
 * The signature of `StorageInterface::resolveStream` method was changed. Nullable value of parameters `$fieldName`. 
 
-# Upgrading from v2.0.1 to v2.1.0
+# Upgrading from v2.0 to v2.1
 
 * the internal class `FilenameUtils` has been removed.
 
-# Upgrading from v1 to v2.0.0
+# Upgrading from v1 to v2.0
 
 * every class marked as `@final` is now final
 * all properties are now fully type-hinted
