@@ -1,13 +1,14 @@
-# Upgrading from v2.1.0 to v2.2.0
+# Upgrading from v2.1 to v2.2
 
+* The signature of `StorageInterface::resolveStream` method was changed. The $fieldName parameter is now nullable. 
 * the `AdapterInterface` no longer requires `getObjectFromArgs` method.
 * the `AdapterInterface::recomputeChangeSet()` accepts `Doctrine\Persistence\Event\LifecycleEventArgs` as argument.
 
-# Upgrading from v2.0.1 to v2.1.0
+# Upgrading from v2.0 to v2.1
 
 * the internal class `FilenameUtils` has been removed.
 
-# Upgrading from v1 to v2.0.0
+# Upgrading from v1 to v2.0
 
 * every class marked as `@final` is now final
 * all properties are now fully type-hinted

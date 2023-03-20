@@ -56,10 +56,10 @@ interface StorageInterface
      * Returns a read-only stream based on the specified object and mapping name.
      *
      * @param object|array $obj       The object
-     * @param string       $fieldName The field to use
+     * @param string|null  $fieldName The field to use
      * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
      * @return resource|null The resolved resource or null if file not stored
      */
-    public function resolveStream(object|array $obj, string $fieldName, ?string $className = null);
+    public function resolveStream(object|array $obj, ?string $fieldName = null, ?string $className = null);
 }
