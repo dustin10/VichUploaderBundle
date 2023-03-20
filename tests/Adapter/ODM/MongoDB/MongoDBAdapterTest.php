@@ -2,7 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ODM\MongoDB;
 
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -14,21 +17,25 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class MongoDBAdapterTest extends TestCase
 {
-    /**
-     * @requires function LifecycleEventArgs::getDocument
-     */
-    public function testGetObjectFromArgs(): void
+    public function testRecomputeChangeSet(): void
     {
         $entity = new DummyEntity();
-
-        $args = $this->createMock(LifecycleEventArgs::class);
-        $args
-            ->expects(self::once())
-            ->method('getDocument')
-            ->willReturn($entity);
+        $changeSet = [
+            'fileName' => [
+                'test.csv',
+                'test2.csv',
+            ],
+        ];
+        $dm = $this->createStub(DocumentManager::class);
+        $metadata = new ClassMetadata(DummyEntity::class);
+        $dm->method('getClassMetadata')->willReturn($metadata);
+        $event = new PreUpdateEventArgs($entity, $dm, $changeSet);
 
         $adapter = new MongoDBAdapter();
-
-        self::assertEquals($entity, $adapter->getObjectFromArgs($args));
+        $uow = $this->createMock(UnitOfWork::class);
+        $dm->method('getUnitOfWork')->willReturn($uow);
+        $uow->persist($entity);
+        $uow->expects(self::once())->method('recomputeSingleDocumentChangeSet')->with($metadata, $entity);
+        $adapter->recomputeChangeSet($event);
     }
 }

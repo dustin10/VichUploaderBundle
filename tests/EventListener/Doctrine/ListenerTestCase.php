@@ -2,14 +2,10 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
-use Doctrine\Common\EventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
-use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
-use Vich\UploaderBundle\EventListener\Doctrine\InjectListener;
-use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
-use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
+use Vich\UploaderBundle\EventListener\Doctrine\BaseListener;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -19,6 +15,8 @@ use Vich\UploaderBundle\Tests\TestCase;
  * Doctrine listener test case.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @template-covariant T of BaseListener
  */
 abstract class ListenerTestCase extends TestCase
 {
@@ -32,11 +30,12 @@ abstract class ListenerTestCase extends TestCase
 
     protected UploadHandler|MockObject $handler;
 
-    protected EventArgs|PreUpdateEventArgs|MockObject $event;
+    protected LifecycleEventArgs|MockObject $event;
 
     public DummyEntity|MockObject $object;
 
-    protected CleanListener|InjectListener|RemoveListener|UploadListener|null $listener;
+    /** @var T */
+    protected BaseListener $listener;
 
     /**
      * Sets up the test.
@@ -47,14 +46,45 @@ abstract class ListenerTestCase extends TestCase
         $this->metadata = $this->getMetadataReaderMock();
         $this->handler = $this->getUploadHandlerMock();
         $this->object = new DummyEntity();
-        $this->event = $this->createMock(EventArgs::class);
+        $this->event = $this->getEventMock();
+        $this->event->method('getObject')->willReturn($this->object);
+    }
 
-        $that = $this;
+    /**
+     * @return AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getAdapterMock(): AdapterInterface
+    {
+        return $this->createMock(AdapterInterface::class);
+    }
 
-        // the adapter is always used to return the object
-        $this->adapter
-            ->method('getObjectFromArgs')
-            ->with($this->event)
-            ->willReturnCallback(fn () => $that->object);
+    /**
+     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getMetadataReaderMock(): MetadataReader
+    {
+        return $this->getMockBuilder(MetadataReader::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * @return UploadHandler&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getHandlerMock(): UploadHandler
+    {
+        return $this->getMockBuilder(UploadHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * @return LifecycleEventArgs&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getEventMock(): LifecycleEventArgs
+    {
+        return $this->getMockBuilder(LifecycleEventArgs::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
