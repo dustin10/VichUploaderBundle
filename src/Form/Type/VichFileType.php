@@ -61,6 +61,7 @@ class VichFileType extends AbstractType
             'label' => $options['label'],
             'attr' => $options['attr'],
             'translation_domain' => $options['translation_domain'],
+            'error_bubbling' => true,
         ]);
 
         $builder->addModelTransformer(new FileTransformer());
