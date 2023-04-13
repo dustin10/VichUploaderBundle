@@ -31,6 +31,10 @@ final class UploaderExtensionRuntime implements RuntimeExtensionInterface
      */
     public function asset($object, ?string $fieldName = null, ?string $className = null): ?string
     {
+        if (null === $className) {
+            return $this->helper->asset($object, $fieldName);
+        }
+
         // @phpstan-ignore-next-line
         return $this->helper->asset($object, $fieldName, $className);
     }
