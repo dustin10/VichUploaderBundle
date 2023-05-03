@@ -373,8 +373,8 @@ class PropertyMappingFactoryTest extends TestCase
         $this->container
             ->method('get')
             ->willReturnMap([
-                ['my.custom.namer', /* invalid behavior */1, $namer],
-                ['my.custom.directory_namer', /* invalid behavior */1, $directoryNamer],
+                ['my.custom.namer', /* invalid behavior */ 1, $namer],
+                ['my.custom.directory_namer', /* invalid behavior */ 1, $directoryNamer],
             ]);
 
         $this->metadata
@@ -410,8 +410,7 @@ class PropertyMappingFactoryTest extends TestCase
 
     protected static function createProxyMock(): MockObject
     {
-
-        $self = new self();
+        $self = new self(self::class);
         return $self->createMock(Proxy::class);
     }
 }
