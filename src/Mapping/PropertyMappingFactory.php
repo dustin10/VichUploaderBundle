@@ -20,8 +20,7 @@ class PropertyMappingFactory
     public function __construct(
         private readonly MetadataReader $metadata,
         private readonly PropertyMappingResolverInterface $resolver,
-    )
-    {
+    ) {
     }
 
     /**

@@ -125,7 +125,7 @@ final class VichImageTypeTest extends TestCase
                 [
                     'download_label' => 'download',
                     'download_uri' => 'custom-uri',
-                    'image_uri' => static fn(Product $product, $resolvedUri) => 'prefix-' . $resolvedUri,
+                    'image_uri' => static fn (Product $product, $resolvedUri) => 'prefix-'.$resolvedUri,
                     'imagine_pattern' => null,
                     'asset_helper' => false,
                 ],

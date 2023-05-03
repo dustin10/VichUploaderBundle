@@ -89,7 +89,7 @@ class MetadataReader
         }
 
         if (null !== $mapping) {
-            $uploadableFields = \array_filter($uploadableFields, static fn(array $fieldMetadata): bool => $fieldMetadata['mapping'] === $mapping);
+            $uploadableFields = \array_filter($uploadableFields, static fn (array $fieldMetadata): bool => $fieldMetadata['mapping'] === $mapping);
         }
 
         return $uploadableFields;

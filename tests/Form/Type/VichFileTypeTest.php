@@ -61,7 +61,7 @@ final class VichFileTypeTest extends TestCase
         $config = $this->createMock(FormConfigInterface::class);
         $config
             ->method('getOption')
-            ->willReturnCallback(fn(string $key) => $options[$key] ?? null);
+            ->willReturnCallback(fn (string $key) => $options[$key] ?? null);
 
         $form = $this->createMock(FormInterface::class);
         $form
@@ -169,7 +169,7 @@ final class VichFileTypeTest extends TestCase
                 $object,
                 [
                     'download_label' => 'download',
-                    'download_uri' => static fn(Product $product) => '/download/' . $product->getImageOriginalName(),
+                    'download_uri' => static fn (Product $product) => '/download/'.$product->getImageOriginalName(),
                     'asset_helper' => false,
                 ],
                 [
@@ -217,7 +217,7 @@ final class VichFileTypeTest extends TestCase
             [
                 $object,
                 [
-                    'download_label' => static fn(Product $product) => 'prefix-' . $product->getImageOriginalName(),
+                    'download_label' => static fn (Product $product) => 'prefix-'.$product->getImageOriginalName(),
                     'download_uri' => true,
                     'asset_helper' => false,
                 ],
@@ -234,8 +234,8 @@ final class VichFileTypeTest extends TestCase
             [
                 $object,
                 [
-                    'download_label' => static fn(Product $product) => [
-                        'download_label' => 'prefix-' . $product->getImageOriginalName(),
+                    'download_label' => static fn (Product $product) => [
+                        'download_label' => 'prefix-'.$product->getImageOriginalName(),
                         'translation_domain' => 'messages',
                     ],
                     'download_uri' => true,
