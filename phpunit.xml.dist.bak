@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         convertDeprecationsToExceptions="false"
+         colors="true">
+    <testsuites>
+        <testsuite name="VichUploaderBundle Test Suite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <server name="KERNEL_DIR" value="./tests/Fixtures/App/app" />
+        <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="SHELL_VERBOSITY" value="1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
+    </php>
+
+    <coverage>
+        <include>
+            <directory>./src</directory>
+        </include>
+    </coverage>
+
+    <extensions>
+        <extension class="Vich\UploaderBundle\Tests\BypassFinalHook"/>
+    </extensions>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
+</phpunit>

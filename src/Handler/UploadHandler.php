@@ -24,8 +24,7 @@ class UploadHandler extends AbstractHandler
         StorageInterface $storage,
         protected readonly FileInjectorInterface $injector,
         protected readonly EventDispatcherInterface $dispatcher
-    )
-    {
+    ) {
         parent::__construct($factory, $storage);
     }
 
