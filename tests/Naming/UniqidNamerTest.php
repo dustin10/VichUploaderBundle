@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class UniqidNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             // original_name, guessed_extension, pattern

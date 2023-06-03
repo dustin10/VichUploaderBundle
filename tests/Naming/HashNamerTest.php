@@ -19,7 +19,7 @@ class HashNamer extends BaseHashNamer
  */
 class HashNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             ['81fe8bfe87576c3ecb22426f8e57847382917acf.jpg', 'jpg', 'sha1', null],

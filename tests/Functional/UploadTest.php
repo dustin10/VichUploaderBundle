@@ -9,6 +9,10 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
+        if (headers_sent()) {
+            self::markTestSkipped();
+        }
+
         $client = self::createClient();
         $this->loadFixtures($client);
 
@@ -50,6 +54,10 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
+        if (headers_sent()) {
+            self::markTestSkipped();
+        }
+
         $client = self::createClient();
         $this->loadFixtures($client);
 

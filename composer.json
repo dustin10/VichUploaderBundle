@@ -40,7 +40,7 @@
         "league/flysystem-memory": "^2.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.3",
         "mikey179/vfsstream": "^1.6.8",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.6",
         "symfony/asset": "^5.4 || ^6.0",
         "symfony/browser-kit": "^5.4 || ^6.0",
         "symfony/css-selector": "^5.4 || ^6.0",
@@ -48,14 +48,15 @@
         "symfony/dom-crawler": "^5.4 || ^6.0",
         "symfony/form": "^5.4 || ^6.0",
         "symfony/framework-bundle": "^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "^6.2",
+        "symfony/phpunit-bridge": "^6.3",
         "symfony/security-csrf": "^5.4 || ^6.0",
         "symfony/translation": "^5.4 || ^6.0",
         "symfony/twig-bridge": "^5.4 || ^6.0",
         "symfony/twig-bundle": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
-        "symfony/yaml": "^5.4 || ^6.0"
+        "symfony/yaml": "^5.4 || ^6.0",
+        "yoast/phpunit-polyfills": "dev-main#3933ed2a2a7b7a158b48576abeef4a82f737fea1"
     },
     "suggest": {
         "doctrine/annotations": "If you use doctrine/doctrine-bundle >2.7, this package is required to use annotations",

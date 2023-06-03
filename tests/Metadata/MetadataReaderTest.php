@@ -147,7 +147,7 @@ final class MetadataReaderTest extends TestCase
         $this->reader->getUploadableFields('InvalidClassName', 'foo_mapping');
     }
 
-    public function fieldsMetadataProvider(): array
+    public static function fieldsMetadataProvider(): array
     {
         return [
             [['field' => 'toto'], 'toto'],

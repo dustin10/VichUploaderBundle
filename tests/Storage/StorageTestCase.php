@@ -67,7 +67,7 @@ abstract class StorageTestCase extends TestCase
         ]);
     }
 
-    public function emptyFilenameProvider(): array
+    public static function emptyFilenameProvider(): array
     {
         return [
             [null],

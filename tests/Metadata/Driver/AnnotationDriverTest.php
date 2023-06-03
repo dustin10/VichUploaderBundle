@@ -15,6 +15,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyFile;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 
 /**
  * AnnotationDriverTest.
@@ -23,6 +24,8 @@ use Vich\UploaderBundle\Tests\DummyFile;
  */
 final class AnnotationDriverTest extends TestCase
 {
+    use AssertObjectProperty;
+
     private Connection|MockObject $connection;
 
     private EntityManagerInterface|MockObject $entityManager;
@@ -58,8 +61,8 @@ final class AnnotationDriverTest extends TestCase
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
-        self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertInstanceOf(\Vich\UploaderBundle\Metadata\ClassMetadata::class, $metadata);
+        self::assertObjectHasProperty('fields', $metadata);
         self::assertEquals([
             'file' => [
                 'mapping' => 'dummy_file',
@@ -185,7 +188,7 @@ final class AnnotationDriverTest extends TestCase
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertObjectHasProperty('fields', $metadata);
         self::assertEquals(
             [
                 'file' => [
