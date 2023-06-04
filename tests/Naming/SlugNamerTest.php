@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 
 final class SlugNamerTest extends TestCase
 {
-    public function fileDataProvider(): array
+    public static function fileDataProvider(): array
     {
         return [
             // case -> original name, result pattern

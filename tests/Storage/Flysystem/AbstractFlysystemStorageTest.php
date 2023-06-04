@@ -148,7 +148,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
         self::assertEquals($expectedPath, $path);
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             //     dir,   path,                     relative

@@ -8,9 +8,12 @@ use PHPUnit\Framework\TestCase;
 use Vich\TestBundle\Entity\Article;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 
 abstract class FileDriverTestCase extends TestCase
 {
+    use AssertObjectProperty;
+
     /**
      * @dataProvider classesProvider
      */
@@ -22,16 +25,16 @@ abstract class FileDriverTestCase extends TestCase
         $metadata = $driver->loadMetadataForClass($reflectionClass);
 
         self::assertInstanceOf(ClassMetadata::class, $metadata);
-        self::assertObjectHasAttribute('fields', $metadata);
+        self::assertObjectHasProperty('fields', $metadata);
         self::assertEquals($expectedMetadata, $metadata->fields);
     }
 
-    public function classesProvider(): array
+    public static function classesProvider(): array
     {
-        $metadatas = [];
-        $metadatas[] = [
+        $metadata = [];
+        $metadata[] = [
             Product::class,
-            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Product.'.$this->getExtension(),
+            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Product.'.static::getExtension(),
             [
                 'image' => [
                     'mapping' => 'product_image',
@@ -45,9 +48,9 @@ abstract class FileDriverTestCase extends TestCase
             ],
         ];
 
-        $metadatas[] = [
+        $metadata[] = [
             Article::class,
-            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Article.'.$this->getExtension(),
+            __DIR__.'/../../Fixtures/TestBundle/config/vich_uploader/Entity.Article.'.static::getExtension(),
             [
                 'attachment' => [
                     'mapping' => 'dummy_file',
@@ -70,7 +73,7 @@ abstract class FileDriverTestCase extends TestCase
             ],
         ];
 
-        return $metadatas;
+        return $metadata;
     }
 
     protected function getFileLocatorMock(\ReflectionClass $class, ?string $foundFile = null): FileLocatorInterface
@@ -79,13 +82,13 @@ abstract class FileDriverTestCase extends TestCase
         $fileLocator
             ->expects(self::once())
             ->method('findFileForClass')
-            ->with(self::equalTo($class), self::equalTo($this->getExtension()))
+            ->with(self::equalTo($class), self::equalTo(static::getExtension()))
             ->willReturn($foundFile);
 
         return $fileLocator;
     }
 
-    abstract protected function getExtension(): string;
+    abstract protected static function getExtension(): string;
 
     abstract protected function getDriver(\ReflectionClass $reflectionClass, ?string $file): DriverInterface;
 }

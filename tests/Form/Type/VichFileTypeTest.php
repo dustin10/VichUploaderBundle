@@ -112,7 +112,7 @@ final class VichFileTypeTest extends TestCase
         self::assertEquals($vars, $view->vars);
     }
 
-    public function buildViewDataProvider(): array
+    public static function buildViewDataProvider(): array
     {
         $object = new Product();
         $object->setImageOriginalName('image.jpeg');

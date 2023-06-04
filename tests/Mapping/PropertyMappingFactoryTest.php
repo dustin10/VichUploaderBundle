@@ -97,10 +97,10 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertFalse($mapping->hasNamer());
     }
 
-    public function fromObjectProvider(): array
+    public static function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = $this->createMock(Proxy::class);
+        $proxy = (new self(self::class))->createMock(Proxy::class);
 
         return [
             [$obj, null, DummyEntity::class],
@@ -292,10 +292,10 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertEquals('dummy_file', $mapping->getMappingName());
     }
 
-    public function fromFieldProvider(): array
+    public static function fromFieldProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = $this->createMock(Proxy::class);
+        $proxy = (new self(self::class))->createMock(Proxy::class);
 
         return [
             [$obj, null, DummyEntity::class],

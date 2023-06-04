@@ -16,7 +16,7 @@ final class VichImageTypeTest extends TestCase
 {
     protected const TESTED_TYPE = VichImageType::class;
 
-    public function buildViewDataProvider(): array
+    public static function buildViewDataProvider(): array
     {
         $object = new Product();
 
@@ -145,6 +145,7 @@ final class VichImageTypeTest extends TestCase
 
     /**
      * @dataProvider getLiipImagineBundleIntegrationData
+     *
      * @requires function CacheManager::_construct
      */
     public function testLiipImagineBundleIntegration(

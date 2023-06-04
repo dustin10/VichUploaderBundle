@@ -126,7 +126,7 @@ class GaufretteStorageTest extends StorageTestCase
         self::assertNull($path);
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             // protocol, fs identifier, upload dir, full path, relative

@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Metadata\Driver\XmlDriver;
 
 class XmlDriverTest extends FileDriverTestCase
 {
-    protected function getExtension(): string
+    protected static function getExtension(): string
     {
         return 'xml';
     }

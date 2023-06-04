@@ -236,7 +236,7 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertNotEmpty($stream);
     }
 
-    public function resolveUriDataProvider(): array
+    public static function resolveUriDataProvider(): array
     {
         return [
             [
@@ -260,6 +260,7 @@ final class FileSystemStorageTest extends StorageTestCase
 
     /**
      * @dataProvider filenameWithDirectoriesDataProvider
+     *
      * @group upload
      */
     public function testUploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
@@ -381,7 +382,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function filenameWithDirectoriesDataProvider(): array
+    public static function filenameWithDirectoriesDataProvider(): array
     {
         return [
             // upload dir, dir, expected dir
