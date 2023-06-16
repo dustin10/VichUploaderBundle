@@ -26,11 +26,14 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
-    public function testGetSubscribedEvents(): void
+    /**
+     * Test attributes.
+     */
+    public function testAttributes(): void
     {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['preRemove', 'postFlush'], $events);
+        $this->checkAttributeCount(2);
+        $this->checkAttributeExist('preRemove');
+        $this->checkAttributeExist('postFlush');
     }
 
     public function testPreRemove(): void

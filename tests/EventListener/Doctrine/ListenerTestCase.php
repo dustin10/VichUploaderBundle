@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
@@ -86,5 +87,23 @@ abstract class ListenerTestCase extends TestCase
         return $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function checkAttributeCount(int $expected) {
+        $reflector = new \ReflectionClass($this->listener);
+        $attributes = $reflector->getAttributes(AsDoctrineListener::class);
+        self::assertCount($expected, $attributes);
+    }
+
+    protected function checkAttributeExist(string $event) {
+        $reflector = new \ReflectionClass($this->listener);
+        $attributes = $reflector->getAttributes(AsDoctrineListener::class);
+        foreach ($attributes as $attribute) {
+            $value =  $attribute->newInstance();
+            if ($event === $value->event) {
+                return;
+            }
+        }
+        self::fail("Unable to find the '$event' attribute.");
     }
 }

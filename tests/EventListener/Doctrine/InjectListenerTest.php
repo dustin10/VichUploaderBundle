@@ -25,13 +25,12 @@ class InjectListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test the getSubscribedEvents method.
+     * Test attributes.
      */
-    public function testGetSubscribedEvents(): void
+    public function testAttributes(): void
     {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['postLoad'], $events);
+        $this->checkAttributeCount(1);
+        $this->checkAttributeExist('postLoad');
     }
 
     /**
