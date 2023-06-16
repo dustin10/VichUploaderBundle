@@ -89,13 +89,15 @@ abstract class ListenerTestCase extends TestCase
             ->getMock();
     }
 
-    protected function checkAttributeCount(int $expected) {
+    protected function checkAttributeCount(int $expected): void
+    {
         $reflector = new \ReflectionClass($this->listener);
         $attributes = $reflector->getAttributes(AsDoctrineListener::class);
         self::assertCount($expected, $attributes);
     }
 
-    protected function checkAttributeExist(string $event) {
+    protected function checkAttributeExist(string $event): void
+    {
         $reflector = new \ReflectionClass($this->listener);
         $attributes = $reflector->getAttributes(AsDoctrineListener::class);
         foreach ($attributes as $attribute) {
