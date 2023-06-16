@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
@@ -11,20 +13,9 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
+#[AsDoctrineListener(Events::postLoad)]
 class InjectListener extends BaseListener
 {
-    /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'postLoad',
-        ];
-    }
-
     /**
      * @param LifecycleEventArgs $event The event
      *

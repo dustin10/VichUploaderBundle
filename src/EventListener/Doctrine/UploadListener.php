@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
@@ -11,21 +13,10 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
+#[AsDoctrineListener(Events::prePersist)]
+#[AsDoctrineListener(Events::preUpdate)]
 class UploadListener extends BaseListener
 {
-    /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'prePersist',
-            'preUpdate',
-        ];
-    }
-
     /**
      * @param LifecycleEventArgs $event The event
      *

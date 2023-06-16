@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 
@@ -12,22 +14,11 @@ use Doctrine\Persistence\Proxy;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
+#[AsDoctrineListener(Events::preRemove)]
+#[AsDoctrineListener(Events::postFlush)]
 class RemoveListener extends BaseListener
 {
     private array $entities = [];
-
-    /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'preRemove',
-            'postFlush',
-        ];
-    }
 
     /**
      * Ensures a proxy will be usable in the postFlush (when transaction has ended).
