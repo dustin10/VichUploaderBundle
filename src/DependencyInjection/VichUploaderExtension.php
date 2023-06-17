@@ -22,12 +22,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 final class VichUploaderExtension extends Extension
 {
-    protected array $tagMap = [
-        'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine_mongodb.odm.event_subscriber',
-        'phpcr' => 'doctrine_phpcr.event_subscriber',
-    ];
-
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -249,10 +243,6 @@ final class VichUploaderExtension extends Extension
             ->setDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
-
-        if (isset($this->tagMap[$driver])) {
-            $definition->addTag($this->tagMap[$driver], ['priority' => $priority]);
-        }
     }
 
     private function registerFormTheme(ContainerBuilder $container): void

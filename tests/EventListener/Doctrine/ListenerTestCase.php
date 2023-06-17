@@ -101,7 +101,7 @@ abstract class ListenerTestCase extends TestCase
         $reflector = new \ReflectionClass($this->listener);
         $attributes = $reflector->getAttributes(AsDoctrineListener::class);
         foreach ($attributes as $attribute) {
-            $value =  $attribute->newInstance();
+            $value = $attribute->newInstance();
             if ($event === $value->event) {
                 return;
             }
