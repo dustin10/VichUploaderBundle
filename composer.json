@@ -17,7 +17,6 @@
     "require": {
         "php": "^8.1",
         "ext-simplexml": "*",
-        "doctrine/annotations": "^2.0",
         "doctrine/persistence": "^3",
         "jms/metadata": "^2.4",
         "symfony/config": "^5.4 || ^6.0",
