@@ -22,7 +22,7 @@ final class DoctrineORMAdapter implements AdapterInterface
     {
         $object = $event->getObject();
 
-        $em = $event->getEntityManager();
+        $em = $event->getObjectManager();
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata($object::class);
         $uow->recomputeSingleEntityChangeSet($metadata, $object);
