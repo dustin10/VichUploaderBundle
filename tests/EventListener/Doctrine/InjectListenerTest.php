@@ -25,15 +25,6 @@ class InjectListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test attributes.
-     */
-    public function testAttributes(): void
-    {
-        $this->checkAttributeCount(1);
-        $this->checkAttributeExist('postLoad');
-    }
-
-    /**
      * Test the postLoad method.
      */
     public function testPostLoad(): void

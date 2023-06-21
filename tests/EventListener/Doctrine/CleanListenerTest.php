@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -22,15 +23,6 @@ class CleanListenerTest extends ListenerTestCase
         parent::setUp();
 
         $this->listener = new CleanListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
-    }
-
-    /**
-     * Test attributes.
-     */
-    public function testAttributes(): void
-    {
-        $this->checkAttributeCount(1);
-        $this->checkAttributeExist('preUpdate');
     }
 
     /**

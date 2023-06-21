@@ -26,16 +26,6 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
-    /**
-     * Test attributes.
-     */
-    public function testAttributes(): void
-    {
-        $this->checkAttributeCount(2);
-        $this->checkAttributeExist('preRemove');
-        $this->checkAttributeExist('postFlush');
-    }
-
     public function testPreRemove(): void
     {
         $this->object = $this->getEntityProxyMock();

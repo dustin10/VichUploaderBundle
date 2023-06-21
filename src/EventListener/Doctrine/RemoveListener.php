@@ -14,8 +14,6 @@ use Doctrine\Persistence\Proxy;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-#[AsDoctrineListener(Events::preRemove)]
-#[AsDoctrineListener(Events::postFlush)]
 class RemoveListener extends BaseListener
 {
     private array $entities = [];

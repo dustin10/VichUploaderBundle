@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
@@ -13,7 +11,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-#[AsDoctrineListener(Events::preUpdate)]
 class CleanListener extends BaseListener
 {
     public function preUpdate(LifecycleEventArgs $event): void

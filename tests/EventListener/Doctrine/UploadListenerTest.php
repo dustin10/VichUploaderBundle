@@ -25,16 +25,6 @@ class UploadListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test attributes.
-     */
-    public function testAttributes(): void
-    {
-        $this->checkAttributeCount(2);
-        $this->checkAttributeExist('prePersist');
-        $this->checkAttributeExist('preUpdate');
-    }
-
-    /**
      * Tests the prePersist method.
      */
     public function testPrePersist(): void

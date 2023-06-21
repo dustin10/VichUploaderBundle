@@ -22,6 +22,12 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 final class VichUploaderExtension extends Extension
 {
+    protected array $tagMap = [
+        'orm' => 'doctrine.event_listener',
+        'mongodb' => 'doctrine_mongodb.odm.event_listener',
+        'phpcr' => 'doctrine_phpcr.event_listener',
+    ];
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -189,9 +195,9 @@ final class VichUploaderExtension extends Extension
     protected function registerListeners(ContainerBuilder $container, array $config): void
     {
         $servicesMap = [
-            'inject_on_load' => ['name' => 'inject', 'priority' => 0],
-            'delete_on_update' => ['name' => 'clean', 'priority' => 50],
-            'delete_on_remove' => ['name' => 'remove', 'priority' => 0],
+            'inject_on_load' => ['name' => 'inject', 'priority' => 0, 'events' => ['postLoad']],
+            'delete_on_update' => ['name' => 'clean', 'priority' => 50, 'events' => ['preRemove', 'postFlush']],
+            'delete_on_remove' => ['name' => 'remove', 'priority' => 0, 'events' => ['preRemove', 'postFlush']],
         ];
 
         foreach ($config['mappings'] as $name => $mapping) {
@@ -203,11 +209,11 @@ final class VichUploaderExtension extends Extension
                     continue;
                 }
 
-                $this->createListener($container, $name, $service['name'], $driver, $service['priority']);
+                $this->createListener($container, $name, $service['name'], $driver, $service['events'], $service['priority']);
             }
 
             // the upload listener is mandatory
-            $this->createListener($container, $name, 'upload', $driver);
+            $this->createListener($container, $name, 'upload', $driver, ['prePersist', 'preUpdate']);
         }
     }
 
@@ -237,12 +243,19 @@ final class VichUploaderExtension extends Extension
         string $name,
         string $type,
         string $driver,
+        array $events,
         int $priority = 0
     ): void {
         $definition = $container
             ->setDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
             ->replaceArgument(0, $name)
             ->replaceArgument(1, new Reference('vich_uploader.adapter.'.$driver));
+
+        if (isset($this->tagMap[$driver])) {
+            foreach ($events as $event) {
+                $definition->addTag($this->tagMap[$driver], ['event' => $event, 'priority' => $priority]);
+            }
+       }
     }
 
     private function registerFormTheme(ContainerBuilder $container): void
