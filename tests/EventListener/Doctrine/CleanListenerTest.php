@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 

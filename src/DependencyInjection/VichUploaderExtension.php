@@ -255,7 +255,7 @@ final class VichUploaderExtension extends Extension
             foreach ($events as $event) {
                 $definition->addTag($this->tagMap[$driver], ['event' => $event, 'priority' => $priority]);
             }
-       }
+        }
     }
 
     private function registerFormTheme(ContainerBuilder $container): void

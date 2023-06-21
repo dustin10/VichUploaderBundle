@@ -2,8 +2,6 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 
