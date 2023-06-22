@@ -196,7 +196,7 @@ final class VichUploaderExtension extends Extension
     {
         $servicesMap = [
             'inject_on_load' => ['name' => 'inject', 'priority' => 0, 'events' => ['postLoad']],
-            'delete_on_update' => ['name' => 'clean', 'priority' => 50, 'events' => ['preRemove', 'postFlush']],
+            'delete_on_update' => ['name' => 'clean', 'priority' => 50, 'events' => ['preUpdate']],
             'delete_on_remove' => ['name' => 'remove', 'priority' => 0, 'events' => ['preRemove', 'postFlush']],
         ];
 
