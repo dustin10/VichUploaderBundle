@@ -14,9 +14,6 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  */
 final class DoctrineORMAdapter implements AdapterInterface
 {
-    /**
-     * @param LifecycleEventArgs $event
-     */
     public function recomputeChangeSet(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();
