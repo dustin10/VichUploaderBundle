@@ -17,19 +17,6 @@ class RemoveListener extends BaseListener
     private array $entities = [];
 
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'preRemove',
-            'postFlush',
-        ];
-    }
-
-    /**
      * Ensures a proxy will be usable in the postFlush (when transaction has ended).
      *
      * @param LifecycleEventArgs $event The event

@@ -13,18 +13,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  */
 class CleanListener extends BaseListener
 {
-    /**
-     * The events the listener is subscribed to.
-     *
-     * @return array<int, string> The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'preUpdate',
-        ];
-    }
-
     public function preUpdate(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();

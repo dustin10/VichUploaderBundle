@@ -25,16 +25,6 @@ class CleanListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test the getSubscribedEvents method.
-     */
-    public function testGetSubscribedEvents(): void
-    {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['preUpdate'], $events);
-    }
-
-    /**
      * Test the preUpdate method.
      */
     public function testPreUpdate(): void

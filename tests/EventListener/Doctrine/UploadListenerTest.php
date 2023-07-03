@@ -25,16 +25,6 @@ class UploadListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test the getSubscribedEvents method.
-     */
-    public function testGetSubscribedEvents(): void
-    {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['prePersist', 'preUpdate'], $events);
-    }
-
-    /**
      * Tests the prePersist method.
      */
     public function testPrePersist(): void

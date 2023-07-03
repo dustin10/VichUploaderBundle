@@ -25,16 +25,6 @@ class InjectListenerTest extends ListenerTestCase
     }
 
     /**
-     * Test the getSubscribedEvents method.
-     */
-    public function testGetSubscribedEvents(): void
-    {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['postLoad'], $events);
-    }
-
-    /**
      * Test the postLoad method.
      */
     public function testPostLoad(): void

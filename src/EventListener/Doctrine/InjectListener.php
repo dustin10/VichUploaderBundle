@@ -14,18 +14,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 class InjectListener extends BaseListener
 {
     /**
-     * The events the listener is subscribed to.
-     *
-     * @return array The array of events
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            'postLoad',
-        ];
-    }
-
-    /**
      * @param LifecycleEventArgs $event The event
      *
      * @throws \Vich\UploaderBundle\Exception\MappingNotFoundException

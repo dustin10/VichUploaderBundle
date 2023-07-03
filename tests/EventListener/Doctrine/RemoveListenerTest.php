@@ -26,13 +26,6 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
-    public function testGetSubscribedEvents(): void
-    {
-        $events = $this->listener->getSubscribedEvents();
-
-        self::assertSame(['preRemove', 'postFlush'], $events);
-    }
-
     public function testPreRemove(): void
     {
         $this->object = $this->getEntityProxyMock();
