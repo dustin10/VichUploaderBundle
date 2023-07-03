@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Adapter\ORM;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs as BaseLifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -17,7 +17,7 @@ final class DoctrineORMAdapter implements AdapterInterface
     /**
      * @param LifecycleEventArgs $event
      */
-    public function recomputeChangeSet(BaseLifecycleEventArgs $event): void
+    public function recomputeChangeSet(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();
 
