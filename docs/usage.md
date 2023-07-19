@@ -271,6 +271,10 @@ class Product
 
     // ... other fields
 
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'image.name', size: 'image.size')]
+    private ?File $imageFile = null;
+
     #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private ?EmbeddedFile $image = null;
 
