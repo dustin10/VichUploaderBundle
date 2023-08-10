@@ -2,8 +2,7 @@
 
 namespace Vich\UploaderBundle\Adapter\ORM;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\Persistence\Event\LifecycleEventArgs as BaseLifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -15,14 +14,11 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  */
 final class DoctrineORMAdapter implements AdapterInterface
 {
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function recomputeChangeSet(BaseLifecycleEventArgs $event): void
+    public function recomputeChangeSet(LifecycleEventArgs $event): void
     {
         $object = $event->getObject();
-
-        $em = $event->getEntityManager();
+        /** @var \Doctrine\ORM\EntityManagerInterface $em */
+        $em = $event->getObjectManager();
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata($object::class);
         $uow->recomputeSingleEntityChangeSet($metadata, $object);
