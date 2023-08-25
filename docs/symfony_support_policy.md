@@ -1,6 +1,6 @@
 # Symfony support policy
 
-As indicated by the contraints defined in the `composer.json` file, this bundle
+As indicated by the constraints defined in the `composer.json` file, this bundle
 supports Symfony `^5.4 || ^6.0` in its latest versions (>=`2.0.*`).
 
 Only versions still actively maintained by the Symfony core team will be supported by
