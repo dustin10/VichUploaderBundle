@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Vich\UploaderBundle\Naming\UniqidNamer;
 use Vich\UploaderBundle\VichUploaderBundle;
 
 /**
@@ -61,6 +62,7 @@ class FlysystemOneUpAppKernel extends Kernel
                     'product_image' => [
                         'uri_prefix' => '/images/products',
                         'upload_destination' => 'oneup_flysystem.product_image_fs',
+                        'namer' => UniqidNamer::class,
                     ],
                 ],
             ]);

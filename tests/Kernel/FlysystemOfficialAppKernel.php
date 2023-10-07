@@ -9,6 +9,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Vich\UploaderBundle\VichUploaderBundle;
+use Vich\UploaderBundle\Naming\UniqidNamer;
 
 /**
  * @author Titouan Galopin <galopintitouan@gmail.com>
@@ -56,6 +57,7 @@ class FlysystemOfficialAppKernel extends Kernel
                     'product_image' => [
                         'uri_prefix' => '/images/products',
                         'upload_destination' => 'uploads.storage',
+                        'namer' => UniqidNamer::class,
                     ],
                 ],
             ]);
