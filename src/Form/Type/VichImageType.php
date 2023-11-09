@@ -44,7 +44,7 @@ class VichImageType extends VichFileType
             'imagine_pattern' => null,
             'storage_resolve_method' => self::STORAGE_RESOLVE_URI,
             'attr' => [
-                'accept' => 'image/png,image/jpeg,image/gif,image/webp',
+                'accept' => 'image/*',
             ],
         ]);
 
