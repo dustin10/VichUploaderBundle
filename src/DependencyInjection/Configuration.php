@@ -104,7 +104,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('uri_prefix')->defaultValue('/uploads')->end()
                             ->scalarNode('upload_destination')->isRequired()->end()
                             ->arrayNode('namer')
-                                ->addDefaultsIfNotSet()
+                                ->isRequired()
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(static fn ($v) => ['service' => $v, 'options' => []])

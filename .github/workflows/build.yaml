@@ -96,7 +96,7 @@ jobs:
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
             - name: Update project dependencies
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                 dependency-versions: ${{ matrix.dependencies }}
             - name: Run tests
