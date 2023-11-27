@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Massimiliano Arione <max.arione@gmail.com>
  */
-final class VichImageType extends VichFileType
+class VichImageType extends VichFileType
 {
     public const STORAGE_RESOLVE_URI = 0;
 
@@ -43,6 +43,9 @@ final class VichImageType extends VichFileType
             'image_uri' => true,
             'imagine_pattern' => null,
             'storage_resolve_method' => self::STORAGE_RESOLVE_URI,
+            'attr' => [
+                'accept' => 'image/*',
+            ],
         ]);
 
         $resolver->setAllowedValues(

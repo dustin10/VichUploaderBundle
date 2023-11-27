@@ -44,7 +44,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'gaufrette',
         ]);
 
-        self::assertContainerBuilderHasAlias('vich_uploader.storage', 'vich_uploader.storage.gaufrette');
+        $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'vich_uploader.storage.gaufrette');
     }
 
     public function testStorageServiceCustom(): void
@@ -53,7 +53,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => '@acme.storage',
         ]);
 
-        self::assertContainerBuilderHasAlias('vich_uploader.storage', 'acme.storage');
+        $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'acme.storage');
     }
 
     public function testExtraServiceFilesAreLoaded(): void
@@ -63,8 +63,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'storage' => 'flysystem',
         ]);
 
-        self::assertContainerBuilderHasService('vich_uploader.storage.flysystem', FlysystemStorage::class);
-        self::assertContainerBuilderHasService(UploaderExtension::class);
+        $this->assertContainerBuilderHasService('vich_uploader.storage.flysystem', FlysystemStorage::class);
+        $this->assertContainerBuilderHasService(UploaderExtension::class);
     }
 
     public function testMappingsServiceParameterIsSet(): void
@@ -86,7 +86,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         // the default db_driver is copied into the mapping
         $mappings['foo']['db_driver'] = 'orm';
 
-        self::assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
+        $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
     public function testDbDriverIsNotOverridden(): void
@@ -107,7 +107,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        self::assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
+        $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
     public function testListenersCreation(): void
@@ -127,9 +127,9 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        self::assertContainerBuilderHasService('vich_uploader.listener.inject.profile_common_avatar');
-        self::assertContainerBuilderNotHasService('vich_uploader.listener.clean.profile_common_avatar');
-        self::assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
+        $this->assertContainerBuilderHasService('vich_uploader.listener.inject.profile_common_avatar');
+        $this->assertContainerBuilderNotHasService('vich_uploader.listener.clean.profile_common_avatar');
+        $this->assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
     }
 
     public function testFormThemeCorrectlyOverridden(): void
@@ -147,7 +147,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         ]], $this->container);
         $vichUploaderExtension->load([$this->getMinimalConfiguration()], $this->container);
 
-        self::assertContainerBuilderHasParameter(
+        $this->assertContainerBuilderHasParameter(
             'twig.form.resources',
             ['@VichUploader/Form/fields.html.twig', 'form_div_layout.html.twig', '@Ololo/trololo.html.twig']
         );
