@@ -13,7 +13,7 @@ final class CacheWarmer implements CacheWarmerInterface
     {
     }
 
-    public function warmUp(string $cacheDir): array
+    public function warmUp(string $cacheDir, string $buildDir = null): array
     {
         if (empty($this->dir)) {
             return [];
