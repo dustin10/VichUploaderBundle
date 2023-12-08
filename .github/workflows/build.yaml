@@ -60,13 +60,19 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 5
                     - php: '8.1'
-                      symfony: '6.1.*'
+                      symfony: '6.3.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
                       max_deprecations: 0
                     - php: '8.2'
-                      symfony: '6.2.*'
+                      symfony: '6.4.*'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      max_deprecations: 0
+                    - php: '8.3'
+                      symfony: '7.0.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
