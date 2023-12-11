@@ -56,7 +56,7 @@
         "symfony/validator": "^5.4 || ^6.0",
         "symfony/var-dumper": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
-        "yoast/phpunit-polyfills": "dev-main#3933ed2a2a7b7a158b48576abeef4a82f737fea1"
+        "yoast/phpunit-polyfills": "^2.0"
     },
     "suggest": {
         "doctrine/annotations": "If you use doctrine/doctrine-bundle >2.7, this package is required to use annotations",

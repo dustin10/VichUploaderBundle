@@ -2,7 +2,7 @@
 
 {% block toolbar %}
     {% set icon %}
-        {% include '@VichUploader/Collector/icon_grey.html.twig' %}
+        {{ source('@VichUploader/Collector/icon.svg') }}
         <span class="sf-toolbar-value">{{ collector.mappingsCount }}</span>
     {% endset %}
 
@@ -20,7 +20,7 @@
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label">
         <span class="icon">
-            {% include '@VichUploader/Collector/icon_white.html.twig' %}
+            {{ source('@VichUploader/Collector/icon.svg') }}
         </span>
         <strong>VichUploader</strong>
     </span>
