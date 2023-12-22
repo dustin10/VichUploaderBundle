@@ -290,7 +290,7 @@ final class PropertyMapping
      *
      * @param object $obj
      *
-     * @return string|null The upload directory
+     * @return string The upload directory
      */
     public function getUploadDir($obj): string
     {
