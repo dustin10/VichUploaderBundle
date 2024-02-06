@@ -9,7 +9,7 @@ your Symfony project:
 composer require vich/uploader-bundle
 ```
 
-Alternatively, you can add the requirement `"vich/uploader-bundle": "^2.0"` to your composer.json and run
+Alternatively, you can add the requirement `"vich/uploader-bundle": "^2.2"` to your composer.json and run
 `composer update`. This could be useful when the installation of VichUploaderBundle is not compatible with some
 currently installed dependencies. Anyway, the previous option is the preferred way, since composer can pick the
 best requirement constraint for you.
