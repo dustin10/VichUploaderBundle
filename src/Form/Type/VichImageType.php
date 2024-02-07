@@ -71,7 +71,7 @@ class VichImageType extends VichFileType
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;
 
-        if (null !== $object) {
+        if ((null !== $object && !is_object($object)) || (is_object($object) && $object->getId())) {
             if ($options['imagine_pattern']) {
                 if (null === $this->cacheManager) {
                     throw new \RuntimeException('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
