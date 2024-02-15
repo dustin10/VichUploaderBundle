@@ -48,10 +48,10 @@ want to make uploadable.
 
 We already created an abstract representation of the filesystem (the mapping),
 so we just have to tell the bundle which entity should use which mapping. In
-this guide we'll use annotations to achieve this, but you can also use
+this guide we'll use attributes to achieve this, but you can also use
 [YAML](mapping/yaml.md) or [XML](mapping/xml.md).
 
-First, annotate your class with the `Uploadable` annotation. This is really like
+First, annotate your class with the `Uploadable` attribute. This is really like
 a flag indicating that the entity contains uploadable fields.
 
 Next, you have to create the two fields needed for the bundle to work:
@@ -62,7 +62,7 @@ Next, you have to create the two fields needed for the bundle to work:
      object after the form is submitted. This should *not* be persisted to the
      database, but you *do* need to annotate it.
 
-The `UploadableField` annotation has a few options. They are as follows:
+The `UploadableField` attribute has a few options. They are as follows:
 
 * `mapping`: required, the mapping name specified in the bundle configuration to use;
 * `fileNameProperty`: required, the property that will contain the name of the uploaded file;
