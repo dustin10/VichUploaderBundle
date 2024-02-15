@@ -17,21 +17,16 @@ best requirement constraint for you.
 ## Enable the bundle
 
 If you use Flex (you should!), the bundle is automatically enabled with a recipe and no further action is required.
-Otherwise, to start using the bundle, register it in your application's kernel class:
+Otherwise, to start using the bundle, add it to bundles.php
 
 ```php
-// app/AppKernel.php (your kernel class may be defined in a different class/path)
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = [
-            // ...
-            new Vich\UploaderBundle\VichUploaderBundle(),
-            // ...
-        ];
-    }
-}
+<?php
+// config/bundles.php
+
+return [
+    ...
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
+];
 ```
 
 ## Choose and configure a persistence engine
