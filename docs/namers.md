@@ -110,6 +110,7 @@ At the moment there are several available namers:
 * `Vich\UploaderBundle\Naming\SubdirDirectoryNamer`
 * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
 * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
+* `Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer`
 
 **SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be
 stored in a folder `ab`. It is also possible to configure how many chars use per directory name and
@@ -179,6 +180,23 @@ vich_uploader:
                 options:
                     date_time_format: 'Y/d/m' # will create directory "2018/23/09" for current date "2018-09-23"
                     date_time_property: uploadTimestamp # see above example
+```
+
+**ConfigurableDirectoryNamer** creates subdirs which path is given in the directory namer's options.
+
+To use it, you just have to specify the service for the `directory_namer`
+configuration option of your mapping, and **must** set the option `directory_path`:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        products:
+            upload_destination: products
+            directory_namer:
+                service: vich_uploader.namer_directory_configurable
+                options:
+                    directory_path: 'folder/subfolder/subsubfolder'
 ```
 
 If no directory namer is configured for a mapping, the bundle will simply use
