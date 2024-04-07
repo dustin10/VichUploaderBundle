@@ -121,7 +121,7 @@ final class FlysystemStorage extends AbstractStorage
         try {
             return $fs->publicUrl($path);
         } catch (FilesystemException) {
-            return null;
+            return $mapping->getUriPrefix().'/'.$path;
         }
     }
 }
