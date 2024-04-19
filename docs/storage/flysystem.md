@@ -54,6 +54,35 @@ vich_uploader:
             upload_destination: default.storage # Use the name you defined for your storage here
 ```
 
+### Issues with adapters public url
+
+If you are using certain adapters like S3, Cloudflare, etc., the generated public URL for assets may be incorrect.
+To resolve this, you can create your own [custom storage](https://github.com/dustin10/VichUploaderBundle/blob/master/docs/storage/custom.md) by extending the existing FlysystemStorage and adding this function:
+
+```php
+    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
+    {
+        $path = $this->resolvePath($obj, $fieldName, $className, true);
+
+        if (empty($path)) {
+            return null;
+        }
+
+        $mapping = null === $fieldName ?
+            $this->factory->fromFirstField($obj, $className) :
+            $this->factory->fromField($obj, $fieldName, $className);
+        $fs = $this->getFilesystem($mapping);
+
+        try {
+            return $fs->publicUrl($path);
+        } catch (FilesystemException) {
+            return $mapping->getUriPrefix().'/'.$path;
+        }
+    }
+```
+
+Be careful with that; if you have existing implementations, it can break them. See here: https://github.com/dustin10/VichUploaderBundle/pull/1441
+
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
 
 To install the bundle, run the following command:
