@@ -81,7 +81,7 @@ To resolve this, you can create your own [custom storage](https://github.com/dus
     }
 ```
 
-Be careful with that; if you have existing implementations, it can break them. See here: https://github.com/dustin10/VichUploaderBundle/pull/1441
+Be careful with that; if you have existing implementations, it can break them. See [there](https://github.com/dustin10/VichUploaderBundle/pull/1441).
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
 
