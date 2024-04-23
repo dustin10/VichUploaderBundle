@@ -57,8 +57,8 @@ vich_uploader:
 ### Issues with adapters public url
 
 If you are using certain adapters like S3, Cloudflare, etc., the generated public URL for assets may be incorrect.
-To resolve this, you can create your own 
-[custom storage](https://github.com/dustin10/VichUploaderBundle/blob/master/docs/storage/custom.md) 
+To resolve this, you can create your own
+[custom storage](https://github.com/dustin10/VichUploaderBundle/blob/master/docs/storage/custom.md)
 by duplicating the existing FlysystemStorage and adding this function:
 
 ```php
@@ -83,7 +83,7 @@ by duplicating the existing FlysystemStorage and adding this function:
     }
 ```
 
-Be careful with that; if you have existing implementations, 
+Be careful with that; if you have existing implementations,
 it can break them. See [there](https://github.com/dustin10/VichUploaderBundle/pull/1441).
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
