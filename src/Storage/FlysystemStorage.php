@@ -104,24 +104,4 @@ final class FlysystemStorage extends AbstractStorage
 
         return $this->registry->get($mapping->getUploadDestination());
     }
-
-    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
-    {
-        $path = $this->resolvePath($obj, $fieldName, $className, true);
-
-        if (empty($path)) {
-            return null;
-        }
-
-        $mapping = null === $fieldName ?
-            $this->factory->fromFirstField($obj, $className) :
-            $this->factory->fromField($obj, $fieldName, $className);
-        $fs = $this->getFilesystem($mapping);
-
-        try {
-            return $fs->publicUrl($path);
-        } catch (FilesystemException) {
-            return $mapping->getUriPrefix().'/'.$path;
-        }
-    }
 }
