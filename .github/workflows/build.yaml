@@ -11,13 +11,13 @@ jobs:
         name: PHPStan
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
             - run: |
-                  composer require --no-update liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit phpstan/phpstan:1.9.* 
+                  composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit phpstan/phpstan:1.9.* 
                   composer config --no-plugins allow-plugins.phpstan/extension-installer true
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
@@ -26,14 +26,14 @@ jobs:
         name: PHP-CS-Fixer
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
     validate-markdown:
         runs-on: ubuntu-22.04
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: Validate
               uses: avto-dev/markdown-lint@v1
               with:
@@ -80,9 +80,9 @@ jobs:
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: Cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ~/.composer/cache/files
                   key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.dependencies }}
