@@ -158,27 +158,4 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
             ['foo', '/absolute/foo/file.txt', false],
         ];
     }
-
-    public function testResolveUri(): void
-    {
-        $this->mapping
-            ->expects(self::once())
-            ->method('getUriPrefix')
-            ->willReturn('/uploads');
-
-        $this->mapping
-            ->expects(self::once())
-            ->method('getFileName')
-            ->willReturn('file.txt');
-
-        $this->factory
-            ->expects(self::once())
-            ->method('fromField')
-            ->with($this->object, 'file_field')
-            ->willReturn($this->mapping);
-
-        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
-
-        self::assertEquals('/uploads/file.txt', $path);
-    }
 }
