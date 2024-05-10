@@ -23,6 +23,8 @@ interface StorageInterface
      *
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
+     *
+     * @throw \Exception      Throws an exception
      */
     public function remove(object $obj, PropertyMapping $mapping): ?bool;
 

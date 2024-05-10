@@ -41,11 +41,19 @@ final class FileSystemStorage extends AbstractStorage
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
-        return \file_exists($file) && \unlink($file);
+        if (!\file_exists($file) || !unlink($file)) {
+            throw new \Exception('Cannot remove file '.$file);
+        }
+
+        return true;
     }
 
-    protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
-    {
+    protected function doResolvePath(
+        PropertyMapping $mapping,
+        ?string $dir,
+        string $name,
+        ?bool $relative = false
+    ): string {
         $path = !empty($dir) ? $dir.\DIRECTORY_SEPARATOR.$name : $name;
 
         if ($relative) {

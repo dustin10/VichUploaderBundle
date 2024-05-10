@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Handler;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -187,6 +188,79 @@ final class UploadHandlerTest extends TestCase
             ->expects(self::once())
             ->method('remove')
             ->with($this->object, $this->mapping);
+
+        $this->handler->remove($this->object, self::FILE_FIELD);
+    }
+
+    public function testRemoveFailsInStorageDriverEmitsEvent(): void
+    {
+        $this->expectEvents([Events::PRE_REMOVE, Events::REMOVE_ERROR, Events::POST_REMOVE]);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->willReturn('something not null');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('erase')
+            ->with($this->object);
+
+        $this->storage
+            ->expects(self::once())
+            ->method('remove')
+            ->with($this->object, $this->mapping)
+            ->willThrowException(new \RuntimeException('Test exception'))
+        ;
+
+        $this->handler->remove($this->object, self::FILE_FIELD);
+    }
+
+    public function testUploadFailsEmitsEventAndException(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->expectEvents([Events::PRE_UPLOAD, Events::UPLOAD_ERROR]);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFile')
+            ->with($this->object)
+            ->willReturn($this->getUploadedFileMock());
+
+        $this->storage
+            ->expects(self::once())
+            ->method('upload')
+            ->with($this->object, $this->mapping)
+            ->willThrowException(new \RuntimeException('This is a test'));
+
+        $this->injector
+            ->expects(self::never())
+            ->method('injectFile')
+            ->with($this->object, $this->mapping);
+
+        $this->handler->upload($this->object, self::FILE_FIELD);
+    }
+
+    public function testremoveFailsWithCannotWriteException(): void
+    {
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->with($this->object)
+            ->willReturn('something not null');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('erase')
+            ->with($this->object);
+
+        $this->storage
+            ->expects(self::once())
+            ->method('remove')
+            ->with($this->object, $this->mapping)
+            ->willThrowException(new CannotWriteFileException('this is a test'));
 
         $this->handler->remove($this->object, self::FILE_FIELD);
     }

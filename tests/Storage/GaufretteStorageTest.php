@@ -172,6 +172,8 @@ class GaufretteStorageTest extends StorageTestCase
      */
     public function testRemoveNotFoundFile(): void
     {
+        // the exception is caught in the UploadHandler.
+        $this->expectException(FileNotFound::class);
         $this->mapping
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
