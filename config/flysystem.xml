@@ -8,6 +8,7 @@
         <service id="vich_uploader.storage.flysystem" class="Vich\UploaderBundle\Storage\FlysystemStorage" public="false">
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument /><!-- Populated by RegisterFlysystemRegistryPass -->
+            <argument>%vich_uploader.use_flysystem_to_resolve_uri%</argument>
         </service>
         <service id="Vich\UploaderBundle\Storage\FlysystemStorage" alias="vich_uploader.storage.flysystem" public="false"/>
     </services>
