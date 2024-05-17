@@ -84,7 +84,7 @@ final class FlysystemStorage extends AbstractStorage
 
     public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
     {
-        if (! $this->useFlysystemToResolveUri) {
+        if (!$this->useFlysystemToResolveUri) {
             return parent::resolveUri($obj, $fieldName, $className);
         }
 
