@@ -56,13 +56,9 @@ final class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        try {
-            $fs->delete($path);
+        $fs->delete($path);
 
-            return true;
-        } catch (FilesystemException) {
-            return false;
-        }
+        return true;
     }
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string

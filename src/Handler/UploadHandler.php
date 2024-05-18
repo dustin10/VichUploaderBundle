@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Handler;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Vich\UploaderBundle\Event\ErrorEvent;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
@@ -46,8 +47,12 @@ final class UploadHandler extends AbstractHandler
         }
 
         $this->dispatch(Events::PRE_UPLOAD, new Event($obj, $mapping));
-
-        $this->storage->upload($obj, $mapping);
+        try {
+            $this->storage->upload($obj, $mapping);
+        } catch (\Throwable $exception) {
+            $this->dispatch(Events::UPLOAD_ERROR, new ErrorEvent($obj, $mapping, $exception));
+            throw $exception;
+        }
         $this->injector->injectFile($obj, $mapping);
 
         $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
@@ -93,8 +98,11 @@ final class UploadHandler extends AbstractHandler
         if ($preEvent->isCanceled()) {
             return;
         }
-
-        $this->storage->remove($obj, $mapping);
+        try {
+            $this->storage->remove($obj, $mapping);
+        } catch (\Throwable $exception) {
+            $this->dispatch(Events::REMOVE_ERROR, new ErrorEvent($obj, $mapping, $exception));
+        }
         $mapping->erase($obj);
 
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
