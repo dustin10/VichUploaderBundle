@@ -57,34 +57,14 @@ vich_uploader:
 ### Issues with adapters public url
 
 If you are using certain adapters like S3, Cloudflare, etc., the generated public URL for assets may be incorrect.
-To resolve this, you can create your own
-[custom storage](https://github.com/dustin10/VichUploaderBundle/blob/master/docs/storage/custom.md)
-by duplicating the existing FlysystemStorage and adding this function:
+To resolve this, you can enable `use_flysystem_to_resolve_uri` in the configuration.
 
-```php
-    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
-    {
-        $path = $this->resolvePath($obj, $fieldName, $className, true);
+This setting makes VichUploaderBundle retrieve the public URL from the configured Flysystem storage.
+If Flysystem cannot generate a public URL, the bundle will fall back to default behaviour.
 
-        if (empty($path)) {
-            return null;
-        }
+**Note:**:
 
-        $mapping = null === $fieldName ?
-            $this->factory->fromFirstField($obj, $className) :
-            $this->factory->fromField($obj, $fieldName, $className);
-        $fs = $this->getFilesystem($mapping);
-
-        try {
-            return $fs->publicUrl($path);
-        } catch (FilesystemException) {
-            return $mapping->getUriPrefix().'/'.$path;
-        }
-    }
-```
-
-Be careful with that; if you have existing implementations,
-it can break them. See [there](https://github.com/dustin10/VichUploaderBundle/pull/1441).
+> Retrieving the public URL is only available when using flysystem version 3.6.0 and up.
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
 
