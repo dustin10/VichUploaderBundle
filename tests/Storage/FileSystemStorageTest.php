@@ -42,6 +42,8 @@ final class FileSystemStorageTest extends StorageTestCase
      */
     public function testRemoveSkipsNonExistingFile(): void
     {
+        $this->expectException(\Exception::class);
+
         $this->mapping
             ->expects(self::once())
             ->method('getUploadDir')

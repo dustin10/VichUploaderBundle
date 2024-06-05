@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Storage;
 
 use Gaufrette\Adapter\MetadataSupporter;
-use Gaufrette\Exception\FileNotFound;
 use Gaufrette\FilesystemInterface;
 use Gaufrette\FilesystemMapInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -46,11 +45,7 @@ final class GaufretteStorage extends AbstractStorage
         $filesystem = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        try {
-            return $filesystem->delete($path);
-        } catch (FileNotFound) {
-            return false;
-        }
+        return $filesystem->delete($path);
     }
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string

@@ -23,9 +23,14 @@ final class FlysystemStorage extends AbstractStorage
     protected MountManager|ContainerInterface $registry;
 
     /**
+     * @var bool use flysystem to resolve the uri
+     */
+    protected bool $useFlysystemToResolveUri;
+
+    /**
      * @param MountManager|ContainerInterface|mixed $registry
      */
-    public function __construct(PropertyMappingFactory $factory, $registry)
+    public function __construct(PropertyMappingFactory $factory, $registry, bool $useFlysystemToResolveUri = false)
     {
         parent::__construct($factory);
 
@@ -34,6 +39,7 @@ final class FlysystemStorage extends AbstractStorage
         }
 
         $this->registry = $registry;
+        $this->useFlysystemToResolveUri = $useFlysystemToResolveUri;
     }
 
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
@@ -56,13 +62,9 @@ final class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
 
-        try {
-            $fs->delete($path);
+        $fs->delete($path);
 
-            return true;
-        } catch (FilesystemException) {
-            return false;
-        }
+        return true;
     }
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
@@ -74,6 +76,30 @@ final class FlysystemStorage extends AbstractStorage
         }
 
         return $path;
+    }
+
+    public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string
+    {
+        if (!$this->useFlysystemToResolveUri) {
+            return parent::resolveUri($obj, $fieldName, $className);
+        }
+
+        $path = $this->resolvePath($obj, $fieldName, $className, true);
+
+        if (empty($path)) {
+            return null;
+        }
+
+        $mapping = null === $fieldName ?
+            $this->factory->fromFirstField($obj, $className) :
+            $this->factory->fromField($obj, $fieldName, $className);
+        $fs = $this->getFilesystem($mapping);
+
+        try {
+            return $fs->publicUrl($path);
+        } catch (FilesystemException) {
+            return $mapping->getUriPrefix().'/'.$path;
+        }
     }
 
     public function resolveStream(object|array $obj, ?string $fieldName = null, ?string $className = null)

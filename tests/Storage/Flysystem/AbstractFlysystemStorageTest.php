@@ -27,6 +27,8 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
 
     protected FilesystemAdapter|MockObject $adapter;
 
+    protected bool $useFlysystemToResolveUri = false;
+
     abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
 
     /**
@@ -38,7 +40,7 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
 
     protected function getStorage(): StorageInterface
     {
-        return new FlysystemStorage($this->factory, $this->registry);
+        return new FlysystemStorage($this->factory, $this->registry, $this->useFlysystemToResolveUri);
     }
 
     protected function setUp(): void
@@ -157,5 +159,54 @@ abstract class AbstractFlysystemStorageTest extends StorageTestCase
             ['foo', 'foo/file.txt',           true],
             ['foo', '/absolute/foo/file.txt', false],
         ];
+    }
+
+    public function testResolveUri(): void
+    {
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUriPrefix')
+            ->willReturn('/uploads');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects(self::once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('/uploads/file.txt', $path);
+    }
+
+    public function testResolveUriThroughFlysystem(): void
+    {
+        $this->useFlysystemToResolveUri = true;
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('publicUrl')
+            ->with('file.txt')
+            ->willReturn('example.com/file.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects(self::exactly(2))
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('example.com/file.txt', $path);
     }
 }

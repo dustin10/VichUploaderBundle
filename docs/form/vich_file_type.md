@@ -39,7 +39,7 @@ class Form extends AbstractType
 ```php
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-$builder->add('genericFile', VichImageType::class, [
+$builder->add('genericFile', VichFileType::class, [
     'delete_label' => 'Remove file',
 ]);
 ```
