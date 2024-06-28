@@ -124,6 +124,7 @@ class AnnotationDriver implements AdvancedDriverInterface
             'dimensions' => $uploadableField->getDimensions(),
         ];
 
+        // TODO: store UploadableField object instead of array
         $classMetadata->fields[$propertyName] = $fieldMetadata;
     }
 
