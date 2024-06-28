@@ -66,7 +66,8 @@ class VichImageType extends VichFileType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
+        [, $object] = $this->getClosestNonEmbeddedObject($form);
+
         $view->vars['object'] = $object;
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;

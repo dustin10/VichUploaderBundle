@@ -2,8 +2,10 @@
 
 namespace Vich\UploaderBundle\Form\Type;
 
+use Doctrine\ORM\Mapping\Embeddable;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -80,10 +82,11 @@ class VichFileType extends AbstractType
             if (null === $parent) {
                 return;
             }
-            $object = $parent->getData();
+
+            [$fieldName, $object] = $this->getClosestNonEmbeddedObject($form);
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolveUri($object, $this->getFieldName($form))) {
+            if (null === $object || null === $this->storage->resolveUri($object, $fieldName)) {
                 return;
             }
 
@@ -98,22 +101,24 @@ class VichFileType extends AbstractType
         // delete file if needed
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
+
+            [$fieldName, $object] = $this->getClosestNonEmbeddedObject($form);
+
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
                 return;
             }
 
-            $this->handler->remove($object, $this->getFieldName($form));
+            $this->handler->remove($object, $fieldName);
         });
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
-        $view->vars['object'] = $object;
+        [, $object] = $this->getClosestNonEmbeddedObject($form);
 
+        $view->vars['object'] = $object;
         $view->vars['download_uri'] = null;
         if ($options['download_uri'] && $object) {
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
@@ -138,12 +143,14 @@ class VichFileType extends AbstractType
 
     protected function resolveUriOption(mixed $uriOption, object $object, FormInterface $form): string|bool|null
     {
+        [$fieldName, $object] = $this->getClosestNonEmbeddedObject($form, $object);
+
         if (true === $uriOption) {
-            return $this->storage->resolveUri($object, $this->getFieldName($form));
+            return $this->storage->resolveUri($object, $fieldName);
         }
 
         if (\is_callable($uriOption)) {
-            return $uriOption($object, $this->storage->resolveUri($object, $this->getFieldName($form)));
+            return $uriOption($object, $this->storage->resolveUri($object, $fieldName));
         }
 
         return $uriOption;
@@ -178,5 +185,42 @@ class VichFileType extends AbstractType
         }
 
         return ['download_label' => $downloadLabel];
+    }
+
+    protected function getClosestNonEmbeddedObject(FormInterface $form, ?object $object = null): array
+    {
+        $currentForm = $form;
+
+        $fieldNames = [$this->getFieldName($currentForm)];
+        do {
+            $currentForm = $currentForm->getParent();
+            $data = $currentForm->getData();
+
+            if (!$this->isEmbeddable($data)) {
+                break;
+            }
+
+            array_unshift($fieldNames, $this->getFieldName($currentForm));
+        } while ($currentForm);
+
+        if (!$data) {
+            return [null, $object];
+        }
+
+        return [
+            implode('.', $fieldNames),
+            $data,
+        ];
+    }
+
+    protected function isEmbeddable(mixed $object): bool
+    {
+        if (!\is_object($object)) {
+            return false;
+        }
+
+        $reflectionClass = new \ReflectionClass($object);
+
+        return !empty($reflectionClass->getAttributes(Embeddable::class));
     }
 }
