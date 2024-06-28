@@ -5,7 +5,6 @@ namespace Vich\UploaderBundle\Form\Type;
 use Doctrine\ORM\Mapping\Embeddable;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
