@@ -140,12 +140,28 @@ class AnnotationDriver implements AdvancedDriverInterface
 
     private function getEmbeddedType(ClassMetadata $classMetadata, \ReflectionProperty $property, Embedded $embedded): string
     {
-        return $embedded->class
-            ?? $property->getType()?->getName()
-            ?? throw new DoctrineEmbeddedTypeNotFound(sprintf(
-                'Embedded property type not found for "%s::%s", either typehint your property or set the type using the attribute/annotation.',
-                $classMetadata->name,
-                $property->getName()
-            ));
+        if ($embedded->class) {
+            if (!\class_exists($embedded->class)) {
+                throw new DoctrineEmbeddedTypeNotFound(sprintf(
+                    'Embedded class "%s" not found for "%s::%s".',
+                    $embedded->class,
+                    $classMetadata->name,
+                    $property->getName()
+                ));
+            }
+
+            return $embedded->class;
+        }
+
+        $propertyType = $property->getType();
+        if ($propertyType instanceof \ReflectionNamedType) {
+            return $propertyType->getName();
+        }
+
+        throw new DoctrineEmbeddedTypeNotFound(sprintf(
+            'Embedded property type not found for "%s::%s", either typehint your property or set the type using the attribute/annotation.',
+            $classMetadata->name,
+            $property->getName()
+        ));
     }
 }
