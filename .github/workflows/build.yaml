@@ -29,6 +29,18 @@ jobs:
               uses: actions/checkout@v4
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
+    twig-cs-fixer:
+        runs-on: ubuntu-22.04
+        name: Twig-CS-Fixer
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Require the vendor
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^2.11
+            - name: Update
+              run: composer update --no-interaction --no-progress
+            - name: Run
+              run: vendor/bin/twig-cs-fixer lint templates
     validate-markdown:
         runs-on: ubuntu-22.04
         steps:

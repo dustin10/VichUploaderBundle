@@ -29,6 +29,7 @@ final class CacheWarmer implements CacheWarmerInterface
             $this->metadataReader->getUploadableFields($class);
             $files[] = $class;
         }
+
         // TODO it could be nice if we return $files, to allow to exploit preloading...
         return [];
     }
