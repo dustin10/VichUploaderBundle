@@ -38,6 +38,7 @@ WORKDIR /srv/vich-uploader
 COPY . ./
 
 RUN set -eux; \
+    composer require --no-update doctrine/annotations:^1.14; \
 	composer update --prefer-dist --ignore-platform-reqs; \
 	composer clear-cache
 

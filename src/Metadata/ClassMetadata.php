@@ -13,18 +13,12 @@ final class ClassMetadata extends BaseClassMetadata
 
     public function serialize(): string
     {
-        return \serialize([
-            $this->fields,
-            parent::serialize(),
-        ]);
+        return \serialize([$this->fields, parent::serialize()]);
     }
 
     public function unserialize($str): void
     {
-        [
-            $this->fields,
-            $parentStr
-            ] = \unserialize($str);
+        [$this->fields, $parentStr] = \unserialize($str);
 
         parent::unserialize($parentStr);
     }
