@@ -89,7 +89,7 @@ final class VichUploaderBundleTest extends TestCase
     public function testFlysystemOneUpKernel(): void
     {
         if (!\class_exists(OneupFlysystemBundle::class)) {
-            $this->markTestSkipped('OneupFlysystemBundle supports only PHP > 7.4');
+            $this->markTestSkipped('OneupFlysystemBundle not installed');
         }
 
         $kernel = new FlysystemOneUpAppKernel('test', true);
