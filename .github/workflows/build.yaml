@@ -72,7 +72,7 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 0
                     - php: '8.3'
-                      symfony: '7.0.*'
+                      symfony: '7.1.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false

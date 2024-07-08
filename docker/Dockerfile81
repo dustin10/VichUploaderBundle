@@ -38,7 +38,11 @@ WORKDIR /srv/vich-uploader
 COPY . ./
 
 RUN set -eux; \
-	composer install --prefer-dist --ignore-platform-reqs; \
+    composer global config --no-plugins allow-plugins.symfony/flex true; \
+    composer global require --no-interaction --no-progress symfony/flex:^2.2; \
+    composer config extra.symfony.require "^6.4"; \
+    composer require --no-update doctrine/annotations:^1.14; \
+	composer update --prefer-dist --ignore-platform-reqs; \
 	composer clear-cache
 
 CMD ["/init"]
