@@ -13,12 +13,18 @@ use Symfony\Component\HttpFoundation\File\File;
 class ReplacingFile extends File
 {
     protected bool $removeReplacedFile;
+    protected bool $removeReplacedFileOnError;
 
-    public function __construct(string $path, bool $checkPath = true, bool $removeReplacedFile = false)
-    {
+    public function __construct(
+        string $path,
+        bool $checkPath = true,
+        bool $removeReplacedFile = false,
+        bool $removeReplacedFileOnError = false
+    ) {
         parent::__construct($path, $checkPath);
 
         $this->removeReplacedFile = $removeReplacedFile;
+        $this->removeReplacedFileOnError = $removeReplacedFileOnError;
     }
 
     public function getClientOriginalName(): string
@@ -34,6 +40,18 @@ class ReplacingFile extends File
     public function setRemoveReplacedFile(bool $removeReplacedFile): self
     {
         $this->removeReplacedFile = $removeReplacedFile;
+
+        return $this;
+    }
+
+    public function isRemoveReplacedFileOnError(): bool
+    {
+        return $this->removeReplacedFileOnError;
+    }
+
+    public function setRemoveReplacedFileOnError(bool $removeReplacedFileOnError): self
+    {
+        $this->removeReplacedFileOnError = $removeReplacedFileOnError;
 
         return $this;
     }

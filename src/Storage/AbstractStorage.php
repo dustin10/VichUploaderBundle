@@ -46,7 +46,17 @@ abstract class AbstractStorage implements StorageInterface
 
         $dir = $mapping->getUploadDir($obj);
 
-        $this->doUpload($mapping, $file, $dir, $name);
+        try {
+            $this->doUpload($mapping, $file, $dir, $name);
+        } catch (\Exception $e) {
+            if ($file instanceof ReplacingFile
+                && $file->isRemoveReplacedFileOnError()
+            ) {
+                unlink($file->getPathname());
+            }
+
+            throw $e;
+        }
 
         if ($file instanceof ReplacingFile
             && $file->isRemoveReplacedFile()
