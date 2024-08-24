@@ -15,8 +15,8 @@ class ReplacingFile extends File
     public function __construct(
         string $path,
         bool $checkPath = true,
-        private bool $removeReplacedFile = false,
-        private bool $removeReplacedFileOnError = false
+        private readonly bool $removeReplacedFile = false,
+        private readonly bool $removeReplacedFileOnError = false
     ) {
         parent::__construct($path, $checkPath);
     }
@@ -31,22 +31,8 @@ class ReplacingFile extends File
         return $this->removeReplacedFile;
     }
 
-    public function setRemoveReplacedFile(bool $removeReplacedFile): self
-    {
-        $this->removeReplacedFile = $removeReplacedFile;
-
-        return $this;
-    }
-
     public function isRemoveReplacedFileOnError(): bool
     {
         return $this->removeReplacedFileOnError;
-    }
-
-    public function setRemoveReplacedFileOnError(bool $removeReplacedFileOnError): self
-    {
-        $this->removeReplacedFileOnError = $removeReplacedFileOnError;
-
-        return $this;
     }
 }
