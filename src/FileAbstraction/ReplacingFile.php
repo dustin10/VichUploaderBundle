@@ -12,19 +12,13 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class ReplacingFile extends File
 {
-    protected bool $removeReplacedFile;
-    protected bool $removeReplacedFileOnError;
-
     public function __construct(
         string $path,
         bool $checkPath = true,
-        bool $removeReplacedFile = false,
-        bool $removeReplacedFileOnError = false
+        private bool $removeReplacedFile = false,
+        private bool $removeReplacedFileOnError = false
     ) {
         parent::__construct($path, $checkPath);
-
-        $this->removeReplacedFile = $removeReplacedFile;
-        $this->removeReplacedFileOnError = $removeReplacedFileOnError;
     }
 
     public function getClientOriginalName(): string
