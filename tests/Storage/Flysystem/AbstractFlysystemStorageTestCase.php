@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-abstract class AbstractFlysystemStorageTest extends StorageTestCase
+abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 {
     final public const FS_KEY = 'filesystemKey';
 

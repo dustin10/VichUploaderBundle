@@ -36,7 +36,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Require the vendor
-              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^2.11
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.1
             - name: Update
               run: composer update --no-interaction --no-progress
             - name: Run
@@ -72,7 +72,7 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 5
                     - php: '8.1'
-                      symfony: '6.3.*'
+                      symfony: '6.4.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: true
@@ -104,6 +104,8 @@ jobs:
                   php-version: ${{ matrix.php }}
                   extensions: mongodb-stable, pdo_sqlite
             - run: composer require --no-update doctrine/annotations:^1.14
+            - run: |
+                  sed -i 's/"league\/flysystem": "<2.0"/"league\/flysystem": "<2.0",\n"symfony\/http-kernel": "6.4.*,>6.4.8 || 7.1.*,>7.1.1"/' composer.json
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
                   composer global require --no-interaction --no-progress symfony/flex:^2.2
