@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 /**
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTest
+final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTestCase
 {
     protected function createRegistry(FilesystemOperator $filesystem): ContainerInterface
     {
