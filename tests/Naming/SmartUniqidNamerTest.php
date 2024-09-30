@@ -10,32 +10,39 @@ final class SmartUniqidNamerTest extends TestCase
     public static function fileDataProvider(): array
     {
         return [
-            // case -> original name, result pattern
-            'typical' => ['lala.jpeg', '/lala-[[:xdigit:]]{22}\.jpeg/'],
-            'accented' => ['làlà.mp3', '/lala-[[:xdigit:]]{22}\.mp3/'],
-            'spaced' => ['a Foo Bar.txt', '/a-foo-bar-[[:xdigit:]]{22}\.txt/'],
-            'special char' => ['yezz!.png', '/yezz-[[:xdigit:]]{22}\.png/'],
-            'long basename' => [\str_repeat('a', 256).'.txt', '/a{228}-[[:xdigit:]]{22}\.txt/'],
-            'long extension' => ['a.'.\str_repeat('a', 256), '/a-[[:xdigit:]]{22}\.a{230}/'],
+            // case -> original name, guessed extension, result pattern
+            'typical' => ['lala.jpeg', 'jpg', '/lala-[[:xdigit:]]{22}\.jpg/'],
+            'accented' => ['làlà.mp3', 'mp3', '/lala-[[:xdigit:]]{22}\.mp3/'],
+            'spaced' => ['a Foo Bar.txt', 'txt', '/a-foo-bar-[[:xdigit:]]{22}\.txt/'],
+            'special char' => ['yezz!.png', 'png', '/yezz-[[:xdigit:]]{22}\.png/'],
+            'long basename' => [\str_repeat('a', 256).'.txt', 'txt', '/a{228}-[[:xdigit:]]{22}\.txt/'],
+            'long extension' => ['a.'.\str_repeat('a', 256), null, '/a-[[:xdigit:]]{22}$/'],
             'long basename and extension' => [\str_repeat('a', 256).'.txt'.\str_repeat('a', 256),
-                                              '/a{228}-[[:xdigit:]]{22}\.txt/', ],
-            'double extension' => ['lala.png.jpg', '/lala-png-[[:xdigit:]]{22}\.jpg/'],
-            'uppercase extension' => ['lala.JPEG', '/lala-[[:xdigit:]]{22}\.jpeg/'],
-            'double uppercase extension' => ['lala.JPEG.JPEG', '/lala-jpeg-[[:xdigit:]]{22}\.jpeg/'],
-            'dot in filename' => ['filename has . spaces (2).jpg', '/filename-has-spaces-2-[[:xdigit:]]{22}\.jpg/'],
+                                              'txt', '/a{228}-[[:xdigit:]]{22}\.txt$/', ],
+            'double extension' => ['lala.png.jpg', 'jpg', '/lala-png-[[:xdigit:]]{22}\.jpg/'],
+            'uppercase extension' => ['lala.JPEG', 'jpg', '/lala-[[:xdigit:]]{22}\.jpg/'],
+            'double uppercase extension' => ['lala.JPEG.JPEG', 'jpg', '/lala-jpeg-[[:xdigit:]]{22}\.jpg/'],
+            'dot in filename' => ['filename has . spaces (2).jpg', 'jpg', '/filename-has-spaces-2-[[:xdigit:]]{22}\.jpg/'],
+            'file with no extension with null mimetype' => ['lala', null, '/lala-[[:xdigit:]]{22}$/'],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName(string $originalName, string $pattern): void
+    public function testNameReturnsAnUniqueName(string $originalName, ?string $guessExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file
             ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn($originalName)
+        ;
+
+        $file
+            ->expects(self::once())
+            ->method('guessExtension')
+            ->willReturn($guessExtension)
         ;
 
         $entity = new \stdClass();

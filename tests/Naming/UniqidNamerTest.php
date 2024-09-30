@@ -16,13 +16,13 @@ final class UniqidNamerTest extends TestCase
     {
         return [
             // original_name, guessed_extension, pattern
-            ['lala.jpeg',     null,              '/[a-z0-9]{13}.jpeg/'],
-            ['lala.mp3',      'mpga',            '/[a-z0-9]{13}.mp3/'],
+            ['lala.jpeg',     null,              '/[a-z0-9]{13}/'],
+            ['lala.mp3',      'mp3',            '/[a-z0-9]{13}.mp3/'],
             ['lala',          'mpga',            '/[a-z0-9]{13}.mpga/'],
-            ['lala',          null,              '/[a-z0-9]{13}/'],
-            ['lala.0',        null,              '/[a-z0-9]{13}\\.0/'],
-            ['lala.data.0',   null,              '/[a-z0-9]{13}\\.0/'],
-            ['lala.data.0',   'gzip',            '/[a-z0-9]{13}\\.0/'],
+            ['lala',          null,              '/[a-z0-9]{13}$/'],
+            ['lala.0',        null,              '/[a-z0-9]{13}$/'],
+            ['lala.data.0',   null,              '/[a-z0-9]{13}$/'],
+            ['lala.data.0',   'gzip',            '/[a-z0-9]{13}.gzip/'],
         ];
     }
 

@@ -11,22 +11,29 @@ final class SlugNamerTest extends TestCase
     public static function fileDataProvider(): array
     {
         return [
-            // case -> original name, result pattern
-            'non existing' => ['lala.jpeg', '/lala.jpeg/'],
-            'existing' => ['làlà.mp3', '/lala-1.mp3/'],
+            // case -> original name, guessedExtension, result pattern
+            'non existing' => ['lala.jpeg', 'jpg', '/lala.jpg/'],
+            'guess extension null' => ['lala.jpeg', null, '/lala$/'],
+            'existing' => ['làlà.mp3', 'mp3', '/lala-1.mp3/'],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName(string $originalName, string $pattern): void
+    public function testNameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file
             ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn($originalName)
+        ;
+
+        $file
+            ->expects(self::once())
+            ->method('guessExtension')
+            ->willReturn($guessedExtension)
         ;
 
         $entity = new \stdClass();
