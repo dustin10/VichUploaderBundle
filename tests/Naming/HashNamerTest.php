@@ -35,9 +35,6 @@ class HashNamerTest extends TestCase
     public function testNameReturnsTheRightName(string $expectedFileName, string $extension, string $algorithm, ?int $length): void
     {
         $file = $this->getUploadedFileMock();
-        $file->expects(self::once())
-            ->method('getClientOriginalName')
-            ->willReturn('foo');
 
         $file->expects(self::once())
             ->method('guessExtension')
