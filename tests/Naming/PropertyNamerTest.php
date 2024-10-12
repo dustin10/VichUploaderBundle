@@ -23,10 +23,10 @@ class PropertyNamerTest extends TestCase
         $weirdEntity->someProperty = 'Yéô';
 
         return [
-            'with ext' => ['some-file-name.jpeg',    'foo.jpeg',                 $entity,      'someProperty',     false],
-            'without ext' => ['some-file-name',      'foo',                      $entity,      'someProperty',     false],
-            'method call' => ['some-file-name.jpeg', 'generated-file-name.jpeg', $entity,      'generateFileName', false],
-            'translit.' => ['some-file-name.jpeg',   'yeo.jpeg',                 $weirdEntity, 'someProperty',     true],
+            'with ext' => ['some-file-name.jpeg',    'foo.jpg',                 'jpg', $entity,      'someProperty',     false],
+            'without ext' => ['some-file-name',      'foo',                      null, $entity,      'someProperty',     false],
+            'method call' => ['some-file-name.jpeg', 'generated-file-name.jpg', 'jpg', $entity,      'generateFileName', false],
+            'translit.' => ['some-file-name.jpeg',   'yeo.jpg',                 'jpg', $weirdEntity, 'someProperty',     true],
         ];
     }
 
@@ -36,6 +36,7 @@ class PropertyNamerTest extends TestCase
     public function testNameReturnsTheRightName(
         string $originalFileName,
         string $expectedFileName,
+        ?string $guessedExtension,
         object $entity,
         string $propertyName,
         bool $transliterate
@@ -44,6 +45,10 @@ class PropertyNamerTest extends TestCase
         $file
             ->method('getClientOriginalName')
             ->willReturn($originalFileName);
+
+        $file
+            ->method('guessExtension')
+            ->willReturn($guessedExtension);
 
         $mapping = $this->getPropertyMappingMock();
         $mapping->expects(self::once())

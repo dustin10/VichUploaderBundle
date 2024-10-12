@@ -16,11 +16,6 @@ trait FileExtensionTrait
         if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
             throw new \InvalidArgumentException('Unexpected type for $file: '.$file::class);
         }
-        $originalName = $file->getClientOriginalName();
-
-        if ('' !== ($extension = \pathinfo($originalName, \PATHINFO_EXTENSION))) {
-            return $extension;
-        }
 
         if ('' !== ($extension = $file->guessExtension())) {
             return $extension;
