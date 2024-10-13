@@ -38,6 +38,7 @@ WORKDIR /srv/vich-uploader
 COPY . ./
 
 RUN set -eux; \
+    sed -i 's/"league\/flysystem": "<2.0"/"league\/flysystem": "<2.0", "symfony\/http-kernel": "6.0.*,>6.4.8 || 7.1.*,>7.1.1"/' composer.json; \
     composer require --no-update doctrine/annotations:^1.14; \
 	composer update --prefer-dist --ignore-platform-reqs; \
 	composer clear-cache

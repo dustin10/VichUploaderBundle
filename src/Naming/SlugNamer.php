@@ -12,6 +12,8 @@ use Vich\UploaderBundle\Util\Transliterator;
  */
 final class SlugNamer implements NamerInterface
 {
+    use Polyfill\FileExtensionTrait;
+
     public function __construct(private readonly Transliterator $transliterator, private readonly object $service, private readonly string $method)
     {
     }
@@ -20,10 +22,12 @@ final class SlugNamer implements NamerInterface
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
-        $extension = \strtolower(\pathinfo($originalName, \PATHINFO_EXTENSION));
+        $extension = $this->getExtension($file);
         $basename = \substr(\pathinfo($originalName, \PATHINFO_FILENAME), 0, 240);
         $basename = \strtolower($this->transliterator->transliterate($basename));
-        $slug = \sprintf('%s.%s', $basename, $extension);
+        $slug = is_string($extension) && '' !== $extension
+            ? \sprintf('%s.%s', $basename, $extension)
+            : $basename;
 
         // check if there another object with same slug
         $num = 0;
@@ -32,7 +36,11 @@ final class SlugNamer implements NamerInterface
             if (null === $otherObject) {
                 return $slug;
             }
-            $slug = \sprintf('%s-%d.%s', $basename, ++$num, $extension);
+
+            $slug = \is_string($extension) && '' !== $extension
+                ? \sprintf('%s-%d.%s', $basename, ++$num, $extension)
+                : \sprintf('%s-%d', $basename, ++$num)
+            ;
         }
     }
 }
