@@ -220,7 +220,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->expects(self::once())
             ->method('publicUrl')
             ->with('file.txt')
-            ->will($this->throwException(new UndefinedMethodError('Undefined method'), new Error('An error occurred')));
+            ->will($this->throwException(new UndefinedMethodError('Undefined method', new Error('An error occurred'))));
 
         $this->mapping
             ->expects(self::once())
