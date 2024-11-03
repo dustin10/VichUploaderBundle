@@ -7,7 +7,7 @@ env:
 
 jobs:
     phpstan:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: PHPStan
         steps:
             - name: Checkout
@@ -22,7 +22,7 @@ jobs:
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: PHP-CS-Fixer
         steps:
             - name: Checkout
@@ -30,7 +30,7 @@ jobs:
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
     twig-cs-fixer:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: Twig-CS-Fixer
         steps:
             - name: Checkout
@@ -42,7 +42,7 @@ jobs:
             - name: Run
               run: vendor/bin/twig-cs-fixer lint templates
     validate-markdown:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
                   config: './.github/workflows/config/config.json'
                   args: './docs ./CONTRIBUTING.md ./README.md ./UPDATE.md'
     tests:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         strategy:
             matrix:
                 php:
@@ -89,6 +89,12 @@ jobs:
                       with_imagine: false
                       with_oneupbundle: false
                       max_deprecations: 0
+                    - php: '8.4'
+                      symfony: '7.2.*@dev'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      max_deprecations: 6
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
@@ -111,6 +117,11 @@ jobs:
                   composer global require --no-interaction --no-progress symfony/flex:^2.2
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
+            - name: use possible dev deps
+              if: contains(matrix.symfony, '@dev')
+              run: |
+                  composer config minimum-stability dev
+                  composer config prefer-stable true
             - run: composer require --no-update liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
