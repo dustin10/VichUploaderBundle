@@ -30,7 +30,7 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
     public function testComplete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {
-            $this->markTestSkipped('Test command completion requires symfony/console 5.4+.');
+            self::markTestSkipped('Test command completion requires symfony/console 5.4+.');
         }
 
         $mappings = [

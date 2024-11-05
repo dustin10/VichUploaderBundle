@@ -18,6 +18,13 @@ use Vich\UploaderBundle\Tests\Kernel\SimpleAppKernel;
  */
 final class VichUploaderBundleTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (SimpleAppKernel::VERSION_ID >= 70200) { // @phpstan-ignore-line
+            self::markTestSkipped('Kernels above 7.1.0 are not supported in these tests');
+        }
+    }
+
     public function testSimpleKernel(): void
     {
         $kernel = new SimpleAppKernel('test', true);
@@ -89,7 +96,7 @@ final class VichUploaderBundleTest extends TestCase
     public function testFlysystemOneUpKernel(): void
     {
         if (!\class_exists(OneupFlysystemBundle::class)) {
-            $this->markTestSkipped('OneupFlysystemBundle not installed');
+            self::markTestSkipped('OneupFlysystemBundle not installed');
         }
 
         $kernel = new FlysystemOneUpAppKernel('test', true);
