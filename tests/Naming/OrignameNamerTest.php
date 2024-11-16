@@ -6,30 +6,34 @@ use Vich\UploaderBundle\Naming\OrignameNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * OrignameNamerTest.
- *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
 final class OrignameNamerTest extends TestCase
 {
+    /**
+     * @return array<array{string, string, string, bool}>
+     */
     public static function fileDataProvider(): array
     {
         return [
-            ['file.jpeg', '/[a-z0-9]{13}_file.jpeg/', false],
-            ['file',      '/[a-z0-9]{13}_file/',      false],
-            ['Yéöù.jpeg', '/[a-z0-9]{13}_yeou.jpeg/', true],
+            ['file.jpeg', 'jpeg', '/^[a-z0-9]{13}_file.jpeg$/',     false],
+            ['file',      'png',  '/^[a-z0-9]{13}_file.png$/',      false],
+            ['Yéöù.jpeg', 'jpg',  '/^[a-z0-9]{13}_yeou.jpeg.jpg$/', true],
         ];
     }
 
     /**
      * @dataProvider fileDataProvider
      */
-    public function testNameReturnsAnUniqueName(string $name, string $pattern, bool $transliterate): void
+    public function testNameReturnsAnUniqueName(string $name, string $ext, string $pattern, bool $transliterate): void
     {
         $file = $this->getUploadedFileMock();
         $file
             ->method('getClientOriginalName')
             ->willReturn($name);
+        $file
+            ->method('guessExtension')
+            ->willReturn($ext);
 
         $entity = new \DateTime();
 
