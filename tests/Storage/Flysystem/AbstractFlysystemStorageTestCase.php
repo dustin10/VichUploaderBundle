@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
+use Error;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
@@ -12,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -208,5 +210,36 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('example.com/file.txt', $path);
+    }
+
+    public function testResolveUriHandlesUndefinedMethodError(): void
+    {
+        $this->useFlysystemToResolveUri = true;
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('publicUrl')
+            ->with('file.txt')
+            ->will($this->throwException(new UndefinedMethodError('Undefined method', new Error('An error occurred'))));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUriPrefix')
+            ->willReturn('/uploads');
+
+        $this->factory
+            ->expects(self::exactly(2))
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('/uploads/file.txt', $path);
     }
 }

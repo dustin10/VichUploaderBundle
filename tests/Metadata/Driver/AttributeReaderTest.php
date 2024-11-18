@@ -10,13 +10,6 @@ use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 
 final class AttributeReaderTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        if (\PHP_VERSION_ID < 80000) {
-            $this->markTestSkipped('Tests for PHP 8 only');
-        }
-    }
-
     public function testGetClassAnnotations(): void
     {
         $reader = new AttributeReader();
