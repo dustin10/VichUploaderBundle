@@ -8,8 +8,6 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * OrignameNamer.
- *
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
 final class OrignameNamer implements NamerInterface, ConfigurableInterface
@@ -43,8 +41,8 @@ final class OrignameNamer implements NamerInterface, ConfigurableInterface
 
         $extension = $this->getExtension($file);
 
-        if (\is_string($extension) && '' !== $extension) {
-            $name = "$name.$extension";
+        if (\is_string($extension) && '' !== $extension && !str_ends_with($name, ".$extension")) {
+            $name .= ".$extension";
         }
 
         return \uniqid().'_'.$name;
