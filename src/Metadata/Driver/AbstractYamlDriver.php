@@ -49,7 +49,7 @@ abstract class AbstractYamlDriver extends AbstractFileDriver
         return YmlParser::parse(\file_get_contents($file));
     }
 
-    protected function guessClassName(string $file, array $config, \ReflectionClass $class = null): string
+    protected function guessClassName(string $file, array $config, ?\ReflectionClass $class = null): string
     {
         if (null === $class) {
             return \current(\array_keys($config));
