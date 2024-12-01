@@ -153,15 +153,22 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testMetadataAnnotation(): void
     {
+        if (!class_exists(AnnotationReader::class)) {
+            $this->markTestSkipped('The doctrine/annotations package is not installed');
+        }
+
         $this->load([
             'metadata' => [
                 'type' => 'annotation',
             ],
         ]);
 
-        self::assertContainerBuilderHasService('vich_uploader.metadata.reader', AnnotationReader::class);
+        $this->assertContainerBuilderHasService('vich_uploader.metadata.reader', AnnotationReader::class);
     }
 
     public function testMetadataAttribute(): void
@@ -172,6 +179,6 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        self::assertContainerBuilderHasService('vich_uploader.metadata.reader', AttributeReader::class);
+        $this->assertContainerBuilderHasService('vich_uploader.metadata.reader', AttributeReader::class);
     }
 }

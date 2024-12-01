@@ -21,6 +21,8 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
  * AnnotationDriverTest.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @group legacy
  */
 final class AnnotationDriverTest extends TestCase
 {
@@ -34,6 +36,10 @@ final class AnnotationDriverTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!class_exists(Reader::class)) {
+            $this->markTestSkipped('The doctrine/annotations package is not installed');
+        }
+
         // setup ManagerRegistry mock like Symfony\Bridge\Doctrine tests
         $this->connection = $this->createMock(Connection::class);
 
