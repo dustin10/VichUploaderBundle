@@ -59,7 +59,6 @@
         "yoast/phpunit-polyfills": "^2.0"
     },
     "suggest": {
-        "doctrine/annotations": "If you use doctrine/doctrine-bundle >2.7, this package is required to use annotations",
         "doctrine/doctrine-bundle": "For integration with Doctrine",
         "doctrine/mongodb-odm-bundle": "For integration with Doctrine ODM",
         "doctrine/orm": "For integration with Doctrine ORM",
