@@ -146,6 +146,8 @@ final class VichUploaderExtension extends Extension
                     throw new MissingPackageException($msg);
                 }
 
+                @trigger_error('Annotation support is deprecated since version 2.5 and will be removed in 3.0. Use attributes instead.', E_USER_DEPRECATED);
+
                 $container->setDefinition(
                     'vich_uploader.metadata.reader',
                     new Definition(AnnotationReader::class)
