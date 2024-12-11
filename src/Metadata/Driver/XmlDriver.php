@@ -48,7 +48,7 @@ class XmlDriver extends AbstractFileDriver
         return 'xml';
     }
 
-    protected function guessClassName(string $file, \SimpleXMLElement $elem, \ReflectionClass $class = null): string
+    protected function guessClassName(string $file, \SimpleXMLElement $elem, ?\ReflectionClass $class = null): string
     {
         if (null === $class) {
             return (string) $elem->attributes()->class;
