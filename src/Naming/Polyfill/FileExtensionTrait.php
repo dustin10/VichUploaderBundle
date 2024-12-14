@@ -8,6 +8,11 @@ use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 
 trait FileExtensionTrait
 {
+    // extensions safe to keep
+    private static array $keep = [
+        'txt' => 'csv',
+    ];
+
     /**
      * Guess the extension of the given file.
      */
@@ -18,6 +23,13 @@ trait FileExtensionTrait
         }
 
         if ('' !== ($extension = $file->guessExtension())) {
+            if (isset(self::$keep[$extension])) {
+                $originalExtension = \pathinfo($file->getClientOriginalName(), \PATHINFO_EXTENSION);
+                if (self::$keep[$extension] === $originalExtension) {
+                    return $originalExtension;
+                }
+            }
+
             return $extension;
         }
 

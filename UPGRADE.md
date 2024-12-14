@@ -1,3 +1,14 @@
+# Upgrading from v2.4 to v2.5
+
+* To address the question raised in the previous version, now the original extension '.csv' is retained
+  even if the mime type is guessed as 'text/plain'.
+
+# Upgrading from v2.3 to v2.4
+
+* To address a security question, the original extension of the uploaded file is not preserved anymore.
+  Instead, it is replaced by the extension of the matching mime type. This could cause a different
+  behaviour only if you use some non-standard extension, otherwise it should not change anything.
+
 # Upgrading from v2.1 to v2.2
 
 * The signature of `StorageInterface::resolveStream` method was changed. The $fieldName parameter is now nullable. 

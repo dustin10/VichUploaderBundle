@@ -24,6 +24,7 @@ final class SmartUniqidNamerTest extends TestCase
             'double uppercase extension' => ['lala.JPEG.JPEG', 'jpg', '/lala-jpeg-[[:xdigit:]]{22}\.jpg/'],
             'dot in filename' => ['filename has . spaces (2).jpg', 'jpg', '/filename-has-spaces-2-[[:xdigit:]]{22}\.jpg/'],
             'file with no extension with null mimetype' => ['lala', null, '/lala-[[:xdigit:]]{22}$/'],
+            'csv retains extension even if guessed as txt' => ['lala.csv', 'txt', '/lala-[[:xdigit:]]{22}\.csv/'],
         ];
     }
 
@@ -34,7 +35,6 @@ final class SmartUniqidNamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn($originalName)
         ;
