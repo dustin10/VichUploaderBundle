@@ -11,6 +11,7 @@ trait FileExtensionTrait
     // extensions safe to keep
     private static array $keep = [
         'txt' => 'csv',
+        'xml' => 'gpx',
     ];
 
     /**
