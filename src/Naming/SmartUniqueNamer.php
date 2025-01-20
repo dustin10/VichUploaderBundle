@@ -6,7 +6,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * This namer makes filename unique by appending a uniqid.
+ * This namer makes filename unique by appending a uniqueid.
  * Also, filename is made web-friendly by transliteration.
  *
  * @author Massimiliano Arione <garakkio@gmail.com>

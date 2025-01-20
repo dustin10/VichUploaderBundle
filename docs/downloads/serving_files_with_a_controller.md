@@ -30,7 +30,7 @@ class AcmeController extends AbstractController
 
 Instead of forcing the file to be downloaded by you browser, you can set it as an **inline** content.
 Depending on the capabilities of the browser, the file should be displayed inside the browser.
-You can use it to keep the file non publicly accessible (with access checks for exemple) but still
+You can use it to keep the file non publicly accessible (with access checks for example) but still
 displayable inside HTML (for images) or directly previewable (like PDFs).
 
 Set the `forceDownload` argument to `false` to disable the forced download behaviour.

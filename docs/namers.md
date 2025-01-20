@@ -62,7 +62,7 @@ applying a transliteration. Using this namer, "a Strange name.jpg" will be uploa
 "a-strange-name-0eb3db03971550eb3b0371.jpg".
 
 **SlugNamer** will only transliterate uploaded file. Then, it will search if such name already exists and, if so,
-will append a progresive number (to ensure uniqueness). This is useful when you want to keep your names as closer
+will append a progressive number (to ensure uniqueness). This is useful when you want to keep your names as closer
 as possible to original ones, but is also limited to simple situations (i.e. when you're using a single mapped entity).
 To use it, you just have to specify the service for the `namer` configuration option of your mapping:
 
@@ -162,7 +162,7 @@ vich_uploader:
 created in the `Y/m/d` format. It is possible to configure the datetime format used to create directories.
 For details of datetime formats see <http://php.net/manual/en/function.date.php>.
 You should also pass to this namer an option declaring a property where uploading datetime is stored in your object.
-Such property will be accessed via ProperyAccessor, so it can be a public property or a getter method.
+Such property will be accessed via PropertyAccessor, so it can be a public property or a getter method.
 For example, if your object has a `getUploadTimestamp(): \DateTimeInterface` method, you can pass
 `date_time_property: uploadTimestamp` to namer.
 

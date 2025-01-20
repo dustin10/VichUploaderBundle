@@ -6,7 +6,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * This namer uses a slug to keep original name when possibile.
+ * This namer uses a slug to keep original name when possible.
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
@@ -29,7 +29,7 @@ final class SlugNamer implements NamerInterface
             ? \sprintf('%s.%s', $basename, $extension)
             : $basename;
 
-        // check if there another object with same slug
+        // check if there is another object with same slug
         $num = 0;
         while (true) {
             $otherObject = $this->service->{$this->method}($slug);
