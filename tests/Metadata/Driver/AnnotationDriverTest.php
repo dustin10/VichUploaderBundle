@@ -9,7 +9,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Metadata\ClassMetadata;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
@@ -36,7 +35,7 @@ final class AnnotationDriverTest extends TestCase
 
     protected function setUp(): void
     {
-        if (!class_exists(Reader::class)) {
+        if (!\class_exists(Reader::class)) {
             $this->markTestSkipped('The doctrine/annotations package is not installed');
         }
 
@@ -62,7 +61,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
+            ->willReturnCallback(static fn (\ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
@@ -114,7 +113,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeast(2))
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static function (ReflectionProperty $property): ?UploadableField {
+            ->willReturnCallback(static function (\ReflectionProperty $property): ?UploadableField {
                 if ('attachment' === $property->getName()) {
                     return new UploadableField('dummy_file', 'attachmentName');
                 }
@@ -187,7 +186,7 @@ final class AnnotationDriverTest extends TestCase
         $reader
             ->expects(self::atLeastOnce())
             ->method('getPropertyAnnotation')
-            ->willReturnCallback(static fn (ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
+            ->willReturnCallback(static fn (\ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummyFile_file', 'fileName') : null);
 
         $driver = new AnnotationDriver($reader, [$this->managerRegistry]);
         /** @var \Vich\UploaderBundle\Metadata\ClassMetadata $metadata */

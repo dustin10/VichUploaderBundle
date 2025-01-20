@@ -25,7 +25,7 @@ final class SlugNamer implements NamerInterface
         $extension = $this->getExtension($file);
         $basename = \substr(\pathinfo($originalName, \PATHINFO_FILENAME), 0, 240);
         $basename = \strtolower($this->transliterator->transliterate($basename));
-        $slug = is_string($extension) && '' !== $extension
+        $slug = \is_string($extension) && '' !== $extension
             ? \sprintf('%s.%s', $basename, $extension)
             : $basename;
 

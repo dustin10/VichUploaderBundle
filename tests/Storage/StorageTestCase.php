@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class StorageTestCase extends TestCase
 {
-    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject$factory;
+    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject $factory;
 
     protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
