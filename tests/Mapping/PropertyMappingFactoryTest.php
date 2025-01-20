@@ -253,11 +253,9 @@ class PropertyMappingFactoryTest extends TestCase
     }
 
     /**
-     * @param array|object $object
-     *
      * @dataProvider fromFieldProvider
      */
-    public function testFromField($object, ?string $className, string $expectedClassName): void
+    public function testFromField(object|array $object, ?string $className, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [

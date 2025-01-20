@@ -13,19 +13,14 @@ class DummyEntity
 {
     /**
      * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
-     *
-     * @var object|null
      */
-    protected $file;
+    protected ?object $file = null;
 
-    /** @var string|null */
-    protected $fileName;
+    protected ?string $fileName = null;
 
-    /** @var int|null */
-    protected $size;
+    protected ?int $size = null;
 
-    /** @var string|null */
-    public $someProperty;
+    public ?string $someProperty = null;
 
     public function getFile(): ?object
     {

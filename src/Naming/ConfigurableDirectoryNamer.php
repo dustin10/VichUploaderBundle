@@ -9,8 +9,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 class ConfigurableDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
-    /** @var string */
-    private $directoryPath = '';
+    private string $directoryPath = '';
 
     /**
      * @param array $options Options for this namer. The following options are accepted:
