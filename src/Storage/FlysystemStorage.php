@@ -97,7 +97,12 @@ final class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping);
 
         try {
-            return $fs->publicUrl($path);
+            return $fs->publicUrl($path, [
+                'object' => $obj,
+                'fieldName' => $fieldName,
+                'className' => $className,
+                'mapping' => $mapping,
+            ]);
         } catch (FilesystemException|UndefinedMethodError) {
             return $mapping->getUriPrefix().'/'.$path;
         }
