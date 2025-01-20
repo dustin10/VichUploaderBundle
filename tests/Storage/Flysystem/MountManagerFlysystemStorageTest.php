@@ -11,6 +11,13 @@ use League\Flysystem\MountManager;
  */
 final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTestCase
 {
+    /**
+     * @requires function MountManager::__construct
+     */
+    public static function setUpBeforeClass(): void
+    {
+    }
+
     protected function createRegistry(FilesystemOperator $filesystem): MountManager
     {
         $mountManager = $this->createMock(MountManager::class);

@@ -33,13 +33,6 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
     abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
 
-    /**
-     * @requires function MountManager::__construct
-     */
-    public static function setUpBeforeClass(): void
-    {
-    }
-
     protected function getStorage(): StorageInterface
     {
         return new FlysystemStorage($this->factory, $this->registry, $this->useFlysystemToResolveUri);
