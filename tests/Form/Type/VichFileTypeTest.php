@@ -26,7 +26,7 @@ final class VichFileTypeTest extends TestCase
         $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
         $propertyAccessor = $this->createMock(PropertyAccessor::class);
 
-        $testedType = static::TESTED_TYPE;
+        $testedType = self::TESTED_TYPE;
 
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);
 
