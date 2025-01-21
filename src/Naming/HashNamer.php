@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Naming;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
- * Namer wich uses hash function from random string for generating names.
+ * Namer that uses hash function from random string for generating names.
  *
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
@@ -21,7 +21,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 
     /**
      * @param array $options Options for this namer. The following options are accepted:
-     *                       - algorithm: wich hash algorithm to use.
+     *                       - algorithm: which hash algorithm to use.
      *                       - length: limit file name length
      */
     public function configure(array $options): void

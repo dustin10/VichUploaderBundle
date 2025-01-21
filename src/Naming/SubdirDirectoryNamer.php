@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Naming;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
- * Directory namer wich can create subfolder depends on generated filename.
+ * Directory namer that can create subfolder depends on generated filename.
  *
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */

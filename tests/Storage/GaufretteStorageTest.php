@@ -168,7 +168,7 @@ class GaufretteStorageTest extends StorageTestCase
     }
 
     /**
-     * Test that FileNotFound exception is catched.
+     * Test that FileNotFound exception is caught.
      */
     public function testRemoveNotFoundFile(): void
     {

@@ -15,7 +15,7 @@ about: Have a problem that you can't figure out? 🤔
 <!--
 Before asking question here, please try asking on StackOverflow first.
 Keep in mind that GitHub is primarily an issue tracker.
-Also, look in old issues (open and/or closed) too see if issue has been
+Also, look in old issues (open and/or closed) to see if issue has been
 previously discussed.
 -->
 
