@@ -8,8 +8,8 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Vich\UploaderBundle\VichUploaderBundle;
 use Vich\UploaderBundle\Naming\UniqidNamer;
+use Vich\UploaderBundle\VichUploaderBundle;
 
 /**
  * @author Titouan Galopin <galopintitouan@gmail.com>

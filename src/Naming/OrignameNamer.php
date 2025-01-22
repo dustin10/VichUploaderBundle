@@ -41,7 +41,7 @@ final class OrignameNamer implements NamerInterface, ConfigurableInterface
 
         $extension = $this->getExtension($file);
 
-        if (\is_string($extension) && '' !== $extension && !str_ends_with($name, ".$extension")) {
+        if (\is_string($extension) && '' !== $extension && !\str_ends_with($name, ".$extension")) {
             $name .= ".$extension";
         }
 

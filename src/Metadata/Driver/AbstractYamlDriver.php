@@ -41,9 +41,6 @@ abstract class AbstractYamlDriver extends AbstractFileDriver
         return $classMetadata;
     }
 
-    /**
-     * @return mixed
-     */
     protected function loadMappingFile(string $file)
     {
         return YmlParser::parse(\file_get_contents($file));

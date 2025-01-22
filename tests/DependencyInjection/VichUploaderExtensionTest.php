@@ -158,7 +158,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
      */
     public function testMetadataAnnotation(): void
     {
-        if (!class_exists(AnnotationReader::class)) {
+        if (!\class_exists(AnnotationReader::class)) {
             $this->markTestSkipped('The doctrine/annotations package is not installed');
         }
 

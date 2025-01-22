@@ -141,12 +141,12 @@ final class VichUploaderExtension extends Extension
 
         switch ($config['metadata']['type']) {
             case 'annotation':
-                if (!class_exists(AnnotationReader::class) || !$container::willBeAvailable('doctrine/annotations', AnnotationReader::class, [])) {
+                if (!\class_exists(AnnotationReader::class) || !$container::willBeAvailable('doctrine/annotations', AnnotationReader::class, [])) {
                     $msg = 'Annotations support missing. Try running "composer require doctrine/annotations".';
                     throw new MissingPackageException($msg);
                 }
 
-                @trigger_error('Annotation support is deprecated since version 2.5 and will be removed in 3.0. Use attributes instead.', E_USER_DEPRECATED);
+                @\trigger_error('Annotation support is deprecated since version 2.5 and will be removed in 3.0. Use attributes instead.', \E_USER_DEPRECATED);
 
                 $container->setDefinition(
                     'vich_uploader.metadata.reader',
