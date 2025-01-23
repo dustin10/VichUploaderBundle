@@ -32,13 +32,6 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
     abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
 
-    /**
-     * @requires function MountManager::__construct
-     */
-    public static function setUpBeforeClass(): void
-    {
-    }
-
     protected function getStorage(): StorageInterface
     {
         return new FlysystemStorage($this->factory, $this->registry, $this->useFlysystemToResolveUri);
@@ -84,7 +77,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
         $this->filesystem
             ->expects(self::once())
-            ->method('putStream')
+            ->method('writeStream')
             ->with(
                 'originalName.txt',
                 $this->isType('resource'),
@@ -122,6 +115,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->method('getFileName')
             ->willReturn('not_found.txt');
 
+        $this->expectException(UnableToDeleteFile::class);
+        $this->expectExceptionMessage('dummy path');
         $this->storage->remove($this->object, $this->mapping);
     }
 
@@ -156,9 +151,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         return [
             //     dir,   path,                     relative
             [null,  'file.txt',               true],
-            [null,  '/absolute/file.txt',     false],
+            [null,  'file.txt',               false],
             ['foo', 'foo/file.txt',           true],
-            ['foo', '/absolute/foo/file.txt', false],
+            ['foo', 'foo/file.txt',           false],
         ];
     }
 
