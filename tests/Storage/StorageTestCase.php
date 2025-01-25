@@ -21,20 +21,11 @@ abstract class StorageTestCase extends TestCase
 
     protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
-    /**
-     * @var DummyEntity
-     */
-    protected $object;
+    protected DummyEntity $object;
 
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface $storage;
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    protected $root;
+    protected vfsStreamDirectory $root;
 
     /**
      * Returns the storage implementation to test.

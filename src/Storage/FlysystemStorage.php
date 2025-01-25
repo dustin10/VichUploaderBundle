@@ -31,7 +31,7 @@ final class FlysystemStorage extends AbstractStorage
     /**
      * @param MountManager|ContainerInterface|mixed $registry
      */
-    public function __construct(PropertyMappingFactory $factory, $registry, bool $useFlysystemToResolveUri = false)
+    public function __construct(PropertyMappingFactory $factory, mixed $registry, bool $useFlysystemToResolveUri = false)
     {
         parent::__construct($factory);
 
