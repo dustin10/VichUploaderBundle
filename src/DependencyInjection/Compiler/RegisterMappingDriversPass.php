@@ -29,7 +29,7 @@ final class RegisterMappingDriversPass implements CompilerPassInterface
             $managers[] = new Reference('doctrine_phpcr');
         }
 
-        if (count($managers) > 0) {
+        if (\count($managers) > 0) {
             $drivers[] = $container->getDefinition('vich_uploader.metadata_driver.annotation')
                 ->replaceArgument('$managerRegistryList', $managers);
         }

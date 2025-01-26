@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
-use Error;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
@@ -10,10 +9,10 @@ use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
-use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -32,13 +31,6 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     protected bool $useFlysystemToResolveUri = false;
 
     abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
-
-    /**
-     * @requires function MountManager::__construct
-     */
-    public static function setUpBeforeClass(): void
-    {
-    }
 
     protected function getStorage(): StorageInterface
     {
@@ -85,7 +77,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
         $this->filesystem
             ->expects(self::once())
-            ->method('putStream')
+            ->method('writeStream')
             ->with(
                 'originalName.txt',
                 $this->isType('resource'),
@@ -123,6 +115,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->method('getFileName')
             ->willReturn('not_found.txt');
 
+        $this->expectException(UnableToDeleteFile::class);
+        $this->expectExceptionMessage('dummy path');
         $this->storage->remove($this->object, $this->mapping);
     }
 
@@ -157,9 +151,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         return [
             //     dir,   path,                     relative
             [null,  'file.txt',               true],
-            [null,  '/absolute/file.txt',     false],
+            [null,  'file.txt',               false],
             ['foo', 'foo/file.txt',           true],
-            ['foo', '/absolute/foo/file.txt', false],
+            ['foo', 'foo/file.txt',           false],
         ];
     }
 
@@ -220,7 +214,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->expects(self::once())
             ->method('publicUrl')
             ->with('file.txt')
-            ->will($this->throwException(new UndefinedMethodError('Undefined method', new Error('An error occurred'))));
+            ->will($this->throwException(new UndefinedMethodError('Undefined method', new \Error('An error occurred'))));
 
         $this->mapping
             ->expects(self::once())

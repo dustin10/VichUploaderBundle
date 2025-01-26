@@ -56,7 +56,7 @@ If set to `true`, download uri will be generated with `asset()` method from `sym
 
 **type**: `bool`, `string`, `callable` **default**: `true`
 
-If set to `true`, download uri will automatically resolved using storage.
+If set to `true`, download uri will automatically be resolved using storage.
 
 Can be string
 
@@ -121,7 +121,7 @@ $builder->add('genericFile', VichImageType::class, [
 
 **type**: `bool`, `string`, `callable` **default**: `true`
 
-If set to `true`, download uri will automatically resolved using storage.
+If set to `true`, download uri will automatically be resolved using storage.
 
 Can be string
 
@@ -155,7 +155,7 @@ $builder->add('genericFile', VichImageType::class, [
 
 **type**: `string` **default**: `null`
 
-If set, image will automatically transformed using [LiipImagineBundle](https://github.com/liip/LiipImagineBundle/).
+If set, image will automatically be transformed using [LiipImagineBundle](https://github.com/liip/LiipImagineBundle/).
 
 Example
 

@@ -9,7 +9,7 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
-        if (headers_sent()) {
+        if (\headers_sent()) {
             self::markTestSkipped();
         }
 
@@ -54,7 +54,7 @@ final class UploadTest extends WebTestCase
      */
     public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
-        if (headers_sent()) {
+        if (\headers_sent()) {
             self::markTestSkipped();
         }
 

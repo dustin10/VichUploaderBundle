@@ -41,7 +41,7 @@ final class FileSystemStorage extends AbstractStorage
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
-        if (!\file_exists($file) || !unlink($file)) {
+        if (!\file_exists($file) || !\unlink($file)) {
             throw new \Exception('Cannot remove file '.$file);
         }
 

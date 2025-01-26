@@ -103,7 +103,7 @@ method above must take an instance of `File` as when this class is hydrated by D
 bundle will automatically inject an instance of `File` there. However, if you were to change
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
-image to sucessfully trigger the upload.
+image to successfully trigger the upload.
 
 **N.B.** : UploadedFile objects have a
 [*test* mode](https://github.com/symfony/symfony/blob/6.1/src/Symfony/Component/HttpFoundation/File/UploadedFile.php#L63)

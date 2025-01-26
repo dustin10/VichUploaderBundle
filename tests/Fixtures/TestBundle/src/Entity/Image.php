@@ -3,6 +3,7 @@
 namespace Vich\TestBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -10,32 +11,18 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Image
 {
-    /**
-     * @var int|null
-     */
-    protected $id;
+    protected ?int $id = null;
 
-    /**
-     * @var string|null
-     */
-    protected $title;
+    protected ?string $title = null;
 
-    /**
-     * @var \DateTime|null
-     */
-    protected $updatedAt;
+    protected ?\DateTime $updatedAt = null;
 
     /**
      * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
-     *
-     * @var File|\Symfony\Component\HttpFoundation\File\UploadedFile|null
      */
-    protected $imageFile;
+    protected ?File $imageFile = null;
 
-    /**
-     * @var string|null
-     */
-    protected $imageName;
+    protected ?string $imageName = null;
 
     public function getId(): ?int
     {
@@ -48,10 +35,8 @@ class Image
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $image
      */
-    public function setImageFile(File $image = null): void
+    public function setImageFile(?File $image = null): void
     {
         $this->imageFile = $image;
 

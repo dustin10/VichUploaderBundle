@@ -74,8 +74,8 @@ class AnnotationDriver implements AdvancedDriverInterface
         $classes = [];
         $metadata = [];
 
-        foreach ($this->managerRegistryList as $managerRegisty) {
-            $managers = $managerRegisty->getManagers();
+        foreach ($this->managerRegistryList as $managerRegistry) {
+            $managers = $managerRegistry->getManagers();
             foreach ($managers as $manager) {
                 $metadata[] = $manager->getMetadataFactory()->getAllMetadata();
             }

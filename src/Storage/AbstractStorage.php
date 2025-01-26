@@ -52,7 +52,7 @@ abstract class AbstractStorage implements StorageInterface
             if ($file instanceof ReplacingFile
                 && $file->isRemoveReplacedFileOnError()
             ) {
-                unlink($file->getPathname());
+                \unlink($file->getPathname());
             }
 
             throw $e;
@@ -61,7 +61,7 @@ abstract class AbstractStorage implements StorageInterface
         if ($file instanceof ReplacingFile
             && $file->isRemoveReplacedFile()
         ) {
-            unlink($file->getPathname());
+            \unlink($file->getPathname());
         }
     }
 

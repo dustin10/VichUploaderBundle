@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class Product
 {
-    private ?\Symfony\Component\HttpFoundation\File\File $image = null;
+    private ?File $image = null;
 
     private ?string $imageName = null;
 
