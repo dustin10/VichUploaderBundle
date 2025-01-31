@@ -180,6 +180,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
+    /**
+     * @requires function Filesystem::publicUrl
+     */
     public function testResolveUriThroughFlysystem(): void
     {
         $this->useFlysystemToResolveUri = true;
@@ -206,6 +209,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('example.com/file.txt', $path);
     }
 
+    /**
+     * @requires function Filesystem::publicUrl
+     */
     public function testResolveUriHandlesUndefinedMethodError(): void
     {
         $this->useFlysystemToResolveUri = true;
