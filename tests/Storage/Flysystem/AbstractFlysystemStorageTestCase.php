@@ -190,7 +190,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->filesystem
             ->expects(self::once())
             ->method('publicUrl')
-            ->with('file.txt')
+            ->with('file.txt', [
+                'object' => $this->object,
+                'fieldName' => 'file_field',
+                'className' => null,
+                'mapping' => $this->mapping,
+            ])
             ->willReturn('example.com/file.txt');
 
         $this->mapping
