@@ -180,6 +180,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
+    /**
+     * @requires function Filesystem::publicUrl
+     */
     public function testResolveUriThroughFlysystem(): void
     {
         $this->useFlysystemToResolveUri = true;
@@ -187,7 +190,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->filesystem
             ->expects(self::once())
             ->method('publicUrl')
-            ->with('file.txt')
+            ->with('file.txt', [
+                'object' => $this->object,
+                'fieldName' => 'file_field',
+                'className' => null,
+                'mapping' => $this->mapping,
+            ])
             ->willReturn('example.com/file.txt');
 
         $this->mapping
@@ -206,6 +214,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('example.com/file.txt', $path);
     }
 
+    /**
+     * @requires function Filesystem::publicUrl
+     */
     public function testResolveUriHandlesUndefinedMethodError(): void
     {
         $this->useFlysystemToResolveUri = true;
