@@ -5,15 +5,12 @@ namespace Vich\UploaderBundle\Tests;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @Vich\Uploadable
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[Vich\Uploadable]
 class DummyEntity
 {
-    /**
-     * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
-     */
+    #[Vich\UploadableField(mapping: 'dummy_file', fileNameProperty: 'fileName')]
     protected ?object $file = null;
 
     protected ?string $fileName = null;

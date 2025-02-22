@@ -3,12 +3,9 @@
 namespace Vich\TestBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 class Image
 {
     protected ?int $id = null;
@@ -17,9 +14,7 @@ class Image
 
     protected ?\DateTime $updatedAt = null;
 
-    /**
-     * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
-     */
+    #[Vich\UploadableField(mapping: 'image_mapping', fileNameProperty: 'imageName')]
     protected ?File $imageFile = null;
 
     protected ?string $imageName = null;
