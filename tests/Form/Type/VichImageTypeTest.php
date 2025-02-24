@@ -219,7 +219,7 @@ final class VichImageTypeTest extends TestCase
         self::assertEquals($vars, $view->vars);
     }
 
-    public function getLiipImagineBundleIntegrationData(): array
+    public static function getLiipImagineBundleIntegrationData(): array
     {
         $field = 'image';
         $object = new Product();

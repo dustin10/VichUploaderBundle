@@ -14,7 +14,6 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AnnotationDriver;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyFile;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 
 /**
  * AnnotationDriverTest.
@@ -25,8 +24,6 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
  */
 final class AnnotationDriverTest extends TestCase
 {
-    use AssertObjectProperty;
-
     private Connection|MockObject $connection;
 
     private EntityManagerInterface|MockObject $entityManager;

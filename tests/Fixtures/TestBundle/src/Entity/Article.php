@@ -5,22 +5,17 @@ namespace Vich\TestBundle\Entity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @Vich\Uploadable
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[Vich\Uploadable]
 class Article
 {
-    /**
-     * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
-     */
+    #[Vich\UploadableField(mapping: 'dummy_file', fileNameProperty: 'fileName')]
     protected ?object $attachment = null;
 
     protected ?string $attachmentName = null;
 
-    /**
-     * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName", originalName="originalNameField", mimeType="mimeTypeField", size="sizeField")
-     */
+    #[Vich\UploadableField(mapping: 'dummy_image', fileNameProperty: 'imageName', size: 'sizeField', mimeType: 'mimeTypeField', originalName: 'originalNameField')]
     protected ?object $image = null;
 
     protected ?string $imageName = null;
