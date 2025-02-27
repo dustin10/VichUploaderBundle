@@ -28,12 +28,12 @@ final class RemoveListenerTest extends ListenerTestCase
 
     public function testPreRemove(): void
     {
-        $this->object = $this->getEntityProxyMock();
+        $this->object = $this->getEntityProxyMock('One');
 
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
-            ->with('VichUploaderEntityProxy')
+            ->with('VichUploaderEntityProxyOne')
             ->willReturn(true);
 
         $this->object
@@ -48,7 +48,7 @@ final class RemoveListenerTest extends ListenerTestCase
 
     public function testPreRemoveSkipNonUploadable(): void
     {
-        $this->object = $this->getEntityProxyMock();
+        $this->object = $this->getEntityProxyMock('Two');
         $this->object
             ->expects($this->never())
             ->method('__load');
@@ -56,7 +56,7 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
-            ->with('VichUploaderEntityProxy')
+            ->with('VichUploaderEntityProxyTwo')
             ->willReturn(false);
 
         $this->event = $this->getEventMock();
@@ -122,10 +122,10 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->postFlush();
     }
 
-    protected function getEntityProxyMock(): Proxy|MockObject
+    private function getEntityProxyMock(string $postfix): Proxy|MockObject
     {
         return $this->getMockBuilder(Proxy::class)
-            ->setMockClassName('VichUploaderEntityProxy')
+            ->setMockClassName('VichUploaderEntityProxy'.$postfix)
             ->getMock();
     }
 }

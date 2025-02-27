@@ -66,16 +66,6 @@ parameters:
 			path: tests/Injector/FileInjectorTest.php
 
 		-
-			message: "#^Trying to mock an undefined method findOneBySlug\\(\\) on class Doctrine\\\\ORM\\\\EntityRepository\\.$#"
-			count: 1
-			path: tests/Naming/SlugNamerTest.php
-
-		-
-			message: "#^Trying to mock an undefined method getFilesystem\\(\\) on class League\\\\Flysystem\\\\MountManager\\.$#"
-			count: 1
-			path: tests/Storage/Flysystem/MountManagerFlysystemStorageTest.php
-
-		-
 			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
 			count: 4
 			path: tests/TestCase.php

@@ -17,17 +17,14 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
     </php>
 
-    <coverage>
+    <source>
         <include>
             <directory>./src</directory>
         </include>
-    </coverage>
+    </source>
 
     <extensions>
-        <extension class="Vich\UploaderBundle\Tests\BypassFinalHook"/>
+        <bootstrap class="Vich\UploaderBundle\Tests\BypassFinalExtension"/>
+        <bootstrap class="Symfony\Bridge\PhpUnit\SymfonyExtension"/>
     </extensions>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
 </phpunit>
