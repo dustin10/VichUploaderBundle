@@ -7,6 +7,8 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
@@ -120,9 +122,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    /**
-     * @dataProvider pathProvider
-     */
+    #[DataProvider('pathProvider')]
     public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
@@ -180,9 +180,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
-    /**
-     * @requires function Filesystem::publicUrl
-     */
+    #[RequiresMethod(Filesystem::class, 'publicUrl')]
     public function testResolveUriThroughFlysystem(): void
     {
         $this->useFlysystemToResolveUri = true;
@@ -214,9 +212,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('example.com/file.txt', $path);
     }
 
-    /**
-     * @requires function Filesystem::publicUrl
-     */
+    #[RequiresMethod(Filesystem::class, 'publicUrl')]
     public function testResolveUriHandlesUndefinedMethodError(): void
     {
         $this->useFlysystemToResolveUri = true;

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -40,9 +41,7 @@ final class VichFileTypeTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider buildViewDataProvider
-     */
+    #[DataProvider('buildViewDataProvider')]
     public function testBuildView(?Product $object, array $options, array $vars): void
     {
         $field = 'image';

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\HashNamer as BaseHashNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -29,9 +30,7 @@ class HashNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsTheRightName(string $expectedFileName, string $extension, string $algorithm, ?int $length): void
     {
         $file = $this->getUploadedFileMock();

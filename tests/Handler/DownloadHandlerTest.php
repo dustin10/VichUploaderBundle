@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
@@ -51,9 +52,7 @@ final class DownloadHandlerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider filenamesProvider
-     */
+    #[DataProvider('filenamesProvider')]
     public function testDownloadObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
@@ -90,9 +89,7 @@ final class DownloadHandlerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider filenamesProvider
-     */
+    #[DataProvider('filenamesProvider')]
     public function testDisplayObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
@@ -129,9 +126,7 @@ final class DownloadHandlerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider filenamesProvider
-     */
+    #[DataProvider('filenamesProvider')]
     public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $this->mapping

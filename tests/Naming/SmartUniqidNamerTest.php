@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\SmartUniqueNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -29,9 +30,7 @@ final class SmartUniqidNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsAnUniqueName(string $originalName, ?string $guessExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();

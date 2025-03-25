@@ -2,12 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\UniqidNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * UniqidNamerTest.
- *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 final class UniqidNamerTest extends TestCase
@@ -26,9 +25,7 @@ final class UniqidNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();
