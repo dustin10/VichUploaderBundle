@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
@@ -153,9 +154,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @group legacy
-     */
+    #[Group('legacy')]
     public function testMetadataAnnotation(): void
     {
         if (!\class_exists(AnnotationReader::class)) {

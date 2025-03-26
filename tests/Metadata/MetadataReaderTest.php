@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Metadata;
 
 use Metadata\AdvancedMetadataFactoryInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -112,9 +113,7 @@ final class MetadataReaderTest extends TestCase
         self::assertSame(['bar', 'baz', 'foo'], $this->reader->getUploadableFields('SubClassName'));
     }
 
-    /**
-     * @dataProvider fieldsMetadataProvider
-     */
+    #[DataProvider('fieldsMetadataProvider')]
     public function testGetUploadableField(array $fields, ?string $expectedMetadata): void
     {
         $classMetadata = new \stdClass();

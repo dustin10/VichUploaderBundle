@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\UploaderBundle\Command\MappingDebugCommand;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
@@ -24,9 +25,7 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Debug information for mapping image_mapping', $output);
     }
 
-    /**
-     * @dataProvider provideCompletionSuggestions
-     */
+    #[DataProvider('provideCompletionSuggestions')]
     public function testComplete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {

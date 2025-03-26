@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use Metadata\Driver\DriverInterface;
 use Metadata\Driver\FileLocatorInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Vich\TestBundle\Entity\Article;
 use Vich\TestBundle\Entity\Product;
@@ -11,9 +12,7 @@ use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 abstract class FileDriverTestCase extends TestCase
 {
-    /**
-     * @dataProvider classesProvider
-     */
+    #[DataProvider('classesProvider')]
     public function testLoadMetadataForClass(string $class, string $file, array $expectedMetadata): void
     {
         $reflectionClass = new \ReflectionClass($class);

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
@@ -75,9 +76,7 @@ final class UploadHandlerTest extends TestCase
         $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
-    /**
-     * @dataProvider methodProvider
-     */
+    #[DataProvider('methodProvider')]
     public function testAnExceptionIsThrownIfMappingIsntFound(string $method): void
     {
         $this->expectException(MappingNotFoundException::class);

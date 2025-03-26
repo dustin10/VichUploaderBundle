@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Metadata\ClassMetadata;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\TestBundle\Entity\Article;
@@ -16,12 +17,9 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyFile;
 
 /**
- * AnnotationDriverTest.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class AnnotationDriverTest extends TestCase
 {
     private Connection|MockObject $connection;

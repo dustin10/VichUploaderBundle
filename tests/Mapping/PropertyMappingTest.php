@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\TestBundle\Entity\Article;
 use Vich\TestBundle\Naming\DummyNamer;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -36,9 +37,7 @@ class PropertyMappingTest extends TestCase
         self::assertEquals('fileName', $prop->getFileNamePropertyName());
     }
 
-    /**
-     * @dataProvider directoryProvider
-     */
+    #[DataProvider('directoryProvider')]
     public function testDirectoryNamerIsCalled(string $dir, string $expectedDir): void
     {
         $object = new DummyEntity();

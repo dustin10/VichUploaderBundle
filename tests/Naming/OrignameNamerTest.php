@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\OrignameNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -22,9 +23,7 @@ final class OrignameNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsAnUniqueName(string $name, string $ext, string $pattern, bool $transliterate): void
     {
         $file = $this->getUploadedFileMock();

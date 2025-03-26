@@ -2,11 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 final class UploadTest extends WebTestCase
 {
-    /**
-     * @dataProvider uploadTypeDataProvider
-     */
+    #[DataProvider('uploadTypeDataProvider')]
     public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
         if (\headers_sent()) {
@@ -49,9 +49,7 @@ final class UploadTest extends WebTestCase
         self::assertFileDoesNotExist($this->getUploadsDir($client).'/symfony_black_03.png', 'The file is deleted');
     }
 
-    /**
-     * @dataProvider uploadTypeDataProvider
-     */
+    #[DataProvider('uploadTypeDataProvider')]
     public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
         if (\headers_sent()) {

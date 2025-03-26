@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\PropertyDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -28,9 +29,7 @@ class PropertyDirectoryNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsTheRightName(
         string $expectedDirectoryName,
         object $entity,
