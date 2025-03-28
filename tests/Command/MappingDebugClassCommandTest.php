@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
@@ -26,9 +27,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Introspecting class', $output);
     }
 
-    /**
-     * @dataProvider provideCompletionSuggestions
-     */
+    #[DataProvider('provideCompletionSuggestions')]
     public function testComplete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {

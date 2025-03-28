@@ -2,14 +2,13 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Exception\NameGenerationException;
 use Vich\UploaderBundle\Naming\PropertyNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * PropertyNamerTest.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 class PropertyNamerTest extends TestCase
@@ -30,9 +29,7 @@ class PropertyNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsTheRightName(
         string $originalFileName,
         string $expectedFileName,

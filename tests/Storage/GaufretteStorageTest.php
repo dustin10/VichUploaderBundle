@@ -7,13 +7,12 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * GaufretteStorageTest.
- *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
 class GaufretteStorageTest extends StorageTestCase
@@ -50,11 +49,7 @@ class GaufretteStorageTest extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    /**
-     * Test the resolve path method.
-     *
-     * @dataProvider pathProvider
-     */
+    #[DataProvider('pathProvider')]
     public function testResolvePath(string $protocol, string $filesystemKey, ?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping

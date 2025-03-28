@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Doctrine\Persistence\Proxy;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -50,9 +51,8 @@ class PropertyMappingFactoryTest extends TestCase
 
     /**
      * Test the fromObject method with one uploadable field.
-     *
-     * @dataProvider fromObjectProvider
      */
+    #[DataProvider('fromObjectProvider')]
     public function testFromObjectOneField(object|array $object, ?string $givenClassName, string $expectedClassName): void
     {
         $mappings = [
@@ -252,9 +252,7 @@ class PropertyMappingFactoryTest extends TestCase
         $factory->fromObject(new DummyEntity());
     }
 
-    /**
-     * @dataProvider fromFieldProvider
-     */
+    #[DataProvider('fromFieldProvider')]
     public function testFromField(object|array $object, ?string $className, string $expectedClassName): void
     {
         $mappings = [

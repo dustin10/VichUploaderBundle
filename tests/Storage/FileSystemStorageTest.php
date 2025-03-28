@@ -2,12 +2,12 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * FileSystemStorageTest.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class FileSystemStorageTest extends StorageTestCase
@@ -20,9 +20,8 @@ final class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the remove method skips trying to remove a file whose file name
      * property value returns null.
-     *
-     * @dataProvider emptyFilenameProvider
      */
+    #[DataProvider('emptyFilenameProvider')]
     public function testRemoveSkipsEmptyFilenameProperties(?string $propertyValue): void
     {
         $this->mapping
@@ -177,11 +176,7 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertNull($this->storage->resolveUri($this->object, 'file_field'));
     }
 
-    /**
-     * Test the resolve uri.
-     *
-     * @dataProvider resolveUriDataProvider
-     */
+    #[DataProvider('resolveUriDataProvider')]
     public function testResolveUri(string $uploadDir, string $uri): void
     {
         $this->mapping
@@ -260,11 +255,8 @@ final class FileSystemStorageTest extends StorageTestCase
         ];
     }
 
-    /**
-     * @dataProvider filenameWithDirectoriesDataProvider
-     *
-     * @group upload
-     */
+    #[DataProvider('filenameWithDirectoriesDataProvider')]
+    #[Group('upload')]
     public function testUploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
     {
         $uploadDir = $this->root->url().\DIRECTORY_SEPARATOR.$uploadDir;
@@ -306,9 +298,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    /**
-     * @group upload
-     */
+    #[Group('upload')]
     public function testReplacingFileIsCorrectlyUploaded(): void
     {
         $file = $this->getReplacingFileMock();
@@ -345,9 +335,7 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    /**
-     * @group upload
-     */
+    #[Group('upload')]
     public function testReplacingFileWithDirectoryNamerIsCorrectlyUploaded(): void
     {
         $file = $this->getReplacingFileMock();

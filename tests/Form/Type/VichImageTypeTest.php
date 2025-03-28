@@ -3,6 +3,8 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresMethod;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -143,11 +145,8 @@ final class VichImageTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getLiipImagineBundleIntegrationData
-     *
-     * @requires function CacheManager::_construct
-     */
+    #[DataProvider('getLiipImagineBundleIntegrationData')]
+    #[RequiresMethod(CacheManager::class, '__construct')]
     public function testLiipImagineBundleIntegration(
         string $field,
         Product $object,

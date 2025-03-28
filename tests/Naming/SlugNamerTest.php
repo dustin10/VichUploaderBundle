@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use Doctrine\ORM\EntityRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\SlugNamer;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -18,9 +19,7 @@ final class SlugNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fileDataProvider
-     */
+    #[DataProvider('fileDataProvider')]
     public function testNameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();

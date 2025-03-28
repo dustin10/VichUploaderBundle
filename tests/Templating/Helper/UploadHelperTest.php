@@ -8,8 +8,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
- * FileInjectorTest.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class UploadHelperTest extends TestCase
