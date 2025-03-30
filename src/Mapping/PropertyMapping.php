@@ -288,7 +288,7 @@ final class PropertyMapping
      *
      * @return string|null The upload directory
      */
-    public function getUploadDir(object $obj): ?string
+    public function getUploadDir(object|array $obj): ?string
     {
         if (!$this->hasDirectoryNamer()) {
             return '';
