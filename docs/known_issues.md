@@ -103,7 +103,7 @@ method above must take an instance of `File` as when this class is hydrated by D
 bundle will automatically inject an instance of `File` there. However, if you were to change
 the image path to a new image in that instance of `File` and attempted a `flush()` nothing
 would happen, instead inject a new instance of `UploadedFile` with the new path to your new
-image to sucessfully trigger the upload.
+image to successfully trigger the upload.
 
 **N.B.** : UploadedFile objects have a
 [*test* mode](https://github.com/symfony/symfony/blob/6.1/src/Symfony/Component/HttpFoundation/File/UploadedFile.php#L63)
@@ -133,9 +133,9 @@ metadata is joined with the file during the upload.
 To summarize, [Gaufrette support for metadata is flawed](https://github.com/KnpLabs/Gaufrette/issues/108)
 (see issue [GH-163](https://github.com/dustin10/VichUploaderBundle/issues/163)).
 
-## Doctrine/annotations package required when using doctrine-bundle >= 2.8
+## Doctrine/annotations package required when using annotations and doctrine-bundle >= 2.8
 
-If your project is using `doctrine-bundle:>=2.8`, you must require `doctrine/annotations` package from
-your project as it is not required in `doctrine-bundle` anymore from this version.  
-This bundle is using a `Reader` interface from this package in order to work for both annotations
-and attributes mapping.
+If your project uses annotations and `doctrine-bundle:>=2.8`, you must require the `doctrine/annotations`
+package from your project, as it is not required in `doctrine-bundle` anymore from this version.  
+This bundle uses a `Reader` interface from this package in order to work for both attributes and annotations
+mapping, but annotations are deprecated and will be removed in the future.

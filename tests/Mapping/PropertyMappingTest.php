@@ -2,9 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\TestBundle\Entity\Article;
 use Vich\TestBundle\Naming\DummyNamer;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -36,9 +38,7 @@ class PropertyMappingTest extends TestCase
         self::assertEquals('fileName', $prop->getFileNamePropertyName());
     }
 
-    /**
-     * @dataProvider directoryProvider
-     */
+    #[DataProvider('directoryProvider')]
     public function testDirectoryNamerIsCalled(string $dir, string $expectedDir): void
     {
         $object = new DummyEntity();
@@ -157,5 +157,23 @@ class PropertyMappingTest extends TestCase
         self::assertNull($object->getOriginalNameField());
         self::assertNull($object->getMimeTypeField());
         self::assertNull($object->getSizeField());
+    }
+
+    public function testWithArray(): void
+    {
+        $prop = new PropertyMapping(
+            'image',
+            'imageName',
+        );
+
+        $directoryNamer = new ConfigurableDirectoryNamer();
+        $directoryNamer->configure([
+            'directory_path' => 'fake',
+        ]);
+        $prop->setDirectoryNamer($directoryNamer);
+
+        $object = [];
+        $actual = $prop->getUploadDir($object);
+        self::assertEquals('fake', $actual);
     }
 }

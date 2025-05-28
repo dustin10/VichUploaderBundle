@@ -12,7 +12,7 @@ vich_uploader:
     metadata:
         auto_detection: true
         cache: file
-        type: attribute    # or annotation
+        type: attribute
     mappings:
         products:
             uri_prefix: /uploads    # uri prefix to resource

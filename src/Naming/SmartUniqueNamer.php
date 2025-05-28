@@ -6,13 +6,15 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * This namer makes filename unique by appending a uniqid.
+ * This namer makes filename unique by appending a uniqueid.
  * Also, filename is made web-friendly by transliteration.
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
 final class SmartUniqueNamer implements NamerInterface
 {
+    use Polyfill\FileExtensionTrait;
+
     public function __construct(private readonly Transliterator $transliterator)
     {
     }
@@ -22,10 +24,12 @@ final class SmartUniqueNamer implements NamerInterface
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
         $originalName = $this->transliterator->transliterate($originalName);
-        $originalExtension = \strtolower(\pathinfo($originalName, \PATHINFO_EXTENSION));
+        $originalExtension = $this->getExtension($file);
         $originalBasename = \pathinfo($originalName, \PATHINFO_FILENAME);
         $uniqId = \str_replace('.', '', \uniqid('-', true));
-        $uniqExtension = \sprintf('%s.%s', $uniqId, $originalExtension);
+        $uniqExtension = \is_string($originalExtension) && '' !== $originalExtension
+            ? \sprintf('%s.%s', $uniqId, $originalExtension)
+            : $uniqId;
         $smartName = \sprintf('%s%s', $originalBasename, $uniqExtension);
 
         // Check if smartName is an acceptable size (some filesystems accept a max of 255)

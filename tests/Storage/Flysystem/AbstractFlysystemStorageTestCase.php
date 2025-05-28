@@ -7,8 +7,11 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\Storage\StorageTestCase;
@@ -30,13 +33,6 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     protected bool $useFlysystemToResolveUri = false;
 
     abstract protected function createRegistry(FilesystemOperator $filesystem): MountManager|ContainerInterface;
-
-    /**
-     * @requires function MountManager::__construct
-     */
-    public static function setUpBeforeClass(): void
-    {
-    }
 
     protected function getStorage(): StorageInterface
     {
@@ -83,7 +79,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
         $this->filesystem
             ->expects(self::once())
-            ->method('putStream')
+            ->method('writeStream')
             ->with(
                 'originalName.txt',
                 $this->isType('resource'),
@@ -121,12 +117,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->method('getFileName')
             ->willReturn('not_found.txt');
 
+        $this->expectException(UnableToDeleteFile::class);
+        $this->expectExceptionMessage('dummy path');
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    /**
-     * @dataProvider pathProvider
-     */
+    #[DataProvider('pathProvider')]
     public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
@@ -155,9 +151,9 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         return [
             //     dir,   path,                     relative
             [null,  'file.txt',               true],
-            [null,  '/absolute/file.txt',     false],
+            [null,  'file.txt',               false],
             ['foo', 'foo/file.txt',           true],
-            ['foo', '/absolute/foo/file.txt', false],
+            ['foo', 'foo/file.txt',           false],
         ];
     }
 
@@ -184,6 +180,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
+    #[RequiresMethod(Filesystem::class, 'publicUrl')]
     public function testResolveUriThroughFlysystem(): void
     {
         $this->useFlysystemToResolveUri = true;
@@ -191,7 +188,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->filesystem
             ->expects(self::once())
             ->method('publicUrl')
-            ->with('file.txt')
+            ->with('file.txt', [
+                'object' => $this->object,
+                'fieldName' => 'file_field',
+                'className' => null,
+                'mapping' => $this->mapping,
+            ])
             ->willReturn('example.com/file.txt');
 
         $this->mapping
@@ -208,5 +210,37 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('example.com/file.txt', $path);
+    }
+
+    #[RequiresMethod(Filesystem::class, 'publicUrl')]
+    public function testResolveUriHandlesUndefinedMethodError(): void
+    {
+        $this->useFlysystemToResolveUri = true;
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('publicUrl')
+            ->with('file.txt')
+            ->will($this->throwException(new UndefinedMethodError('Undefined method', new \Error('An error occurred'))));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUriPrefix')
+            ->willReturn('/uploads');
+
+        $this->factory
+            ->expects(self::exactly(2))
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('/uploads/file.txt', $path);
     }
 }

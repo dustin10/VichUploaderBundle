@@ -51,7 +51,7 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return AdapterInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @return AdapterInterface&MockObject
      */
     protected function getAdapterMock(): AdapterInterface
     {
@@ -59,7 +59,7 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return MetadataReader&\PHPUnit\Framework\MockObject\MockObject
+     * @return MetadataReader&MockObject
      */
     protected function getMetadataReaderMock(): MetadataReader
     {
@@ -69,7 +69,7 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return UploadHandler&\PHPUnit\Framework\MockObject\MockObject
+     * @return UploadHandler&MockObject
      */
     protected function getHandlerMock(): UploadHandler
     {
@@ -79,7 +79,7 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return LifecycleEventArgs&\PHPUnit\Framework\MockObject\MockObject
+     * @return LifecycleEventArgs&MockObject
      */
     protected function getEventMock(): LifecycleEventArgs
     {

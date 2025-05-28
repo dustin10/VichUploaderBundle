@@ -20,7 +20,7 @@ final class GaufretteStorage extends AbstractStorage
      * Constructs a new instance of FileSystemStorage.
      *
      * @param PropertyMappingFactory $factory       The factory
-     * @param FilesystemMapInterface $filesystemMap Gaufrete filesystem factory
+     * @param FilesystemMapInterface $filesystemMap Gaufrette filesystem factory
      * @param string                 $protocol      Gaufrette stream wrapper protocol
      */
     public function __construct(PropertyMappingFactory $factory, protected FilesystemMapInterface $filesystemMap, protected string $protocol = 'gaufrette')

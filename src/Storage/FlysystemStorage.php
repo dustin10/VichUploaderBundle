@@ -6,6 +6,7 @@ use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
@@ -30,7 +31,7 @@ final class FlysystemStorage extends AbstractStorage
     /**
      * @param MountManager|ContainerInterface|mixed $registry
      */
-    public function __construct(PropertyMappingFactory $factory, $registry, bool $useFlysystemToResolveUri = false)
+    public function __construct(PropertyMappingFactory $factory, mixed $registry, bool $useFlysystemToResolveUri = false)
     {
         parent::__construct($factory);
 
@@ -96,8 +97,13 @@ final class FlysystemStorage extends AbstractStorage
         $fs = $this->getFilesystem($mapping);
 
         try {
-            return $fs->publicUrl($path);
-        } catch (FilesystemException) {
+            return $fs->publicUrl($path, [
+                'object' => $obj,
+                'fieldName' => $fieldName,
+                'className' => $className,
+                'mapping' => $mapping,
+            ]);
+        } catch (FilesystemException|UndefinedMethodError) {
             return $mapping->getUriPrefix().'/'.$path;
         }
     }

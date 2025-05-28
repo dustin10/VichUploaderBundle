@@ -4,30 +4,18 @@ namespace Vich\UploaderBundle\Entity;
 
 class File
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
+
+    protected ?string $originalName = null;
+
+    protected ?string $mimeType = null;
+
+    protected ?int $size = null;
 
     /**
-     * @var string
+     * @var array<int, int>|null
      */
-    protected $originalName;
-
-    /**
-     * @var string
-     */
-    protected $mimeType;
-
-    /**
-     * @var int
-     */
-    protected $size;
-
-    /**
-     * @var array<int, int>
-     */
-    protected $dimensions;
+    protected ?array $dimensions = null;
 
     public function getName(): ?string
     {

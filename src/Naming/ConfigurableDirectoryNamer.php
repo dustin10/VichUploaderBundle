@@ -5,12 +5,11 @@ namespace Vich\UploaderBundle\Naming;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
- * Directory namer which can create subfolder which path is given in the directory namer's options.
+ * Directory namer that can create subfolder which path is given in the directory namer's options.
  */
 class ConfigurableDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
 {
-    /** @var string */
-    private $directoryPath = '';
+    private string $directoryPath = '';
 
     /**
      * @param array $options Options for this namer. The following options are accepted:

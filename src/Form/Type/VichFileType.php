@@ -32,7 +32,7 @@ class VichFileType extends AbstractType
         protected readonly StorageInterface $storage,
         protected readonly UploadHandler $handler,
         protected readonly PropertyMappingFactory $factory,
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }

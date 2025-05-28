@@ -7,7 +7,7 @@ env:
 
 jobs:
     phpstan:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: PHPStan
         steps:
             - name: Checkout
@@ -15,34 +15,35 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.3
             - run: |
-                 composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.8" phpstan/extension-installer phpstan/phpstan-phpunit:1.3.* phpstan/phpstan:1.9.* 
-                  composer config --no-plugins allow-plugins.phpstan/extension-installer true
+                  composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.13" phpstan/phpstan:"^1.12" 
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: PHP-CS-Fixer
         steps:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
+              with:
+                args: --diff --dry-run
     twig-cs-fixer:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         name: Twig-CS-Fixer
         steps:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Require the vendor
-              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.1
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.5
             - name: Update
               run: composer update --no-interaction --no-progress
             - name: Run
               run: vendor/bin/twig-cs-fixer lint templates
     validate-markdown:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -52,7 +53,7 @@ jobs:
                   config: './.github/workflows/config/config.json'
                   args: './docs ./CONTRIBUTING.md ./README.md ./UPDATE.md'
     tests:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         strategy:
             matrix:
                 php:
@@ -84,11 +85,17 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 0
                     - php: '8.3'
-                      symfony: '7.1.*'
+                      symfony: '7.2.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
                       max_deprecations: 0
+                    - php: '8.4'
+                      symfony: '7.3.*@dev'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      max_deprecations: 6
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
@@ -111,6 +118,11 @@ jobs:
                   composer global require --no-interaction --no-progress symfony/flex:^2.2
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
+            - name: use possible dev deps
+              if: contains(matrix.symfony, '@dev')
+              run: |
+                  composer config minimum-stability dev
+                  composer config prefer-stable true
             - run: composer require --no-update liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
             - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"

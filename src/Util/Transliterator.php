@@ -3,9 +3,6 @@
 namespace Vich\UploaderBundle\Util;
 
 use Symfony\Component\String\Slugger\SluggerInterface;
-use function strrpos;
-use function strtolower;
-use function substr;
 
 /**
  * @internal
@@ -27,7 +24,7 @@ final class Transliterator
             $transliterated .= '.'.$extension;
         }
 
-        return strtolower($transliterated);
+        return \strtolower($transliterated);
     }
 
     /**
@@ -37,10 +34,10 @@ final class Transliterator
      */
     private function splitNameByExtension(string $filename): array
     {
-        if (false === $pos = strrpos($filename, '.')) {
+        if (false === $pos = \strrpos($filename, '.')) {
             return [$filename, ''];
         }
 
-        return [substr($filename, 0, $pos), substr($filename, $pos + 1)];
+        return [\substr($filename, 0, $pos), \substr($filename, $pos + 1)];
     }
 }

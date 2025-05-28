@@ -54,7 +54,7 @@ If set to `true`, download uri will be generated with `asset()` method from `sym
 
 **type**: `bool`, `string`, `callable` **default**: `true`
 
-If set to `true`, download uri will automatically resolved using storage.
+If set to `true`, download uri will automatically be resolved using storage.
 
 Can be string
 
@@ -87,7 +87,7 @@ If set to `true`, download label will use original file name.
 Can be string. If you use a string, string wille be translated. You can put your translation in default messages domain.
 Otherwise, you can pass `translation_domain` option, setting it to `false` (no translation) or to your custom domain.
 
-See [Symfony documentation](https://symfony.com/doc/current/translation.html) for more informations.
+See [Symfony documentation](https://symfony.com/doc/current/translation.html) for more information.
 
 ```php
 use Vich\UploaderBundle\Form\Type\VichFileType;

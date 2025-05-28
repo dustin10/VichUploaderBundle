@@ -60,7 +60,7 @@ class RemoveProductImageMessageHandler implements MessageHandlerInterface
 }
 ```
 
-Create a event subscriber that will cancel the remove request and dispatch a remove message.
+Create an event subscriber that will cancel the remove request and dispatch a remove message.
 
 ```php
 <?php

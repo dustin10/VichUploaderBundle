@@ -263,10 +263,8 @@ final class PropertyMapping
 
     /**
      * Sets the configured configuration mapping name.
-     *
-     * @param string $mappingName
      */
-    public function setMappingName($mappingName): void
+    public function setMappingName(string $mappingName): void
     {
         $this->mappingName = $mappingName;
     }
@@ -288,11 +286,9 @@ final class PropertyMapping
     /**
      * Gets the upload directory for a given file (uses the directory namers).
      *
-     * @param object $obj
-     *
      * @return string|null The upload directory
      */
-    public function getUploadDir($obj): ?string
+    public function getUploadDir(object|array $obj): ?string
     {
         if (!$this->hasDirectoryNamer()) {
             return '';

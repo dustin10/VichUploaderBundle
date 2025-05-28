@@ -17,10 +17,7 @@ final class PropertyNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
-    /**
-     * @var string
-     */
-    private $propertyPath;
+    private string $propertyPath;
 
     private bool $transliterate = false;
 
@@ -78,7 +75,7 @@ final class PropertyNamer implements NamerInterface, ConfigurableInterface
     /**
      * @return mixed|null
      */
-    private function getPropertyValue(object $object, string $propertyPath)
+    private function getPropertyValue(object $object, string $propertyPath): mixed
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
@@ -26,13 +27,11 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Introspecting class', $output);
     }
 
-    /**
-     * @dataProvider provideCompletionSuggestions
-     */
+    #[DataProvider('provideCompletionSuggestions')]
     public function testComplete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {
-            $this->markTestSkipped('Test command completion requires symfony/console 5.4+.');
+            self::markTestSkipped('Test command completion requires symfony/console 5.4+.');
         }
 
         $reader = $this->mockMetadataReader();
@@ -42,7 +41,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         $this->assertEqualsCanonicalizing($expectedSuggestions, $tester->complete($input));
     }
 
-    public function provideCompletionSuggestions(): \Generator
+    public static function provideCompletionSuggestions(): \Generator
     {
         yield 'fqcn' => [
             [''],

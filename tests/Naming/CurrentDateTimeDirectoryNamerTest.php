@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -24,9 +25,7 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider directoryNameDataProvider
-     */
+    #[DataProvider('directoryNameDataProvider')]
     public function testNameReturnsTheRightName(int $timestamp, ?string $dateTimeFormat, string $expectedName): void
     {
         \date_default_timezone_set('UTC');

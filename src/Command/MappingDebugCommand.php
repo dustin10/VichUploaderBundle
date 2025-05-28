@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -10,16 +11,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
+#[AsCommand(name: 'vich:mapping:debug')]
 final class MappingDebugCommand extends Command
 {
     public function __construct(private readonly array $mappings)
     {
         parent::__construct();
-    }
-
-    public static function getDefaultName(): string
-    {
-        return 'vich:mapping:debug';
     }
 
     protected function configure(): void

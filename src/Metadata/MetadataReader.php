@@ -105,7 +105,7 @@ final class MetadataReader
      *
      * @throws MappingNotFoundException
      */
-    public function getUploadableField(string $class, string $field)
+    public function getUploadableField(string $class, string $field): mixed
     {
         $fieldsMetadata = $this->getUploadableFields($class);
 

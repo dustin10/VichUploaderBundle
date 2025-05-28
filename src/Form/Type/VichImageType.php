@@ -29,7 +29,7 @@ class VichImageType extends VichFileType
         StorageInterface $storage,
         UploadHandler $handler,
         PropertyMappingFactory $factory,
-        PropertyAccessorInterface $propertyAccessor = null,
+        ?PropertyAccessorInterface $propertyAccessor = null,
         private readonly ?CacheManager $cacheManager = null
     ) {
         parent::__construct($storage, $handler, $factory, $propertyAccessor);

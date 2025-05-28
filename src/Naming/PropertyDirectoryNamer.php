@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * Directory namer which can create subfolder depends on property.
+ * Directory namer that can create subfolder depends on property.
  *
  * @author Raynald Coupé <raynald@easi-services.fr>
  */

@@ -5,40 +5,26 @@ namespace Vich\TestBundle\Entity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @Vich\Uploadable
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[Vich\Uploadable]
 class Article
 {
-    /**
-     * @Vich\UploadableField(mapping="dummy_file", fileNameProperty="fileName")
-     *
-     * @var object|null
-     */
-    protected $attachment;
+    #[Vich\UploadableField(mapping: 'dummy_file', fileNameProperty: 'fileName')]
+    protected ?object $attachment = null;
 
-    /** @var string */
-    protected $attachmentName;
+    protected ?string $attachmentName = null;
 
-    /**
-     * @Vich\UploadableField(mapping="dummy_image", fileNameProperty="imageName", originalName="originalNameField", mimeType="mimeTypeField", size="sizeField")
-     *
-     * @var object|null
-     */
-    protected $image;
+    #[Vich\UploadableField(mapping: 'dummy_image', fileNameProperty: 'imageName', size: 'sizeField', mimeType: 'mimeTypeField', originalName: 'originalNameField')]
+    protected ?object $image = null;
 
-    /** @var string|null */
-    protected $imageName;
+    protected ?string $imageName = null;
 
-    /** @var string|null */
-    protected $originalNameField;
+    protected ?string $originalNameField = null;
 
-    /** @var string|null */
-    protected $mimeTypeField;
+    protected ?string $mimeTypeField = null;
 
-    /** @var string|null */
-    protected $sizeField;
+    protected ?string $sizeField = null;
 
     public function getAttachment(): void
     {

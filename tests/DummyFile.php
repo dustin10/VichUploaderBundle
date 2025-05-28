@@ -6,49 +6,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 class DummyFile
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    protected ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @var string
-     */
-    protected $title;
+    #[ORM\Column]
+    protected ?string $title = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
-     */
-    protected $updatedAt;
+    #[ORM\Column(nullable: true)]
+    protected ?\DateTime $updatedAt = null;
 
-    /**
-     * @Vich\UploadableField(mapping="image_mapping", fileNameProperty="imageName")
-     *
-     * @var SymfonyFile
-     */
-    protected $file;
+    #[Vich\UploadableField(mapping: 'image_mapping', fileNameProperty: 'imageName')]
+    protected ?SymfonyFile $file = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string
-     */
-    protected $fileName;
+    #[ORM\Column(nullable: true)]
+    protected ?string $fileName = null;
 
     public function getId(): ?int
     {

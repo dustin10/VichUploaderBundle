@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Storage;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -17,24 +18,15 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class StorageTestCase extends TestCase
 {
-    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject$factory;
+    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject $factory;
 
     protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
-    /**
-     * @var DummyEntity
-     */
-    protected $object;
+    protected DummyEntity $object;
 
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface $storage;
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    protected $root;
+    protected vfsStreamDirectory $root;
 
     /**
      * Returns the storage implementation to test.
@@ -75,9 +67,7 @@ abstract class StorageTestCase extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider emptyFilenameProvider
-     */
+    #[DataProvider('emptyFilenameProvider')]
     public function testResolvePathWithEmptyFile(?string $filename): void
     {
         $this->mapping
@@ -94,9 +84,7 @@ abstract class StorageTestCase extends TestCase
         self::assertNull($this->storage->resolvePath($this->object, 'file_field'));
     }
 
-    /**
-     * @dataProvider emptyFilenameProvider
-     */
+    #[DataProvider('emptyFilenameProvider')]
     public function testResolveUriWithEmptyFile(?string $filename): void
     {
         $this->mapping
