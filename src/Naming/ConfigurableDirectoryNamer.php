@@ -24,7 +24,7 @@ class ConfigurableDirectoryNamer implements DirectoryNamerInterface, Configurabl
         $this->directoryPath = $options['directory_path'];
     }
 
-    public function directoryName($object, PropertyMapping $mapping): string
+    public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         return $this->directoryPath;
     }

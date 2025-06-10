@@ -36,6 +36,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.root_dir', __DIR__.'/../Fixtures/App/app');
         $this->container->setParameter('kernel.project_dir', __DIR__.'/../Fixtures/App');
         $this->container->setParameter('kernel.cache_dir', \sys_get_temp_dir());
+        $this->container->setParameter('kernel.build_dir', \sys_get_temp_dir());
         $this->container->setParameter('kernel.debug', true);
     }
 
