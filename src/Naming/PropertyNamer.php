@@ -9,8 +9,6 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Util\Transliterator;
 
 /**
- * PropertyNamer.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class PropertyNamer implements NamerInterface, ConfigurableInterface
@@ -42,7 +40,7 @@ final class PropertyNamer implements NamerInterface, ConfigurableInterface
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function name(object $object, PropertyMapping $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         if (empty($this->propertyPath)) {
             throw new \LogicException('The property to use can not be determined. Did you call the configure() method?');
@@ -75,7 +73,7 @@ final class PropertyNamer implements NamerInterface, ConfigurableInterface
     /**
      * @return mixed|null
      */
-    private function getPropertyValue(object $object, string $propertyPath): mixed
+    private function getPropertyValue(object|array $object, string $propertyPath): mixed
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 

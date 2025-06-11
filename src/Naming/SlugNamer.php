@@ -18,7 +18,7 @@ final class SlugNamer implements NamerInterface
     {
     }
 
-    public function name(object $object, PropertyMapping $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
