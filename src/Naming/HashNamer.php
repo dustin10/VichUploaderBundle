@@ -30,7 +30,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
         $this->length = $options['length'];
     }
 
-    public function name(object $object, PropertyMapping $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 

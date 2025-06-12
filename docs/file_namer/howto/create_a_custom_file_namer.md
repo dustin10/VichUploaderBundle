@@ -6,8 +6,9 @@ is passed to the `name` method, as well as the mapping describing it, you are
 free to get any information from it to create the name, or inject any other
 service you require.
 
-**Note**:
-
+> [!NOTE]
+> The `name` method in the interface accepts only objects, but your namer should accept both
+> objects and arrays. The interface method signature will be fixed in the next major version.
 > The name returned should include the file extension as well. This can easily
 > be retrieved from the `UploadedFile` instance using the `getExtension` or `guessExtension`
 > depending on what version of PHP you are running.
@@ -26,8 +27,7 @@ vich_uploader:
 
 Where `App\Naming\MyNamer` is the configured service class.
 
-**Note**:
-
+> [!NOTE]
 > The namer service must be public.
 > If you're using default configuration, make sure to explicit public visibility
 > for your namer service

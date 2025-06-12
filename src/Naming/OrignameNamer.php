@@ -29,7 +29,7 @@ final class OrignameNamer implements NamerInterface, ConfigurableInterface
         $this->transliterate = isset($options['transliterate']) ? (bool) $options['transliterate'] : $this->transliterate;
     }
 
-    public function name(object $object, PropertyMapping $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         /* @var $file UploadedFile|ReplacingFile */
         $file = $mapping->getFile($object);
