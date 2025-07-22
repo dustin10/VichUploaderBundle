@@ -1,3 +1,7 @@
+# Upgrading from v2.5 to v2.6
+
+* Now the original extension '.xlsb' is retained even if the mime type is guessed as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.
+  
 # Upgrading from v2.4 to v2.5
 
 * To address the question raised in the previous version, now the original extension '.csv' is retained

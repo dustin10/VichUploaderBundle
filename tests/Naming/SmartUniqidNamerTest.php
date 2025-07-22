@@ -27,6 +27,7 @@ final class SmartUniqidNamerTest extends TestCase
             'file with no extension with null mimetype' => ['lala', null, '/lala-[[:xdigit:]]{22}$/'],
             'csv retains extension even if guessed as txt' => ['lala.csv', 'txt', '/lala-[[:xdigit:]]{22}\.csv/'],
             'gpx retains extension even if guessed as xml' => ['baz.gpx', 'xml', '/^baz-[[:xdigit:]]{22}\.gpx$/'],
+            'xlsb retains extension even if guessed as xlsx' => ['lala.xlsb', 'xlsx', '/lala-[[:xdigit:]]{22}\.xlsb/'],
         ];
     }
 
