@@ -12,6 +12,7 @@ trait FileExtensionTrait
     private static array $keep = [
         'txt' => 'csv',
         'xml' => 'gpx',
+        'xlsx' => 'xlsb',
     ];
 
     /**
