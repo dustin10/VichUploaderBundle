@@ -62,6 +62,11 @@ Next, you have to create the two fields needed for the bundle to work:
      object after the form is submitted. This should *not* be persisted to the
      database, but you *do* need to annotate it.
 
+> [!NOTE]
+> It is required that at least one field changes (e.g. `updatedAt`) if you are
+> using Doctrine otherwise the event listeners won't be called and the file is
+> lost
+
 The `UploadableField` attribute has a few options. They are as follows:
 
 * `mapping`: required, the mapping name specified in the bundle configuration to use;
