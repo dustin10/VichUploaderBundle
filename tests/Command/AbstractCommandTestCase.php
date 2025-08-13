@@ -13,7 +13,12 @@ abstract class AbstractCommandTestCase extends WebTestCase
     {
         $client = self::createClient();
         $application = new Application($client->getKernel());
-        $application->add($command);
+        // @phpstan-ignore-next-line function.impossibleType
+        if (\method_exists($application, 'addCommand')) {
+            $application->addCommand($command);
+        } else {
+            $application->add($command);    // @phpstan-ignore-line method.notFound
+        }
         $cmd = $application->find($name);
         $commandTester = new CommandTester($cmd);
         $commandTester->execute(\array_merge(['command' => $cmd->getName()], $arguments));

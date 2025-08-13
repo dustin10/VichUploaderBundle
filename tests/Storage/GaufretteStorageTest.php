@@ -26,6 +26,9 @@ class GaufretteStorageTest extends StorageTestCase
 
     protected function setUp(): void
     {
+        if (!\class_exists(FilesystemMap::class)) {
+            self::markTestSkipped('GaufretteBundle is not installed.');
+        }
         $this->filesystemMap = $this->createMock(FilesystemMap::class);
 
         parent::setUp();

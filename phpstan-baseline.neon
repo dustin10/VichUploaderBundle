@@ -7,36 +7,6 @@ parameters:
 			path: src/Adapter/PHPCR/PHPCRAdapter.php
 
 		-
-			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\:\:scalarNode\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addGeneralSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addMappingsSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addMetadataSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DependencyInjection/Configuration.php
-
-		-
 			message: '#^Method Vich\\UploaderBundle\\Storage\\FileSystemStorage\:\:doUpload\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1

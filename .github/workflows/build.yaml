@@ -1,6 +1,10 @@
 name: build
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - master
+    pull_request: ~
 
 env:
   COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -63,6 +67,7 @@ jobs:
                 symfony: ['*']
                 with_imagine: [false]
                 with_oneupbundle: [true]
+                with_gaufrette: [true]
                 max_deprecations: [0]
                 include:
                     - extra:
@@ -91,11 +96,19 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 0
                     - php: '8.4'
-                      symfony: '7.4.*@dev'
+                      symfony: '7.4.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
                       max_deprecations: 6
+                    - php: '8.5'
+                      symfony: '8.0.*'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      with_gaufrette: false
+                      max_deprecations: 6
+
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
@@ -110,10 +123,10 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mongodb-stable, pdo_sqlite
-            - run: composer require --no-update doctrine/annotations:^1.14
+            - run: composer require --no-update doctrine/annotations:"^1.14 || ^2.0"
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:^2.8
+                  composer global require --no-interaction --no-progress symfony/flex:"^2.10"
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
             - name: use possible dev deps
@@ -121,10 +134,12 @@ jobs:
               run: |
                   composer config minimum-stability dev
                   composer config prefer-stable true
-            - run: composer require --no-update liip/imagine-bundle:"^2.0"
+            - run: composer require --no-update --dev liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
-            - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
+            - run: composer require --no-update --dev oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
+            - run: composer remove --no-update --dev knplabs/knp-gaufrette-bundle
+              if: ${{ !matrix.with_gaufrette}}
             - name: Update project dependencies
               uses: ramsey/composer-install@v2
               with:
