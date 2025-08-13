@@ -19,9 +19,9 @@ interface DirectoryNamerInterface
      * @param object|array    $object  The object or array the upload is attached to
      * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
-     * @return string The directory name
-     *
      * @phpstan-param T $object
+     *
+     * @return string The directory name
      */
     public function directoryName(object|array $object, PropertyMapping $mapping): string;
 }
