@@ -19,9 +19,9 @@ interface NamerInterface
      * @param object|array    $object  The object or array the upload is attached to
      * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
-     * @return string The file name
-     *
      * @phpstan-param T $object
+     *
+     * @return string The file name
      */
     public function name(object $object, PropertyMapping $mapping): string;
 }
