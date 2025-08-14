@@ -41,8 +41,7 @@ vich_uploader:
 This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
-**Note:**
-
+> [!NOTE]
 > If the `upload_destination` parameter is missing, it this concatenated with
 > the `%kernel.project_dir%/public` prefix and the `uri_prefix`.
 
