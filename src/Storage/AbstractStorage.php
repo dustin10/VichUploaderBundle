@@ -117,11 +117,17 @@ abstract class AbstractStorage implements StorageInterface
     {
         $path = $this->resolvePath($obj, $fieldName, $className);
 
-        if (empty($path)) {
+        if (empty($path) || !\is_file($path)) {
             return null;
         }
 
-        return \fopen($path, 'rb');
+        $stream = \fopen($path, 'rb');
+
+        if (false === $stream) {
+            return null;
+        }
+
+        return $stream;
     }
 
     /**
