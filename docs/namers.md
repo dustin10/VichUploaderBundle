@@ -70,7 +70,6 @@ To use it, you just have to specify the service for the `namer` configuration op
 # config/services.yaml
 services:
     Vich\UploaderBundle\Naming\SlugNamer:
-        public: true
         arguments:
             $service: '@App\Repository\MyFileRepository'
             $method: findOneByPath
@@ -96,8 +95,7 @@ vich_uploader:
 Like file namers, directory namers allow you to customize the directory in which
 uploaded files will be stored.
 
-**Note**:
-
+> [!NOTE]
 > Directory namers are called when a file is uploaded but also later, when you
 > want to retrieve the path or URL of an already uploaded file. That's why
 > **directory namers MUST be stateless** and rely only on the data provided by

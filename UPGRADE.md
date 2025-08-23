@@ -1,4 +1,8 @@
-# Upgrading from v2.5 to v2.6
+# Upgrading from v2.7 to v2.8
+
+* Namers are not public anymore. If you uses a custom namer, you can now make it private.
+
+# Upgrading from v2.6 to v2.7
 
 * Now the original extension '.xlsb' is retained even if the mime type is guessed as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.
   

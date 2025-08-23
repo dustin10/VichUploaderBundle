@@ -40,7 +40,6 @@ services:
         resource: '../../../TestBundle/src/Controller'
     Vich\TestBundle\Naming\:
         resource: '../../../TestBundle/src/Naming'
-        public: true
 
 vich_uploader:
     db_driver: orm

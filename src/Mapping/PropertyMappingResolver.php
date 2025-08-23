@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace Vich\UploaderBundle\Mapping;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Naming\ConfigurableInterface;
+use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
+use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
- * PropertyMappingResolver.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *
  * @internal
  */
 final class PropertyMappingResolver implements PropertyMappingResolverInterface
 {
+    /**
+     * @param iterable<NamerInterface>          $namers
+     * @param iterable<DirectoryNamerInterface> $dirNamers
+     */
     public function __construct(
-        private readonly ContainerInterface $container,
+        private readonly iterable $namers,
+        private readonly iterable $dirNamers,
         private readonly array $mappings,
         private readonly ?string $defaultFilenameAttributeSuffix = '_name'
     ) {
@@ -42,7 +46,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
 
         if (!empty($config['namer']) && null !== $config['namer']['service']) {
             $namerConfig = $config['namer'];
-            $namer = $this->container->get($namerConfig['service']);
+            $namer = $this->getNamer($namerConfig['service']);
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
@@ -56,7 +60,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
 
         if (!empty($config['directory_namer']) && null !== $config['directory_namer']['service']) {
             $namerConfig = $config['directory_namer'];
-            $namer = $this->container->get($namerConfig['service']);
+            $namer = $this->getDirectoryNamer($namerConfig['service']);
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
@@ -69,5 +73,33 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
         }
 
         return $mapping;
+    }
+
+    private function getNamer(string $service): NamerInterface
+    {
+        if (\str_contains($service, '.')) {
+            $service = \substr($service, 0, \strrpos($service, '.'));
+        }
+        foreach ($this->namers as $namer) {
+            if ($namer::class === $service) {
+                return $namer;
+            }
+        }
+
+        throw new \UnexpectedValueException(\sprintf('Namer service "%s" not found.', $service));
+    }
+
+    private function getDirectoryNamer(string $service): DirectoryNamerInterface
+    {
+        if (\str_contains($service, '.')) {
+            $service = \substr($service, 0, \strrpos($service, '.'));
+        }
+        foreach ($this->dirNamers as $namer) {
+            if ($namer::class === $service) {
+                return $namer;
+            }
+        }
+
+        throw new \UnexpectedValueException(\sprintf('Directory namer service "%s" not found.', $service));
     }
 }

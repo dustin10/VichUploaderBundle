@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
+use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
+use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -30,6 +32,9 @@ final class VichUploaderExtension extends Extension
 
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $container->registerForAutoconfiguration(DirectoryNamerInterface::class)->addTag('vich_uploader.dir_namer');
+        $container->registerForAutoconfiguration(NamerInterface::class)->addTag('vich_uploader.namer');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
