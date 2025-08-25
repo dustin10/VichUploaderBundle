@@ -6,6 +6,7 @@ use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -15,11 +16,9 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * PropertyMappingFactoryTest.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class PropertyMappingFactoryTest extends TestCase
+final class PropertyMappingFactoryTest extends TestCase
 {
     protected ContainerInterface|MockObject $container;
 
@@ -27,7 +26,6 @@ class PropertyMappingFactoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->container = $this->getContainerMock();
         $this->metadata = $this->getMetadataReaderMock();
     }
 
@@ -37,14 +35,14 @@ class PropertyMappingFactoryTest extends TestCase
      */
     public function testFromObjectThrowsExceptionIfNotUploadable(): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\NotUploadableException::class);
+        $this->expectException(NotUploadableException::class);
 
         $this->metadata
             ->expects(self::once())
             ->method('isUploadable')
             ->willReturn(false);
 
-        $resolver = new PropertyMappingResolver($this->container, []);
+        $resolver = new PropertyMappingResolver([], [], []);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject(new DummyEntity());
     }
@@ -83,7 +81,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with($expectedClassName)
             ->willReturn($expectedFields);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([], [], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject($object, $givenClassName);
 
@@ -114,7 +112,7 @@ class PropertyMappingFactoryTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $resolver = new PropertyMappingResolver($this->container, []);
+        $resolver = new PropertyMappingResolver([], [], []);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject([]);
     }
@@ -150,7 +148,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([], [], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject($obj);
 
@@ -207,7 +205,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([], [], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject(new DummyEntity(), null, 'other_mapping');
 
@@ -247,7 +245,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([], [], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $factory->fromObject(new DummyEntity());
     }
@@ -281,7 +279,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with($expectedClassName, 'file')
             ->willReturn($expectedFields);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([], [], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField($object, 'file', $className);
 
@@ -319,7 +317,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(null);
 
-        $resolver = new PropertyMappingResolver($this->container, []);
+        $resolver = new PropertyMappingResolver([], [], []);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField(new DummyEntity(), 'oops');
 
@@ -347,7 +345,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(['mapping' => 'dummy_file', 'propertyName' => 'file']);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings, '_suffix');
+        $resolver = new PropertyMappingResolver([], [], $mappings, '_suffix');
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mapping = $factory->fromField(new DummyEntity(), 'file');
 
@@ -356,23 +354,16 @@ class PropertyMappingFactoryTest extends TestCase
 
     public function testConfiguredNamersAreRetrievedFromContainer(): void
     {
+        $namer = $this->createStub(NamerInterface::class);
+        $directoryNamer = $this->createStub(DirectoryNamerInterface::class);
+
         $mappings = [
             'dummy_file' => [
                 'upload_destination' => 'images',
-                'namer' => ['service' => 'my.custom.namer'],
-                'directory_namer' => ['service' => 'my.custom.directory_namer'],
+                'namer' => ['service' => $namer::class],
+                'directory_namer' => ['service' => $directoryNamer::class],
             ],
         ];
-
-        $namer = $this->createMock(NamerInterface::class);
-        $directoryNamer = $this->createMock(DirectoryNamerInterface::class);
-
-        $this->container
-            ->method('get')
-            ->willReturnMap([
-                ['my.custom.namer', /* invalid behavior */ 1, $namer],
-                ['my.custom.directory_namer', /* invalid behavior */ 1, $directoryNamer],
-            ]);
 
         $this->metadata
             ->expects(self::once())
@@ -386,7 +377,7 @@ class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(['file' => ['mapping' => 'dummy_file', 'propertyName' => 'file', 'fileNameProperty' => 'fileName']]);
 
-        $resolver = new PropertyMappingResolver($this->container, $mappings);
+        $resolver = new PropertyMappingResolver([$namer], [$directoryNamer], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject(new DummyEntity());
 
@@ -398,10 +389,5 @@ class PropertyMappingFactoryTest extends TestCase
         self::assertTrue($mapping->hasNamer());
         self::assertEquals($directoryNamer, $mapping->getDirectoryNamer());
         self::assertTrue($mapping->hasDirectoryNamer());
-    }
-
-    protected function getContainerMock(): ContainerInterface|MockObject
-    {
-        return $this->createMock(ContainerInterface::class);
     }
 }
