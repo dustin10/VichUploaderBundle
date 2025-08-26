@@ -42,7 +42,7 @@ This is the minimal amount of configuration needed in order to describe a
 working mapping.
 
 > [!NOTE]
-> If the `upload_destination` parameter is missing, it this set automatically
+> If the `upload_destination` parameter is missing, it is set automatically
 > with the `%kernel.project_dir%/public` and the `uri_prefix` value.
 
 ## Step 2: link the upload mapping to an entity
