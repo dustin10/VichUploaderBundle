@@ -203,7 +203,7 @@ final class VichUploaderExtension extends Extension
 
     protected function fixUploadDestinationConfig(ContainerBuilder $container, array $config): array
     {
-        // mapping with no declared upload_destination use the uri_prefix
+        // mapping with no declared upload_destination uses the uri_prefix
         $prefix = $container->getParameter('kernel.project_dir') ?? '';
         foreach ($config['mappings'] as &$mapping) {
             if (!\array_key_exists('upload_destination', $mapping)) {
