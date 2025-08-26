@@ -39,6 +39,7 @@ final class VichUploaderExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $config = $this->fixDbDriverConfig($config);
+        $config = $this->fixUploadDestinationConfig($container, $config);
         $config = $this->createNamerServices($container, $config);
 
         // define a few parameters
@@ -195,6 +196,19 @@ final class VichUploaderExtension extends Extension
         // mapping with no declared db_driver use the top-level one
         foreach ($config['mappings'] as &$mapping) {
             $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
+        }
+
+        return $config;
+    }
+
+    protected function fixUploadDestinationConfig(ContainerBuilder $container, array $config): array
+    {
+        // mapping with no declared upload_destination use the uri_prefix
+        $prefix = $container->getParameter('kernel.project_dir') ?? '';
+        foreach ($config['mappings'] as &$mapping) {
+            if (!\array_key_exists('upload_destination', $mapping)) {
+                $mapping['upload_destination'] = $prefix.'/public/'.$mapping['uri_prefix'];
+            }
         }
 
         return $config;

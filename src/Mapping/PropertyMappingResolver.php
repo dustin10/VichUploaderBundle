@@ -37,10 +37,6 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
         }
 
         $config = $this->mappings[$mappingData['mapping']];
-        if (!\array_key_exists('upload_destination', $config)) {
-            $prefix = $this->container->getParameter('kernel.project_dir') ?? '';
-            $config['upload_destination'] = $prefix.'/public/'.$config['uri_prefix'];
-        }
         $fileProperty = $mappingData['propertyName'] ?? $fieldName;
         $fileNameProperty = empty($mappingData['fileNameProperty']) ? $fileProperty.$this->defaultFilenameAttributeSuffix : $mappingData['fileNameProperty'];
 
