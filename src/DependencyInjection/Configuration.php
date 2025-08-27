@@ -103,7 +103,7 @@ final class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('uri_prefix')->defaultValue('/uploads')->end()
-                            ->scalarNode('upload_destination')->isRequired()->end()
+                            ->scalarNode('upload_destination')->defaultNull()->end()
                             ->arrayNode('namer')
                                 ->addDefaultsIfNotSet()
                                 ->beforeNormalization()
