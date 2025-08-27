@@ -206,7 +206,7 @@ final class VichUploaderExtension extends Extension
         // mapping with no declared upload_destination uses the uri_prefix
         $prefix = $container->getParameter('kernel.project_dir') ?? '';
         foreach ($config['mappings'] as &$mapping) {
-            if (!\isset($mapping['upload_destination'])) {
+            if (!isset($mapping['upload_destination'])) {
                 $mapping['upload_destination'] = $prefix.'/public/'.$mapping['uri_prefix'];
             }
         }
