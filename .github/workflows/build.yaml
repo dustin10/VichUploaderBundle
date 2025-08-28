@@ -85,13 +85,13 @@ jobs:
                       with_oneupbundle: false
                       max_deprecations: 0
                     - php: '8.3'
-                      symfony: '7.2.*'
+                      symfony: '7.3.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
                       max_deprecations: 0
                     - php: '8.4'
-                      symfony: '7.3.*@dev'
+                      symfony: '7.4.*@dev'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
@@ -112,10 +112,8 @@ jobs:
                   extensions: mongodb-stable, pdo_sqlite
             - run: composer require --no-update doctrine/annotations:^1.14
             - run: |
-                  sed -i 's/"league\/flysystem": "<2.0"/"league\/flysystem": "<2.0",\n"symfony\/http-kernel": "6.4.*,>6.4.8 || 7.1.*,>7.1.1"/' composer.json
-            - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:^2.2
+                  composer global require --no-interaction --no-progress symfony/flex:^2.8
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
             - name: use possible dev deps
