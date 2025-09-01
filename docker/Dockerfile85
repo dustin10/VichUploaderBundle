@@ -1,6 +1,7 @@
-FROM php:8.4-alpine
+FROM php:8.5.0beta1-alpine
 
-ARG MONGODB_VERSION=1.20.0
+# TODO this doesn't work for now. It looks like there's no Mongo available for PHP 8.5 yet
+ARG MONGODB_VERSION=2.1.1
 
 # Install mongo
 RUN set -eux; \
