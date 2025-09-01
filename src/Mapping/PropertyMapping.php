@@ -117,6 +117,10 @@ final class PropertyMapping
      */
     public function erase(object $obj): void
     {
+        if (false === $this->mapping['erase_fields']) {
+            return;
+        }
+
         foreach (['name', 'size', 'mimeType', 'originalName', 'dimensions'] as $property) {
             $this->writeProperty($obj, $property, null);
         }

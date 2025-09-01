@@ -10,8 +10,7 @@ Here is a summary of what you will have to do:
 * [link the upload mapping to an entity](#step-2-link-the-upload-mapping-to-an-entity) ;
 * [configure the lifecycle events](#step-3-configure-the-lifecycle-events-optional-step) (optional step).
 
-**Note:**
-
+> [!NOTE]
 > Throughout the guide we will use Doctrine ORM as the persistence engine on
 > the examples. Though mostly, there won't be much difference if you use a
 > different engine.
@@ -101,6 +100,8 @@ class Product
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
+    // NOTE: This field and the next one need to be nullable, otherwise the deletion won't work
+    //       if you want non-nullable fields, set the "erase_fields" option to false in the mapping config
     #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
 
@@ -157,8 +158,7 @@ class Product
 }
 ```
 
-**Note:**
-
+> [!NOTE]
 > This bundle also supports annotations, but the attribute syntax is recommended.
 > If you look for examples about annotations mapping, please refer to an older
 > version of the documentation.
@@ -233,13 +233,9 @@ class Product
 }
 ```
 
-**Important:**
+> [!IMPORTANT]
 > If you use Doctrine, you need to pay attention to the comment on `setImageFile` method in the above example.
 > If you miss that, you won't be able to update your file.
-
-**Note:**
-
-> Don't forget to clear the cache once your entity is configured: `php bin/console cache:clear`
 
 ## Step 3: configure the lifecycle events (optional step)
 
@@ -272,8 +268,7 @@ All options are listed below:
     when it is loaded from the data store. The object will be an instance of
     `Symfony\Component\HttpFoundation\File\File`.
 
-**Note:**
-
+> [!NOTE]
 > The values used for the last three configuration options are the default ones.
 
 ## That was it!

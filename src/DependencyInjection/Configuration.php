@@ -127,6 +127,7 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode('delete_on_remove')->defaultTrue()->end()
+                            ->scalarNode('erase_fields')->defaultTrue()->end()
                             ->scalarNode('delete_on_update')->defaultTrue()->end()
                             ->scalarNode('inject_on_load')->defaultFalse()->end()
                             ->scalarNode('db_driver')
