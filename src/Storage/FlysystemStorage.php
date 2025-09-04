@@ -46,7 +46,7 @@ final class FlysystemStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
     {
         $fs = $this->getFilesystem($mapping);
-        $path = (is_string($dir) && $dir !== '') ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         $stream = \fopen($file->getRealPath(), 'rb');
         try {
@@ -61,7 +61,7 @@ final class FlysystemStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $fs = $this->getFilesystem($mapping);
-        $path = (is_string($dir) && $dir !== '') ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         $fs->delete($path);
 
@@ -70,7 +70,7 @@ final class FlysystemStorage extends AbstractStorage
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
-        $path = (is_string($dir) && $dir !== '') ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         if ($relative) {
             return $path;
