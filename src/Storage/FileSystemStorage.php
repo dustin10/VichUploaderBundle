@@ -54,7 +54,7 @@ final class FileSystemStorage extends AbstractStorage
         string $name,
         ?bool $relative = false
     ): string {
-        $path = !empty($dir) ? $dir.\DIRECTORY_SEPARATOR.$name : $name;
+        $path = (is_string($dir) && $dir !== '') ? $dir.\DIRECTORY_SEPARATOR.$name : $name;
 
         if ($relative) {
             return $path;
@@ -72,7 +72,7 @@ final class FileSystemStorage extends AbstractStorage
         }
 
         $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
-        $uploadDir = empty($uploadDir) ? '' : $uploadDir.'/';
+        $uploadDir = (is_string($uploadDir) && $uploadDir !== '') ? $uploadDir.'/' : '';
 
         return \sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
     }
