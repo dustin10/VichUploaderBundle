@@ -121,6 +121,35 @@ class GaufretteStorageTest extends StorageTestCase
         self::assertNull($path);
     }
 
+    public function testResolveUriWithZeroDirectory(): void
+    {
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUriPrefix')
+            ->willReturn('/uploads');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->willReturn('0');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects(self::once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $this->storage = new GaufretteStorage($this->factory, $this->filesystemMap, 'gaufrette');
+        $path = $this->storage->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('/uploads/0/file.txt', $path);
+    }
+
     public static function pathProvider(): array
     {
         return [
@@ -128,8 +157,10 @@ class GaufretteStorageTest extends StorageTestCase
             ['gaufrette', 'filesystemKey', null,   'gaufrette://filesystemKey/file.txt', false],
             ['data',      'filesystemKey', null,   'data://filesystemKey/file.txt', false],
             ['gaufrette', 'filesystemKey', 'foo',  'gaufrette://filesystemKey/foo/file.txt', false],
+            ['gaufrette', 'filesystemKey', '0',    'gaufrette://filesystemKey/0/file.txt', false],
             ['gaufrette', 'filesystemKey', null,   'file.txt', true],
             ['gaufrette', 'filesystemKey', 'foo',  'foo/file.txt', true],
+            ['gaufrette', 'filesystemKey', '0',    '0/file.txt', true],
         ];
     }
 

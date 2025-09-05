@@ -108,7 +108,7 @@ abstract class AbstractStorage implements StorageInterface
         }
 
         $dir = $mapping->getUploadDir($obj);
-        $path = !empty($dir) ? $dir.'/'.$filename : $filename;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$filename : $filename;
 
         return $mapping->getUriPrefix().'/'.$path;
     }

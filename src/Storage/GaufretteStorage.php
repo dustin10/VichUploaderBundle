@@ -31,7 +31,7 @@ final class GaufretteStorage extends AbstractStorage
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         $filesystem->write($path, \file_get_contents($file->getPathname()), true);
 
@@ -43,14 +43,14 @@ final class GaufretteStorage extends AbstractStorage
     protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $filesystem = $this->getFilesystem($mapping);
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         return $filesystem->delete($path);
     }
 
     protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
-        $path = !empty($dir) ? $dir.'/'.$name : $name;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
         if ($relative) {
             return $path;
