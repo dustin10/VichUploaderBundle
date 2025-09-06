@@ -154,6 +154,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             [null,  'file.txt',               false],
             ['foo', 'foo/file.txt',           true],
             ['foo', 'foo/file.txt',           false],
+            ['0',   '0/file.txt',             true],
+            ['0',   '0/file.txt',             false],
         ];
     }
 
@@ -178,6 +180,34 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('/uploads/file.txt', $path);
+    }
+
+    public function testResolveUriWithZeroDirectory(): void
+    {
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUriPrefix')
+            ->willReturn('/uploads');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->willReturn('0');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects(self::once())
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('/uploads/0/file.txt', $path);
     }
 
     #[RequiresMethod(Filesystem::class, 'publicUrl')]
@@ -210,6 +240,43 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('example.com/file.txt', $path);
+    }
+
+    #[RequiresMethod(Filesystem::class, 'publicUrl')]
+    public function testResolveUriThroughFlysystemWithZeroDirectory(): void
+    {
+        $this->useFlysystemToResolveUri = true;
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('publicUrl')
+            ->with('0/file.txt', [
+                'object' => $this->object,
+                'fieldName' => 'file_field',
+                'className' => null,
+                'mapping' => $this->mapping,
+            ])
+            ->willReturn('example.com/0/file.txt');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->willReturn('0');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('file.txt');
+
+        $this->factory
+            ->expects(self::exactly(2))
+            ->method('fromField')
+            ->with($this->object, 'file_field')
+            ->willReturn($this->mapping);
+
+        $path = $this->getStorage()->resolveUri($this->object, 'file_field');
+
+        self::assertEquals('example.com/0/file.txt', $path);
     }
 
     #[RequiresMethod(Filesystem::class, 'publicUrl')]

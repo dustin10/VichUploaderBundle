@@ -252,6 +252,10 @@ final class FileSystemStorageTest extends StorageTestCase
                 'dir\\sub-dir',
                 '/uploads/dir/sub-dir/file.txt',
             ],
+            [
+                '0',
+                '/uploads/0/file.txt',
+            ],
         ];
     }
 
