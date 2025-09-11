@@ -18,8 +18,8 @@ use Vich\UploaderBundle\Util\ClassUtils;
 final class PropertyMappingResolver implements PropertyMappingResolverInterface
 {
     /**
-     * @param iterable<NamerInterface>          $namers
-     * @param iterable<DirectoryNamerInterface> $dirNamers
+     * @param iterable<string, NamerInterface>          $namers
+     * @param iterable<string, DirectoryNamerInterface> $dirNamers
      */
     public function __construct(
         private readonly iterable $namers,
@@ -46,7 +46,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
 
         if (!empty($config['namer']) && null !== $config['namer']['service']) {
             $namerConfig = $config['namer'];
-            $namer = $this->getNamer($namerConfig['service']);
+            $namer = $this->getNamer($mappingData['mapping'], $namerConfig['service']);
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
@@ -60,7 +60,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
 
         if (!empty($config['directory_namer']) && null !== $config['directory_namer']['service']) {
             $namerConfig = $config['directory_namer'];
-            $namer = $this->getDirectoryNamer($namerConfig['service']);
+            $namer = $this->getDirectoryNamer($mappingData['mapping'], $namerConfig['service']);
 
             if (!empty($namerConfig['options'])) {
                 if (!$namer instanceof ConfigurableInterface) {
@@ -75,13 +75,11 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
         return $mapping;
     }
 
-    private function getNamer(string $service): NamerInterface
+    private function getNamer(string $name, string $service): NamerInterface
     {
-        if (\str_contains($service, '.')) {
-            $service = \substr($service, 0, \strrpos($service, '.'));
-        }
-        foreach ($this->namers as $namer) {
-            if ($namer::class === $service) {
+        $altService = \substr($service, 0, -\strlen($name) - 1);
+        foreach ($this->namers as $id => $namer) {
+            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id) {
                 return $namer;
             }
         }
@@ -89,13 +87,11 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
         throw new \UnexpectedValueException(\sprintf('Namer service "%s" not found.', $service));
     }
 
-    private function getDirectoryNamer(string $service): DirectoryNamerInterface
+    private function getDirectoryNamer(string $name, string $service): DirectoryNamerInterface
     {
-        if (\str_contains($service, '.')) {
-            $service = \substr($service, 0, \strrpos($service, '.'));
-        }
-        foreach ($this->dirNamers as $namer) {
-            if ($namer::class === $service) {
+        $altService = \substr($service, 0, -\strlen($name) - 1);
+        foreach ($this->dirNamers as $id => $namer) {
+            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id) {
                 return $namer;
             }
         }
