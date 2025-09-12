@@ -40,12 +40,8 @@ Using `Vich\UploaderBundle\Storage\GaufretteStorage` as the storage service,
 you can still use the same mappings options that you would
 use with default storage.
 
-**Note:**
-
+> [!NOTE]
 > Make sure that Gaufrette stream wrapper overloading is enabled.
-
-**Note:**
-
 > In this case `upload_destination` refers to a gaufrette filesystem.
 
 ## That was it!

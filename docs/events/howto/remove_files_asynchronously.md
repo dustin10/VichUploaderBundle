@@ -4,17 +4,15 @@ To remove files asynchronously, ensure you have the [Messenger](https://symfony.
 installed.
 The messenger allows you to run tasks asynchronously, in our example the file removal.
 
-**Note**:
-
+> [!NOTE]
 > We recommend you to create a message and message handler for each mapping.
 > Use `getMappingName` to send the right message in the event subscriber.
 
-**Important**:
+Create a message containing the filename of the file to be deleted.
 
+> [!IMPORTANT]
 > Do not transfer the whole object and mapping or the whole event in the message.
 > The `UploadedFile` which will be stored in the object while uploading is not serializable.
-
-Create a message containing the filename of the file to be deleted.
 
 ```php
 <?php

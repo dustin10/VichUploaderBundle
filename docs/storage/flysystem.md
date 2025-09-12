@@ -12,8 +12,7 @@ VichUploaderBundle can use Flysystem as a storage engine by relying on one of tw
 or
 [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle).
 
-**Note:**
-
+> [!NOTE]
 > When using `flysystem` as the storage engine, you can still use
 > the same mappings options that you would use with default storage.
 
@@ -62,8 +61,7 @@ To resolve this, you can enable `use_flysystem_to_resolve_uri` in the configurat
 This setting makes VichUploaderBundle retrieve the public URL from the configured Flysystem storage.
 If Flysystem cannot generate a public URL, the bundle will fall back to default behaviour.
 
-**Note:**:
-
+> [!NOTE]
 > Retrieving the public URL is only available when using flysystem version 3.6.0 and up.
 
 ## Integrating with [oneup/flysystem-bundle](https://github.com/1up-lab/OneupFlysystemBundle)
