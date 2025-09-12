@@ -377,7 +377,7 @@ final class PropertyMappingFactoryTest extends TestCase
             ->with(DummyEntity::class)
             ->willReturn(['file' => ['mapping' => 'dummy_file', 'propertyName' => 'file', 'fileNameProperty' => 'fileName']]);
 
-        $resolver = new PropertyMappingResolver([$namer], [$directoryNamer], $mappings);
+        $resolver = new PropertyMappingResolver(['id' => $namer], ['id' => $directoryNamer], $mappings);
         $factory = new PropertyMappingFactory($this->metadata, $resolver);
         $mappings = $factory->fromObject(new DummyEntity());
 
