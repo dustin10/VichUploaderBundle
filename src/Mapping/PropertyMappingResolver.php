@@ -48,11 +48,21 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
             $namerConfig = $config['namer'];
             $namer = $this->getNamer($mappingData['mapping'], $namerConfig['service']);
 
-            if (!empty($namerConfig['options'])) {
+            $options = $namerConfig['options'] ?? [];
+
+            // Handle namer_keep_extension option
+            if (isset($config['namer_keep_extension']) && $config['namer_keep_extension']) {
+                if (!$namer instanceof ConfigurableInterface) {
+                    throw new \LogicException(\sprintf('Namer %s does not implement ConfigurableInterface but namer_keep_extension option is set to true in mapping "%s". Either make the namer implement ConfigurableInterface or remove the namer_keep_extension option.', $namerConfig['service'], $mappingData['mapping']));
+                }
+                $options['keep_extension'] = $config['namer_keep_extension'];
+            }
+
+            if (!empty($options)) {
                 if (!$namer instanceof ConfigurableInterface) {
                     throw new \LogicException(\sprintf('Namer %s can not receive options as it does not implement ConfigurableInterface.', $namerConfig['service']));
                 }
-                $namer->configure($namerConfig['options']);
+                $namer->configure($options);
             }
 
             $mapping->setNamer($namer);

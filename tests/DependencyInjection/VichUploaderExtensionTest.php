@@ -88,6 +88,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         // the default db_driver is copied into the mapping
         $mappings['foo']['db_driver'] = 'orm';
+        $mappings['foo']['namer_keep_extension'] = false;
 
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
@@ -106,6 +107,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
                     'erase_fields' => true,
                     'delete_on_update' => true,
                     'inject_on_load' => true,
+                    'namer_keep_extension' => false,
                     'db_driver' => 'orm',
                 ],
             ],
@@ -147,7 +149,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         $twigExtension->load([[
             'strict_variables' => true,
-            'exception_controller' => null, // TODO remove after bumping symfony/twig-bundle to ^5.0
+            // 'exception_controller' => null, // TODO remove after bumping symfony/twig-bundle to ^5.0
             'form_themes' => ['@Ololo/trololo.html.twig'],
         ]], $this->container);
         $vichUploaderExtension->load([$this->getMinimalConfiguration()], $this->container);

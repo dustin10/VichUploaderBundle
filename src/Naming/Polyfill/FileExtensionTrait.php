@@ -20,8 +20,34 @@ trait FileExtensionTrait
      */
     private function getExtension(File $file): ?string
     {
+        return $this->getExtensionWithOption($file, false);
+    }
+
+    /**
+     * Gets the original extension from the file name without any guessing.
+     */
+    private function getOriginalExtension(File $file): ?string
+    {
         if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
             throw new \InvalidArgumentException('Unexpected type for $file: '.$file::class);
+        }
+
+        $originalExtension = \pathinfo($file->getClientOriginalName(), \PATHINFO_EXTENSION);
+
+        return '' !== $originalExtension ? $originalExtension : null;
+    }
+
+    /**
+     * Gets the extension with option to keep original or use smart logic.
+     */
+    private function getExtensionWithOption(File $file, bool $keepOriginal): ?string
+    {
+        if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
+            throw new \InvalidArgumentException('Unexpected type for $file: '.$file::class);
+        }
+
+        if ($keepOriginal) {
+            return $this->getOriginalExtension($file);
         }
 
         if ('' !== ($extension = $file->guessExtension())) {

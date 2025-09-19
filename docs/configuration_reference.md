@@ -15,15 +15,17 @@ vich_uploader:
         type: attribute
     mappings:
         products:
-            uri_prefix: /uploads    # uri prefix to resource
-            upload_destination: ~   # gaufrette storage fs id, required
-            namer: ~                # specify a file namer service for this entity, null default
-            directory_namer: ~      # specify a directory namer service for this entity, null default
-            delete_on_remove: true  # determine whether to delete file upon removal of entity
-            erase_fields: true      # set to false if you have non-nullable fields for mapping
-            delete_on_update: true  # determine wheter to delete the file upon update of entity
-            inject_on_load: false   # determine whether to inject a File instance upon load
-            db_driver: phpcr        # override the default db driver set above. Allow separate driver per mapping
+            uri_prefix: /uploads         # uri prefix to resource
+            upload_destination: ~        # gaufrette storage fs id, required
+            namer: ~                     # specify a file namer service for this entity, null default
+            directory_namer: ~           # specify a directory namer service for this entity, null default
+            delete_on_remove: true       # determine whether to delete file upon removal of entity
+            erase_fields: true           # set to false if you have non-nullable fields for mapping
+            delete_on_update: true       # determine wheter to delete the file upon update of entity
+            inject_on_load: false        # determine whether to inject a File instance upon load
+            namer_keep_extension: false  # force namers to keep original file extension
+                                         # WARNING: Always validate file extensions when set to true to prevent security risks!
+            db_driver: phpcr             # override the default db driver set above. Allow separate driver per mapping
         # ... more mappings
 ```
 
