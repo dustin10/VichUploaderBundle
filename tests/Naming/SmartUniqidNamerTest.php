@@ -26,7 +26,10 @@ final class SmartUniqidNamerTest extends TestCase
             'dot in filename' => ['filename has . spaces (2).jpg', 'jpg', '/filename-has-spaces-2-[[:xdigit:]]{22}\.jpg/'],
             'file with no extension with null mimetype' => ['lala', null, '/lala-[[:xdigit:]]{22}$/'],
             'csv retains extension even if guessed as txt' => ['lala.csv', 'txt', '/lala-[[:xdigit:]]{22}\.csv/'],
+            'srt retains extension even if guessed as txt' => ['lala.srt', 'txt', '/lala-[[:xdigit:]]{22}\.srt/'],
+            'vtt retains extension even if guessed as txt' => ['lala.vtt', 'txt', '/lala-[[:xdigit:]]{22}\.vtt/'],
             'gpx retains extension even if guessed as xml' => ['baz.gpx', 'xml', '/^baz-[[:xdigit:]]{22}\.gpx$/'],
+            'kml retains extension even if guessed as xml' => ['baz.kml', 'xml', '/^baz-[[:xdigit:]]{22}\.kml$/'],
             'xlsb retains extension even if guessed as xlsx' => ['lala.xlsb', 'xlsx', '/lala-[[:xdigit:]]{22}\.xlsb/'],
         ];
     }
