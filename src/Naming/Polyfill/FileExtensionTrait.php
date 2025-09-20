@@ -10,9 +10,9 @@ trait FileExtensionTrait
 {
     // extensions safe to keep
     private static array $keep = [
-        'txt' => 'csv',
-        'xml' => 'gpx',
-        'xlsx' => 'xlsb',
+        'txt' => ['csv', 'srt', 'vtt'],
+        'xml' => ['gpx', 'kml'],
+        'xlsx' => ['xlsb'],
     ];
 
     /**
@@ -27,7 +27,7 @@ trait FileExtensionTrait
         if ('' !== ($extension = $file->guessExtension())) {
             if (isset(self::$keep[$extension])) {
                 $originalExtension = \pathinfo($file->getClientOriginalName(), \PATHINFO_EXTENSION);
-                if (self::$keep[$extension] === $originalExtension) {
+                if (\in_array($originalExtension, self::$keep[$extension], true)) {
                     return $originalExtension;
                 }
             }
