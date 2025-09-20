@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Handler;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 abstract class AbstractHandler
 {
     public function __construct(
-        protected readonly PropertyMappingFactory $factory,
+        protected readonly PropertyMappingFactoryInterface $factory,
         protected readonly StorageInterface $storage,
     ) {
     }

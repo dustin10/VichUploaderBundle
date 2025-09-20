@@ -19,5 +19,6 @@
         </service>
 
         <service id="Vich\UploaderBundle\Mapping\PropertyMappingFactory" alias="vich_uploader.property_mapping_factory" public="false"/>
+        <service id="Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface" alias="vich_uploader.property_mapping_factory" public="false"/>
     </services>
 </container>

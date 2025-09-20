@@ -10,7 +10,7 @@ use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -31,7 +31,7 @@ final class FlysystemStorage extends AbstractStorage
     /**
      * @param MountManager|ContainerInterface|mixed $registry
      */
-    public function __construct(PropertyMappingFactory $factory, mixed $registry, bool $useFlysystemToResolveUri = false)
+    public function __construct(PropertyMappingFactoryInterface $factory, mixed $registry, bool $useFlysystemToResolveUri = false)
     {
         parent::__construct($factory);
 
