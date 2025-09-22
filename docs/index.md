@@ -49,6 +49,18 @@ composer require symfony/form
 * [Using the bundled file form type](form/vich_file_type.md)
 * [Using the bundled image form type](form/vich_image_type.md)
 
+### Validation-related
+
+> The Symfony Validator component provides tools to validate your data.
+
+To install the package, run the following command:
+
+```bash
+composer require symfony/validator
+```
+
+* [FileRequired constraint](validators/file_required.md)
+
 ### Other usages
 
 * [Inject files from other sources](other_usages/replacing_file.md)

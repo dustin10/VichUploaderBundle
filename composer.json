@@ -54,7 +54,7 @@
         "symfony/translation": "^5.4 || ^6.0 || ^7.0",
         "symfony/twig-bridge": "^5.4 || ^6.0 || ^7.0",
         "symfony/twig-bundle": "^5.4 || ^6.0 || ^7.0",
-        "symfony/validator": "^5.4 || ^6.0 || ^7.0",
+        "symfony/validator": "^5.4.22 || ^6.0 || ^7.0",
         "symfony/var-dumper": "^5.4 || ^6.0 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
     },
