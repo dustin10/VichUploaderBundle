@@ -19,16 +19,22 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
     /** @var int Length of the resulting name. 10 can be decoded to a 64-bit integer. */
     protected $length = 10;
 
+    protected bool $keepExtension = false;
+
     /**
      * Injects configuration options.
      *
      * @param array $options Options for this namer. The following options are accepted:
      *                       - length: the length of the resulting name.
+     *                       - keep_extension: whether to keep the original extension or use smart logic
      */
     public function configure(array $options): void
     {
         if (isset($options['length'])) {
             $this->length = $options['length'];
+        }
+        if (isset($options['keep_extension'])) {
+            $this->keepExtension = $options['keep_extension'];
         }
     }
 
@@ -41,7 +47,7 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
             $name .= $this->getRandomChar();
         }
 
-        if ($extension = $this->getExtension($file)) {
+        if ($extension = $this->getExtensionWithOption($file, $this->keepExtension)) {
             $name = "$name.$extension";
         }
 

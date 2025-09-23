@@ -16,6 +16,7 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => ['include' => ['@all']],
         'fopen_flags' => ['b_mode' => true],
         'php_unit_mock_short_will_return' => true,
+        'new_with_parentheses' => true,
     ])
     ->setFinder($finder)
 ;

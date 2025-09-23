@@ -10,19 +10,26 @@ use Vich\UploaderBundle\Util\Transliterator;
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
-final class SlugNamer implements NamerInterface
+final class SlugNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
+    private bool $keepExtension = false;
+
     public function __construct(private readonly Transliterator $transliterator, private readonly object $service, private readonly string $method)
     {
+    }
+
+    public function configure(array $options): void
+    {
+        $this->keepExtension = isset($options['keep_extension']) ? (bool) $options['keep_extension'] : $this->keepExtension;
     }
 
     public function name(object|array $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
-        $extension = $this->getExtension($file);
+        $extension = $this->getExtensionWithOption($file, $this->keepExtension);
         $basename = \substr(\pathinfo($originalName, \PATHINFO_FILENAME), 0, 240);
         $basename = \strtolower($this->transliterator->transliterate($basename));
         $slug = \is_string($extension) && '' !== $extension

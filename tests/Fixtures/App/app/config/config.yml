@@ -20,7 +20,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    exception_controller: null
+#    exception_controller: null
 
 # Doctrine Configuration
 doctrine:

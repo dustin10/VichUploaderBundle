@@ -1,3 +1,8 @@
+# Upgrading from v2.8 to v2.9
+
+* New `namer_keep_extension` configuration option to force namers to preserve original file extension.
+* Custom namers using `namer_keep_extension: true` must implement `ConfigurableInterface`.
+
 # Upgrading from v2.7 to v2.8
 
 * Namers are not public anymore. If you uses a custom namer, you can now make it private.

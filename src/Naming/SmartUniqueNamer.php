@@ -11,12 +11,19 @@ use Vich\UploaderBundle\Util\Transliterator;
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
-final class SmartUniqueNamer implements NamerInterface
+final class SmartUniqueNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
+    private bool $keepExtension = false;
+
     public function __construct(private readonly Transliterator $transliterator)
     {
+    }
+
+    public function configure(array $options): void
+    {
+        $this->keepExtension = isset($options['keep_extension']) ? (bool) $options['keep_extension'] : $this->keepExtension;
     }
 
     public function name(object|array $object, PropertyMapping $mapping): string
@@ -24,7 +31,7 @@ final class SmartUniqueNamer implements NamerInterface
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();
         $originalName = $this->transliterator->transliterate($originalName);
-        $originalExtension = $this->getExtension($file);
+        $originalExtension = $this->getExtensionWithOption($file, $this->keepExtension);
         $originalBasename = \pathinfo($originalName, \PATHINFO_FILENAME);
         $uniqId = \str_replace('.', '', \uniqid('-', true));
         $uniqExtension = \is_string($originalExtension) && '' !== $originalExtension

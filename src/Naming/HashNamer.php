@@ -17,17 +17,21 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 
     private ?int $length = null;
 
+    private bool $keepExtension = false;
+
     /**
      * @param array $options Options for this namer. The following options are accepted:
      *                       - algorithm: which hash algorithm to use.
      *                       - length: limit file name length
+     *                       - keep_extension: whether to keep the original extension or use smart logic
      */
     public function configure(array $options): void
     {
-        $options = \array_merge(['algorithm' => $this->algorithm, 'length' => $this->length], $options);
+        $options = \array_merge(['algorithm' => $this->algorithm, 'length' => $this->length, 'keep_extension' => $this->keepExtension], $options);
 
         $this->algorithm = $options['algorithm'];
         $this->length = $options['length'];
+        $this->keepExtension = $options['keep_extension'];
     }
 
     public function name(object|array $object, PropertyMapping $mapping): string
@@ -39,7 +43,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
             $name = \substr($name, 0, $this->length);
         }
 
-        if ($extension = $this->getExtension($file)) {
+        if ($extension = $this->getExtensionWithOption($file, $this->keepExtension)) {
             $name = \sprintf('%s.%s', $name, $extension);
         }
 
