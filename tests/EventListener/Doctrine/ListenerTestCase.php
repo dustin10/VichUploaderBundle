@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
- * @template-covariant T of BaseListener
+ * @template T of BaseListener
  */
 abstract class ListenerTestCase extends TestCase
 {

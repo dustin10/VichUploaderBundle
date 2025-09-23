@@ -17,7 +17,7 @@ jobs:
               with:
                   php-version: 8.3
             - run: |
-                  composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.13" phpstan/phpstan:"^1.12" 
+                  composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.13" phpstan/phpstan:"^2" 
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:

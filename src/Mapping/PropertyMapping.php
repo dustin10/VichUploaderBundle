@@ -298,7 +298,7 @@ final class PropertyMapping
             return '';
         }
 
-        $dir = $this->getDirectoryNamer()->directoryName($obj, $this);
+        $dir = $this->getDirectoryNamer()?->directoryName($obj, $this);
 
         // strip the trailing directory separator if needed
         return $dir ? \rtrim($dir, '/\\') : $dir;

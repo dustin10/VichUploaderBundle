@@ -57,11 +57,11 @@ final class MetadataReader
     /**
      * Search for all uploadable classes.
      *
-     * @return array|null A list of uploadable class names
+     * @return array A list of uploadable class names
      *
      * @throws \RuntimeException
      */
-    public function getUploadableClasses(): ?array
+    public function getUploadableClasses(): array
     {
         return $this->reader->getAllClassNames();
     }

@@ -1,72 +1,98 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getUnitOfWork\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectManager\:\:getUnitOfWork\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Adapter/PHPCR/PHPCRAdapter.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:scalarNode\\(\\)\\.$#"
+			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\:\:scalarNode\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addGeneralSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addGeneralSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMappingsSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addMappingsSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Parameter \\#1 \\$node of method Vich\\\\UploaderBundle\\\\DependencyInjection\\\\Configuration\\:\\:addMetadataSection\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition given\\.$#"
+			message: '#^Parameter \#1 \$node of method Vich\\UploaderBundle\\DependencyInjection\\Configuration\:\:addMetadataSection\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Call to an undefined method Gaufrette\\\\FilesystemInterface\\:\\:getAdapter\\(\\)\\.$#"
+			message: '#^Method Vich\\UploaderBundle\\Storage\\FileSystemStorage\:\:doUpload\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Storage/FileSystemStorage.php
+
+		-
+			message: '#^Call to an undefined method Gaufrette\\FilesystemInterface\:\:getAdapter\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/Storage/GaufretteStorage.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Method Vich\\UploaderBundle\\Storage\\GaufretteStorage\:\:doRemove\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Storage/GaufretteStorage.php
+
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/Adapter/ODM/MongoDB/MongoDBAdapterTest.php
 
 		-
-			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
 			count: 2
 			path: tests/EventListener/Doctrine/ListenerTestCase.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Vich\\\\UploaderBundle\\\\Handler\\\\UploadHandler\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Return type of call to method PHPUnit\\Framework\\MockObject\\MockBuilder\<Vich\\UploaderBundle\\Handler\\UploadHandler\>\:\:getMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/EventListener/Doctrine/ListenerTestCase.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Vich\\\\UploaderBundle\\\\Metadata\\\\MetadataReader\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Return type of call to method PHPUnit\\Framework\\MockObject\\MockBuilder\<Vich\\UploaderBundle\\Metadata\\MetadataReader\>\:\:getMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/EventListener/Doctrine/ListenerTestCase.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/Functional/WebTestCase.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/Injector/FileInjectorTest.php
 
 		-
-			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\TestCase\\:\\:createMock\\(\\) contains unresolvable type\\.$#"
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
 			count: 4
 			path: tests/TestCase.php
 

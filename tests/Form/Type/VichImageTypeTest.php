@@ -161,7 +161,7 @@ final class VichImageTypeTest extends TestCase
         $storage
             ->expects($this->atLeastOnce())
             ->method($storageResolveMethodName)
-            ->with(...$storageResolveArguments)
+            ->with(...\array_values($storageResolveArguments))
             ->willReturn($storageResolvedPath);
 
         $parentForm = $this->createMock(FormInterface::class);
