@@ -181,7 +181,8 @@ class GaufretteStorageTest extends StorageTestCase
         $filesystem
             ->expects(self::once())
             ->method('delete')
-            ->with('file.txt');
+            ->with('file.txt')
+            ->willReturn(true);
 
         $this
             ->filesystemMap

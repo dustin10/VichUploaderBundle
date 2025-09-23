@@ -20,7 +20,7 @@ final class FileTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param array<string, UploadedFile> $value
+     * @param array<string, ?UploadedFile> $value
      */
     public function reverseTransform($value): ?UploadedFile
     {

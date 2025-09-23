@@ -72,7 +72,7 @@ final class FileSystemStorage extends AbstractStorage
         }
 
         $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
-        $uploadDir = (\is_string($uploadDir) && '' !== $uploadDir) ? $uploadDir.'/' : '';
+        $uploadDir = ('' !== $uploadDir) ? $uploadDir.'/' : '';
 
         return \sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
     }

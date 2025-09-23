@@ -1,9 +1,0 @@
-parameters:
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
-    level: 6
-    paths:
-        - src
-        - tests
-includes:
-    - phpstan-baseline.neon

@@ -1,0 +1,12 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
+
+includes:
+    - phpstan-baseline.neon
