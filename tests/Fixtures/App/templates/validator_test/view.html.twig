@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>View Validated Image</h1>
+<h2>{{ validatedImage.title ?: 'No title' }}</h2>
+
+{% if validatedImage.imageEntity and validatedImage.imageEntity.name %}
+    <p>File: {{ vich_uploader_asset(validatedImage, 'imageFile') }}</p>
+    <p>Original name: {{ validatedImage.imageEntity.originalName }}</p>
+    <p>Size: {{ validatedImage.imageEntity.size }} bytes</p>
+    <p>MIME type: {{ validatedImage.imageEntity.mimeType }}</p>
+{% else %}
+    <p>No file uploaded</p>
+{% endif %}
+
+<p><a href="{{ path('validator_test_edit', {id: validatedImage.id}) }}">Edit</a></p>
+{% endblock %}

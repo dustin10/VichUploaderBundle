@@ -117,7 +117,7 @@ final class PropertyMapping
      */
     public function erase(object $obj): void
     {
-        if (false === $this->mapping['erase_fields']) {
+        if (\is_array($this->mapping) && isset($this->mapping['erase_fields']) && false === $this->mapping['erase_fields']) {
             return;
         }
 

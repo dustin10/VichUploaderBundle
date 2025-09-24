@@ -271,6 +271,34 @@ All options are listed below:
 > [!NOTE]
 > The values used for the last three configuration options are the default ones.
 
+## Adding Validation (optional)
+
+If you want to ensure that a file is always present (either existing or newly uploaded), you can add the
+`FileRequired` constraint to your uploadable field. This constraint extends Symfony's `NotBlank` with file-specific
+validation logic:
+
+```php
+use Vich\UploaderBundle\Validator\Constraints as VichAssert;
+
+class Product
+{
+    // ... other fields
+
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'image.name')]
+    #[VichAssert\FileRequired(target: 'image')]
+    private ?File $imageFile = null;
+
+    // ... rest of the class
+}
+```
+
+The constraint validates that either an existing file is present or a new file has been uploaded. This is
+particularly useful for required file uploads in forms.
+
+> [!NOTE]
+> For more advanced validation options and details, see the
+> [FileRequired constraint documentation](validators/file_required.md).
+
 ## That was it!
 
 You're done! Now create a form with an `imageFile` field that uses the `VichImageType`

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Upload Validated Image</h1>
+{{ form_start(form, {action: path('validator_test_upload'), method: 'POST'}) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.imageFile) }}
+    {{ form_row(form.save) }}
+{{ form_end(form) }}
+{% endblock %}

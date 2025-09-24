@@ -37,3 +37,18 @@ view_with_property_path:
     path: /upload_with_property_path/{imageId}/{formType}
     methods: GET
     defaults: { _controller: Vich\TestBundle\Controller\DefaultController::editWithPropertyPathAction }
+
+validator_test_upload:
+    path: /validator-test/upload
+    methods: [GET, POST]
+    defaults: { _controller: Vich\TestBundle\Controller\ValidatorTestController::uploadAction }
+
+validator_test_edit:
+    path: /validator-test/edit/{id}
+    methods: [GET, POST]
+    defaults: { _controller: Vich\TestBundle\Controller\ValidatorTestController::editAction }
+
+validator_test_view:
+    path: /validator-test/view/{id}
+    methods: GET
+    defaults: { _controller: Vich\TestBundle\Controller\ValidatorTestController::viewAction }

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Edit Validated Image</h1>
+{% if form.vars.errors %}
+    <div class="errors">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+{{ form(form, {action: path('validator_test_edit', {id: validatedImage.id}), method: 'POST'}) }}
+
+{% if validatedImage.imageEntity and validatedImage.imageEntity.name %}
+    <p>Current file: {{ vich_uploader_asset(validatedImage, 'imageFile') }}</p>
+{% endif %}
+{% endblock %}
