@@ -66,7 +66,8 @@ class VichImageType extends VichFileType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
+        [, $object] = $this->getClosestNonEmbeddedObject($form);
+
         $view->vars['object'] = $object;
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;
@@ -101,14 +102,18 @@ class VichImageType extends VichFileType
 
     private function resolvePath(int $storageResolveMethod, object $object, FormInterface $form): ?string
     {
+        [$fieldName, $object] = $this->getClosestNonEmbeddedObject($form, $object);
+
         if (self::STORAGE_RESOLVE_URI === $storageResolveMethod) {
-            return $this->storage->resolveUri($object, $this->getFieldName($form));
+            return $this->storage->resolveUri($object, $fieldName);
         }
+
         if (self::STORAGE_RESOLVE_PATH_ABSOLUTE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $this->getFieldName($form));
+            return $this->storage->resolvePath($object, $fieldName);
         }
+
         if (self::STORAGE_RESOLVE_PATH_RELATIVE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $this->getFieldName($form), null, true);
+            return $this->storage->resolvePath($object, $fieldName, null, true);
         }
 
         return null;
