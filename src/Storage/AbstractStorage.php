@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 
 /**
  * FileSystemStorage.
@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  */
 abstract class AbstractStorage implements StorageInterface
 {
-    public function __construct(protected readonly PropertyMappingFactory $factory)
+    public function __construct(protected readonly PropertyMappingFactoryInterface $factory)
     {
     }
 
