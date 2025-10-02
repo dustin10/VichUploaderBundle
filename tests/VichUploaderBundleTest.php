@@ -20,8 +20,8 @@ final class VichUploaderBundleTest extends TestCase
 {
     protected function setUp(): void
     {
-        if (\PHP_VERSION_ID <= 80200) {
-            self::markTestSkipped('PHP 8.1 is not supported in these tests');
+        if (\PHP_VERSION_ID < 80300) {
+            self::markTestSkipped('PHP < 8.3 is not supported in these tests');
         }
         if (SimpleAppKernel::VERSION_ID >= 60400) { // @phpstan-ignore-line
             self::markTestSkipped('Kernels above 6.4.0 are not supported in these tests');

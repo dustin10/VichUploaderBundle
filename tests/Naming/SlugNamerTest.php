@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
-use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\SlugNamer;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -44,15 +43,12 @@ final class SlugNamerTest extends TestCase
             ->willReturn($file)
         ;
 
-        $repo = $this->getMockBuilder(EntityRepository::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['findOneBySlug'])
-            ->getMock()
-        ;
-        $repo
-            ->method('findOneBySlug')
-            ->willReturnMap([['lala.jpeg', null], ['lala.mp3', new \stdClass()]])
-        ;
+        $repo = new class() {
+            public function findOneBySlug(string $slug): ?object
+            {
+                return 'lala.mp3' === $slug ? new \stdClass() : null;
+            }
+        };
 
         $namer = new SlugNamer($this->getTransliterator(), $repo, 'findOneBySlug');
 
