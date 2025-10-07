@@ -11,7 +11,17 @@
     "authors": [
         {
             "name": "Dustin Dobervich",
-            "email": "ddobervich@gmail.com"
+            "email": "ddobervich@gmail.com",
+            "role": "Author"
+        },
+        {
+            "name": "Massimiliano Arione",
+            "email": "garakkio@gmail.com",
+            "role": "Maintainer"
+        },
+        {
+            "name": "The Symfony Community",
+            "homepage": "https://github.com/dustin10/VichUploaderBundle/contributors"
         }
     ],
     "require": {
@@ -72,7 +82,6 @@
         "symfony/yaml": "To use YAML mapping"
     },
     "conflict": {
-        "doctrine/annotations": "<1.12",
         "league/flysystem": "<2.0"
     },
     "config": {

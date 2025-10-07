@@ -2,9 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
@@ -149,7 +147,6 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         $twigExtension->load([[
             'strict_variables' => true,
-            // 'exception_controller' => null, // TODO remove after bumping symfony/twig-bundle to ^5.0
             'form_themes' => ['@Ololo/trololo.html.twig'],
         ]], $this->container);
         $vichUploaderExtension->load([$this->getMinimalConfiguration()], $this->container);
@@ -158,22 +155,6 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
             'twig.form.resources',
             ['@VichUploader/Form/fields.html.twig', 'form_div_layout.html.twig', '@Ololo/trololo.html.twig']
         );
-    }
-
-    #[Group('legacy')]
-    public function testMetadataAnnotation(): void
-    {
-        if (!\class_exists(AnnotationReader::class)) {
-            $this->markTestSkipped('The doctrine/annotations package is not installed');
-        }
-
-        $this->load([
-            'metadata' => [
-                'type' => 'annotation',
-            ],
-        ]);
-
-        $this->assertContainerBuilderHasService('vich_uploader.metadata.reader', AnnotationReader::class);
     }
 
     public function testMetadataAttribute(): void

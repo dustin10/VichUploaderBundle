@@ -2,7 +2,6 @@
 
 namespace Vich\UploaderBundle\Metadata\Driver;
 
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
@@ -19,7 +18,7 @@ class AnnotationDriver implements AdvancedDriverInterface
      * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
      */
     public function __construct(
-        protected readonly AnnotationReader|AttributeReader $reader,
+        protected readonly AttributeReader $reader,
         private readonly array $managerRegistryList
     ) {
     }
@@ -46,10 +45,9 @@ class AnnotationDriver implements AdvancedDriverInterface
 
         foreach ($properties as $property) {
             $uploadableField = $this->reader->getPropertyAnnotation($property, UploadableField::class);
-            if (null === $uploadableField) {
+            if (!$uploadableField instanceof UploadableField) {
                 continue;
             }
-            /* @var $uploadableField UploadableField */
             // TODO: try automatically determinate target fields if embeddable used
 
             $fieldMetadata = [
