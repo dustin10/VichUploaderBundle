@@ -1,6 +1,10 @@
 name: build
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - master
+    pull_request: ~
 
 env:
   COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -96,6 +100,13 @@ jobs:
                       with_imagine: false
                       with_oneupbundle: false
                       max_deprecations: 6
+                    - php: '8.4'
+                      symfony: '8.0.*@dev'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      max_deprecations: 6
+
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
