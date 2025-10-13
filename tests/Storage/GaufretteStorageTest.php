@@ -242,6 +242,11 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getPathname')
             ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
 
+        // Ensure mime type is used in metadata payload
+        $file
+            ->method('getMimeType')
+            ->willReturn('text/plain');
+
         $this->mapping
             ->expects(self::once())
             ->method('getFile')
@@ -252,6 +257,12 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('filename');
+
+        // Explicitly return empty uploadDir (root)
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->willReturn('');
 
         $this->mapping
             ->expects(self::once())
@@ -264,9 +275,11 @@ class GaufretteStorageTest extends StorageTestCase
             ->with('filesystemKey')
             ->willReturn($filesystem);
 
+        // Assert exact parameters for metadata: path and contentType
         $adapter
             ->expects(self::once())
-            ->method('setMetadata');
+            ->method('setMetadata')
+            ->with('filename', ['contentType' => 'text/plain']);
 
         $filesystem
             ->method('getAdapter')
@@ -276,6 +289,72 @@ class GaufretteStorageTest extends StorageTestCase
             ->expects(self::once())
             ->method('write')
             ->with('filename', 'some content');
+
+        $this->storage->upload($this->object, $this->mapping);
+    }
+
+    public function testUploadSetsMetadataWhenUsingMetadataSupporterAdapterWithUploadDir(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+        $file = $this->getUploadedFileMock();
+        $adapter = $this->createMock(MetadataSupporter::class);
+
+        $file
+            ->expects(self::once())
+            ->method('getClientOriginalName')
+            ->willReturn('filename');
+
+        $file
+            ->expects(self::once())
+            ->method('getPathname')
+            ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
+
+        $file
+            ->method('getMimeType')
+            ->willReturn('text/plain');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFile')
+            ->willReturn($file);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadName')
+            ->with($this->object)
+            ->willReturn('filename');
+
+        // Non-empty uploadDir should prefix the path
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDir')
+            ->willReturn('foo');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        // setMetadata must receive the full path including directory and correct contentType
+        $adapter
+            ->expects(self::once())
+            ->method('setMetadata')
+            ->with('foo/filename', ['contentType' => 'text/plain']);
+
+        $filesystem
+            ->method('getAdapter')
+            ->willReturn($adapter);
+
+        $filesystem
+            ->expects(self::once())
+            ->method('write')
+            ->with('foo/filename', 'some content');
 
         $this->storage->upload($this->object, $this->mapping);
     }
@@ -338,5 +417,202 @@ class GaufretteStorageTest extends StorageTestCase
     protected function getFilesystemMock(): Filesystem|MockObject
     {
         return $this->createMock(Filesystem::class);
+    }
+
+    public function testListFiles(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+
+        // Create timestamps (2 hours old to pass min-age filter)
+        $timestamp = \time() - 7200;
+
+        $filesystem
+            ->expects(self::once())
+            ->method('listKeys')
+            ->willReturn([
+                'keys' => ['file1.txt', 'file2.txt', 'subdir/file3.txt'],
+                'dirs' => ['subdir'],
+            ]);
+
+        $filesystem
+            ->method('has')
+            ->willReturn(true);
+
+        $filesystem
+            ->method('mtime')
+            ->willReturn($timestamp);
+
+        $filesystem
+            ->method('get')
+            ->willReturn($this->createMock(\Gaufrette\File::class));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(3, $files);
+
+        // Extract paths from StoredFile objects
+        $paths = \array_map(fn ($file) => $file->path, $files);
+        self::assertContains('file1.txt', $paths);
+        self::assertContains('file2.txt', $paths);
+        self::assertContains('subdir/file3.txt', $paths);
+
+        // Verify that all files have timestamps
+        foreach ($files as $file) {
+            self::assertNotNull($file->lastModifiedAt);
+            self::assertIsInt($file->lastModifiedAt);
+            self::assertEquals($timestamp, $file->lastModifiedAt);
+        }
+    }
+
+    public function testListFilesWithEmptyListing(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+
+        $filesystem
+            ->expects(self::once())
+            ->method('listKeys')
+            ->willReturn(['keys' => [], 'dirs' => []]);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
+    }
+
+    public function testListFilesWithException(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+
+        $filesystem
+            ->expects(self::once())
+            ->method('listKeys')
+            ->will($this->throwException(new \RuntimeException('Filesystem error')));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
+    }
+
+    public function testListFilesWithNullTimestamps(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+
+        $filesystem
+            ->expects(self::once())
+            ->method('listKeys')
+            ->willReturn(['keys' => ['file1.txt', 'file2.txt'], 'dirs' => []]);
+
+        $filesystem
+            ->method('has')
+            ->willReturn(true);
+
+        $filesystem
+            ->method('mtime')
+            ->willReturn(null);
+
+        $filesystem
+            ->method('get')
+            ->willReturn($this->createMock(\Gaufrette\File::class));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(2, $files);
+
+        // Verify that files have null timestamps
+        foreach ($files as $file) {
+            self::assertNull($file->lastModifiedAt);
+        }
+    }
+
+    public function testListFilesSkipsDirectories(): void
+    {
+        $filesystem = $this->getFilesystemMock();
+
+        $timestamp = \time() - 7200;
+
+        $filesystem
+            ->expects(self::once())
+            ->method('listKeys')
+            ->willReturn([
+                'keys' => ['file1.txt', 'subdir/', 'file2.txt'],
+                'dirs' => ['subdir'],
+            ]);
+
+        $filesystem
+            ->method('has')
+            ->willReturn(true);
+
+        $filesystem
+            ->method('mtime')
+            ->willReturn($timestamp);
+
+        // Simulate directory detection: get() fails for trailing slash
+        $filesystem
+            ->method('get')
+            ->willReturn($this->createMock(\Gaufrette\File::class));
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn('filesystemKey');
+
+        $this->filesystemMap
+            ->expects(self::once())
+            ->method('get')
+            ->with('filesystemKey')
+            ->willReturn($filesystem);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        // Should only have 2 files, directory should be skipped
+        self::assertCount(2, $files);
+
+        $paths = \array_map(fn ($file) => $file->path, $files);
+        self::assertContains('file1.txt', $paths);
+        self::assertContains('file2.txt', $paths);
+        self::assertNotContains('subdir/', $paths);
     }
 }

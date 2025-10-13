@@ -73,6 +73,38 @@ final class FileSystemStorageTest extends StorageTestCase
     }
 
     /**
+     * Test remove with explicit directory parameter (bypassing DirectoryNamer).
+     * This is useful for cleanup operations where the entity no longer exists.
+     */
+    public function testRemoveWithExplicitDirectory(): void
+    {
+        // Create a file in a subdirectory
+        $subdir = $this->getValidUploadDir().\DIRECTORY_SEPARATOR.'user_123';
+        \mkdir($subdir, 0o777, true);
+        \file_put_contents($subdir.\DIRECTORY_SEPARATOR.'avatar.jpg', 'content');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn($this->getValidUploadDir());
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getFileName')
+            ->willReturn('avatar.jpg');
+
+        // getUploadDir should NOT be called when explicit $dir is provided
+        $this->mapping
+            ->expects(self::never())
+            ->method('getUploadDir');
+
+        // Pass directory explicitly, bypassing DirectoryNamer
+        $this->storage->remove($this->object, $this->mapping, 'user_123');
+
+        self::assertFalse($this->root->hasChild('uploads'.\DIRECTORY_SEPARATOR.'user_123'.\DIRECTORY_SEPARATOR.'avatar.jpg'));
+    }
+
+    /**
      * Test the resolve path method.
      */
     public function testResolvePath(): void
@@ -396,5 +428,65 @@ final class FileSystemStorageTest extends StorageTestCase
                 '/storage/vich_uploader_bundle/dir_1/dir_2',
             ],
         ];
+    }
+
+    public function testListFiles(): void
+    {
+        // Create a new test directory separate from the default uploads
+        $uploadDir = $this->root->url().'/test_list_files';
+        \mkdir($uploadDir, 0o777, true);
+        \mkdir($uploadDir.'/subdir', 0o777, true);
+        \file_put_contents($uploadDir.'/file1.txt', 'content1');
+        \file_put_contents($uploadDir.'/file2.txt', 'content2');
+        \file_put_contents($uploadDir.'/subdir/file3.txt', 'content3');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn($uploadDir);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(3, $files);
+
+        // Extract paths from StoredFile objects
+        $paths = \array_map(fn ($file) => $file->path, $files);
+        self::assertContains('file1.txt', $paths);
+        self::assertContains('file2.txt', $paths);
+        self::assertContains('subdir/file3.txt', $paths);
+
+        // Verify that all files have timestamps
+        foreach ($files as $file) {
+            self::assertNotNull($file->lastModifiedAt);
+            self::assertIsInt($file->lastModifiedAt);
+        }
+    }
+
+    public function testListFilesWithEmptyDirectory(): void
+    {
+        // Create a new empty directory
+        $uploadDir = $this->root->url().'/test_empty_dir';
+        \mkdir($uploadDir, 0o777, true);
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn($uploadDir);
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
+    }
+
+    public function testListFilesWithNonExistentDirectory(): void
+    {
+        $this->mapping
+            ->expects(self::once())
+            ->method('getUploadDestination')
+            ->willReturn($this->root->url().'/nonexistent');
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
     }
 }

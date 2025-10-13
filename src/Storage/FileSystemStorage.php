@@ -71,7 +71,8 @@ final class FileSystemStorage extends AbstractStorage
             return null;
         }
 
-        $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
+        $uploadDir = $mapping->getUploadDir($obj);
+        $uploadDir = $this->convertWindowsDirectorySeparator($uploadDir ?? '');
         $uploadDir = ('' !== $uploadDir) ? $uploadDir.'/' : '';
 
         return \sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
@@ -80,5 +81,33 @@ final class FileSystemStorage extends AbstractStorage
     private function convertWindowsDirectorySeparator(string $string): string
     {
         return \str_replace('\\', '/', $string);
+    }
+
+    public function listFiles(PropertyMapping $mapping): iterable
+    {
+        $uploadDestination = $mapping->getUploadDestination();
+
+        if (!\is_dir($uploadDestination)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($uploadDestination, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                // Return path relative to upload destination
+                $relativePath = \substr($file->getPathname(), \strlen($uploadDestination) + 1);
+                $relativePath = $this->convertWindowsDirectorySeparator($relativePath);
+
+                // Get file modification time
+                $mtime = @\filemtime($file->getPathname());
+                $lastModifiedAt = false !== $mtime ? (int) $mtime : null;
+
+                yield new StoredFile($relativePath, $lastModifiedAt);
+            }
+        }
     }
 }

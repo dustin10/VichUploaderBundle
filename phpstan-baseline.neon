@@ -96,3 +96,9 @@ parameters:
 			count: 4
 			path: tests/TestCase.php
 
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 17
+			path: tests/Command/CleanupCommandTest.php
+

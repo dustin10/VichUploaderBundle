@@ -21,6 +21,15 @@
             <tag name="console.command" command="vich:mapping:list-classes" />
         </service>
 
+        <service id="vich_uploader.command.cleanup" class="Vich\UploaderBundle\Command\CleanupCommand" public="false">
+            <argument type="service" id="vich_uploader.storage" />
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="vich_uploader.metadata_reader" />
+            <argument>[]</argument><!-- manager registries, filled by compiler pass -->
+            <argument>%vich_uploader.mappings%</argument>
+            <tag name="console.command" command="vich:cleanup" />
+        </service>
+
     </services>
 
 </container>
