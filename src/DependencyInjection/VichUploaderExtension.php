@@ -2,16 +2,13 @@
 
 namespace Vich\UploaderBundle\DependencyInjection;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
@@ -145,27 +142,10 @@ final class VichUploaderExtension extends Extension
             return;
         }
 
-        switch ($config['metadata']['type']) {
-            case 'annotation':
-                if (!\class_exists(AnnotationReader::class) || !$container::willBeAvailable('doctrine/annotations', AnnotationReader::class, [])) {
-                    $msg = 'Annotations support missing. Try running "composer require doctrine/annotations".';
-                    throw new MissingPackageException($msg);
-                }
-
-                @\trigger_error('Annotation support is deprecated since version 2.5 and will be removed in 3.0. Use attributes instead.', \E_USER_DEPRECATED);
-
-                $container->setDefinition(
-                    'vich_uploader.metadata.reader',
-                    new Definition(AnnotationReader::class)
-                );
-                break;
-
-            default:
-                $container->setDefinition(
-                    'vich_uploader.metadata.reader',
-                    $container->getDefinition('vich_uploader.metadata.attribute_reader')
-                );
-        }
+        $container->setDefinition(
+            'vich_uploader.metadata.reader',
+            $container->getDefinition('vich_uploader.metadata.attribute_reader')
+        );
     }
 
     protected function registerCacheStrategy(ContainerBuilder $container, array $config): void
