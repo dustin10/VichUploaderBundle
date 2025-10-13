@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
@@ -66,26 +66,26 @@ final class VichUploaderExtension extends Extension
 
     protected function loadServicesFiles(ContainerBuilder $container, array $config): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
 
         $toLoad = [
-            'adapter.xml', 'listener.xml', 'storage.xml', 'injector.xml',
-            'mapping.xml', 'factory.xml', 'namer.xml', 'handler.xml', 'command.xml', 'collector.xml',
+            'adapter.php', 'listener.php', 'storage.php', 'injector.php',
+            'mapping.php', 'factory.php', 'namer.php', 'handler.php', 'command.php', 'collector.php',
         ];
         foreach ($toLoad as $file) {
             $loader->load($file);
         }
 
         if (\in_array($config['storage'], ['gaufrette', 'flysystem'], true)) {
-            $loader->load($config['storage'].'.xml');
+            $loader->load($config['storage'].'.php');
         }
 
         if ($config['form']) {
-            $loader->load('form.xml');
+            $loader->load('form.php');
         }
 
         if ($config['twig']) {
-            $loader->load('twig.xml');
+            $loader->load('twig.php');
         }
     }
 
