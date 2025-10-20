@@ -2,8 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
+use League\Flysystem\DirectoryListing;
+use League\Flysystem\FileAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
@@ -309,5 +312,114 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('/uploads/file.txt', $path);
+    }
+
+    public function testListFiles(): void
+    {
+        // Create FileAttributes with timestamps (2 hours old to pass min-age filter)
+        $timestamp = \time() - 7200;
+        $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
+        $file2 = new FileAttributes('file2.txt', null, null, $timestamp);
+        $file3 = new FileAttributes('subdir/file3.txt', null, null, $timestamp);
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('listContents')
+            ->with('/', true)
+            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $file2, $file3])));
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(3, $files);
+
+        // Extract paths from StoredFile objects
+        $paths = \array_map(fn ($file) => $file->path, $files);
+        self::assertContains('file1.txt', $paths);
+        self::assertContains('file2.txt', $paths);
+        self::assertContains('subdir/file3.txt', $paths);
+
+        // Verify that all files have timestamps
+        foreach ($files as $file) {
+            self::assertNotNull($file->lastModifiedAt);
+            self::assertIsInt($file->lastModifiedAt);
+            self::assertEquals($timestamp, $file->lastModifiedAt);
+        }
+    }
+
+    public function testListFilesWithEmptyListing(): void
+    {
+        $this->filesystem
+            ->expects(self::once())
+            ->method('listContents')
+            ->with('/', true)
+            ->willReturn(new DirectoryListing(new \ArrayIterator([])));
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
+    }
+
+    public function testListFilesWithFilesystemException(): void
+    {
+        $this->filesystem
+            ->expects(self::once())
+            ->method('listContents')
+            ->with('/', true)
+            ->will($this->throwException($this->createMock(FilesystemException::class)));
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(0, $files);
+    }
+
+    public function testListFilesWithNullTimestamps(): void
+    {
+        // Create FileAttributes without timestamps
+        $file1 = new FileAttributes('file1.txt', null, null, null);
+        $file2 = new FileAttributes('file2.txt', null, null, null);
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('listContents')
+            ->with('/', true)
+            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $file2])));
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        self::assertCount(2, $files);
+
+        // Verify that files have null timestamps
+        foreach ($files as $file) {
+            self::assertNull($file->lastModifiedAt);
+        }
+    }
+
+    public function testListFilesSkipsDirectories(): void
+    {
+        $timestamp = \time() - 7200;
+        $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
+
+        // Create a DirectoryAttributes mock
+        $dir = $this->createMock(\League\Flysystem\DirectoryAttributes::class);
+        $dir->method('isFile')->willReturn(false);
+        $dir->method('path')->willReturn('subdir');
+
+        $file2 = new FileAttributes('file2.txt', null, null, $timestamp);
+
+        $this->filesystem
+            ->expects(self::once())
+            ->method('listContents')
+            ->with('/', true)
+            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $dir, $file2])));
+
+        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
+
+        // Should only have 2 files, directory should be skipped
+        self::assertCount(2, $files);
+
+        $paths = \array_map(fn ($file) => $file->path, $files);
+        self::assertContains('file1.txt', $paths);
+        self::assertContains('file2.txt', $paths);
+        self::assertNotContains('subdir', $paths);
     }
 }

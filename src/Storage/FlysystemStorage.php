@@ -94,6 +94,11 @@ final class FlysystemStorage extends AbstractStorage
         $mapping = null === $fieldName ?
             $this->factory->fromFirstField($obj, $className) :
             $this->factory->fromField($obj, $fieldName, $className);
+
+        if (null === $mapping) {
+            return null;
+        }
+
         $fs = $this->getFilesystem($mapping);
 
         try {
@@ -119,6 +124,11 @@ final class FlysystemStorage extends AbstractStorage
         $mapping = null === $fieldName ?
             $this->factory->fromFirstField($obj, $className) :
             $this->factory->fromField($obj, $fieldName, $className);
+
+        if (null === $mapping) {
+            return null;
+        }
+
         $fs = $this->getFilesystem($mapping);
 
         try {
@@ -135,5 +145,34 @@ final class FlysystemStorage extends AbstractStorage
         }
 
         return $this->registry->get($mapping->getUploadDestination());
+    }
+
+    public function listFiles(PropertyMapping $mapping): iterable
+    {
+        $fs = $this->getFilesystem($mapping);
+
+        try {
+            $listing = $fs->listContents('/', true);
+
+            foreach ($listing as $item) {
+                if ($item->isFile()) {
+                    // Try to get the last modified timestamp
+                    $lastModifiedAt = null;
+                    try {
+                        $lm = $item->lastModified();
+                        if (null !== $lm) {
+                            $lastModifiedAt = (int) $lm;
+                        }
+                    } catch (\Exception) {
+                        // Timestamp not available for this storage backend
+                    }
+
+                    yield new StoredFile($item->path(), $lastModifiedAt);
+                }
+            }
+        } catch (FilesystemException) {
+            // If the directory doesn't exist or can't be read, return empty
+            return;
+        }
     }
 }

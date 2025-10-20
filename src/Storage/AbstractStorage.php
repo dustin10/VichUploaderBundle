@@ -68,7 +68,7 @@ abstract class AbstractStorage implements StorageInterface
 
     abstract protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool;
 
-    public function remove(object $obj, PropertyMapping $mapping): ?bool
+    public function remove(object $obj, PropertyMapping $mapping, ?string $dir = null): ?bool
     {
         $name = $mapping->getFileName($obj);
 
@@ -76,6 +76,13 @@ abstract class AbstractStorage implements StorageInterface
             return false;
         }
 
+        // If $dir is provided explicitly, use it directly (bypasses getUploadDir and DirectoryNamer)
+        // This is useful for cleanup operations where the entity no longer exists in the database
+        if (null !== $dir) {
+            return $this->doRemove($mapping, $dir, $name);
+        }
+
+        // Default behavior: calculate directory from object using DirectoryNamer if configured
         return $this->doRemove($mapping, $mapping->getUploadDir($obj), $name);
     }
 
