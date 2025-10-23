@@ -4,15 +4,15 @@ namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
-use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
+use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
-class AnnotationDriver implements AdvancedDriverInterface
+class AttributeDriver implements AdvancedDriverInterface
 {
     /**
      * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
@@ -44,7 +44,7 @@ class AnnotationDriver implements AdvancedDriverInterface
         }
 
         foreach ($properties as $property) {
-            $uploadableField = $this->reader->getPropertyAnnotation($property, UploadableField::class);
+            $uploadableField = $this->reader->getPropertyAttribute($property, UploadableField::class);
             if (!$uploadableField instanceof UploadableField) {
                 continue;
             }
@@ -93,6 +93,6 @@ class AnnotationDriver implements AdvancedDriverInterface
 
     protected function isUploadable(\ReflectionClass $class): bool
     {
-        return null !== $this->reader->getClassAnnotation($class, Uploadable::class);
+        return null !== $this->reader->getClassAttribute($class, Uploadable::class);
     }
 }

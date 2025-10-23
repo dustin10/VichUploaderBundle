@@ -1,4 +1,20 @@
+# Upgrading from v2.9 to v3.0
+
+## Breaking Changes
+
+* The deprecated `Vich\UploaderBundle\Mapping\Annotation` namespace has been removed. Use `Vich\UploaderBundle\Mapping\Attribute` instead.
+* The deprecated `AnnotationInterface` has been removed. Use `AttributeInterface` instead.
+* `AttributeReader` deprecated methods have been removed: use `getClassAttribute()` instead of `getClassAnnotation()`, `getPropertyAttribute()` instead of `getPropertyAnnotation()`.
+
 # Upgrading from v2.8 to v2.9
+
+## Deprecations
+
+* The `Vich\UploaderBundle\Mapping\Annotation` namespace is deprecated. Replace it with `Vich\UploaderBundle\Mapping\Attribute`;
+  The old namespace will be removed in version 3.0.
+* `AttributeReader` methods: replace `*Annotation()` with `*Attribute()` (e.g., `getClassAnnotation()` → `getClassAttribute()`).
+
+## New Features
 
 * New `namer_keep_extension` configuration option to force namers to preserve original file extension.
 * Custom namers using `namer_keep_extension: true` must implement `ConfigurableInterface`.

@@ -2,6 +2,6 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
-interface AnnotationInterface
+interface AttributeInterface
 {
 }
