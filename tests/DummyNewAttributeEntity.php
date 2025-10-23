@@ -5,12 +5,12 @@ namespace Vich\UploaderBundle\Tests;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 /**
- * @author Dustin Dobervich <ddobervich@gmail.com>
+ * Test entity using the new Attribute namespace to verify it works alongside the deprecated Annotation namespace.
  */
 #[Vich\Uploadable]
-class DummyEntity
+class DummyNewAttributeEntity
 {
-    #[Vich\UploadableField(mapping: 'dummy_file', fileNameProperty: 'fileName')]
+    #[Vich\UploadableField('dummy_file', fileNameProperty: 'fileName')]
     protected ?object $file = null;
 
     protected ?string $fileName = null;

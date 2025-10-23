@@ -2,6 +2,9 @@
 
 namespace Vich\UploaderBundle\Mapping;
 
-interface AnnotationInterface
+/**
+ * @deprecated since 2.9, use AttributeInterface instead
+ */
+interface AnnotationInterface extends AttributeInterface
 {
 }

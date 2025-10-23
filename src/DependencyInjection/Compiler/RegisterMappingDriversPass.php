@@ -30,7 +30,12 @@ final class RegisterMappingDriversPass implements CompilerPassInterface
         }
 
         if (\count($managers) > 0) {
-            $drivers[] = $container->getDefinition('vich_uploader.metadata_driver.annotation')
+            // Support both new 'attribute' service and deprecated 'annotation' service
+            $driverServiceId = $container->hasDefinition('vich_uploader.metadata_driver.attribute')
+                ? 'vich_uploader.metadata_driver.attribute'
+                : 'vich_uploader.metadata_driver.annotation';
+
+            $drivers[] = $container->getDefinition($driverServiceId)
                 ->replaceArgument('$managerRegistryList', $managers);
         }
 
