@@ -1,11 +1,19 @@
 # Upgrading from v2.8 to v2.9
 
+## Deprecations
+
+* The `Vich\UploaderBundle\Mapping\Annotation` namespace is deprecated. Replace it with `Vich\UploaderBundle\Mapping\Attribute`;
+  The old namespace will be removed in version 3.0.
+* `AttributeReader` methods: replace `*Annotation()` with `*Attribute()` (e.g., `getClassAnnotation()` → `getClassAttribute()`).
+
+## New Features
+
 * New `namer_keep_extension` configuration option to force namers to preserve original file extension.
 * Custom namers using `namer_keep_extension: true` must implement `ConfigurableInterface`.
 
 # Upgrading from v2.7 to v2.8
 
-* Namers are not public anymore. If you uses a custom namer, you can now make it private.
+* Namers are not public anymore. If you use a custom namer, you can now make it private.
 
 # Upgrading from v2.6 to v2.7
 
@@ -36,7 +44,7 @@
 
 * every class marked as `@final` is now final
 * all properties are now fully type-hinted
-* all methods arguments are now fully type-hinted
+* all method arguments are now fully type-hinted
 * all methods have now return types
 * all constructors now use property promotion
 * all deprecated features were removed

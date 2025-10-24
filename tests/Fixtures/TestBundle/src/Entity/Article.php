@@ -2,7 +2,7 @@
 
 namespace Vich\TestBundle\Entity;
 
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>

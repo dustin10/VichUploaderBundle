@@ -4,7 +4,7 @@ namespace Vich\TestBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use Vich\UploaderBundle\Validator\Constraints as VichAssert;
 
 #[Vich\Uploadable]
