@@ -1,21 +1,11 @@
 <?php
 
-namespace Vich\UploaderBundle\Mapping\Annotation;
+namespace Vich\UploaderBundle\Mapping\Attribute;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Vich\UploaderBundle\Mapping\AnnotationInterface;
+use Vich\UploaderBundle\Mapping\AttributeInterface;
 
-/**
- * UploadableField.
- *
- * @Annotation
- * @Target({"PROPERTY"})
- * @NamedArgumentConstructor
- *
- * @author Dustin Dobervich <ddobervich@gmail.com>
- */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final class UploadableField implements AnnotationInterface
+final class UploadableField implements AttributeInterface
 {
     /**
      * Constructs a new instance of UploadableField.

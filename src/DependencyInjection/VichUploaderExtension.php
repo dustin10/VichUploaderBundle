@@ -53,7 +53,7 @@ final class VichUploaderExtension extends Extension
 
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
-        $this->registerAnnotationStrategy($container, $config);
+        $this->registerAttributeStrategy($container);
         $this->registerCacheStrategy($container, $config);
 
         $this->registerListeners($container, $config);
@@ -136,9 +136,9 @@ final class VichUploaderExtension extends Extension
         ;
     }
 
-    protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
+    protected function registerAttributeStrategy(ContainerBuilder $container): void
     {
-        if (!$container->has('vich_uploader.metadata_driver.annotation')) {
+        if (!$container->has('vich_uploader.metadata_driver.attribute')) {
             return;
         }
 
@@ -173,7 +173,7 @@ final class VichUploaderExtension extends Extension
 
     protected function fixDbDriverConfig(array $config): array
     {
-        // mapping with no declared db_driver use the top-level one
+        // mapping with no declared db_driver, use the top-level one
         foreach ($config['mappings'] as &$mapping) {
             $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
         }

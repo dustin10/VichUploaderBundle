@@ -6,7 +6,7 @@ It validates that either an existing file is present or a new file has been uplo
 ## Basic Usage
 
 ```php
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use Vich\UploaderBundle\Validator\Constraints as VichAssert;
 
 #[Vich\Uploadable]
