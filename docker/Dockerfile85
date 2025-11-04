@@ -1,4 +1,4 @@
-FROM php:8.5.0beta3-alpine
+FROM php:8.5.0rc3-alpine
 
 ARG MONGODB_VERSION=2.1.2
 
