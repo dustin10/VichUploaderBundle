@@ -85,8 +85,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->method('writeStream')
             ->with(
                 'originalName.txt',
-                $this->isType('resource'),
-                $this->isType('array')
+                $this->isResource(),
+                $this->isArray()
             );
 
         $this->storage->upload($this->object, $this->mapping);
