@@ -11,15 +11,13 @@ use Vich\UploaderBundle\Command\CleanupCommand;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Tests\DummyEntity;
+use Vich\UploaderBundle\Tests\Stub\TestQueryBuilderInterface;
+use Vich\UploaderBundle\Tests\Stub\TestQueryInterface;
+use Vich\UploaderBundle\Tests\Stub\TestRepositoryInterface;
 
 final class CleanupCommandTest extends AbstractCommandTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        self::markTestSkipped('Needs refactoring to be phpunit 12 compatible.');
-    }
-
     public function testCommandWithNoUploadableClasses(): void
     {
         $reader = $this->mockMetadataReader();
@@ -248,12 +246,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $reader = $this->mockMetadataReader();
         $reader->expects(self::once())
             ->method('getUploadableClasses')
-            ->willReturn(['Vich\\UploaderBundle\\Tests\\DummyEntity']);
+            ->willReturn([DummyEntity::class]);
 
         // getUploadableFields is called twice: once for processing and once for finding sample field
         $reader->expects(self::exactly(2))
             ->method('getUploadableFields')
-            ->with('Vich\\UploaderBundle\\Tests\\DummyEntity', 'test_mapping')
+            ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
                 'file' => [
                     'mapping' => 'test_mapping',
@@ -298,7 +296,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $repository = $this->createRepositoryMock($qb);
 
         // Create mock object manager
-        $objectManager = $this->createObjectManagerMock($repository, 'Vich\\UploaderBundle\\Tests\\DummyEntity');
+        $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(self::once())
@@ -329,11 +327,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $reader = $this->mockMetadataReader();
         $reader->expects(self::once())
             ->method('getUploadableClasses')
-            ->willReturn(['Vich\\UploaderBundle\\Tests\\DummyEntity']);
+            ->willReturn([DummyEntity::class]);
 
         $reader->expects(self::exactly(2))
             ->method('getUploadableFields')
-            ->with('Vich\\UploaderBundle\\Tests\\DummyEntity', 'test_mapping')
+            ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
                 'file' => [
                     'mapping' => 'test_mapping',
@@ -372,7 +370,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         $qb = $this->createQueryBuilderMock([$entity1, $entity2]);
         $repository = $this->createRepositoryMock($qb);
-        $objectManager = $this->createObjectManagerMock($repository, 'Vich\\UploaderBundle\\Tests\\DummyEntity');
+        $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(self::once())
@@ -403,11 +401,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $reader = $this->mockMetadataReader();
         $reader->expects(self::once())
             ->method('getUploadableClasses')
-            ->willReturn(['Vich\\UploaderBundle\\Tests\\DummyEntity']);
+            ->willReturn([DummyEntity::class]);
 
         $reader->expects(self::exactly(2))
             ->method('getUploadableFields')
-            ->with('Vich\\UploaderBundle\\Tests\\DummyEntity', 'test_mapping')
+            ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
                 'file' => [
                     'mapping' => 'test_mapping',
@@ -416,7 +414,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 ],
             ]);
 
-        // Storage has FEWER files than referenced in database (older than 2 hours to pass min-age filter)
+        // Storage has FEWER files than referenced in the database (older than 2 hours to pass min-age filter)
         $storage = $this->createMock(StorageInterface::class);
         $storage->expects(self::once())
             ->method('listFiles')
@@ -446,7 +444,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         $qb = $this->createQueryBuilderMock([$entity1, $entity2, $entity3]);
         $repository = $this->createRepositoryMock($qb);
-        $objectManager = $this->createObjectManagerMock($repository, 'Vich\\UploaderBundle\\Tests\\DummyEntity');
+        $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(self::once())
@@ -477,11 +475,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $reader = $this->mockMetadataReader();
         $reader->expects(self::once())
             ->method('getUploadableClasses')
-            ->willReturn(['Vich\\UploaderBundle\\Tests\\DummyEntity']);
+            ->willReturn([DummyEntity::class]);
 
         $reader->expects(self::exactly(2))
             ->method('getUploadableFields')
-            ->with('Vich\\UploaderBundle\\Tests\\DummyEntity', 'test_mapping')
+            ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
                 'file' => [
                     'mapping' => 'test_mapping',
@@ -538,7 +536,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         $qb = $this->createQueryBuilderMock([$entity1, $entity2]);
         $repository = $this->createRepositoryMock($qb);
-        $objectManager = $this->createObjectManagerMock($repository, 'Vich\\UploaderBundle\\Tests\\DummyEntity');
+        $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(self::once())
@@ -572,12 +570,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $reader = $this->mockMetadataReader();
         $reader->expects(self::once())
             ->method('getUploadableClasses')
-            ->willReturn(['Vich\\UploaderBundle\\Tests\\DummyEntity']);
+            ->willReturn([DummyEntity::class]);
 
-        // getUploadableFields is called twice: once for processing and once for finding sample field
+        // getUploadableFields is called twice: once for processing and once for finding the sample field
         $reader->expects(self::exactly(2))
             ->method('getUploadableFields')
-            ->with('Vich\\UploaderBundle\\Tests\\DummyEntity', 'test_mapping')
+            ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
                 'file' => [
                     'mapping' => 'test_mapping',
@@ -615,7 +613,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // Doctrine mocks: repository returns 0 entities so there are no DB references
         $qb = $this->createQueryBuilderMock([]);
         $repository = $this->createRepositoryMock($qb);
-        $objectManager = $this->createObjectManagerMock($repository, 'Vich\\UploaderBundle\\Tests\\DummyEntity');
+        $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $managerRegistry->expects(self::once())
@@ -643,14 +641,10 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
     /**
      * Helper method to create a mock query builder.
-     * Uses a generic mock object instead of ORM-specific classes to be persistence-layer agnostic.
      */
     private function createQueryBuilderMock(array $entities): MockObject
     {
-        // Create a generic query mock (not tied to ORM)
-        $query = $this->getMockBuilder(\stdClass::class)
-            // ->addMethods(['getSingleScalarResult', 'getResult'])
-            ->getMock();
+        $query = $this->createMock(TestQueryInterface::class);
         $query
             ->method('getSingleScalarResult')
             ->willReturn(\count($entities));
@@ -658,10 +652,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getResult')
             ->willReturn($entities);
 
-        // Create a generic query builder mock (not tied to ORM)
-        $qb = $this->getMockBuilder(\stdClass::class)
-            // ->addMethods(['select', 'setFirstResult', 'setMaxResults', 'getQuery'])
-            ->getMock();
+        $qb = $this->createMock(TestQueryBuilderInterface::class);
         $qb
             ->method('select')
             ->willReturnSelf();
@@ -680,21 +671,16 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
     /**
      * Helper method to create a mock repository.
-     * Uses ObjectRepository interface to be persistence-layer agnostic.
      */
     private function createRepositoryMock(MockObject $queryBuilder): MockObject
     {
-        // Create a mock that implements ObjectRepository (agnostic) with createQueryBuilder method
-        $repository = $this->getMockBuilder(ObjectRepository::class)
-            ->onlyMethods(['find', 'findAll', 'findBy', 'findOneBy', 'getClassName'])
-            // ->addMethods(['createQueryBuilder'])
-            ->getMock();
+        $repository = $this->createMock(TestRepositoryInterface::class);
         $repository
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
         $repository
             ->method('getClassName')
-            ->willReturn('Vich\\UploaderBundle\\Tests\\DummyEntity');
+            ->willReturn(DummyEntity::class);
 
         return $repository;
     }
