@@ -28,6 +28,10 @@ class FileRequired extends NotBlank
             throw new \LogicException('You cannot use FileRequired as the Validator component is not installed. Try running "composer require symfony/validator".');
         }
 
+        if (\is_array($options)) {
+            trigger_deprecation('vich/uploader-bundle', '2.9', 'Passing an array of options to configure the "%s" constraint is deprecated, use named arguments instead.', static::class);
+        }
+
         // Handle options array format
         if (\is_array($options) && \array_key_exists('target', $options)) {
             $target = $options['target'];
