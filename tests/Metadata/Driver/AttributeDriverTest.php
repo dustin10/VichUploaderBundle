@@ -9,10 +9,13 @@ use Metadata\ClassMetadata;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\TestBundle\Entity\Article;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable as UploadableAnnotation;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField as UploadableFieldAnnotation;
 use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
 use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AttributeDriver;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
+use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyFile;
 
@@ -52,6 +55,38 @@ final class AttributeDriverTest extends TestCase
             ->expects(self::atLeastOnce())
             ->method('getPropertyAttribute')
             ->willReturnCallback(static fn (\ReflectionProperty $property): ?UploadableField => 'file' === $property->getName() ? new UploadableField('dummy_file', 'fileName') : null);
+
+        $driver = new AttributeDriver($reader, [$this->managerRegistry]);
+        $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
+
+        self::assertInstanceOf(\Vich\UploaderBundle\Metadata\ClassMetadata::class, $metadata);
+        self::assertObjectHasProperty('fields', $metadata);
+        self::assertEquals([
+            'file' => [
+                'mapping' => 'dummy_file',
+                'propertyName' => 'file',
+                'fileNameProperty' => 'fileName',
+                'size' => null,
+                'mimeType' => null,
+                'originalName' => null,
+                'dimensions' => null,
+            ],
+        ], $metadata->fields);
+    }
+
+    public function testReadUploadableAnnotation(): void
+    {
+        $entity = new DummyAttributeEntity();
+
+        $reader = $this->createMock(AttributeReader::class);
+        $reader
+            ->expects(self::once())
+            ->method('getClassAttribute')
+            ->willReturn(new UploadableAnnotation());
+        $reader
+            ->expects(self::atLeastOnce())
+            ->method('getPropertyAttribute')
+            ->willReturnCallback(static fn (\ReflectionProperty $property): ?UploadableFieldAnnotation => 'file' === $property->getName() ? new UploadableFieldAnnotation('dummy_file', 'fileName') : null);
 
         $driver = new AttributeDriver($reader, [$this->managerRegistry]);
         $metadata = $driver->loadMetadataForClass(new \ReflectionClass($entity));
