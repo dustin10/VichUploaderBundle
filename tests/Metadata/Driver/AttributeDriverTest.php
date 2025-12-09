@@ -46,6 +46,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::once())
@@ -78,6 +79,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyAttributeEntity();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::once())
@@ -110,6 +112,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::exactly(2))
@@ -129,6 +132,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new Article();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::once())
@@ -186,6 +190,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyEntity();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::once())
@@ -203,6 +208,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyFile();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::once())
@@ -239,6 +245,7 @@ final class AttributeDriverTest extends TestCase
     {
         $entity = new DummyFile();
 
+        // @phpstan-ignore-next-line method.unresolvableReturnType
         $reader = $this->createMock(AttributeReader::class);
         $reader
             ->expects(self::exactly(2))
