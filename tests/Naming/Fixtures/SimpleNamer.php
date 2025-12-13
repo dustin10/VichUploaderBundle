@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Naming\Fixtures;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 
 /**
@@ -13,7 +13,7 @@ class SimpleNamer implements NamerInterface
 {
     use \Vich\UploaderBundle\Naming\Polyfill\FileExtensionTrait;
 
-    public function name(object|array $object, PropertyMapping $mapping): string
+    public function name(object|array $object, PropertyMappingInterface $mapping): string
     {
         $file = $mapping->getFile($object);
         $originalName = $file->getClientOriginalName();

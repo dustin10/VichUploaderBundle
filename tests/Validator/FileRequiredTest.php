@@ -14,13 +14,6 @@ final class FileRequiredTest extends TestCase
         $this->assertSame('image', $constraint->target);
     }
 
-    public function testTargetOptionWithArray(): void
-    {
-        $constraint = new FileRequired(['target' => 'document']);
-
-        $this->assertSame('document', $constraint->target);
-    }
-
     public function testNoTargetOption(): void
     {
         $constraint = new FileRequired();

@@ -76,7 +76,7 @@ abstract class FileDriverTestCase extends TestCase
     {
         $fileLocator = $this->createMock(FileLocatorInterface::class);
         $fileLocator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findFileForClass')
             ->with(self::equalTo($class), self::equalTo(static::getExtension()))
             ->willReturn($foundFile);

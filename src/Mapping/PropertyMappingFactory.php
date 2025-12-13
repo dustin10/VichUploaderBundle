@@ -5,28 +5,25 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Persistence\Proxy;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
- * PropertyMappingFactory.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *
  * @internal
  */
-final class PropertyMappingFactory implements PropertyMappingFactoryInterface
+final readonly class PropertyMappingFactory implements PropertyMappingFactoryInterface
 {
     public function __construct(
-        private readonly MetadataReader $metadata,
-        private readonly PropertyMappingResolverInterface $resolver,
+        private MetadataReaderInterface $metadata,
+        private PropertyMappingResolverInterface $resolver,
     ) {
     }
 
     /**
-     * Creates an array of PropertyMapping objects which contain the
-     * configuration for the uploadable fields in the specified
-     * object.
+     * Create an array of PropertyMapping objects which contain the
+     * configuration for the uploadable fields in the specified object.
      *
      * @param object|array $obj         The object
      * @param string|null  $className   The object's class. Mandatory if $obj can't be used to determine it
@@ -60,7 +57,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Creates a property mapping object which contains the
+     * Create a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
      * @param object|array $obj       The object
@@ -73,7 +70,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
      * @throws MappingNotFoundException
      * @throws NotUploadableException
      */
-    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMapping
+    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMappingInterface
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
@@ -90,7 +87,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
         return $this->resolver->resolve($obj, $field, $mappingData);
     }
 
-    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMapping
+    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMappingInterface
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
@@ -108,7 +105,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Checks to see if the class is uploadable.
+     * Check to see if the class is uploadable.
      *
      * @param string $class The class name (FQCN)
      *
@@ -122,7 +119,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Returns the className of the given object.
+     * Return the className of the given object.
      *
      * @param object|array $object    The object to inspect
      * @param string|null  $className User specified className

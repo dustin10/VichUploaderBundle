@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * NamerInterface.
@@ -16,12 +16,12 @@ interface DirectoryNamerInterface
     /**
      * Creates a directory name for the file being uploaded.
      *
-     * @param object|array    $object  The object or array the upload is attached to
-     * @param PropertyMapping $mapping The mapping to use to manipulate the given object
+     * @param object|array             $object  The object or array the upload is attached to
+     * @param PropertyMappingInterface $mapping The mapping to use to manipulate the given object
      *
      * @phpstan-param T $object
      *
      * @return string The directory name
      */
-    public function directoryName(object|array $object, PropertyMapping $mapping): string;
+    public function directoryName(object|array $object, PropertyMappingInterface $mapping): string;
 }

@@ -6,12 +6,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 
 #[AsCommand(name: 'vich:mapping:list-classes', description: 'Searches for uploadable classes.')]
 final class MappingListClassesCommand extends Command
 {
-    public function __construct(private readonly MetadataReader $metadataReader)
+    public function __construct(private readonly MetadataReaderInterface $metadataReader)
     {
         parent::__construct();
     }

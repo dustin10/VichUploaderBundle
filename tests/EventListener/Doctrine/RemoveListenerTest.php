@@ -31,13 +31,13 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->object = $this->getEntityProxyMock('One');
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxyOne')
             ->willReturn(true);
 
         $this->object
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('__load');
 
         $this->event = $this->getEventMock();
@@ -54,7 +54,7 @@ final class RemoveListenerTest extends ListenerTestCase
             ->method('__load');
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with('VichUploaderEntityProxyTwo')
             ->willReturn(false);
@@ -69,7 +69,7 @@ final class RemoveListenerTest extends ListenerTestCase
     {
         // isUploadable
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
@@ -77,14 +77,14 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn([['propertyName' => 'field_name']])
         ;
 
         $this->handler
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('remove')
             ->with($this->object, 'field_name')
         ;
@@ -99,7 +99,7 @@ final class RemoveListenerTest extends ListenerTestCase
     {
         // isUploadable
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(false);
