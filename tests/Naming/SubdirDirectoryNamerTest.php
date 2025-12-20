@@ -30,7 +30,7 @@ final class SubdirDirectoryNamerTest extends TestCase
         $entity->setFileName($fileName);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFileName')
             ->with($entity)
             ->willReturn($fileName);

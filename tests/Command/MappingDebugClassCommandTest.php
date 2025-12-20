@@ -12,7 +12,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
     public function testNotUploadableClass(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())->method('isUploadable')->willReturn(false);
+        $reader->expects($this->once())->method('isUploadable')->willReturn(false);
         $command = new MappingDebugClassCommand($reader);
         $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => \stdClass::class]);
         self::assertStringContainsString('is not uploadable', $output);
@@ -21,7 +21,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
     public function testUploadableClass(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())->method('isUploadable')->willReturn(true);
+        $reader->expects($this->once())->method('isUploadable')->willReturn(true);
         $command = new MappingDebugClassCommand($reader);
         $output = $this->executeCommand('vich:mapping:debug-class', $command, ['fqcn' => Image::class]);
         self::assertStringContainsString('Introspecting class', $output);
@@ -35,7 +35,7 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         }
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())->method('getUploadableClasses')->willReturn([Image::class]);
+        $reader->expects($this->once())->method('getUploadableClasses')->willReturn([Image::class]);
         $tester = new CommandCompletionTester(new MappingDebugClassCommand($reader));
 
         $this->assertEqualsCanonicalizing($expectedSuggestions, $tester->complete($input));

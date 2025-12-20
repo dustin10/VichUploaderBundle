@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Naming;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Util\PropertyPathUtils;
 
 /**
@@ -39,7 +39,7 @@ final class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, Co
         }
     }
 
-    public function directoryName(object|array $object, PropertyMapping $mapping): string
+    public function directoryName(object|array $object, PropertyMappingInterface $mapping): string
     {
         if (empty($this->dateTimeFormat)) {
             throw new \LogicException('Option "date_time_format" is empty.');

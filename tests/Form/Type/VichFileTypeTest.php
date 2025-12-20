@@ -82,13 +82,13 @@ final class VichFileTypeTest extends TestCase
             if (true === $options['download_label']) {
                 $mapping = $this->getPropertyMappingMock();
                 $mapping
-                    ->expects(self::once())
+                    ->expects($this->once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
                     ->willReturn($object->getImageOriginalName());
 
                 $propertyMappingFactory
-                    ->expects(self::once())
+                    ->expects($this->once())
                     ->method('fromField')
                     ->with($object, $field)
                     ->willReturn($mapping);
@@ -96,7 +96,7 @@ final class VichFileTypeTest extends TestCase
 
             if ($options['download_label'] instanceof PropertyPath) {
                 $propertyAccessor
-                    ->expects(self::once())
+                    ->expects($this->once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
                     ->willReturn($object->getTitle());

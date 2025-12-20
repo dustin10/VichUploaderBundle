@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -22,7 +22,7 @@ final class PropertyMappingFactoryTest extends TestCase
 {
     protected ContainerInterface|MockObject $container;
 
-    protected MockObject|MetadataReader $metadata;
+    protected MockObject|MetadataReaderInterface $metadata;
 
     protected function setUp(): void
     {
@@ -38,7 +38,7 @@ final class PropertyMappingFactoryTest extends TestCase
         $this->expectException(NotUploadableException::class);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->willReturn(false);
 
@@ -70,13 +70,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with($expectedClassName)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with($expectedClassName)
             ->willReturn($expectedFields);
@@ -88,11 +88,10 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
+        $mapping->setNamer($this->createMock(NamerInterface::class));
 
         self::assertEquals('dummy_file', $mapping->getMappingName());
         self::assertEquals('images', $mapping->getUploadDestination());
-        self::assertNull($mapping->getNamer());
-        self::assertFalse($mapping->hasNamer());
     }
 
     public static function fromObjectProvider(): array
@@ -137,13 +136,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -155,11 +154,10 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
+        $mapping->setNamer($this->createMock(NamerInterface::class));
 
         self::assertEquals('dummy_file', $mapping->getMappingName());
         self::assertEquals('images', $mapping->getUploadDestination());
-        self::assertNull($mapping->getNamer());
-        self::assertFalse($mapping->hasNamer());
         self::assertEquals('file_name', $mapping->getFileNamePropertyName());
     }
 
@@ -194,13 +192,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -212,6 +210,7 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
+        $mapping->setNamer($this->createMock(NamerInterface::class));
 
         self::assertEquals('other_mapping', $mapping->getMappingName());
     }
@@ -234,13 +233,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn($expectedFields);
@@ -268,13 +267,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with($expectedClassName)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableField')
             ->with($expectedClassName, 'file')
             ->willReturn($expectedFields);
@@ -306,13 +305,13 @@ final class PropertyMappingFactoryTest extends TestCase
     public function testFromFieldReturnsNullOnInvalidFieldName(): void
     {
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableField')
             ->with(DummyEntity::class)
             ->willReturn(null);
@@ -334,13 +333,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableField')
             ->with(DummyEntity::class)
             ->willReturn(['mapping' => 'dummy_file', 'propertyName' => 'file']);
@@ -366,13 +365,13 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class)
             ->willReturn(['file' => ['mapping' => 'dummy_file', 'propertyName' => 'file', 'fileNameProperty' => 'fileName']]);
@@ -384,6 +383,7 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
+        $mapping->setNamer($namer);
 
         self::assertEquals($namer, $mapping->getNamer());
         self::assertTrue($mapping->hasNamer());

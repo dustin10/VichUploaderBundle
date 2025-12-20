@@ -9,8 +9,8 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -43,7 +43,7 @@ final class FlysystemStorage extends AbstractStorage
         $this->useFlysystemToResolveUri = $useFlysystemToResolveUri;
     }
 
-    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
+    protected function doUpload(PropertyMappingInterface $mapping, File $file, ?string $dir, string $name): void
     {
         $fs = $this->getFilesystem($mapping);
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
@@ -58,7 +58,7 @@ final class FlysystemStorage extends AbstractStorage
         }
     }
 
-    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
+    protected function doRemove(PropertyMappingInterface $mapping, ?string $dir, string $name): ?bool
     {
         $fs = $this->getFilesystem($mapping);
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
@@ -68,7 +68,7 @@ final class FlysystemStorage extends AbstractStorage
         return true;
     }
 
-    protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
+    protected function doResolvePath(PropertyMappingInterface $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
@@ -138,7 +138,7 @@ final class FlysystemStorage extends AbstractStorage
         }
     }
 
-    protected function getFilesystem(PropertyMapping $mapping): FilesystemOperator
+    protected function getFilesystem(PropertyMappingInterface $mapping): FilesystemOperator
     {
         if ($this->registry instanceof MountManager) {
             return $this->registry;
@@ -147,7 +147,7 @@ final class FlysystemStorage extends AbstractStorage
         return $this->registry->get($mapping->getUploadDestination());
     }
 
-    public function listFiles(PropertyMapping $mapping): iterable
+    public function listFiles(PropertyMappingInterface $mapping): iterable
     {
         $fs = $this->getFilesystem($mapping);
 

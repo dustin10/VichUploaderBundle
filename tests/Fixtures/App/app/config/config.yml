@@ -29,7 +29,6 @@ doctrine:
         path:   "%kernel.cache_dir%/database.db3"
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
 services:

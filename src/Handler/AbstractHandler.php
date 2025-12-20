@@ -3,8 +3,8 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -21,7 +21,7 @@ abstract class AbstractHandler
     /**
      * @throws MappingNotFoundException
      */
-    protected function getMapping(object|array $obj, string $fieldName, ?string $className = null): ?PropertyMapping
+    protected function getMapping(object|array $obj, string $fieldName, ?string $className = null): PropertyMappingInterface
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 

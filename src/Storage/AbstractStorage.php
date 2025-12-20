@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * FileSystemStorage.
@@ -24,9 +24,9 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * @return mixed|void
      */
-    abstract protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name);
+    abstract protected function doUpload(PropertyMappingInterface $mapping, File $file, ?string $dir, string $name);
 
-    public function upload(object $obj, PropertyMapping $mapping): void
+    public function upload(object $obj, PropertyMappingInterface $mapping): void
     {
         $file = $mapping->getFile($obj);
         if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
@@ -66,9 +66,9 @@ abstract class AbstractStorage implements StorageInterface
         }
     }
 
-    abstract protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool;
+    abstract protected function doRemove(PropertyMappingInterface $mapping, ?string $dir, string $name): ?bool;
 
-    public function remove(object $obj, PropertyMapping $mapping, ?string $dir = null): ?bool
+    public function remove(object $obj, PropertyMappingInterface $mapping, ?string $dir = null): ?bool
     {
         $name = $mapping->getFileName($obj);
 
@@ -89,12 +89,12 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * Do resolve path.
      *
-     * @param PropertyMapping $mapping  The mapping representing the field
-     * @param string|null     $dir      The directory in which the file is uploaded
-     * @param string          $name     The file name
-     * @param bool            $relative Whether the path should be relative or absolute
+     * @param PropertyMappingInterface $mapping  The mapping representing the field
+     * @param string|null              $dir      The directory in which the file is uploaded
+     * @param string                   $name     The file name
+     * @param bool                     $relative Whether the path should be relative or absolute
      */
-    abstract protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string;
+    abstract protected function doResolvePath(PropertyMappingInterface $mapping, ?string $dir, string $name, ?bool $relative = false): string;
 
     public function resolvePath(object|array $obj, ?string $fieldName = null, ?string $className = null, ?bool $relative = false): ?string
     {
@@ -141,7 +141,7 @@ abstract class AbstractStorage implements StorageInterface
     /**
      * note: extension point.
      *
-     * @return array{0: PropertyMapping, 1: string}
+     * @return array{0: PropertyMappingInterface, 1: string}
      *
      * @throws MappingNotFoundException
      * @throws NotUploadableException

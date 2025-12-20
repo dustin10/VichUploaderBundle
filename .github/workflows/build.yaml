@@ -1,6 +1,10 @@
 name: build
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - master
+    pull_request: ~
 
 env:
   COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -17,7 +21,7 @@ jobs:
               with:
                   php-version: 8.3
             - run: |
-                  composer require --no-update liip/imagine-bundle:"^2.13" phpstan/phpstan:"^2" 
+                  composer require --no-update liip/imagine-bundle:^2.16 phpstan/phpstan:^2 
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:
@@ -37,7 +41,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Require the vendor
-              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.5
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.11
             - name: Update
               run: composer update --no-interaction --no-progress
             - name: Run
@@ -59,23 +63,34 @@ jobs:
                 php:
                     - '8.3'
                     - '8.4'
+                    - '8.5'
                 dependencies: [highest]
                 symfony: ['*']
                 with_imagine: [false]
                 with_oneupbundle: [true]
+                with_gaufrette: [true]
                 max_deprecations: [0]
                 include:
                     - php: '8.3'
-                      symfony: '7.3.*'
+                      symfony: '6.4.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
+                      with_gaufrette: true
                       max_deprecations: 0
                     - php: '8.4'
-                      symfony: '7.4.*@dev'
+                      symfony: '7.4.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
+                      with_gaufrette: true
+                      max_deprecations: 0
+                    - php: '8.5'
+                      symfony: '8.0.*'
+                      dependencies: highest
+                      with_imagine: false
+                      with_oneupbundle: false
+                      with_gaufrette: false
                       max_deprecations: 6
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
@@ -93,7 +108,7 @@ jobs:
                   extensions: mongodb-stable, pdo_sqlite
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:^2.8
+                  composer global require --no-interaction --no-progress symfony/flex:^2.10
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
             - name: use possible dev deps
@@ -101,10 +116,12 @@ jobs:
               run: |
                   composer config minimum-stability dev
                   composer config prefer-stable true
-            - run: composer require --no-update liip/imagine-bundle:"^2.0"
+            - run: composer require --no-update --dev liip/imagine-bundle:"^2.0"
               if: matrix.with_imagine
-            - run: composer require --no-update oneup/flysystem-bundle:"^4.0.1"
+            - run: composer require --no-update --dev oneup/flysystem-bundle:"^4.0.1"
               if: matrix.with_oneupbundle
+            - run: composer remove --no-update --dev knplabs/knp-gaufrette-bundle
+              if: ${{ !matrix.with_gaufrette}}
             - name: Update project dependencies
               uses: ramsey/composer-install@v2
               with:

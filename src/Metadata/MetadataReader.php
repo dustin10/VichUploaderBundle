@@ -6,33 +6,23 @@ use Metadata\AdvancedMetadataFactoryInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
 /**
- * MetadataReader.
- *
- * Exposes a simple interface to read objects metadata.
+ * Expose a simple interface to read objects metadata.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
  * @internal
  */
-final class MetadataReader
+final readonly class MetadataReader implements MetadataReaderInterface
 {
     /**
      * Constructs a new instance of the MetadataReader.
      *
      * @param AdvancedMetadataFactoryInterface $reader The "low-level" metadata reader
      */
-    public function __construct(private readonly AdvancedMetadataFactoryInterface $reader)
+    public function __construct(private AdvancedMetadataFactoryInterface $reader)
     {
     }
 
-    /**
-     * Tells if the given class is uploadable.
-     *
-     * @param string      $class   The class name to test (FQCN)
-     * @param string|null $mapping If given, also checks that the object has the given mapping
-     *
-     * @throws MappingNotFoundException
-     */
     public function isUploadable(string $class, ?string $mapping = null): bool
     {
         $metadata = $this->reader->getMetadataForClass($class);
@@ -54,28 +44,11 @@ final class MetadataReader
         return false;
     }
 
-    /**
-     * Search for all uploadable classes.
-     *
-     * @return array A list of uploadable class names
-     *
-     * @throws \RuntimeException
-     */
     public function getUploadableClasses(): array
     {
         return $this->reader->getAllClassNames();
     }
 
-    /**
-     * Attempts to read the uploadable fields.
-     *
-     * @param string      $class   The class name to test (FQCN)
-     * @param string|null $mapping If given, also checks that the object has the given mapping
-     *
-     * @return array A list of uploadable fields
-     *
-     * @throws MappingNotFoundException
-     */
     public function getUploadableFields(string $class, ?string $mapping = null): array
     {
         if (null === $metadata = $this->reader->getMetadataForClass($class)) {
@@ -95,16 +68,6 @@ final class MetadataReader
         return $uploadableFields;
     }
 
-    /**
-     * Attempts to read the mapping of a specified property.
-     *
-     * @param string $class The class name to test (FQCN)
-     * @param string $field The field
-     *
-     * @return mixed The field mapping
-     *
-     * @throws MappingNotFoundException
-     */
     public function getUploadableField(string $class, string $field): mixed
     {
         $fieldsMetadata = $this->getUploadableFields($class);

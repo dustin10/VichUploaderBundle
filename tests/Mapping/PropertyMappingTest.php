@@ -50,7 +50,7 @@ class PropertyMappingTest extends TestCase
 
         $namer = $this->createMock(DirectoryNamerInterface::class);
         $namer
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('directoryName')
             ->with($object, $prop)
             ->willReturn($dir);
@@ -110,7 +110,7 @@ class PropertyMappingTest extends TestCase
 
         $namer = $this->createMock(NamerInterface::class);
         $namer
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('name')
             ->with($object, $prop)
             ->willReturn('123');

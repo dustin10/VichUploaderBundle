@@ -57,7 +57,7 @@ final class SmartUniqidNamerTest extends TestCase
         ;
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('guessExtension')
             ->willReturn($guessExtension)
         ;
@@ -65,7 +65,7 @@ final class SmartUniqidNamerTest extends TestCase
         $entity = new \stdClass();
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file)
@@ -93,7 +93,7 @@ final class SmartUniqidNamerTest extends TestCase
             ;
         } else {
             $file
-                ->expects(self::once())
+                ->expects($this->once())
                 ->method('guessExtension')
                 ->willReturn($guessExtension)
             ;
@@ -102,7 +102,7 @@ final class SmartUniqidNamerTest extends TestCase
         $entity = new \stdClass();
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file)
@@ -130,7 +130,7 @@ final class SmartUniqidNamerTest extends TestCase
 
         $entity = new \stdClass();
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file)

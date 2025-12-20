@@ -2,14 +2,15 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactoryInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Command\CleanupCommand;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\Stub\TestQueryBuilderInterface;
@@ -21,12 +22,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithNoUploadableClasses(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -44,8 +45,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithInvalidMapping(): void
     {
         $reader = $this->mockMetadataReader();
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -63,12 +64,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testDryRunMode(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -87,18 +88,18 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithSpecificMapping(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn(['App\\Entity\\Product']);
 
         // getUploadableFields is called twice: once for processing and once for finding sample field
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with('App\\Entity\\Product', 'product_image')
             ->willReturn([]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -116,7 +117,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithNoObjectManager(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn(['App\\Entity\\Product']);
 
@@ -132,12 +133,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 ],
             ]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         // Create an empty manager registry (no managers)
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([]);
 
@@ -157,12 +158,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithRepositoryWithoutQueryBuilder(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn(['App\\Entity\\Product']);
 
         // getUploadableFields is called twice: once for processing and once for finding sample field
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with('App\\Entity\\Product', 'test_mapping')
             ->willReturn([
@@ -173,29 +174,29 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 ],
             ]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         // Create a repository without createQueryBuilder method
         $repository = $this->createMock(ObjectRepository::class);
 
-        $metadataFactory = $this->createMock(ClassMetadataFactory::class);
-        $metadataFactory->expects(self::once())
+        $metadataFactory = $this->createMock(ClassMetadataFactoryInterface::class);
+        $metadataFactory->expects($this->once())
             ->method('isTransient')
             ->with('App\\Entity\\Product')
             ->willReturn(false);
 
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects(self::once())
+        $objectManager->expects($this->once())
             ->method('getMetadataFactory')
             ->willReturn($metadataFactory);
-        $objectManager->expects(self::once())
+        $objectManager->expects($this->once())
             ->method('getRepository')
             ->with('App\\Entity\\Product')
             ->willReturn($repository);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -218,12 +219,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     public function testCommandWithCustomBatchSize(): void
     {
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([]);
 
-        $storage = $this->createMock(StorageInterface::class);
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
+        $storage = self::createStub(StorageInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -244,12 +245,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // Expected: orphaned files should be reported/deleted
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([DummyEntity::class]);
 
         // getUploadableFields is called twice: once for processing and once for finding sample field
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
@@ -262,7 +263,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         // Create a mock storage that returns 3 files (older than 2 hours to pass min-age filter)
         $storage = $this->createMock(StorageInterface::class);
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('listFiles')
             ->willReturn([
                 new \Vich\UploaderBundle\Storage\StoredFile('file1.txt', \time() - 7200), // 2 hours old
@@ -271,19 +272,19 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ]); // 3 files in storage
 
         // Create mock mapping
-        $mapping = $this->createMock(PropertyMapping::class);
-        $mapping->expects(self::atLeastOnce())
+        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
-        $mapping->expects(self::atLeastOnce())
+        $mapping->expects($this->atLeastOnce())
             ->method('getFileName')
             ->willReturnOnConsecutiveCalls('file1.txt', 'file2.txt'); // Only 2 files referenced
-        $mapping->expects(self::any())
+        $mapping
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
-        $mappingFactory->expects(self::any())
+        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
@@ -299,7 +300,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -325,11 +326,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // Expected: no orphaned files should be reported
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([DummyEntity::class]);
 
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
@@ -342,26 +343,26 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         // Storage has exactly the same files as in database (older than 2 hours to pass min-age filter)
         $storage = $this->createMock(StorageInterface::class);
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('listFiles')
             ->willReturn([
                 new \Vich\UploaderBundle\Storage\StoredFile('file1.txt', \time() - 7200), // 2 hours old
                 new \Vich\UploaderBundle\Storage\StoredFile('file2.txt', \time() - 7200), // 2 hours old
             ]); // 2 files in storage
 
-        $mapping = $this->createMock(PropertyMapping::class);
-        $mapping->expects(self::atLeastOnce())
+        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
-        $mapping->expects(self::atLeastOnce())
+        $mapping->expects($this->atLeastOnce())
             ->method('getFileName')
             ->willReturnOnConsecutiveCalls('file1.txt', 'file2.txt'); // 2 files referenced
-        $mapping->expects(self::any())
+        $mapping
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
-        $mappingFactory->expects(self::any())
+        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
@@ -373,7 +374,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -399,11 +400,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // Expected: command should not fail, just report fewer files in storage
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([DummyEntity::class]);
 
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
@@ -416,25 +417,25 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         // Storage has FEWER files than referenced in the database (older than 2 hours to pass min-age filter)
         $storage = $this->createMock(StorageInterface::class);
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('listFiles')
             ->willReturn([
                 new \Vich\UploaderBundle\Storage\StoredFile('file1.txt', \time() - 7200), // 2 hours old
             ]); // Only 1 file in storage
 
-        $mapping = $this->createMock(PropertyMapping::class);
-        $mapping->expects(self::atLeastOnce())
+        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
-        $mapping->expects(self::atLeastOnce())
+        $mapping->expects($this->atLeastOnce())
             ->method('getFileName')
             ->willReturnOnConsecutiveCalls('file1.txt', 'file2.txt', 'file3.txt'); // 3 files referenced
-        $mapping->expects(self::any())
+        $mapping
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
-        $mappingFactory->expects(self::any())
+        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
@@ -447,7 +448,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -473,11 +474,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // Expected: storage->remove() is called with correct parameters
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([DummyEntity::class]);
 
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
@@ -490,7 +491,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
 
         // Storage returns 3 files (2 hours old to pass min-age filter)
         $storage = $this->createMock(StorageInterface::class);
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('listFiles')
             ->willReturn([
                 new \Vich\UploaderBundle\Storage\StoredFile('file1.txt', \time() - 7200),
@@ -499,34 +500,34 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ]);
 
         // KEY ASSERTION: Verify remove() is called ONCE with correct parameters for orphaned file
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('remove')
             ->with(
                 self::anything(), // object (temporary instance created by command)
-                self::callback(function ($mapping) {
+                self::callback(static function ($mapping) {
                     // Verify mapping is correct
-                    return $mapping instanceof PropertyMapping
+                    return $mapping instanceof PropertyMappingInterface
                         && 'test_mapping' === $mapping->getMappingName();
                 }),
                 '' // directory (empty string for root, as returned by getUploadDir)
             );
 
         // Mock mapping that returns 2 files (file1.txt, file2.txt) → orphaned.txt is orphan
-        $mapping = $this->createMock(PropertyMapping::class);
-        $mapping->expects(self::atLeastOnce())
+        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
-        $mapping->expects(self::atLeastOnce())
+        $mapping->expects($this->atLeastOnce())
             ->method('getFileName')
             ->willReturnOnConsecutiveCalls('file1.txt', 'file2.txt'); // Only 2 files referenced
-        $mapping->expects(self::any())
+        $mapping
             ->method('getUploadDir')
             ->willReturn('');
-        $mapping->expects(self::any())
+        $mapping
             ->method('setFileName'); // Called when creating temp object for deletion
 
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
-        $mappingFactory->expects(self::any())
+        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
@@ -539,7 +540,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -568,12 +569,12 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         // and only counts/deletes files that are old enough.
 
         $reader = $this->mockMetadataReader();
-        $reader->expects(self::once())
+        $reader->expects($this->once())
             ->method('getUploadableClasses')
             ->willReturn([DummyEntity::class]);
 
         // getUploadableFields is called twice: once for processing and once for finding the sample field
-        $reader->expects(self::exactly(2))
+        $reader->expects($this->exactly(2))
             ->method('getUploadableFields')
             ->with(DummyEntity::class, 'test_mapping')
             ->willReturn([
@@ -589,24 +590,24 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $old = new \Vich\UploaderBundle\Storage\StoredFile('old.txt', \time() - 7200);
 
         $storage = $this->createMock(StorageInterface::class);
-        $storage->expects(self::once())
+        $storage->expects($this->once())
             ->method('listFiles')
             ->willReturn([$recent, $old]);
         // In dry-run, no deletion should occur
-        $storage->expects(self::never())
+        $storage->expects($this->never())
             ->method('remove');
 
         // Mapping: we don't care about DB-referenced files here because we return 0 entities below
-        $mapping = $this->createMock(PropertyMapping::class);
-        $mapping->expects(self::any())
+        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping
             ->method('getMappingName')
             ->willReturn('test_mapping');
-        $mapping->expects(self::any())
+        $mapping
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
-        $mappingFactory->expects(self::any())
+        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
@@ -616,7 +617,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry->expects(self::once())
+        $managerRegistry->expects($this->once())
             ->method('getManagers')
             ->willReturn([$objectManager]);
 
@@ -691,16 +692,16 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     private function createObjectManagerMock(MockObject $repository, string $className): MockObject
     {
         $metadataFactory = $this->createMock(ClassMetadataFactory::class);
-        $metadataFactory->expects(self::once())
+        $metadataFactory->expects($this->once())
             ->method('isTransient')
             ->with($className)
             ->willReturn(false);
 
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects(self::once())
+        $objectManager->expects($this->once())
             ->method('getMetadataFactory')
             ->willReturn($metadataFactory);
-        $objectManager->expects(self::once())
+        $objectManager->expects($this->once())
             ->method('getRepository')
             ->with($className)
             ->willReturn($repository);

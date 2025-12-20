@@ -25,7 +25,7 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testRemoveSkipsEmptyFilenameProperties(?string $propertyValue): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn($propertyValue);
 
@@ -44,12 +44,12 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->expectException(\Exception::class);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn($this->getValidUploadDir());
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('foo.txt');
 
@@ -59,12 +59,12 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testRemove(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->getValidUploadDir());
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('test.txt');
 
@@ -84,12 +84,12 @@ final class FileSystemStorageTest extends StorageTestCase
         \file_put_contents($subdir.\DIRECTORY_SEPARATOR.'avatar.jpg', 'content');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->getValidUploadDir());
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('avatar.jpg');
 
@@ -110,22 +110,22 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolvePath(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn('/tmp');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -141,22 +141,22 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolvePathWithoutFieldName(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn('/tmp');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromFirstField')
             ->with($this->object)
             ->willReturn($this->mapping);
@@ -172,17 +172,17 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolveRelativePath(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('upload_dir');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -195,12 +195,12 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolveUriReturnsNullIfNoFile(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn(null);
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -212,22 +212,22 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolveUri(string $uploadDir, string $uri): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn($uploadDir);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -240,22 +240,22 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testResolveStream(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->root->url().'/uploads');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('test.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -304,30 +304,30 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn('test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($uploadDir);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->with($this->object)
             ->willReturn($dir);
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('move')
             ->with($expectedDir, 'test.txt');
 
@@ -346,24 +346,24 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn($this->getValidUploadDir().'/test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'storage');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->with($this->object)
             ->willReturn('vich_uploader_bundle');
@@ -383,24 +383,24 @@ final class FileSystemStorageTest extends StorageTestCase
             ->willReturn($this->getValidUploadDir().'/test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'storage');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->with($this->object)
             ->willReturn('vich_uploader_bundle/directoryNamer/1/');
@@ -441,7 +441,7 @@ final class FileSystemStorageTest extends StorageTestCase
         \file_put_contents($uploadDir.'/subdir/file3.txt', 'content3');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($uploadDir);
 
@@ -469,7 +469,7 @@ final class FileSystemStorageTest extends StorageTestCase
         \mkdir($uploadDir, 0o777, true);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($uploadDir);
 
@@ -481,7 +481,7 @@ final class FileSystemStorageTest extends StorageTestCase
     public function testListFilesWithNonExistentDirectory(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn($this->root->url().'/nonexistent');
 
