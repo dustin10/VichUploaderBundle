@@ -29,8 +29,6 @@
         "ext-simplexml": "*",
         "doctrine/persistence": "^3.0 || ^4.0",
         "jms/metadata": "^2.4",
-        "liip/imagine-bundle": "^2.16",
-        "phpstan/phpstan": "^2",
         "symfony/config": "^6.4 || ^7.4 || ^8.0",
         "symfony/console": "^6.4 || ^7.4 || ^8.0",
         "symfony/dependency-injection": "^6.4 || ^7.4 || ^8.0",
