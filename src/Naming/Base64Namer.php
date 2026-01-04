@@ -56,6 +56,8 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomChar(): string
     {
-        return self::ALPHABET[\random_int(0, 63)];
+        // Use PHP 8.3's Randomizer for cryptographically secure random generation
+        $randomizer = new \Random\Randomizer();
+        return self::ALPHABET[$randomizer->getInt(0, 63)];
     }
 }

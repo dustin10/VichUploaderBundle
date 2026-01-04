@@ -52,6 +52,8 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomString(): string
     {
-        return \microtime(true).\random_int(0, 9_999_999);
+        // Use PHP 8.3's Randomizer for cryptographically secure random generation
+        $randomizer = new \Random\Randomizer();
+        return \microtime(true).$randomizer->getInt(0, 9_999_999);
     }
 }
