@@ -61,6 +61,7 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
         // Use PHP 8.3's Randomizer for cryptographically secure random generation
         // Reuse the same instance for performance
         self::$randomizer ??= new \Random\Randomizer();
+
         return self::ALPHABET[self::$randomizer->getInt(0, 63)];
     }
 }
