@@ -13,6 +13,8 @@ class HashNamer implements NamerInterface, ConfigurableInterface
 {
     use Polyfill\FileExtensionTrait;
 
+    private static ?\Random\Randomizer $randomizer = null;
+
     private string $algorithm = 'sha1';
 
     private ?int $length = null;
@@ -53,7 +55,8 @@ class HashNamer implements NamerInterface, ConfigurableInterface
     protected function getRandomString(): string
     {
         // Use PHP 8.3's Randomizer for cryptographically secure random generation
-        $randomizer = new \Random\Randomizer();
-        return \microtime(true).$randomizer->getInt(0, 9_999_999);
+        // Reuse the same instance for performance
+        self::$randomizer ??= new \Random\Randomizer();
+        return \microtime(true).self::$randomizer->getInt(0, 9_999_999);
     }
 }
