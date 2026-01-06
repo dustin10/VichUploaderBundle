@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Mapping\AttributeInterface;
 /**
  * @internal
  */
-final class AttributeReader
+final readonly class AttributeReader
 {
     /** @return AttributeInterface[] */
     public function getClassAttributes(\ReflectionClass $class): array

@@ -16,6 +16,8 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
 
     protected const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 
+    private static ?\Random\Randomizer $randomizer = null;
+
     /** @var int Length of the resulting name. 10 can be decoded to a 64-bit integer. */
     protected $length = 10;
 
@@ -56,6 +58,10 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
 
     protected function getRandomChar(): string
     {
-        return self::ALPHABET[\random_int(0, 63)];
+        // Use PHP 8.3's Randomizer for cryptographically secure random generation
+        // Reuse the same instance for performance
+        self::$randomizer ??= new \Random\Randomizer();
+
+        return self::ALPHABET[self::$randomizer->getInt(0, 63)];
     }
 }

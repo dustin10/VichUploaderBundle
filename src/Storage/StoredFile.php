@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Storage;
 /**
  * Value object representing a file in storage.
  */
-final class StoredFile
+final readonly class StoredFile
 {
     /**
      * @param string   $path           File path relative to mapping root

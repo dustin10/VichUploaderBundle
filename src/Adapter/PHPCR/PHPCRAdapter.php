@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  *
  * @internal
  */
-final class PHPCRAdapter implements AdapterInterface
+final readonly class PHPCRAdapter implements AdapterInterface
 {
     public function recomputeChangeSet(LifecycleEventArgs $event): void
     {

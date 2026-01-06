@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  *
  * @internal
  */
-final class MongoDBAdapter implements AdapterInterface
+final readonly class MongoDBAdapter implements AdapterInterface
 {
     /**
      * @param LifecycleEventArgs $event
