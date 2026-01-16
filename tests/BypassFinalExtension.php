@@ -12,6 +12,7 @@ final class BypassFinalExtension implements Extension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
+        BypassFinals::denyPaths(['*/vendor/phpunit/*']);
         BypassFinals::enable();
     }
 }
