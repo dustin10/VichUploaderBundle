@@ -3,6 +3,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Vich\UploaderBundle\Naming\Base64Namer;
+use Vich\UploaderBundle\Naming\ChainDirectoryNamer;
 use Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer;
 use Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
@@ -60,6 +61,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(ConfigurableDirectoryNamer::class);
 
+    $services->set(ChainDirectoryNamer::class);
+
     $services->set(SmartUniqueNamer::class)
         ->args([
             service(Transliterator::class),
@@ -75,6 +78,7 @@ return static function (ContainerConfigurator $container): void {
     $services->alias('vich_uploader.namer_directory_property', PropertyDirectoryNamer::class);
     $services->alias('vich_uploader.namer_directory_current_date_time', CurrentDateTimeDirectoryNamer::class);
     $services->alias('vich_uploader.namer_directory_configurable', ConfigurableDirectoryNamer::class);
+    $services->alias('vich_uploader.namer_directory_chain', ChainDirectoryNamer::class);
     $services->alias('vich_uploader.namer_smart_unique', SmartUniqueNamer::class);
 
     // Transliterator service
