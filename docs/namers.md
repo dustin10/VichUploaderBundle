@@ -237,7 +237,7 @@ vich_uploader:
         products:
             upload_destination: products
             directory_namer:
-                service: vich_uploader.namer_directory_configurable
+                service: Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer
                 options:
                     directory_path: 'folder/subfolder/subsubfolder'
 ```
