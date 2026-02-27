@@ -36,6 +36,7 @@
         "doctrine/doctrine-bundle": "^2.7 || ^3.0",
         "doctrine/mongodb-odm": "^2.4",
         "doctrine/orm": "^2.13 || ^3.0",
+        "friendsofphp/php-cs-fixer": "^3.94",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "league/flysystem-bundle": "^2.4 || ^3.0",
         "league/flysystem-memory": "^2.0 || ^3.0",
