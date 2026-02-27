@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Tests\Injector;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Injector\FileInjector;
-use Vich\UploaderBundle\Storage\GaufretteStorage;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -15,11 +15,11 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class FileInjectorTest extends TestCase
 {
-    protected GaufretteStorage|MockObject $storage;
+    protected StorageInterface|MockObject $storage;
 
     protected function setUp(): void
     {
-        $this->storage = $this->createMock(GaufretteStorage::class);
+        $this->storage = $this->createMock(StorageInterface::class);
     }
 
     /**

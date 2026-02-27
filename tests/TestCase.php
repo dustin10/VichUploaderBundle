@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
-use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -49,8 +49,8 @@ abstract class TestCase extends BaseTestCase
         return $this->createMock(MetadataReader::class);
     }
 
-    protected function getUploadHandlerMock(): UploadHandler|MockObject
+    protected function getUploadHandlerMock(): UploadHandlerInterface|MockObject
     {
-        return $this->createMock(UploadHandler::class);
+        return $this->createMock(UploadHandlerInterface::class);
     }
 }

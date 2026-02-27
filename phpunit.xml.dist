@@ -24,7 +24,6 @@
     </source>
 
     <extensions>
-        <bootstrap class="Vich\UploaderBundle\Tests\BypassFinalExtension"/>
         <bootstrap class="Symfony\Bridge\PhpUnit\SymfonyExtension"/>
     </extensions>
 </phpunit>

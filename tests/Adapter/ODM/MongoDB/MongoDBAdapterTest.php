@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Adapter\ODM\MongoDB;
 
+use DG\BypassFinals;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
@@ -17,6 +18,13 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class MongoDBAdapterTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        // Doctrine\ODM\MongoDB\UnitOfWork is a final class from an external library
+        // and cannot be mocked without bypass-finals.
+        BypassFinals::enable();
+    }
+
     public function testRecomputeChangeSet(): void
     {
         $entity = new DummyEntity();

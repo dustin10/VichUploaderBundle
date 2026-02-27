@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
  *
  * @internal
  */
-final class MetadataReader
+class MetadataReader
 {
     /**
      * Constructs a new instance of the MetadataReader.

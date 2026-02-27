@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Util\PropertyPathUtils;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-final class PropertyMapping
+class PropertyMapping
 {
     private ?NamerInterface $namer = null;
 

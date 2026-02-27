@@ -6,7 +6,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine\BaseListener;
-use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -28,7 +28,7 @@ abstract class ListenerTestCase extends TestCase
 
     protected MetadataReader|MockObject $metadata;
 
-    protected UploadHandler|MockObject $handler;
+    protected UploadHandlerInterface|MockObject $handler;
 
     protected LifecycleEventArgs|MockObject $event;
 
@@ -69,13 +69,11 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return UploadHandler&MockObject
+     * @return UploadHandlerInterface&MockObject
      */
-    protected function getHandlerMock(): UploadHandler
+    protected function getHandlerMock(): UploadHandlerInterface
     {
-        return $this->getMockBuilder(UploadHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createMock(UploadHandlerInterface::class);
     }
 
     /**

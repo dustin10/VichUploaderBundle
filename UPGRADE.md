@@ -1,53 +1,57 @@
-# Upgrading from v2.8 to v2.9
+> Upgrade notes for earlier versions (v1 → v2.x) can be found in the
+> [2.x branch](https://github.com/dustin10/VichUploaderBundle/blob/2.x/UPGRADE.md).
 
-## Deprecations
+# Upgrading from v2.9 to v3.0
 
-* The `Vich\UploaderBundle\Mapping\Annotation` namespace is deprecated. Replace it with `Vich\UploaderBundle\Mapping\Attribute`;
-  The old namespace will be removed in version 3.0.
-* `AttributeReader` methods: replace `*Annotation()` with `*Attribute()` (e.g., `getClassAnnotation()` → `getClassAttribute()`).
+## Removed deprecated features
 
-## New Features
+* The `Vich\UploaderBundle\Mapping\Annotation` namespace has been removed. Use
+  `Vich\UploaderBundle\Mapping\Attribute` instead (e.g. replace
+  `Vich\UploaderBundle\Mapping\Annotation\Uploadable` with
+  `Vich\UploaderBundle\Mapping\Attribute\Uploadable`).
+* `Vich\UploaderBundle\Mapping\AnnotationInterface` has been removed. Use
+  `Vich\UploaderBundle\Mapping\AttributeInterface` instead.
+* All `*Annotation()` methods in `AttributeReader` have been removed. Use the
+  corresponding `*Attribute()` methods instead (e.g. `getClassAnnotation()` →
+  `getClassAttribute()`).
 
-* New `namer_keep_extension` configuration option to force namers to preserve original file extension.
-* Custom namers using `namer_keep_extension: true` must implement `ConfigurableInterface`.
+## BC Breaks
 
-# Upgrading from v2.7 to v2.8
+### `NamerInterface::name()` now accepts `object|array`
 
-* Namers are not public anymore. If you use a custom namer, you can now make it private.
+The `name()` method in `Vich\UploaderBundle\Naming\NamerInterface` now declares
+`object|array` for its first parameter instead of just `object`. Any custom namer
+that implements this interface must update its signature accordingly:
 
-# Upgrading from v2.6 to v2.7
+```php
+// Before
+public function name(object $object, PropertyMapping $mapping): string
 
-* Now the original extension '.xlsb' is retained even if the mime type is guessed as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.
-  
-# Upgrading from v2.4 to v2.5
+// After
+public function name(object|array $object, PropertyMapping $mapping): string
+```
 
-* To address the question raised in the previous version, now the original extension '.csv' is retained
-  even if the mime type is guessed as 'text/plain'.
+### New `UploadHandlerInterface`
 
-# Upgrading from v2.3 to v2.4
+`Vich\UploaderBundle\Handler\UploadHandlerInterface` has been introduced. The
+`upload()`, `inject()`, `clean()` and `remove()` methods are now part of this
+interface. `UploadHandler` implements it.
 
-* To address a security question, the original extension of the uploaded file is not preserved anymore.
-  Instead, it is replaced by the extension of the matching mime type. This could cause a different
-  behaviour only if you use some non-standard extension, otherwise it should not change anything.
+If you type-hint `Vich\UploaderBundle\Handler\UploadHandler` in your own services
+or event listeners, consider switching to `UploadHandlerInterface` instead.
 
-# Upgrading from v2.1 to v2.2
+### New `PropertyMappingResolverInterface`
 
-* The signature of `StorageInterface::resolveStream` method was changed. The $fieldName parameter is now nullable. 
-* the `AdapterInterface` no longer requires `getObjectFromArgs` method.
-* the `AdapterInterface::recomputeChangeSet()` accepts `Doctrine\Persistence\Event\LifecycleEventArgs` as argument.
+`Vich\UploaderBundle\Mapping\PropertyMappingResolverInterface` has been introduced.
+It exposes a single `resolve()` method. If you have a custom implementation of the
+mapping resolver, make it implement this interface.
 
-# Upgrading from v2.0 to v2.1
+### `final` removed from some classes
 
-* the internal class `FilenameUtils` has been removed.
+The `final` modifier has been removed from the following classes to ease testing
+and extensibility:
 
-# Upgrading from v1 to v2.0
-
-* every class marked as `@final` is now final
-* all properties are now fully type-hinted
-* all method arguments are now fully type-hinted
-* all methods have now return types
-* all constructors now use property promotion
-* all deprecated features were removed
-* the new default type for mapping is "attribute". You can still use annotations, but you need an explicit definition (set "annotation" as value for "vich_uploader.metadata.type" config key)
-* the service "vich_uploader.current_date_time_helper" has been removed. The `DateTimeHelper` interface has been
-  removed as well.
+* `Vich\UploaderBundle\Mapping\PropertyMapping`
+* `Vich\UploaderBundle\Mapping\PropertyMappingFactory`
+* `Vich\UploaderBundle\Metadata\MetadataReader`
+* `Vich\UploaderBundle\Metadata\Driver\AttributeReader`
