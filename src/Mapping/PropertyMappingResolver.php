@@ -29,7 +29,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
     ) {
     }
 
-    public function resolve(object|array $obj, string $fieldName, array $mappingData): PropertyMapping
+    public function resolve(object|array $obj, string $fieldName, array $mappingData): PropertyMappingInterface
     {
         if (!\array_key_exists($mappingData['mapping'], $this->mappings)) {
             $className = \is_object($obj) ? ClassUtils::getClass($obj) : '[array]';

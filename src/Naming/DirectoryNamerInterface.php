@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * NamerInterface.
@@ -23,5 +23,5 @@ interface DirectoryNamerInterface
      *
      * @return string The directory name
      */
-    public function directoryName(object|array $object, PropertyMapping $mapping): string;
+    public function directoryName(object|array $object, PropertyMappingInterface $mapping): string;
 }

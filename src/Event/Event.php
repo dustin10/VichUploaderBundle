@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Event;
 
 use Symfony\Contracts\EventDispatcher\Event as ContractEvent;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /*
  * Base class for upload events.
@@ -14,7 +14,7 @@ class Event extends ContractEvent
 {
     protected bool $cancel = false;
 
-    public function __construct(protected readonly object $object, protected readonly PropertyMapping $mapping)
+    public function __construct(protected readonly object $object, protected readonly PropertyMappingInterface $mapping)
     {
     }
 
@@ -29,7 +29,7 @@ class Event extends ContractEvent
     /**
      * Accessor to the mapping used to manipulate the object.
      */
-    public function getMapping(): PropertyMapping
+    public function getMapping(): PropertyMappingInterface
     {
         return $this->mapping;
     }

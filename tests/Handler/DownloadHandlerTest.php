@@ -7,8 +7,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class DownloadHandlerTest extends TestCase
 {
-    protected MockObject|PropertyMappingFactory $factory;
+    protected MockObject|PropertyMappingFactoryInterface $factory;
 
     protected MockObject|StorageInterface $storage;
 
@@ -25,7 +25,7 @@ final class DownloadHandlerTest extends TestCase
 
     protected DownloadHandler $handler;
 
-    protected MockObject|PropertyMapping $mapping;
+    protected MockObject|PropertyMappingInterface $mapping;
 
     protected function setUp(): void
     {

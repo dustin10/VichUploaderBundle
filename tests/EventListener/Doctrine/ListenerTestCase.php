@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine\BaseListener;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -26,7 +26,7 @@ abstract class ListenerTestCase extends TestCase
 
     protected AdapterInterface|MockObject $adapter;
 
-    protected MetadataReader|MockObject $metadata;
+    protected MetadataReaderInterface|MockObject $metadata;
 
     protected UploadHandlerInterface|MockObject $handler;
 
@@ -59,13 +59,11 @@ abstract class ListenerTestCase extends TestCase
     }
 
     /**
-     * @return MetadataReader&MockObject
+     * @return MetadataReaderInterface&MockObject
      */
-    protected function getMetadataReaderMock(): MetadataReader
+    protected function getMetadataReaderMock(): MetadataReaderInterface
     {
-        return $this->getMockBuilder(MetadataReader::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createMock(MetadataReaderInterface::class);
     }
 
     /**

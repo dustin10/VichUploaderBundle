@@ -8,8 +8,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -22,7 +24,7 @@ final class PropertyMappingFactoryTest extends TestCase
 {
     protected ContainerInterface|MockObject $container;
 
-    protected MockObject|MetadataReader $metadata;
+    protected MockObject|MetadataReaderInterface $metadata;
 
     protected function setUp(): void
     {

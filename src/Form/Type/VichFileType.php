@@ -15,7 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -30,7 +30,7 @@ class VichFileType extends AbstractType
     public function __construct(
         protected readonly StorageInterface $storage,
         protected readonly UploadHandlerInterface $handler,
-        protected readonly PropertyMappingFactory $factory,
+        protected readonly PropertyMappingFactoryInterface $factory,
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();

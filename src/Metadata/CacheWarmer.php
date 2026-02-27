@@ -3,13 +3,14 @@
 namespace Vich\UploaderBundle\Metadata;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 
 /**
  * @internal
  */
 final class CacheWarmer implements CacheWarmerInterface
 {
-    public function __construct(private readonly string $dir, private readonly MetadataReader $metadataReader)
+    public function __construct(private readonly string $dir, private readonly MetadataReaderInterface $metadataReader)
     {
     }
 

@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField as UploadableFieldAnn
 use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
 use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AttributeDriver;
-use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
+use Vich\UploaderBundle\Metadata\Driver\AttributeReaderInterface;
 use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\DummyFile;
@@ -47,7 +47,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyEntity();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::once())
             ->method('getClassAttribute')
@@ -80,7 +80,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyAttributeEntity();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::once())
             ->method('getClassAttribute')
@@ -113,7 +113,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyEntity();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::exactly(2))
             ->method('getClassAttribute')
@@ -133,7 +133,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new Article();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::once())
             ->method('getClassAttribute')
@@ -191,7 +191,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyEntity();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::once())
             ->method('getClassAttribute')
@@ -209,7 +209,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyFile();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::once())
             ->method('getClassAttribute')
@@ -246,7 +246,7 @@ final class AttributeDriverTest extends TestCase
         $entity = new DummyFile();
 
         // @phpstan-ignore-next-line method.unresolvableReturnType
-        $reader = $this->createMock(AttributeReader::class);
+        $reader = $this->createMock(AttributeReaderInterface::class);
         $reader
             ->expects(self::exactly(2))
             ->method('getClassAttribute')

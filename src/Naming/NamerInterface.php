@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -21,5 +21,5 @@ interface NamerInterface
      *
      * @return string The file name
      */
-    public function name(object|array $object, PropertyMapping $mapping): string;
+    public function name(object|array $object, PropertyMappingInterface $mapping): string;
 }

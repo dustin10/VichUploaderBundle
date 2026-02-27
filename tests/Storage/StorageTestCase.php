@@ -5,8 +5,8 @@ namespace Vich\UploaderBundle\Tests\Storage;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -18,9 +18,9 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class StorageTestCase extends TestCase
 {
-    protected PropertyMappingFactory|\PHPUnit\Framework\MockObject\MockObject $factory;
+    protected PropertyMappingFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $factory;
 
-    protected PropertyMapping|\PHPUnit\Framework\MockObject\MockObject $mapping;
+    protected PropertyMappingInterface|\PHPUnit\Framework\MockObject\MockObject $mapping;
 
     protected DummyEntity $object;
 

@@ -9,8 +9,8 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 final class UploadHandler extends AbstractHandler implements UploadHandlerInterface
 {
     public function __construct(
-        PropertyMappingFactory $factory,
+        PropertyMappingFactoryInterface $factory,
         StorageInterface $storage,
         protected readonly FileInjectorInterface $injector,
         protected readonly EventDispatcherInterface $dispatcher
@@ -113,7 +113,7 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
         $this->dispatcher->dispatch($event, $eventName);
     }
 
-    protected function hasUploadedFile(object $obj, PropertyMapping $mapping): bool
+    protected function hasUploadedFile(object $obj, PropertyMappingInterface $mapping): bool
     {
         $file = $mapping->getFile($obj);
 

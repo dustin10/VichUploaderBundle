@@ -20,7 +20,7 @@ class AttributeDriver implements AdvancedDriverInterface
      * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
      */
     public function __construct(
-        protected readonly AttributeReader $reader,
+        protected readonly AttributeReaderInterface $reader,
         private readonly array $managerRegistryList
     ) {
     }

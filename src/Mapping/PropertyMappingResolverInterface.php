@@ -15,10 +15,10 @@ interface PropertyMappingResolverInterface
      * @param string       $fieldName   The field name
      * @param array        $mappingData The mapping data
      *
-     * @return PropertyMapping The property mapping
+     * @return PropertyMappingInterface The property mapping
      *
      * @throws \LogicException
      * @throws MappingNotFoundException
      */
-    public function resolve(object|array $obj, string $fieldName, array $mappingData): PropertyMapping;
+    public function resolve(object|array $obj, string $fieldName, array $mappingData): PropertyMappingInterface;
 }

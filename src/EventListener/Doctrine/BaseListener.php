@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\EventListener\Doctrine;
 
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
@@ -17,7 +17,7 @@ abstract class BaseListener
     public function __construct(
         protected readonly string $mapping,
         protected readonly AdapterInterface $adapter,
-        protected readonly MetadataReader $metadata,
+        protected readonly MetadataReaderInterface $metadata,
         protected readonly UploadHandlerInterface $handler,
     ) {
     }

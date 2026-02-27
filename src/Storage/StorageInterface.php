@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Storage;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -16,17 +16,17 @@ interface StorageInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to upload
      */
-    public function upload(object $obj, PropertyMapping $mapping): void;
+    public function upload(object $obj, PropertyMappingInterface $mapping): void;
 
     /**
      * Removes the files associated with the given mapping.
      *
-     * @param object          $obj     The object
-     * @param PropertyMapping $mapping The mapping representing the field to remove
+     * @param object                   $obj     The object
+     * @param PropertyMappingInterface $mapping The mapping representing the field to remove
      *
      * @throw \Exception      Throws an exception
      */
-    public function remove(object $obj, PropertyMapping $mapping): ?bool;
+    public function remove(object $obj, PropertyMappingInterface $mapping): ?bool;
 
     /**
      * Resolves the path for a file based on the specified object

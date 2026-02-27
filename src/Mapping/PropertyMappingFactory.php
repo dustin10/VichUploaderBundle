@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Persistence\Proxy;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
@@ -15,10 +15,10 @@ use Vich\UploaderBundle\Util\ClassUtils;
  *
  * @internal
  */
-class PropertyMappingFactory
+final class PropertyMappingFactory implements PropertyMappingFactoryInterface
 {
     public function __construct(
-        private readonly MetadataReader $metadata,
+        private readonly MetadataReaderInterface $metadata,
         private readonly PropertyMappingResolverInterface $resolver,
     ) {
     }
@@ -32,7 +32,7 @@ class PropertyMappingFactory
      * @param string|null  $className   The object's class. Mandatory if $obj can't be used to determine it
      * @param string|null  $mappingName The mapping name
      *
-     * @return array|PropertyMapping[] An array up PropertyMapping objects
+     * @return array|PropertyMappingInterface[] An array up PropertyMappingInterface objects
      *
      * @throws \RuntimeException
      * @throws MappingNotFoundException
@@ -67,13 +67,13 @@ class PropertyMappingFactory
      * @param string       $field     The field
      * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return PropertyMapping|null The property mapping
+     * @return PropertyMappingInterface|null The property mapping
      *
      * @throws \RuntimeException
      * @throws MappingNotFoundException
      * @throws NotUploadableException
      */
-    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMapping
+    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMappingInterface
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
@@ -90,7 +90,7 @@ class PropertyMappingFactory
         return $this->resolver->resolve($obj, $field, $mappingData);
     }
 
-    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMapping
+    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMappingInterface
     {
         if ($obj instanceof Proxy) {
             $obj->__load();

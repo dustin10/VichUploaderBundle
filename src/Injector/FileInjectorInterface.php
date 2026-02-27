@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Injector;
 
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * FileInjectorInterface.
@@ -20,5 +20,5 @@ interface FileInjectorInterface
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to populate
      */
-    public function injectFile(object $obj, PropertyMapping $mapping): void;
+    public function injectFile(object $obj, PropertyMappingInterface $mapping): void;
 }

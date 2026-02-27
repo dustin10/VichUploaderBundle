@@ -19,7 +19,7 @@ class AnnotationDriver implements AdvancedDriverInterface
      * @param \Doctrine\Persistence\ManagerRegistry[] $managerRegistryList
      */
     public function __construct(
-        protected readonly AnnotationReader|AttributeReader $reader,
+        protected readonly AnnotationReader|AttributeReaderInterface $reader,
         private readonly array $managerRegistryList
     ) {
     }
