@@ -6,8 +6,8 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\FilesystemInterface;
 use Gaufrette\FilesystemMapInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * GaufretteStorage.
@@ -20,8 +20,8 @@ final class GaufretteStorage extends AbstractStorage
      * Constructs a new instance of FileSystemStorage.
      *
      * @param PropertyMappingFactoryInterface $factory       The factory
-     * @param FilesystemMapInterface $filesystemMap Gaufrette filesystem factory
-     * @param string                 $protocol      Gaufrette stream wrapper protocol
+     * @param FilesystemMapInterface          $filesystemMap Gaufrette filesystem factory
+     * @param string                          $protocol      Gaufrette stream wrapper protocol
      */
     public function __construct(PropertyMappingFactoryInterface $factory, protected FilesystemMapInterface $filesystemMap, protected string $protocol = 'gaufrette')
     {

@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Metadata;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 
 /**
  * @internal

@@ -7,8 +7,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 

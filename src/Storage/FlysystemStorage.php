@@ -9,8 +9,8 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
