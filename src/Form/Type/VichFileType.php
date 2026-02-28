@@ -46,6 +46,7 @@ class VichFileType extends AbstractType
             'delete_label' => 'vich_uploader.form_label.delete_confirm',
             'download_label_translation_domain' => null,
             'delete_label_translation_domain' => null,
+            'translation_domain' => null,
             'error_bubbling' => false,
         ]);
 
@@ -62,7 +63,7 @@ class VichFileType extends AbstractType
             'required' => $options['required'],
             'label' => $options['label'],
             'attr' => $options['attr'],
-            'translation_domain' => $options['download_label_translation_domain'],
+            'translation_domain' => $options['download_label_translation_domain'] ?? $options['translation_domain'],
         ]);
 
         $builder->addModelTransformer(new FileTransformer());
@@ -92,7 +93,7 @@ class VichFileType extends AbstractType
             $form->add('delete', Type\CheckboxType::class, [
                 'label' => $options['delete_label'],
                 'mapped' => false,
-                'translation_domain' => $options['delete_label_translation_domain'],
+                'translation_domain' => $options['delete_label_translation_domain'] ?? $options['translation_domain'],
                 'required' => false,
             ]);
         });
