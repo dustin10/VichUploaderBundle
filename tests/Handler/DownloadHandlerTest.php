@@ -6,6 +6,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
