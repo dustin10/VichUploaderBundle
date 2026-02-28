@@ -2,16 +2,13 @@
 
 namespace Vich\UploaderBundle\DependencyInjection;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Vich\UploaderBundle\Exception\MissingPackageException;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
@@ -56,7 +53,7 @@ final class VichUploaderExtension extends Extension
 
         $this->loadServicesFiles($container, $config);
         $this->registerMetadataDirectories($container, $config);
-        $this->registerAttributeStrategy($container, $config);
+        $this->registerAttributeStrategy($container);
         $this->registerCacheStrategy($container, $config);
 
         $this->registerListeners($container, $config);
@@ -139,43 +136,16 @@ final class VichUploaderExtension extends Extension
         ;
     }
 
-    protected function registerAttributeStrategy(ContainerBuilder $container, array $config): void
+    protected function registerAttributeStrategy(ContainerBuilder $container): void
     {
-        if (!$container->has('vich_uploader.metadata_driver.attribute') && !$container->has('vich_uploader.metadata_driver.annotation')) {
+        if (!$container->has('vich_uploader.metadata_driver.attribute')) {
             return;
         }
 
-        switch ($config['metadata']['type']) {
-            case 'annotation':
-                if (!\class_exists(AnnotationReader::class) || !$container::willBeAvailable('doctrine/annotations', AnnotationReader::class, [])) {
-                    $msg = 'Annotations support missing. Try running "composer require doctrine/annotations".';
-                    throw new MissingPackageException($msg);
-                }
-
-                @\trigger_error('Annotation support is deprecated since version 2.5 and will be removed in 3.0. Use attributes instead.', \E_USER_DEPRECATED);
-
-                $container->setDefinition(
-                    'vich_uploader.metadata.reader',
-                    new Definition(AnnotationReader::class)
-                );
-                break;
-
-            default:
-                $container->setDefinition(
-                    'vich_uploader.metadata.reader',
-                    $container->getDefinition('vich_uploader.metadata.attribute_reader')
-                );
-        }
-    }
-
-    /**
-     * @deprecated since 2.9, use registerAttributeStrategy() instead
-     */
-    protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
-    {
-        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "registerAttributeStrategy()" instead.', __METHOD__);
-
-        $this->registerAttributeStrategy($container, $config);
+        $container->setDefinition(
+            'vich_uploader.metadata.reader',
+            $container->getDefinition('vich_uploader.metadata.attribute_reader')
+        );
     }
 
     protected function registerCacheStrategy(ContainerBuilder $container, array $config): void
@@ -203,7 +173,7 @@ final class VichUploaderExtension extends Extension
 
     protected function fixDbDriverConfig(array $config): array
     {
-        // mapping with no declared db_driver use the top-level one
+        // mapping with no declared db_driver, use the top-level one
         foreach ($config['mappings'] as &$mapping) {
             $mapping['db_driver'] = $mapping['db_driver'] ?: $config['db_driver'];
         }

@@ -7,26 +7,25 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine\BaseListener;
 use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * Doctrine listener test case.
- *
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
  * @template T of BaseListener
  */
 abstract class ListenerTestCase extends TestCase
 {
-    public const MAPPING_NAME = 'dummy_mapping';
+    public const string MAPPING_NAME = 'dummy_mapping';
 
     public static bool $usePreUpdateEventArgs = false;
 
     protected AdapterInterface|MockObject $adapter;
 
-    protected MetadataReader|MockObject $metadata;
+    protected MetadataReaderInterface|MockObject $metadata;
 
     protected UploadHandler|MockObject $handler;
 
@@ -37,9 +36,6 @@ abstract class ListenerTestCase extends TestCase
     /** @var T */
     protected BaseListener $listener;
 
-    /**
-     * Sets up the test.
-     */
     protected function setUp(): void
     {
         $this->adapter = $this->createMock(AdapterInterface::class);
@@ -58,22 +54,16 @@ abstract class ListenerTestCase extends TestCase
         return $this->createMock(AdapterInterface::class);
     }
 
-    /**
-     * @return MetadataReader&MockObject
-     */
-    protected function getMetadataReaderMock(): MetadataReader
+    protected function getMetadataReaderMock(): MetadataReaderInterface&MockObject
     {
-        return $this->getMockBuilder(MetadataReader::class)
+        return $this->getMockBuilder(MetadataReaderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    /**
-     * @return UploadHandler&MockObject
-     */
-    protected function getHandlerMock(): UploadHandler
+    protected function getHandlerMock(): UploadHandlerInterface&MockObject
     {
-        return $this->getMockBuilder(UploadHandler::class)
+        return $this->getMockBuilder(UploadHandlerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

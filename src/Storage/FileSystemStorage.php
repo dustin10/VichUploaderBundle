@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Storage;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * FileSystemStorage.
@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 final class FileSystemStorage extends AbstractStorage
 {
-    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): ?File
+    protected function doUpload(PropertyMappingInterface $mapping, File $file, ?string $dir, string $name): ?File
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
 
@@ -37,7 +37,7 @@ final class FileSystemStorage extends AbstractStorage
         return new File($targetPathname);
     }
 
-    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
+    protected function doRemove(PropertyMappingInterface $mapping, ?string $dir, string $name): ?bool
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
@@ -49,7 +49,7 @@ final class FileSystemStorage extends AbstractStorage
     }
 
     protected function doResolvePath(
-        PropertyMapping $mapping,
+        PropertyMappingInterface $mapping,
         ?string $dir,
         string $name,
         ?bool $relative = false
@@ -71,7 +71,8 @@ final class FileSystemStorage extends AbstractStorage
             return null;
         }
 
-        $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
+        $uploadDir = $mapping->getUploadDir($obj);
+        $uploadDir = $this->convertWindowsDirectorySeparator($uploadDir ?? '');
         $uploadDir = ('' !== $uploadDir) ? $uploadDir.'/' : '';
 
         return \sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
@@ -80,5 +81,33 @@ final class FileSystemStorage extends AbstractStorage
     private function convertWindowsDirectorySeparator(string $string): string
     {
         return \str_replace('\\', '/', $string);
+    }
+
+    public function listFiles(PropertyMappingInterface $mapping): iterable
+    {
+        $uploadDestination = $mapping->getUploadDestination();
+
+        if (!\is_dir($uploadDestination)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($uploadDestination, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                // Return path relative to upload destination
+                $relativePath = \substr($file->getPathname(), \strlen($uploadDestination) + 1);
+                $relativePath = $this->convertWindowsDirectorySeparator($relativePath);
+
+                // Get file modification time
+                $mtime = @\filemtime($file->getPathname());
+                $lastModifiedAt = false !== $mtime ? (int) $mtime : null;
+
+                yield new StoredFile($relativePath, $lastModifiedAt);
+            }
+        }
     }
 }

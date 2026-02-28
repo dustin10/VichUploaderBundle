@@ -3,6 +3,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolverInterface;
 
@@ -26,4 +27,5 @@ return static function (ContainerConfigurator $container): void {
         ]);
 
     $services->alias(PropertyMappingFactory::class, 'vich_uploader.property_mapping_factory');
+    $services->alias(PropertyMappingFactoryInterface::class, 'vich_uploader.property_mapping_factory');
 };
