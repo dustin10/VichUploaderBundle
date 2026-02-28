@@ -1,10 +1,31 @@
 # Upgrading from v2.9 to v3.0
 
+## PHP and Symfony version requirements
+
+* PHP version requirement raised from `^8.1` to `^8.3`. You must upgrade to PHP 8.3 or higher.
+* Symfony version requirement raised from `^5.4 || ^6.0 || ^7.0` to `^6.4 || ^7.4 || ^8.0`. Symfony 5.x support has been dropped.
+
 ## Breaking Changes
 
 * The deprecated `Vich\UploaderBundle\Mapping\Annotation` namespace has been removed. Use `Vich\UploaderBundle\Mapping\Attribute` instead.
 * The deprecated `AnnotationInterface` has been removed. Use `AttributeInterface` instead.
 * `AttributeReader` deprecated methods have been removed: use `getClassAttribute()` instead of `getClassAnnotation()`, `getPropertyAttribute()` instead of `getPropertyAnnotation()`.
+* `NamerInterface::name()` now requires `object|array` as first argument (was `object`) and `PropertyMappingInterface` as second argument (was `PropertyMapping`). Update your custom namers accordingly.
+* `DirectoryNamerInterface::directoryName()` now requires `PropertyMappingInterface` as second argument (was `PropertyMapping`). Update your custom directory namers accordingly.
+* `FileInjectorInterface::injectFile()` now accepts `array|object` as first argument (was `object`) and `PropertyMappingInterface` as second argument (was `PropertyMapping`).
+* `StorageInterface::remove()` has a new optional third parameter `?string $dir = null`. Custom storage implementations must add this parameter to their `remove()` method signature.
+* `StorageInterface` has a new method `listFiles(PropertyMappingInterface $mapping): iterable`. Custom storage implementations must implement this method.
+* Several classes are now `readonly` (requires PHP 8.2+, which is covered by the PHP 8.3 requirement): `MetadataReader`, `AttributeReader`, `CacheWarmer`, `Events`, `ClassUtils`, `PropertyPathUtils`, `PHPCRAdapter`, `DoctrineORMAdapter`, `MongoDBAdapter`, `StoredFile`. If you extend any of these classes, you must make the extending class also `readonly` or remove the extension.
+* MongoDB ODM adapter tests have been removed. If you use MongoDB ODM, be aware that its test coverage has been reduced.
+
+## New Features
+
+* New `PropertyMappingInterface` introduced. The `$mapping` parameter in `NamerInterface` and `DirectoryNamerInterface` now uses this interface instead of the concrete `PropertyMapping` class, allowing easier testing and custom implementations.
+* New `PropertyMappingFactoryInterface` introduced for easier testing of code that depends on `PropertyMappingFactory`.
+* New `MetadataReaderInterface` introduced for easier testing of code that depends on `MetadataReader`.
+* New `DownloadHandlerInterface` and `UploadHandlerInterface` introduced for easier testing of code that depends on the handlers.
+* New `vich:cleanup` console command to detect and delete uploaded files no longer referenced in the database.
+* New `ChainDirectoryNamer` to combine multiple directory namers.
 
 # Upgrading from v2.8 to v2.9
 
