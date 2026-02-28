@@ -28,7 +28,7 @@ final class UploaderExtensionTest extends TestCase
         $object = new \stdClass();
 
         $helper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('asset')
             ->with($object, 'file');
         $extension->asset($object, 'file');

@@ -184,7 +184,7 @@ final class VichImageTypeTest extends TestCase
         $cacheManager = $this->createMock(CacheManager::class);
 
         $cacheManager
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getBrowserPath')
             ->with($storageResolvedPath, $imaginePattern)
             ->willReturn($imagineResolvedPath);

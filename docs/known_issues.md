@@ -132,10 +132,3 @@ in a separate API call. In the other hand, for other adapters setting the metada
 metadata is joined with the file during the upload.
 To summarize, [Gaufrette support for metadata is flawed](https://github.com/KnpLabs/Gaufrette/issues/108)
 (see issue [GH-163](https://github.com/dustin10/VichUploaderBundle/issues/163)).
-
-## Doctrine/annotations package required when using annotations and doctrine-bundle >= 2.8
-
-If your project uses annotations and `doctrine-bundle:>=2.8`, you must require the `doctrine/annotations`
-package from your project, as it is not required in `doctrine-bundle` anymore from this version.  
-This bundle uses a `Reader` interface from this package in order to work for both attributes and annotations
-mapping, but annotations are deprecated and will be removed in the future.

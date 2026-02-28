@@ -31,11 +31,6 @@ final class MappingCollector extends DataCollector
         ];
     }
 
-    public function reset(): void
-    {
-        $this->data = [];
-    }
-
     public function getName(): string
     {
         return 'vich_uploader.mapping_collector';

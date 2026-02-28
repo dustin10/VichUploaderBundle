@@ -9,30 +9,27 @@ use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
- * PropertyMappingFactory.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *
  * @internal
  */
-final class PropertyMappingFactory implements PropertyMappingFactoryInterface
+final readonly class PropertyMappingFactory implements PropertyMappingFactoryInterface
 {
     public function __construct(
-        private readonly MetadataReaderInterface $metadata,
-        private readonly PropertyMappingResolverInterface $resolver,
+        private MetadataReaderInterface $metadata,
+        private PropertyMappingResolverInterface $resolver,
     ) {
     }
 
     /**
-     * Creates an array of PropertyMapping objects which contain the
-     * configuration for the uploadable fields in the specified
-     * object.
+     * Create an array of PropertyMapping objects which contain the
+     * configuration for the uploadable fields in the specified object.
      *
      * @param object|array $obj         The object
      * @param string|null  $className   The object's class. Mandatory if $obj can't be used to determine it
      * @param string|null  $mappingName The mapping name
      *
-     * @return array|PropertyMappingInterface[] An array up PropertyMappingInterface objects
+     * @return array|PropertyMapping[] An array up PropertyMapping objects
      *
      * @throws \RuntimeException
      * @throws MappingNotFoundException
@@ -60,14 +57,14 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Creates a property mapping object which contains the
+     * Create a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
      * @param object|array $obj       The object
      * @param string       $field     The field
      * @param string|null  $className The object's class. Mandatory if $obj can't be used to determine it
      *
-     * @return PropertyMappingInterface|null The property mapping
+     * @return PropertyMapping|null The property mapping
      *
      * @throws \RuntimeException
      * @throws MappingNotFoundException
@@ -108,7 +105,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Checks to see if the class is uploadable.
+     * Check to see if the class is uploadable.
      *
      * @param string $class The class name (FQCN)
      *
@@ -122,7 +119,7 @@ final class PropertyMappingFactory implements PropertyMappingFactoryInterface
     }
 
     /**
-     * Returns the className of the given object.
+     * Return the className of the given object.
      *
      * @param object|array $object    The object to inspect
      * @param string|null  $className User specified className

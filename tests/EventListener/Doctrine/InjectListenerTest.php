@@ -30,13 +30,13 @@ class InjectListenerTest extends ListenerTestCase
     public function testPostLoad(): void
     {
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
             ->willReturn([
@@ -44,7 +44,7 @@ class InjectListenerTest extends ListenerTestCase
             ]);
 
         $this->handler
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('inject')
             ->with($this->object, 'field_name');
 
@@ -57,7 +57,7 @@ class InjectListenerTest extends ListenerTestCase
     public function testPostLoadSkipsNonUploadable(): void
     {
         $this->metadata
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(false);

@@ -17,7 +17,7 @@ final class FileInjector implements FileInjectorInterface
     {
     }
 
-    public function injectFile(object $obj, PropertyMappingInterface $mapping): void
+    public function injectFile(array|object $obj, PropertyMappingInterface $mapping): void
     {
         $path = $this->storage->resolvePath($obj, $mapping->getFilePropertyName());
 

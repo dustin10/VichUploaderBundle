@@ -21,7 +21,7 @@ abstract class AbstractHandler
     /**
      * @throws MappingNotFoundException
      */
-    protected function getMapping(object|array $obj, string $fieldName, ?string $className = null): ?PropertyMappingInterface
+    protected function getMapping(object|array $obj, string $fieldName, ?string $className = null): PropertyMappingInterface
     {
         $mapping = $this->factory->fromField($obj, $fieldName, $className);
 

@@ -9,8 +9,6 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
- * FileInjectorTest.
- *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class FileInjectorTest extends TestCase
@@ -31,15 +29,15 @@ final class FileInjectorTest extends TestCase
 
         $fileMapping = $this->getPropertyMappingMock();
         $fileMapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFilePropertyName')
             ->willReturn('file_field');
         $fileMapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setFile');
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolvePath')
             ->with($obj, 'file_field')
             ->willReturn('/uploadDir/file.txt');
@@ -59,7 +57,7 @@ final class FileInjectorTest extends TestCase
         $fileMapping = $this->getPropertyMappingMock();
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolvePath')
             ->willReturn(null);
 
