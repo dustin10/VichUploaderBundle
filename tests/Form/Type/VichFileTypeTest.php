@@ -206,7 +206,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'image.jpeg',
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -223,7 +223,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'prefix-image.jpeg',
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -243,7 +243,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'prefix-image.jpeg',
-                    'translation_domain' => 'messages',
+                    'download_label_translation_domain' => 'messages',
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -260,7 +260,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => $object->getTitle(),
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
