@@ -81,7 +81,7 @@ jobs:
                     - php: '8.4'
                       symfony: '7.4.*'
                       dependencies: highest
-                      with_imagine: false
+                      with_imagine: true
                       with_oneupbundle: false
                       with_gaufrette: true
                       max_deprecations: 0
