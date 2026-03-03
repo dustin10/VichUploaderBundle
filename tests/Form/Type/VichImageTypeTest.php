@@ -212,6 +212,7 @@ final class VichImageTypeTest extends TestCase
             'object' => $object,
             'download_uri' => 'custom-uri',
             'download_label' => 'download',
+            'download_label_translation_domain' => null,
             'show_download_link' => true,
             'image_uri' => $imagineResolvedPath,
             'value' => null,
