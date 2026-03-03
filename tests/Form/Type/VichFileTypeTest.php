@@ -109,6 +109,10 @@ final class VichFileTypeTest extends TestCase
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);
         $type->buildView($view, $form, $options);
         self::assertEquals($vars, $view->vars);
+
+        if ($options['allow_delete']) {
+            $a = 1;
+        }
     }
 
     public static function buildViewDataProvider(): array
@@ -286,6 +290,20 @@ final class VichFileTypeTest extends TestCase
                     'value' => null,
                     'attr' => [],
                     'asset_helper' => true,
+                ],
+            ],
+            [
+                $object,
+                [
+                    'allow_delete' => true,
+                    'delete_label' => 'custom delete label',
+                ],
+                [
+                    'object' => $object,
+                    'download_uri' => null,
+                    'value' => null,
+                    'attr' => [],
+                    'asset_helper' => null,
                 ],
             ],
         ];
