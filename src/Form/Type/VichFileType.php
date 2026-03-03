@@ -31,7 +31,7 @@ class VichFileType extends AbstractType
         protected readonly StorageInterface $storage,
         protected readonly UploadHandler $handler,
         protected readonly PropertyMappingFactory $factory,
-        ?PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null,
     ) {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
@@ -120,9 +120,10 @@ class VichFileType extends AbstractType
         $view->vars['download_uri'] = null;
         if ($options['download_uri'] && $object) {
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
+
             $view->vars = \array_replace(
                 $view->vars,
-                $this->resolveDownloadLabel($options['download_label'], $object, $form)
+                $this->resolveDownloadLabel($options['download_label'], $object, $form, $options)
             );
         }
 
@@ -152,7 +153,7 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form): array
+    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form, $options): array
     {
         if (true === $downloadLabel) {
             $fieldName = $this->getFieldName($form);
@@ -182,6 +183,9 @@ class VichFileType extends AbstractType
             ];
         }
 
-        return ['download_label' => $downloadLabel];
+        return [
+            'download_label' => $downloadLabel,
+            'download_label_translation_domain' => $options['download_label_translation_domain'] ?? $options['translation_domain'],
+        ];
     }
 }
