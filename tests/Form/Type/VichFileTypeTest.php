@@ -270,6 +270,24 @@ final class VichFileTypeTest extends TestCase
                     'asset_helper' => false,
                 ],
             ],
+            [
+                $object,
+                [
+                    'download_label' => 'custom label',
+                    'download_label_translation_domain' => 'custom_domain',
+                    'download_uri' => true,
+                    'asset_helper' => true,
+                ],
+                [
+                    'object' => $object,
+                    'download_label' => 'custom label',
+                    'download_label_translation_domain' => 'custom_domain',
+                    'download_uri' => 'resolved-uri',
+                    'value' => null,
+                    'attr' => [],
+                    'asset_helper' => true,
+                ],
+            ],
         ];
     }
 }
