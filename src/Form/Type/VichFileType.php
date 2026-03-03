@@ -153,7 +153,7 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form, $options): array
+    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form, array $options): array
     {
         if (true === $downloadLabel) {
             $fieldName = $this->getFieldName($form);
