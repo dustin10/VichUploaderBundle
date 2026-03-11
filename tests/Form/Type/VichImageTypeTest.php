@@ -154,7 +154,7 @@ final class VichImageTypeTest extends TestCase
         array $storageResolveArguments,
         string $storageResolvedPath,
         string $imaginePattern,
-        string $imagineResolvedPath
+        string $imagineResolvedPath,
     ): void {
         $storage = $this->createMock(StorageInterface::class);
         $storage

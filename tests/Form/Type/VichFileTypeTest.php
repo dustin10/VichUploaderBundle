@@ -12,9 +12,13 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCaseTrait;
 
@@ -24,14 +28,14 @@ final class VichFileTypeTest extends TypeTestCase
 
     protected const TESTED_TYPE = VichFileType::class;
 
-    protected StorageInterface $storage;
-    protected FormInterface $parentForm;
-    protected FormConfigInterface $config;
-    protected FormInterface $form;
-    protected MockObject $uploadHandler;
-    protected MockObject $propertyMappingFactory;
-    protected MockObject $propertyAccessor;
-    protected MockObject $mapping;
+    protected StorageInterface|MockObject $storage;
+    protected FormInterface|MockObject $parentForm;
+    protected FormConfigInterface|MockObject $config;
+    protected FormInterface|MockObject $form;
+    protected UploadHandler|MockObject $uploadHandler;
+    protected PropertyMappingFactory|MockObject $propertyMappingFactory;
+    protected PropertyAccessorInterface|MockObject $propertyAccessor;
+    protected PropertyMapping|MockObject $mapping;
 
     protected function setUp(): void
     {
