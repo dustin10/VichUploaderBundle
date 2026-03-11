@@ -185,7 +185,9 @@ class VichFileType extends AbstractType
 
         return [
             'download_label' => $downloadLabel,
-            'download_label_translation_domain' => $options['download_label_translation_domain'] ?? $options['translation_domain'],
+            'download_label_translation_domain' => $options['download_label_translation_domain']
+                ?? $options['translation_domain']
+                ?? null,
         ];
     }
 }
