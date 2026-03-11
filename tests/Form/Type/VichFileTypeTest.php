@@ -89,7 +89,7 @@ final class VichFileTypeTest extends TypeTestCase
 
         $this->config
             ->method('getOption')
-            ->willReturnCallback(fn (string $key) => $options[$key] ?? null);
+            ->willReturnCallback(static fn (string $key) => $options[$key] ?? null);
 
         $this->form
             ->method('getParent')

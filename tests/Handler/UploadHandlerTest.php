@@ -344,7 +344,7 @@ final class UploadHandlerTest extends TestCase
         $this->dispatcher
             ->expects(self::exactly(\count($events)))
             ->method('dispatch')
-            ->willReturnCallback(fn (object $event, string $eventName): object => $event)
+            ->willReturnCallback(static fn (object $event, string $eventName): object => $event)
         ;
     }
 }
