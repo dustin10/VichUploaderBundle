@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
