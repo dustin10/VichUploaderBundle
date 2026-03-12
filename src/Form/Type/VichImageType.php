@@ -86,7 +86,7 @@ class VichImageType extends VichFileType
 
             $view->vars = \array_replace(
                 $view->vars,
-                $this->resolveDownloadLabel($options['download_label'], $object, $form)
+                $this->resolveDownloadLabel($options['download_label'], $object, $form, $options)
             );
 
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);

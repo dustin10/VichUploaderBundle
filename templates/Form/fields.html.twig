@@ -15,7 +15,7 @@
 
         {%- if download_uri -%}
             <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" download>
-                {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
+                {{ download_label_translation_domain is same as(false) ? download_label : download_label|trans({}, download_label_translation_domain) }}
             </a>
         {%- endif -%}
     </div>
@@ -43,7 +43,7 @@
         {%- endif -%}
         {%- if download_uri -%}
             <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" download>
-                {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
+                {{ download_label_translation_domain is same as(false) ? download_label : download_label|trans({}, download_label_translation_domain) }}
             </a>
         {%- endif -%}
     </div>

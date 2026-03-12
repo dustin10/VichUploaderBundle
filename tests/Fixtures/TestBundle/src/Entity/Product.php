@@ -18,7 +18,7 @@ class Product
 
     private ?string $title = null;
 
-    public function getImage(): File
+    public function getImage(): ?File
     {
         return $this->image;
     }

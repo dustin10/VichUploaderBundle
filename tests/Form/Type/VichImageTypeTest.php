@@ -36,6 +36,7 @@ final class VichImageTypeTest extends TestCase
                     'object' => $object,
                     'download_uri' => 'resolved-uri',
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'image_uri' => null,
                     'value' => null,
                     'attr' => [],
@@ -73,6 +74,7 @@ final class VichImageTypeTest extends TestCase
                     'object' => $object,
                     'download_uri' => false,
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'image_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -92,6 +94,7 @@ final class VichImageTypeTest extends TestCase
                     'object' => $object,
                     'download_uri' => 'custom-uri',
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'image_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -111,6 +114,7 @@ final class VichImageTypeTest extends TestCase
                     'object' => $object,
                     'download_uri' => 'custom-uri',
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'image_uri' => 'image_uri',
                     'value' => null,
                     'attr' => [],
@@ -130,6 +134,7 @@ final class VichImageTypeTest extends TestCase
                     'object' => $object,
                     'download_uri' => 'custom-uri',
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'image_uri' => 'prefix-resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -149,7 +154,7 @@ final class VichImageTypeTest extends TestCase
         array $storageResolveArguments,
         string $storageResolvedPath,
         string $imaginePattern,
-        string $imagineResolvedPath
+        string $imagineResolvedPath,
     ): void {
         $storage = $this->createMock(StorageInterface::class);
         $storage
@@ -201,6 +206,7 @@ final class VichImageTypeTest extends TestCase
             'object' => $object,
             'download_uri' => 'custom-uri',
             'download_label' => 'download',
+            'download_label_translation_domain' => null,
             'image_uri' => $imagineResolvedPath,
             'value' => null,
             'attr' => [],
