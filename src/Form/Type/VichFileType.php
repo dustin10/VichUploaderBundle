@@ -31,7 +31,7 @@ class VichFileType extends AbstractType
         protected readonly StorageInterface $storage,
         protected readonly UploadHandler $handler,
         protected readonly PropertyMappingFactory $factory,
-        ?PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null,
     ) {
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
@@ -44,6 +44,9 @@ class VichFileType extends AbstractType
             'download_uri' => true,
             'download_label' => 'vich_uploader.link.download',
             'delete_label' => 'vich_uploader.form_label.delete_confirm',
+            'download_label_translation_domain' => null,
+            'delete_label_translation_domain' => null,
+            'translation_domain' => null,
             'error_bubbling' => false,
         ]);
 
@@ -90,7 +93,7 @@ class VichFileType extends AbstractType
             $form->add('delete', Type\CheckboxType::class, [
                 'label' => $options['delete_label'],
                 'mapped' => false,
-                'translation_domain' => $options['translation_domain'],
+                'translation_domain' => $options['delete_label_translation_domain'] ?? $options['translation_domain'],
                 'required' => false,
             ]);
         });
@@ -117,9 +120,10 @@ class VichFileType extends AbstractType
         $view->vars['download_uri'] = null;
         if ($options['download_uri'] && $object) {
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
+
             $view->vars = \array_replace(
                 $view->vars,
-                $this->resolveDownloadLabel($options['download_label'], $object, $form)
+                $this->resolveDownloadLabel($options['download_label'], $object, $form, $options)
             );
         }
 
@@ -149,7 +153,7 @@ class VichFileType extends AbstractType
         return $uriOption;
     }
 
-    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form): array
+    protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form, array $options): array
     {
         if (true === $downloadLabel) {
             $fieldName = $this->getFieldName($form);
@@ -158,7 +162,7 @@ class VichFileType extends AbstractType
                 throw new \UnexpectedValueException(\sprintf('Cannot find mapping for "%s" field', $fieldName));
             }
 
-            return ['download_label' => $mapping->readProperty($object, 'originalName'), 'translation_domain' => false];
+            return ['download_label' => $mapping->readProperty($object, 'originalName'), 'download_label_translation_domain' => false];
         }
 
         if (\is_callable($downloadLabel)) {
@@ -166,17 +170,24 @@ class VichFileType extends AbstractType
 
             return [
                 'download_label' => $result['download_label'] ?? $result,
-                'translation_domain' => $result['translation_domain'] ?? false,
+                'download_label_translation_domain' => $result['download_label_translation_domain']
+                    ?? $result['translation_domain']
+                    ?? false,
             ];
         }
 
         if ($downloadLabel instanceof PropertyPath) {
             return [
                 'download_label' => $this->propertyAccessor->getValue($object, $downloadLabel),
-                'translation_domain' => false,
+                'download_label_translation_domain' => false,
             ];
         }
 
-        return ['download_label' => $downloadLabel];
+        return [
+            'download_label' => $downloadLabel,
+            'download_label_translation_domain' => $options['download_label_translation_domain']
+                ?? $options['translation_domain']
+                ?? null,
+        ];
     }
 }

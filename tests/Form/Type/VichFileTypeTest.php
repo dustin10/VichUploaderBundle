@@ -3,34 +3,70 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Handler\UploadHandler;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
-use Vich\UploaderBundle\Tests\TestCase;
+use Vich\UploaderBundle\Tests\TestCaseTrait;
 
-final class VichFileTypeTest extends TestCase
+final class VichFileTypeTest extends TypeTestCase
 {
+    use TestCaseTrait;
+
     protected const TESTED_TYPE = VichFileType::class;
+
+    protected StorageInterface|MockObject $storage;
+    protected FormInterface|MockObject $parentForm;
+    protected FormConfigInterface|MockObject $config;
+    protected FormInterface|MockObject $form;
+    protected UploadHandler|MockObject $uploadHandler;
+    protected PropertyMappingFactory|MockObject $propertyMappingFactory;
+    protected PropertyAccessorInterface|MockObject $propertyAccessor;
+    protected PropertyMapping|MockObject $mapping;
+
+    protected function setUp(): void
+    {
+        $this->storage = $this->createMock(StorageInterface::class);
+        $this->parentForm = $this->createMock(FormInterface::class);
+        $this->config = $this->createMock(FormConfigInterface::class);
+
+        $this->form = $this->createMock(FormInterface::class);
+        $this->form
+            ->method('getParent')
+            ->willReturn($this->parentForm);
+        $this->form
+            ->method('getConfig')
+            ->willReturn($this->config);
+
+        $this->uploadHandler = $this->getUploadHandlerMock();
+        $this->storage = $this->createMock(StorageInterface::class);
+        $this->uploadHandler = $this->getUploadHandlerMock();
+        $this->propertyMappingFactory = $this->getPropertyMappingFactoryMock();
+        $this->propertyAccessor = $this->createMock(PropertyAccessor::class);
+        $this->mapping = $this->getPropertyMappingMock();
+
+        parent::setUp();
+    }
 
     public function testEmptyDownloadLinkDoNotThrowsDeprecation(): void
     {
         $optionsResolver = new OptionsResolver();
 
-        $storage = $this->createMock(StorageInterface::class);
-        $uploadHandler = $this->getUploadHandlerMock();
-        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
-
         $testedType = self::TESTED_TYPE;
-
-        $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);
-
+        $type = new $testedType($this->storage, $this->uploadHandler, $this->propertyMappingFactory, $this->propertyAccessor);
         $type->configureOptions($optionsResolver);
 
         $resolved = $optionsResolver->resolve([]);
@@ -46,56 +82,46 @@ final class VichFileTypeTest extends TestCase
     {
         $field = 'image';
 
-        $storage = $this->createMock(StorageInterface::class);
-        $storage
+        $this->storage
             ->method('resolveUri')
             ->with($object, $field)
             ->willReturn('resolved-uri');
 
-        $parentForm = $this->createMock(FormInterface::class);
-        $parentForm
+        $this->parentForm
             ->method('getData')
             ->willReturn($object);
 
-        $config = $this->createMock(FormConfigInterface::class);
-        $config
+        $this->config
             ->method('getOption')
             ->willReturnCallback(static fn (string $key) => $options[$key] ?? null);
 
-        $form = $this->createMock(FormInterface::class);
-        $form
+        $this->form
             ->method('getParent')
-            ->willReturn($parentForm);
-        $form
+            ->willReturn($this->parentForm);
+        $this->form
             ->method('getName')
             ->willReturn($field);
-        $form
+        $this->form
             ->method('getConfig')
-            ->willReturn($config);
-
-        $uploadHandler = $this->getUploadHandlerMock();
-        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
-
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
+            ->willReturn($this->config);
 
         if (isset($options['download_label'])) {
             if (true === $options['download_label']) {
-                $mapping = $this->getPropertyMappingMock();
-                $mapping
+                $this->mapping
                     ->expects(self::once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
                     ->willReturn($object->getImageOriginalName());
 
-                $propertyMappingFactory
+                $this->propertyMappingFactory
                     ->expects(self::once())
                     ->method('fromField')
                     ->with($object, $field)
-                    ->willReturn($mapping);
+                    ->willReturn($this->mapping);
             }
 
             if ($options['download_label'] instanceof PropertyPath) {
-                $propertyAccessor
+                $this->propertyAccessor
                     ->expects(self::once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
@@ -106,8 +132,8 @@ final class VichFileTypeTest extends TestCase
         $testedType = self::TESTED_TYPE;
 
         $view = new FormView();
-        $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);
-        $type->buildView($view, $form, $options);
+        $type = new $testedType($this->storage, $this->uploadHandler, $this->propertyMappingFactory, $this->propertyAccessor);
+        $type->buildView($view, $this->form, $options);
         self::assertEquals($vars, $view->vars);
     }
 
@@ -128,6 +154,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'custom label',
+                    'download_label_translation_domain' => null,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -174,6 +201,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'download_uri' => '/download/image.jpeg',
                     'value' => null,
                     'attr' => [],
@@ -190,6 +218,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'download',
+                    'download_label_translation_domain' => null,
                     'download_uri' => 'custom-uri',
                     'value' => null,
                     'attr' => [],
@@ -206,7 +235,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'image.jpeg',
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -223,7 +252,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'prefix-image.jpeg',
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -243,7 +272,7 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => 'prefix-image.jpeg',
-                    'translation_domain' => 'messages',
+                    'download_label_translation_domain' => 'messages',
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
@@ -260,13 +289,82 @@ final class VichFileTypeTest extends TestCase
                 [
                     'object' => $object,
                     'download_label' => $object->getTitle(),
-                    'translation_domain' => false,
+                    'download_label_translation_domain' => false,
                     'download_uri' => 'resolved-uri',
                     'value' => null,
                     'attr' => [],
                     'asset_helper' => false,
                 ],
             ],
+            [
+                $object,
+                [
+                    'download_label' => 'custom label',
+                    'download_label_translation_domain' => 'custom_domain',
+                    'download_uri' => true,
+                    'asset_helper' => true,
+                ],
+                [
+                    'object' => $object,
+                    'download_label' => 'custom label',
+                    'download_label_translation_domain' => 'custom_domain',
+                    'download_uri' => 'resolved-uri',
+                    'value' => null,
+                    'attr' => [],
+                    'asset_helper' => true,
+                ],
+            ],
         ];
+    }
+
+    protected function getExtensions(): array
+    {
+        // create a type instance with the mocked dependencies
+        $type = new (self::TESTED_TYPE)($this->storage, $this->uploadHandler, $this->propertyMappingFactory, $this->propertyAccessor);
+
+        return [
+            // register the type instances with the PreloadedExtension
+            new PreloadedExtension([$type], []),
+        ];
+    }
+
+    public function testWithDeleteField(): void
+    {
+        $field = 'image';
+
+        $object = new Product();
+        $object->setImageOriginalName('image.jpeg');
+        $object->setTitle('Product1');
+
+        // $storage = $this->createMock(StorageInterface::class);
+
+        $this->storage
+            ->method('resolveUri')
+            ->with($object, $field)
+            ->willReturn('resolved-uri');
+
+        $options = [
+            'allow_delete' => true,
+            'delete_label' => 'custom delete label',
+            'delete_label_translation_domain' => 'custom domain',
+        ];
+
+        $expectedDeleteViewVars = [
+            'label' => 'custom delete label',
+            'translation_domain' => 'custom domain',
+        ];
+
+        // -- Really needs to build the form
+        $formBuilder = $this->factory->createBuilder(FormType::class, $object)
+            ->add($field, self::TESTED_TYPE, $options);
+        $form = $formBuilder->getForm();
+        self::assertTrue($form[$field]->has('delete'));
+
+        $deleteFieldView = $form[$field]['delete']->createView();
+
+        foreach ($expectedDeleteViewVars as $key => $var) {
+            self::assertArrayHasKey($key, $deleteFieldView->vars);
+            self::assertEquals($var, $deleteFieldView->vars[$key]);
+        }
     }
 }
