@@ -45,23 +45,31 @@ Similar to the issue above, because VichUploaderBundle relies on Doctrine's `pre
 `preUpdate` events which occur _after_ Gedmo's use of the `preFlush` event to execute it's own
 handlers, it is not possible to use Gedmo's handlers to track changes for uploaded files. To be
 more specific, you cannot use `Gedmo\Timestampable` to track when a file is uploaded or changed.
-One solution for this is to update your timestamp property in your setter of the file property:
+One solution for this is to update your timestamp property in your setters of the file and field
+properties; updating both is neccessary to track delete and change actions.
 
 ```php
     #[Vich\UploadableField(mapping: 'custom_file', fileNameProperty: 'myField')]
     protected ?File $myFile = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $myField = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    public private(set) ?\DateTime $myFileUpdatedAt = null;
+    public private(set) ?\DateTime $myFieldUpdatedAt = null;
 
     public function setMyFile(?File $file = null): void
     {
-        $this->myFileUpdatedAt = new \DateTime();
+        $this->myFieldUpdatedAt = new \DateTime();
         $this->myFile = $file;
     }
-```
 
-_note: you can then place `Gedmo\Blameable` attributes on your `$myFileUpdatedAt` property if needed_
+    public function setMyField(?string $myField = null): void
+    {
+        $this->myFieldUpdatedAt = new \DateTime();
+        $this->myField = $myField;
+    }
+```
 
 ## Image not deleted with cascade deletion and Doctrine
 
