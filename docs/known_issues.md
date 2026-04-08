@@ -41,7 +41,7 @@ See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
 
 ## Uploading files does not trigger Gedmo/DoctrineExtensions events
 
-Similar to the issue above, because VichUploaderBundle relies on Doctrine's `prePersist` and 
+Similar to the issue above, because VichUploaderBundle relies on Doctrine's `prePersist` and
 `preUpdate` events which occur _after_ Gedmo's use of the `preFlush` event to execute it's own
 handlers, it is not possible to use Gedmo's handlers to track changes for uploaded files. To be
 more specific, you cannot use `Gedmo\Timestampable` to track when a file is uploaded or changed.
