@@ -46,7 +46,7 @@ Similar to the issue above, because VichUploaderBundle relies on Doctrine's `pre
 handlers, it is not possible to use Gedmo's handlers to track changes for uploaded files. To be
 more specific, you cannot use `Gedmo\Timestampable` to track when a file is uploaded or changed.
 One solution for this is to update your timestamp property in your setters of the file and field
-properties; updating both is neccessary to track delete and change actions.
+properties; updating both is necessary to track delete and change actions.
 
 ```php
     #[Vich\UploadableField(mapping: 'custom_file', fileNameProperty: 'myField')]
