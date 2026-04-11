@@ -5,11 +5,8 @@ namespace Vich\UploaderBundle\Mapping\Attribute;
 use Vich\UploaderBundle\Mapping\AttributeInterface;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class UploadableField implements AttributeInterface
+final readonly class UploadableField implements AttributeInterface
 {
-    /**
-     * Constructs a new instance of UploadableField.
-     */
     public function __construct(
         private readonly string $mapping,
         private readonly ?string $fileNameProperty = null,
@@ -18,6 +15,7 @@ class UploadableField implements AttributeInterface
         private readonly ?string $originalName = null,
         private readonly ?string $dimensions = null
     ) {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'The "Vich\UploaderBundle\Mapping\Annotation\UploadableField" class is deprecated, use "Vich\UploaderBundle\Mapping\Attribute\UploadableField" instead.');
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Injector;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -17,7 +17,7 @@ final class FileInjector implements FileInjectorInterface
     {
     }
 
-    public function injectFile(object $obj, PropertyMapping $mapping): void
+    public function injectFile(array|object $obj, PropertyMappingInterface $mapping): void
     {
         $path = $this->storage->resolvePath($obj, $mapping->getFilePropertyName());
 

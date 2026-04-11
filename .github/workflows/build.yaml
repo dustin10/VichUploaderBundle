@@ -21,7 +21,7 @@ jobs:
               with:
                   php-version: 8.3
             - run: |
-                  composer require --no-update doctrine/annotations:"^2.0" liip/imagine-bundle:"^2.13" phpstan/phpstan:"^2" 
+                  composer require --no-update liip/imagine-bundle:^2.16 phpstan/phpstan:^2 
                   composer install --ignore-platform-reqs
                   XDEBUG_MODE=off vendor/bin/phpstan
     cs-fixer:
@@ -41,7 +41,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
             - name: Require the vendor
-              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.5
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.11
             - name: Update
               run: composer update --no-interaction --no-progress
             - name: Run
@@ -61,8 +61,9 @@ jobs:
         strategy:
             matrix:
                 php:
-                    - '8.1'
-                    - '8.2'
+                    - '8.3'
+                    - '8.4'
+                    - '8.5'
                 dependencies: [highest]
                 symfony: ['*']
                 with_imagine: [false]
@@ -70,37 +71,20 @@ jobs:
                 with_gaufrette: [true]
                 max_deprecations: [0]
                 include:
-                    - extra:
-                      php: '8.1'
-                      symfony: '5.4.*'
-                      dependencies: lowest
-                      with_imagine: false
-                      with_oneupbundle: false
-                      max_deprecations: 5
-                    - php: '8.1'
-                      symfony: '6.4.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: true
-                      max_deprecations: 0
-                    - php: '8.2'
-                      symfony: '6.4.*'
-                      dependencies: highest
-                      with_imagine: false
-                      with_oneupbundle: false
-                      max_deprecations: 0
                     - php: '8.3'
-                      symfony: '7.3.*'
+                      symfony: '6.4.*'
                       dependencies: highest
                       with_imagine: false
                       with_oneupbundle: false
+                      with_gaufrette: true
                       max_deprecations: 0
                     - php: '8.4'
                       symfony: '7.4.*'
                       dependencies: highest
-                      with_imagine: true
+                      with_imagine: false
                       with_oneupbundle: false
-                      max_deprecations: 6
+                      with_gaufrette: true
+                      max_deprecations: 0
                     - php: '8.5'
                       symfony: '8.0.*'
                       dependencies: highest
@@ -123,10 +107,9 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mongodb-stable, pdo_sqlite
-            - run: composer require --no-update doctrine/annotations:"^1.14 || ^2.0"
             - run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
-                  composer global require --no-interaction --no-progress symfony/flex:"^2.10"
+                  composer global require --no-interaction --no-progress symfony/flex:^2.10
                   composer config extra.symfony.require ${{ matrix.symfony }}
               if: matrix.symfony != '*'
             - name: use possible dev deps

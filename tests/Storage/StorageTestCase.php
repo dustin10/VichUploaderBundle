@@ -71,12 +71,12 @@ abstract class StorageTestCase extends TestCase
     public function testResolvePathWithEmptyFile(?string $filename): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn($filename);
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -88,12 +88,12 @@ abstract class StorageTestCase extends TestCase
     public function testResolveUriWithEmptyFile(?string $filename): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn($filename);
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);

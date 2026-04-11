@@ -1,3 +1,11 @@
+# Upgrading from v2.9 to v3.0
+
+## Breaking Changes
+
+* The deprecated `Vich\UploaderBundle\Mapping\Annotation` namespace has been removed. Use `Vich\UploaderBundle\Mapping\Attribute` instead.
+* The deprecated `AnnotationInterface` has been removed. Use `AttributeInterface` instead.
+* `AttributeReader` deprecated methods have been removed: use `getClassAttribute()` instead of `getClassAnnotation()`, `getPropertyAttribute()` instead of `getPropertyAnnotation()`.
+
 # Upgrading from v2.8 to v2.9
 
 ## Deprecations

@@ -48,7 +48,7 @@ class PropertyNamerTest extends TestCase
             ->willReturn($guessedExtension);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);

@@ -3,20 +3,15 @@
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use Vich\UploaderBundle\Mapping\Attribute\Uploadable as AttributeUploadable;
-use Vich\UploaderBundle\Mapping\Attribute\UploadableField as AttributeUploadableField;
+use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
+use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
 use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 use Vich\UploaderBundle\Tests\DummyNewAttributeEntity;
 
 final class AttributeReaderTest extends TestCase
 {
-    /**
-     * @group legacy
-     */
-    public function testGetClassAnnotations(): void
+    public function testGetClassAttributes(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionClass(DummyAttributeEntity::class);
@@ -25,32 +20,26 @@ final class AttributeReaderTest extends TestCase
             [
                 Uploadable::class => new Uploadable(),
             ],
-            $reader->getClassAnnotations($class)
+            $reader->getClassAttributes($class)
         );
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetClassAnnotation(): void
+    public function testGetClassAttribute(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionClass(DummyAttributeEntity::class);
 
         $this->assertEquals(
             new Uploadable(),
-            $reader->getClassAnnotation($class, Uploadable::class)
+            $reader->getClassAttribute($class, Uploadable::class)
         );
 
         $this->assertNull(
-            $reader->getClassAnnotation($class, self::class)
+            $reader->getClassAttribute($class, self::class)
         );
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetPropertyAnnotations(): void
+    public function testGetPropertyAttributes(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionProperty(DummyAttributeEntity::class, 'file');
@@ -59,25 +48,22 @@ final class AttributeReaderTest extends TestCase
             [
                 UploadableField::class => new UploadableField('dummy_file', 'fileName'),
             ],
-            $reader->getPropertyAnnotations($class)
+            $reader->getPropertyAttributes($class)
         );
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetPropertyAnnotation(): void
+    public function testGetPropertyAttribute(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionProperty(DummyAttributeEntity::class, 'file');
 
         $this->assertEquals(
             new UploadableField('dummy_file', 'fileName'),
-            $reader->getPropertyAnnotation($class, UploadableField::class)
+            $reader->getPropertyAttribute($class, UploadableField::class)
         );
 
         $this->assertNull(
-            $reader->getPropertyAnnotation(
+            $reader->getPropertyAttribute(
                 new \ReflectionProperty(DummyAttributeEntity::class, 'someProperty'),
                 UploadableField::class
             )
