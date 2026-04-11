@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Validator;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use Vich\UploaderBundle\Validator\Constraints\FileRequired;
 
 final class FileRequiredTest extends TestCase

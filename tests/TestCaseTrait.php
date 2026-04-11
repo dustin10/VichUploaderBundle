@@ -6,10 +6,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
-use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-use Vich\UploaderBundle\Metadata\MetadataReader;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
 use Vich\UploaderBundle\Util\Transliterator;
 
 trait TestCaseTrait
@@ -28,14 +28,14 @@ trait TestCaseTrait
             ->getMock();
     }
 
-    protected function getPropertyMappingMock(): PropertyMapping|MockObject
+    protected function getPropertyMappingMock(): PropertyMappingInterface|MockObject
     {
-        return $this->createMock(PropertyMapping::class);
+        return $this->createMock(PropertyMappingInterface::class);
     }
 
-    protected function getPropertyMappingFactoryMock(): PropertyMappingFactory|MockObject
+    protected function getPropertyMappingFactoryMock(): PropertyMappingFactoryInterface|MockObject
     {
-        return $this->createMock(PropertyMappingFactory::class);
+        return $this->createMock(PropertyMappingFactoryInterface::class);
     }
 
     protected function getTransliterator(): Transliterator
@@ -43,13 +43,13 @@ trait TestCaseTrait
         return new Transliterator(new AsciiSlugger());
     }
 
-    protected function getMetadataReaderMock(): MetadataReader|MockObject
+    protected function getMetadataReaderMock(): MetadataReaderInterface|MockObject
     {
-        return $this->createMock(MetadataReader::class);
+        return $this->createMock(MetadataReaderInterface::class);
     }
 
-    protected function getUploadHandlerMock(): UploadHandler|MockObject
+    protected function getUploadHandlerMock(): UploadHandlerInterface|MockObject
     {
-        return $this->createMock(UploadHandler::class);
+        return $this->createMock(UploadHandlerInterface::class);
     }
 }

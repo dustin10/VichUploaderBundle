@@ -148,16 +148,6 @@ final class VichUploaderExtension extends Extension
         );
     }
 
-    /**
-     * @deprecated since 2.9, use registerAttributeStrategy() instead
-     */
-    protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
-    {
-        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "registerAttributeStrategy()" instead.', __METHOD__);
-
-        $this->registerAttributeStrategy($container, $config);
-    }
-
     protected function registerCacheStrategy(ContainerBuilder $container, array $config): void
     {
         if ('none' === $config['metadata']['cache']) {

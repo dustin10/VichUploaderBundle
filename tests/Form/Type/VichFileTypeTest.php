@@ -16,9 +16,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
-use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCaseTrait;
 
@@ -32,10 +32,10 @@ final class VichFileTypeTest extends TypeTestCase
     protected FormInterface|MockObject $parentForm;
     protected FormConfigInterface|MockObject $config;
     protected FormInterface|MockObject $form;
-    protected UploadHandler|MockObject $uploadHandler;
-    protected PropertyMappingFactory|MockObject $propertyMappingFactory;
+    protected UploadHandlerInterface|MockObject $uploadHandler;
+    protected PropertyMappingFactoryInterface|MockObject $propertyMappingFactory;
     protected PropertyAccessorInterface|MockObject $propertyAccessor;
-    protected PropertyMapping|MockObject $mapping;
+    protected PropertyMappingInterface|MockObject $mapping;
 
     protected function setUp(): void
     {
@@ -107,23 +107,22 @@ final class VichFileTypeTest extends TypeTestCase
 
         if (isset($options['download_label'])) {
             if (true === $options['download_label']) {
-                $mapping = $this->getPropertyMappingMock();
-                $mapping
-                    ->expects($this->once())
+                $this->mapping
+                    ->expects(self::once())
                     ->method('readProperty')
                     ->with($object, 'originalName')
                     ->willReturn($object->getImageOriginalName());
 
-                $propertyMappingFactory
-                    ->expects($this->once())
+                $this->propertyMappingFactory
+                    ->expects(self::once())
                     ->method('fromField')
                     ->with($object, $field)
                     ->willReturn($this->mapping);
             }
 
             if ($options['download_label'] instanceof PropertyPath) {
-                $propertyAccessor
-                    ->expects($this->once())
+                $this->propertyAccessor
+                    ->expects(self::once())
                     ->method('getValue')
                     ->with($object, $options['download_label'])
                     ->willReturn($object->getTitle());
