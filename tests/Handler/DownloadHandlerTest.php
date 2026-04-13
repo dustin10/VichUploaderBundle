@@ -6,9 +6,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
+use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -25,7 +27,7 @@ final class DownloadHandlerTest extends TestCase
 
     protected DownloadHandler $handler;
 
-    protected MockObject|PropertyMapping $mapping;
+    protected MockObject|PropertyMappingInterface $mapping;
 
     protected function setUp(): void
     {
@@ -58,24 +60,24 @@ final class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getMimeType')
             ->willReturn(null);
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
@@ -95,24 +97,24 @@ final class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getMimeType')
             ->willReturn('application/pdf');
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
@@ -130,19 +132,19 @@ final class DownloadHandlerTest extends TestCase
     public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn($fileName);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn(null);
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
@@ -171,18 +173,18 @@ final class DownloadHandlerTest extends TestCase
         $file = $this->getUploadedFileMock();
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($file);
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getMimeType')
             ->willReturn('application/octet-stream');
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn('something not null');
@@ -198,7 +200,7 @@ final class DownloadHandlerTest extends TestCase
 
     public function testAnExceptionIsThrownIfMappingIsNotFound(): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
+        $this->expectException(MappingNotFoundException::class);
 
         $this->factory = $this->getPropertyMappingFactoryMock();
         $this->handler = new DownloadHandler($this->factory, $this->storage);
@@ -208,10 +210,10 @@ final class DownloadHandlerTest extends TestCase
 
     public function testAnExceptionIsThrownIfNoFileIsFound(): void
     {
-        $this->expectException(\Vich\UploaderBundle\Exception\NoFileFoundException::class);
+        $this->expectException(NoFileFoundException::class);
 
         $this->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('resolveStream')
             ->with($this->object, 'file_field')
             ->willReturn(null);

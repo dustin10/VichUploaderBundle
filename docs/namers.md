@@ -154,6 +154,7 @@ At the moment there are several available namers:
 * `Vich\UploaderBundle\Naming\PropertyDirectoryNamer`
 * `Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer`
 * `Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer`
+* `Vich\UploaderBundle\Naming\ChainDirectoryNamer`
 
 **SubdirDirectoryNamer** creates subdirs depending on the file name, i.e. `abcdef.jpg` will be
 stored in a folder `ab`. It is also possible to configure how many chars use per directory name and
@@ -241,6 +242,40 @@ vich_uploader:
                 options:
                     directory_path: 'folder/subfolder/subsubfolder'
 ```
+
+**ChainDirectoryNamer** allows you to chain multiple directory namers together, concatenating their
+results with a configurable separator. This is useful when you need to combine multiple naming
+strategies, for example organizing files by date and then by a property value.
+
+To use it, specify the service for the `directory_namer` configuration option and configure
+the `namers` option with a list of directory namers to chain:
+
+``` yaml
+vich_uploader:
+    # ...
+    mappings:
+        products:
+            upload_destination: products
+            directory_namer:
+                service: Vich\UploaderBundle\Naming\ChainDirectoryNamer
+                options:
+                    namers:
+                        - service: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
+                          options:
+                              date_time_format: 'Y/m'
+                              date_time_property: createdAt
+                        - service: Vich\UploaderBundle\Naming\PropertyDirectoryNamer
+                          options:
+                              property: category.slug
+                    separator: '/'  # optional, defaults to '/'
+```
+
+This configuration will create directories like `2024/01/electronics` for a product in the
+"electronics" category uploaded in January 2024.
+
+> [!NOTE]
+> Empty directory names returned by any namer in the chain are automatically filtered out.
+> For example, if one namer returns an empty string, it won't add an extra separator to the path.
 
 If no directory namer is configured for a mapping, the bundle will simply use
 the `upload_destination` configuration option.

@@ -24,13 +24,13 @@ final class SlugNamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getClientOriginalName')
             ->willReturn($originalName)
         ;
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('guessExtension')
             ->willReturn($guessedExtension)
         ;
@@ -38,7 +38,7 @@ final class SlugNamerTest extends TestCase
         $entity = new \stdClass();
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::once())
+        $mapping->expects($this->once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file)

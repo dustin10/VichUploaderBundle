@@ -13,8 +13,8 @@ abstract class AbstractCommandTestCase extends WebTestCase
     {
         $client = self::createClient();
         $application = new Application($client->getKernel());
-        // @phpstan-ignore-next-line function.impossibleType
-        if (\method_exists($application, 'addCommand')) {
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
+        if (\method_exists(Application::class, 'addCommand')) {
             $application->addCommand($command);
         } else {
             $application->add($command);    // @phpstan-ignore-line method.notFound

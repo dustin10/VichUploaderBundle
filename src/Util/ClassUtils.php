@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Util;
 /**
  * @internal
  */
-final class ClassUtils
+final readonly class ClassUtils
 {
     /**
      * This class should not be instantiated.

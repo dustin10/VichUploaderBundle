@@ -158,11 +158,6 @@ class Product
 }
 ```
 
-> [!NOTE]
-> This bundle also supports annotations, but the attribute syntax is recommended.
-> If you look for examples about annotations mapping, please refer to an older
-> version of the documentation.
-
 Alternatively you can use `Vich\UploaderBundle\Entity\File` embeddable for storing file info in your ORM entity:
 
 ``` php
