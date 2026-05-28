@@ -104,7 +104,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
     {
         $altService = \substr($service, 0, -\strlen($name) - 1);
         foreach ($this->namers as $id => $namer) {
-            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id) {
+            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id || $namer::class === $altService) {
                 return $namer;
             }
         }
@@ -116,7 +116,7 @@ final class PropertyMappingResolver implements PropertyMappingResolverInterface
     {
         $altService = \substr($service, 0, -\strlen($name) - 1);
         foreach ($this->dirNamers as $id => $namer) {
-            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id) {
+            if ($id === $service || $namer::class === $service || $altService === $service || $altService === $id || $namer::class === $altService) {
                 return $namer;
             }
         }

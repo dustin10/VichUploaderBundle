@@ -6,6 +6,10 @@
 * The deprecated `AnnotationInterface` has been removed. Use `AttributeInterface` instead.
 * `AttributeReader` deprecated methods have been removed: use `getClassAttribute()` instead of `getClassAnnotation()`, `getPropertyAttribute()` instead of `getPropertyAnnotation()`.
 
+## Symfony 8.1+ compatibility note
+
+* If you configure a custom `namer` or `directory_namer` by service id (for example `my.custom_namer`) instead of by class name, index that service in tagged iterators using `#[AsTaggedItem(index: 'my.custom_namer')]` (or equivalent tag `index` config).
+
 # Upgrading from v2.8 to v2.9
 
 ## Deprecations

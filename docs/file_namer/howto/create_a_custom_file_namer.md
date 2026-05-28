@@ -104,6 +104,19 @@ vich_uploader:
 
 Where `App\Naming\MyNamer` is the configured service class.
 
+For Symfony 8.1+, if you prefer using a custom service id in mapping config (for example,
+`namer: my.custom_namer`) instead of the class name, index the tagged service explicitly:
+
+```php
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+
+#[AsTaggedItem(index: 'my.custom_namer')]
+class MyNamer implements NamerInterface
+{
+    // ...
+}
+```
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
