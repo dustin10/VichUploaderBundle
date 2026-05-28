@@ -450,7 +450,7 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertCount(3, $files);
 
         // Extract paths from StoredFile objects
-        $paths = \array_map(static fn ($file) => $file->path, $files);
+        $paths = \array_map(fn ($file) => $file->path, $files);
         self::assertContains('file1.txt', $paths);
         self::assertContains('file2.txt', $paths);
         self::assertContains('subdir/file3.txt', $paths);

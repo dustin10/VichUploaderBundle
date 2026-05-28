@@ -1,6 +1,6 @@
-FROM php:8.5-alpine
+FROM php:8.5.0rc3-alpine
 
-ARG MONGODB_VERSION=2.1.8
+ARG MONGODB_VERSION=2.1.2
 
 # Install mongo
 RUN set -eux; \
