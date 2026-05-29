@@ -17,10 +17,8 @@ final class FileSystemStorage extends AbstractStorage
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
 
-        if (!\file_exists($uploadDir)) {
-            if (!\mkdir($uploadDir, recursive: true)) {
-                throw new \Exception('Could not create directory "'.$uploadDir.'"');
-            }
+        if (!\file_exists($uploadDir) && !@\mkdir($uploadDir, recursive: true) && !\is_dir($uploadDir)) {
+            throw new \Exception('Could not create directory "'.$uploadDir.'"');
         }
         if (!\is_dir($uploadDir)) {
             throw new \Exception('Tried to move file to directory "'.$uploadDir.'" but it is a file');
