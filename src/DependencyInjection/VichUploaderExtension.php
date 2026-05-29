@@ -157,6 +157,8 @@ final class VichUploaderExtension extends Extension
      */
     protected function registerAnnotationStrategy(ContainerBuilder $container, array $config): void
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "registerAttributeStrategy()" instead.', __METHOD__);
+
         $this->registerAttributeStrategy($container, $config);
     }
 
