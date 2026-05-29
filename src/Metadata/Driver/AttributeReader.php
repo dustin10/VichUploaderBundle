@@ -42,6 +42,39 @@ final readonly class AttributeReader
         return $this->getPropertyAttributes($property)[$attributeName] ?? null;
     }
 
+    /** @return AttributeInterface[] */
+    public function getClassAnnotations(\ReflectionClass $class): array
+    {
+        return $this->getClassAttributes($class);
+    }
+
+    public function getClassAnnotation(\ReflectionClass $class, string $annotationName): ?AttributeInterface
+    {
+        return $this->getClassAttribute($class, $annotationName);
+    }
+
+    /** @return AttributeInterface[] */
+    public function getMethodAnnotations(\ReflectionMethod $method): array
+    {
+        return $this->getMethodAttributes($method);
+    }
+
+    public function getMethodAnnotation(\ReflectionMethod $method, string $annotationName): ?AttributeInterface
+    {
+        return $this->getMethodAttribute($method, $annotationName);
+    }
+
+    /** @return AttributeInterface[] */
+    public function getPropertyAnnotations(\ReflectionProperty $property): array
+    {
+        return $this->getPropertyAttributes($property);
+    }
+
+    public function getPropertyAnnotation(\ReflectionProperty $property, string $annotationName): ?AttributeInterface
+    {
+        return $this->getPropertyAttribute($property, $annotationName);
+    }
+
     /**
      * @param \ReflectionAttribute[] $attributes
      *

@@ -12,7 +12,7 @@ vich_uploader:
     metadata:
         auto_detection: true
         cache: file
-        type: attribute
+        type: attribute        # "annotation" is still accepted on master for BC but deprecated
     mappings:
         products:
             uri_prefix: /uploads         # uri prefix to resource
