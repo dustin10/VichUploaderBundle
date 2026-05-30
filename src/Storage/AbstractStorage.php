@@ -90,9 +90,9 @@ abstract class AbstractStorage implements StorageInterface
      * Do resolve path.
      *
      * @param PropertyMapping $mapping  The mapping representing the field
-     * @param string|null              $dir      The directory in which the file is uploaded
-     * @param string                   $name     The file name
-     * @param bool                     $relative Whether the path should be relative or absolute
+     * @param string|null     $dir      The directory in which the file is uploaded
+     * @param string          $name     The file name
+     * @param bool            $relative Whether the path should be relative or absolute
      */
     abstract protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string;
 

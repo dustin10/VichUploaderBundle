@@ -23,7 +23,7 @@ interface StorageInterface
      *
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
-     * @param string|null              $dir     Optional directory path to use instead of calling getUploadDir()
+     * @param string|null     $dir     Optional directory path to use instead of calling getUploadDir()
      *
      * @throw \Exception      Throws an exception
      */

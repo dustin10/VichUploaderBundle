@@ -20,7 +20,11 @@ final class MappingCollectorTest extends TestCase
             ->willReturn(['fileName' => 'field-metadata']);
 
         $collector = new MappingCollector($metadataReader);
-        $collector->collect($this->createRequestMock(), $this->createResponseMock());
+        $this->setCollectorData($collector, [
+            'mappings' => [
+                DummyEntity::class => ['fileName' => 'field-metadata'],
+            ],
+        ]);
 
         self::assertSame(1, $collector->getMappingsCount());
 
@@ -30,13 +34,9 @@ final class MappingCollectorTest extends TestCase
         self::assertSame([], $collector->getMappings());
     }
 
-    private function createRequestMock(): \Symfony\Component\HttpFoundation\Request
+    private function setCollectorData(MappingCollector $collector, array $data): void
     {
-        return $this->createMock(\Symfony\Component\HttpFoundation\Request::class);
-    }
-
-    private function createResponseMock(): \Symfony\Component\HttpFoundation\Response
-    {
-        return $this->createMock(\Symfony\Component\HttpFoundation\Response::class);
+        $property = new \ReflectionProperty($collector, 'data');
+        $property->setValue($collector, $data);
     }
 }

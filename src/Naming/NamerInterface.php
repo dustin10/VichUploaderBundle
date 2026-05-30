@@ -14,7 +14,7 @@ interface NamerInterface
     /**
      * Creates a name for the file being uploaded.
      *
-     * @param object|array             $object  The object or array the upload is attached to
+     * @param object|array    $object  The object or array the upload is attached to
      * @param PropertyMapping $mapping The mapping to use to manipulate the given object
      *
      * @phpstan-param T $object

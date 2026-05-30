@@ -54,11 +54,9 @@ abstract class ListenerTestCase extends TestCase
         return $this->createMock(AdapterInterface::class);
     }
 
-    protected function getMetadataReaderMock(): MetadataReader&MockObject
+    protected function getMetadataReaderMock(): MetadataReader|MockObject
     {
-        return $this->getMockBuilder(MetadataReader::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createMock(MetadataReader::class);
     }
 
     protected function getHandlerMock(): UploadHandlerInterface&MockObject

@@ -3,8 +3,8 @@
 namespace Vich\UploaderBundle\Handler;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**

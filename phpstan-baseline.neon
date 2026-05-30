@@ -31,19 +31,25 @@ parameters:
 			path: tests/Adapter/ODM/MongoDB/MongoDBAdapterTest.php
 
 		-
-			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
-			identifier: return.unresolvableType
-			count: 2
-			path: tests/EventListener/Doctrine/ListenerTestCase.php
+			message: '#^Return type of call to static method PHPUnit\\Framework\\TestCase\:\:createStub\(\) contains unresolvable type\.$#'
+			identifier: staticMethod.unresolvableReturnType
+			count: 7
+			path: tests/Command/CleanupCommandTest.php
 
 		-
-			message: '#^Return type of call to method PHPUnit\\Framework\\MockObject\\MockBuilder\<Vich\\UploaderBundle\\Handler\\UploadHandler\>\:\:getMock\(\) contains unresolvable type\.$#'
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 10
+			path: tests/Command/CleanupCommandTest.php
+
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
 			identifier: method.unresolvableReturnType
 			count: 1
-			path: tests/EventListener/Doctrine/ListenerTestCase.php
+			path: tests/DataCollector/MappingCollectorTest.php
 
 		-
-			message: '#^Return type of call to method PHPUnit\\Framework\\MockObject\\MockBuilder\<Vich\\UploaderBundle\\Metadata\\MetadataReader\>\:\:getMock\(\) contains unresolvable type\.$#'
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
 			identifier: method.unresolvableReturnType
 			count: 1
 			path: tests/EventListener/Doctrine/ListenerTestCase.php
@@ -57,17 +63,11 @@ parameters:
 		-
 			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
 			identifier: method.unresolvableReturnType
-			count: 1
-			path: tests/Injector/FileInjectorTest.php
-
-		-
-			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 4
+			count: 3
 			path: tests/TestCase.php
 
 		-
 			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
 			identifier: method.unresolvableReturnType
-			count: 4
+			count: 3
 			path: tests/TestCaseTrait.php
