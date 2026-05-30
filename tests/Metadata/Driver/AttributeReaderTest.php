@@ -3,9 +3,9 @@
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
 use PHPUnit\Framework\TestCase;
-use Vich\UploaderBundle\Mapping\AnnotationInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable as DeprecatedUploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField as DeprecatedUploadableField;
+use Vich\UploaderBundle\Mapping\AnnotationInterface;
 use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
 use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
