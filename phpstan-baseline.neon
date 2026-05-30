@@ -24,3 +24,8 @@ parameters:
 			count: 1
 			path: src/Storage/GaufretteStorage.php
 
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: tests/Adapter/ODM/MongoDB/MongoDBAdapterTest.php
