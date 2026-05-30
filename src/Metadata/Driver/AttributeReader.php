@@ -7,7 +7,7 @@ use Vich\UploaderBundle\Mapping\AttributeInterface;
 /**
  * @internal
  */
-final readonly class AttributeReader
+final class AttributeReader
 {
     /** @return AttributeInterface[] */
     public function getClassAttributes(\ReflectionClass $class): array
@@ -42,36 +42,69 @@ final readonly class AttributeReader
         return $this->getPropertyAttributes($property)[$attributeName] ?? null;
     }
 
-    /** @return AttributeInterface[] */
+    /**
+     * @deprecated since 2.9, use getClassAttributes() instead
+     *
+     * @return AttributeInterface[]
+     */
     public function getClassAnnotations(\ReflectionClass $class): array
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getClassAttributes()" instead.', __METHOD__);
+
         return $this->getClassAttributes($class);
     }
 
+    /**
+     * @deprecated since 2.9, use getClassAttribute() instead
+     */
     public function getClassAnnotation(\ReflectionClass $class, string $annotationName): ?AttributeInterface
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getClassAttribute()" instead.', __METHOD__);
+
         return $this->getClassAttribute($class, $annotationName);
     }
 
-    /** @return AttributeInterface[] */
+    /**
+     * @deprecated since 2.9, use getMethodAttributes() instead
+     *
+     * @return AttributeInterface[]
+     */
     public function getMethodAnnotations(\ReflectionMethod $method): array
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getMethodAttributes()" instead.', __METHOD__);
+
         return $this->getMethodAttributes($method);
     }
 
+    /**
+     * @deprecated since 2.9, use getMethodAttribute() instead
+     */
     public function getMethodAnnotation(\ReflectionMethod $method, string $annotationName): ?AttributeInterface
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getMethodAttribute()" instead.', __METHOD__);
+
         return $this->getMethodAttribute($method, $annotationName);
     }
 
-    /** @return AttributeInterface[] */
+    /**
+     * @deprecated since 2.9, use getPropertyAttributes() instead
+     *
+     * @return AttributeInterface[]
+     */
     public function getPropertyAnnotations(\ReflectionProperty $property): array
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getPropertyAttributes()" instead.', __METHOD__);
+
         return $this->getPropertyAttributes($property);
     }
 
+    /**
+     * @deprecated since 2.9, use getPropertyAttribute() instead
+     */
     public function getPropertyAnnotation(\ReflectionProperty $property, string $annotationName): ?AttributeInterface
     {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'Method "%s" is deprecated, use "getPropertyAttribute()" instead.', __METHOD__);
+
         return $this->getPropertyAttribute($property, $annotationName);
     }
 

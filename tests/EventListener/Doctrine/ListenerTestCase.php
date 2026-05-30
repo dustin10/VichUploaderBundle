@@ -19,7 +19,7 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class ListenerTestCase extends TestCase
 {
-    public const string MAPPING_NAME = 'dummy_mapping';
+    public const MAPPING_NAME = 'dummy_mapping';
 
     public static bool $usePreUpdateEventArgs = false;
 

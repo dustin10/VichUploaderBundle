@@ -18,9 +18,9 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 #[AsCommand(name: 'vich:cleanup', description: 'Remove orphaned files from storage')]
 final class CleanupCommand extends Command
 {
-    public const int DEFAULT_MIN_AGE_MINUTES = 60;
-    public const int DEFAULT_BATCH_SIZE = 1000;
-    public const int MAX_BATCH_SIZE = 10000;
+    public const DEFAULT_MIN_AGE_MINUTES = 60;
+    public const DEFAULT_BATCH_SIZE = 1000;
+    public const MAX_BATCH_SIZE = 10000;
 
     /**
      * @param ManagerRegistry[] $managerRegistries
