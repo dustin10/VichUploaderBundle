@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * Directory namer that chains multiple directory namers together.
@@ -35,7 +35,7 @@ final class ChainDirectoryNamer implements DirectoryNamerInterface, Configurable
         }
     }
 
-    public function directoryName(object|array $object, PropertyMappingInterface $mapping): string
+    public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         $directories = [];
         foreach ($this->namers as $namer) {

@@ -9,12 +9,12 @@ use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 #[AsCommand(name: 'vich:mapping:debug-class', description: 'Debug a class.')]
 final class MappingDebugClassCommand extends Command
 {
-    public function __construct(private readonly MetadataReaderInterface $metadataReader)
+    public function __construct(private readonly MetadataReader $metadataReader)
     {
         parent::__construct();
     }

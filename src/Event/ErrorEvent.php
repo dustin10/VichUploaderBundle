@@ -2,11 +2,11 @@
 
 namespace Vich\UploaderBundle\Event;
 
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 class ErrorEvent extends Event
 {
-    public function __construct(object $object, PropertyMappingInterface $mapping, private readonly \Throwable $throwable)
+    public function __construct(object $object, PropertyMapping $mapping, private readonly \Throwable $throwable)
     {
         parent::__construct($object, $mapping);
     }

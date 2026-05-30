@@ -1,15 +1,15 @@
 <?php
 
-namespace Vich\UploaderBundle\Mapping\Attribute;
+namespace Vich\UploaderBundle\Mapping\Annotation;
 
-use Vich\UploaderBundle\Mapping\AttributeInterface;
+use Vich\UploaderBundle\Mapping\AnnotationInterface;
 
+/**
+ * @deprecated since 2.9, use Vich\UploaderBundle\Mapping\Attribute\UploadableField instead.
+ */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final class UploadableField implements AttributeInterface
+final class UploadableField implements AnnotationInterface
 {
-    /**
-     * Constructs a new instance of UploadableField.
-     */
     public function __construct(
         private readonly string $mapping,
         private readonly ?string $fileNameProperty = null,
@@ -20,21 +20,11 @@ final class UploadableField implements AttributeInterface
     ) {
     }
 
-    /**
-     * Gets the mapping name.
-     *
-     * @return string The mapping name
-     */
     public function getMapping(): string
     {
         return $this->mapping;
     }
 
-    /**
-     * Gets the file name property.
-     *
-     * @return string|null The file name property
-     */
     public function getFileNameProperty(): ?string
     {
         return $this->fileNameProperty;

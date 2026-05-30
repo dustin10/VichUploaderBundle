@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -29,7 +29,7 @@ final class UploadHandlerTest extends TestCase
 
     protected MockObject|EventDispatcherInterface $dispatcher;
 
-    protected MockObject|PropertyMappingInterface $mapping;
+    protected MockObject|PropertyMapping $mapping;
 
     protected Article $object;
 

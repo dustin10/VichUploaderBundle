@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\EventListener\Doctrine\BaseListener;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -19,13 +19,13 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 abstract class ListenerTestCase extends TestCase
 {
-    public const string MAPPING_NAME = 'dummy_mapping';
+    public const MAPPING_NAME = 'dummy_mapping';
 
     public static bool $usePreUpdateEventArgs = false;
 
     protected AdapterInterface|MockObject $adapter;
 
-    protected MetadataReaderInterface|MockObject $metadata;
+    protected MetadataReader|MockObject $metadata;
 
     protected UploadHandler|MockObject $handler;
 
@@ -54,11 +54,9 @@ abstract class ListenerTestCase extends TestCase
         return $this->createMock(AdapterInterface::class);
     }
 
-    protected function getMetadataReaderMock(): MetadataReaderInterface&MockObject
+    protected function getMetadataReaderMock(): MetadataReader|MockObject
     {
-        return $this->getMockBuilder(MetadataReaderInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createMock(MetadataReader::class);
     }
 
     protected function getHandlerMock(): UploadHandlerInterface&MockObject

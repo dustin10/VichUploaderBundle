@@ -1,6 +1,6 @@
-FROM php:8.3-alpine
+FROM php:8.1-alpine
 
-ARG MONGODB_VERSION=1.17.0
+ARG MONGODB_VERSION=1.14.0
 
 # Install mongo
 RUN set -eux; \
@@ -34,9 +34,15 @@ WORKDIR /srv/vich-uploader
 
 # prevent the reinstallation of vendors at every changes in the source code
 
+#COPY ./docker/script/runTests.sh ./runTests.sh
 COPY . ./
 
 RUN set -eux; \
+    sed -i 's/"league\/flysystem": "<2.0"/"league\/flysystem": "<2.0", "symfony\/http-kernel": "6.4.*,>6.4.8 || 7.1.*,>7.1.1"/' composer.json; \
+    composer global config --no-plugins allow-plugins.symfony/flex true; \
+    composer global require --no-interaction --no-progress symfony/flex:^2.2; \
+    composer config extra.symfony.require "^6.4"; \
+    composer require --no-update doctrine/annotations:^1.14; \
 	composer update --prefer-dist --ignore-platform-req=ext-sqlite3; \
 	composer clear-cache
 

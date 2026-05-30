@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * Namer using a random base64 string. The resulting name will contain lower- and uppercase alphanumeric
@@ -40,7 +40,7 @@ class Base64Namer implements NamerInterface, ConfigurableInterface
         }
     }
 
-    public function name(object|array $object, PropertyMappingInterface $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 
