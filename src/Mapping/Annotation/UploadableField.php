@@ -8,7 +8,7 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  * @deprecated since 2.9, use Vich\UploaderBundle\Mapping\Attribute\UploadableField instead.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final readonly class UploadableField implements AnnotationInterface
+final class UploadableField implements AnnotationInterface
 {
     public function __construct(
         private readonly string $mapping,

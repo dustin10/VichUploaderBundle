@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Util;
 
-final readonly class PropertyPathUtils
+final class PropertyPathUtils
 {
     private function __construct()
     {

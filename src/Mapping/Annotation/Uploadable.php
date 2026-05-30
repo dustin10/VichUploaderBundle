@@ -8,6 +8,6 @@ use Vich\UploaderBundle\Mapping\AnnotationInterface;
  * @deprecated since 2.9, use Vich\UploaderBundle\Mapping\Attribute\Uploadable instead.
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final readonly class Uploadable implements AnnotationInterface
+final class Uploadable implements AnnotationInterface
 {
 }

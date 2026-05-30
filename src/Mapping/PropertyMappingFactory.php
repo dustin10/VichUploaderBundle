@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Util\ClassUtils;
  *
  * @internal
  */
-final readonly class PropertyMappingFactory implements PropertyMappingFactoryInterface
+final class PropertyMappingFactory implements PropertyMappingFactoryInterface
 {
     public function __construct(
         private MetadataReaderInterface $metadata,

@@ -13,7 +13,6 @@ use League\Flysystem\UnableToDeleteFile;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub\Stub;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
@@ -32,7 +31,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
 
     protected Filesystem|MockObject $filesystem;
 
-    protected FilesystemAdapter|Stub $adapter;
+    protected FilesystemAdapter|MockObject $adapter;
 
     protected bool $useFlysystemToResolveUri = false;
 
@@ -46,7 +45,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     protected function setUp(): void
     {
         $this->filesystem = $this->createMock(Filesystem::class);
-        $this->adapter = $this->createStub(FilesystemAdapter::class);
+        $this->adapter = $this->createMock(FilesystemAdapter::class);
         $this->registry = $this->createRegistry($this->filesystem);
 
         parent::setUp();
@@ -86,8 +85,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->method('writeStream')
             ->with(
                 'originalName.txt',
-                $this->isResource(),
-                $this->isArray()
+                $this->isType('resource'),
+                $this->isType('array')
             );
 
         $this->storage->upload($this->object, $this->mapping);

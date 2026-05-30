@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\UnitOfWork;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -19,27 +20,22 @@ final class DoctrineORMAdapterTest extends TestCase
         $entity = new DummyEntity();
         $changeSet = [];
 
-        // cannot be mocked due to final class
-        // $uow = $this->createMock(\Doctrine\ORM\UnitOfWork::class);
+        $uow = $this->createMock(UnitOfWork::class);
         $em = $this->createMock(EntityManager::class);
         $metadata = $this->createMock(ClassMetadata::class);
 
-        /*
-        $em->expects($this->once())
+        $em->expects(self::once())
             ->method('getUnitOfWork')
             ->willReturn($uow);
-        */
 
-        $em->expects($this->once())
+        $em->expects(self::once())
             ->method('getClassMetadata')
             ->with(DummyEntity::class)
             ->willReturn($metadata);
 
-        /*
-        $uow->expects($this->once())
+        $uow->expects(self::once())
             ->method('recomputeSingleEntityChangeSet')
             ->with($metadata, $entity);
-        */
 
         $event = new PreUpdateEventArgs($entity, $em, $changeSet);
 
