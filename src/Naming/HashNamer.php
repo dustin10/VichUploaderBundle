@@ -2,7 +2,7 @@
 
 namespace Vich\UploaderBundle\Naming;
 
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * Namer that uses hash function from random string for generating names.
@@ -36,7 +36,7 @@ class HashNamer implements NamerInterface, ConfigurableInterface
         $this->keepExtension = $options['keep_extension'];
     }
 
-    public function name(object|array $object, PropertyMappingInterface $mapping): string
+    public function name(object|array $object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
 

@@ -5,14 +5,14 @@ namespace Vich\UploaderBundle\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 /**
  * @internal
  */
 final class MappingCollector extends DataCollector
 {
-    public function __construct(private readonly MetadataReaderInterface $metadataReader)
+    public function __construct(private readonly MetadataReader $metadataReader)
     {
     }
 
@@ -31,6 +31,11 @@ final class MappingCollector extends DataCollector
         ];
     }
 
+    public function reset(): void
+    {
+        $this->data = [];
+    }
+
     public function getName(): string
     {
         return 'vich_uploader.mapping_collector';
@@ -43,6 +48,6 @@ final class MappingCollector extends DataCollector
 
     public function getMappings(): array
     {
-        return $this->data['mappings'];
+        return $this->data['mappings'] ?? [];
     }
 }

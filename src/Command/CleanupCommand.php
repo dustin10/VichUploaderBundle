@@ -11,8 +11,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 #[AsCommand(name: 'vich:cleanup', description: 'Remove orphaned files from storage')]
@@ -27,8 +27,8 @@ final class CleanupCommand extends Command
      */
     public function __construct(
         private readonly StorageInterface $storage,
-        private readonly PropertyMappingFactoryInterface $mappingFactory,
-        private readonly MetadataReaderInterface $metadataReader,
+        private readonly PropertyMappingFactory $mappingFactory,
+        private readonly MetadataReader $metadataReader,
         private readonly array $managerRegistries,
         private readonly array $mappings
     ) {

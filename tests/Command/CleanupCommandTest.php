@@ -9,8 +9,8 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Command\CleanupCommand;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\Stub\TestQueryBuilderInterface;
@@ -27,7 +27,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->willReturn([]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -46,7 +46,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     {
         $reader = $this->mockMetadataReader();
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -69,7 +69,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->willReturn([]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -99,7 +99,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->willReturn([]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -134,7 +134,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         // Create an empty manager registry (no managers)
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -175,7 +175,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         // Create a repository without createQueryBuilder method
         $repository = $this->createMock(ObjectRepository::class);
@@ -224,7 +224,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->willReturn([]);
 
         $storage = self::createStub(StorageInterface::class);
-        $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
+        $mappingFactory = self::createStub(PropertyMappingFactory::class);
 
         $command = new CleanupCommand(
             $storage,
@@ -272,7 +272,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ]); // 3 files in storage
 
         // Create mock mapping
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -283,7 +283,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -350,7 +350,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 new \Vich\UploaderBundle\Storage\StoredFile('file2.txt', \time() - 7200), // 2 hours old
             ]); // 2 files in storage
 
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -361,7 +361,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -423,7 +423,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 new \Vich\UploaderBundle\Storage\StoredFile('file1.txt', \time() - 7200), // 2 hours old
             ]); // Only 1 file in storage
 
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -434,7 +434,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -506,14 +506,14 @@ final class CleanupCommandTest extends AbstractCommandTestCase
                 self::anything(), // object (temporary instance created by command)
                 self::callback(static function ($mapping) {
                     // Verify mapping is correct
-                    return $mapping instanceof PropertyMappingInterface
+                    return $mapping instanceof PropertyMapping
                         && 'test_mapping' === $mapping->getMappingName();
                 }),
                 '' // directory (empty string for root, as returned by getUploadDir)
             );
 
         // Mock mapping that returns 2 files (file1.txt, file2.txt) → orphaned.txt is orphan
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping->expects($this->atLeastOnce())
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -526,7 +526,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $mapping
             ->method('setFileName'); // Called when creating temp object for deletion
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -598,7 +598,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('remove');
 
         // Mapping: we don't care about DB-referenced files here because we return 0 entities below
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createMock(PropertyMapping::class);
         $mapping
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -606,7 +606,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createMock(PropertyMappingFactory::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);

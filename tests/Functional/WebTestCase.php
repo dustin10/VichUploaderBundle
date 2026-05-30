@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
@@ -71,8 +71,8 @@ abstract class WebTestCase extends BaseWebTestCase
         }
     }
 
-    protected function mockMetadataReader(): MetadataReaderInterface|MockObject
+    protected function mockMetadataReader(): MetadataReader|MockObject
     {
-        return $this->createMock(MetadataReaderInterface::class);
+        return $this->createMock(MetadataReader::class);
     }
 }

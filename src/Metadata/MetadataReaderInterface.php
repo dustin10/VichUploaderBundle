@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Metadata;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
-interface MetadataReaderInterface
+interface MetadataReader
 {
     /**
      * Tell if the given class is uploadable.

@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\Transliterator;
 
 trait TestCaseTrait
@@ -28,14 +28,14 @@ trait TestCaseTrait
             ->getMock();
     }
 
-    protected function getPropertyMappingMock(): PropertyMappingInterface|MockObject
+    protected function getPropertyMappingMock(): PropertyMapping|MockObject
     {
-        return $this->createMock(PropertyMappingInterface::class);
+        return $this->createMock(PropertyMapping::class);
     }
 
-    protected function getPropertyMappingFactoryMock(): PropertyMappingFactoryInterface|MockObject
+    protected function getPropertyMappingFactoryMock(): PropertyMappingFactory|MockObject
     {
-        return $this->createMock(PropertyMappingFactoryInterface::class);
+        return $this->createMock(PropertyMappingFactory::class);
     }
 
     protected function getTransliterator(): Transliterator
@@ -43,9 +43,9 @@ trait TestCaseTrait
         return new Transliterator(new AsciiSlugger());
     }
 
-    protected function getMetadataReaderMock(): MetadataReaderInterface|MockObject
+    protected function getMetadataReaderMock(): MetadataReader|MockObject
     {
-        return $this->createMock(MetadataReaderInterface::class);
+        return $this->createMock(MetadataReader::class);
     }
 
     protected function getUploadHandlerMock(): UploadHandlerInterface|MockObject

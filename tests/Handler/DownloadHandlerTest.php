@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Handler\DownloadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -27,7 +27,7 @@ final class DownloadHandlerTest extends TestCase
 
     protected DownloadHandler $handler;
 
-    protected MockObject|PropertyMappingInterface $mapping;
+    protected MockObject|PropertyMapping $mapping;
 
     protected function setUp(): void
     {
