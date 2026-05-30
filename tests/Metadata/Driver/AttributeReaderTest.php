@@ -13,6 +13,9 @@ use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 
 final class AttributeReaderTest extends TestCase
 {
+    /**
+     * @group legacy
+     */
     public function testGetClassAttributes(): void
     {
         $reader = new AttributeReader();
@@ -26,6 +29,9 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetClassAttribute(): void
     {
         $reader = new AttributeReader();
@@ -56,6 +62,9 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetPropertyAttributes(): void
     {
         $reader = new AttributeReader();
@@ -69,6 +78,9 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetPropertyAttribute(): void
     {
         $reader = new AttributeReader();
@@ -87,6 +99,9 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetPropertyAnnotation(): void
     {
         $reader = new AttributeReader();
@@ -105,6 +120,9 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testDeprecatedAnnotationClassesImplementCompatibilityInterface(): void
     {
         $uploadable = new DeprecatedUploadable();
