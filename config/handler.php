@@ -3,9 +3,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Handler\DownloadHandlerInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
-use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -29,7 +27,5 @@ return static function (ContainerConfigurator $container): void {
         ]);
 
     $services->alias(DownloadHandler::class, 'vich_uploader.download_handler');
-    $services->alias(DownloadHandlerInterface::class, 'vich_uploader.download_handler');
     $services->alias(UploadHandler::class, 'vich_uploader.upload_handler');
-    $services->alias(UploadHandlerInterface::class, 'vich_uploader.upload_handler');
 };

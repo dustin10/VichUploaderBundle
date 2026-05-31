@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  *
  * @author Kevin bond <kevinbond@gmail.com>
  *
- * @phpstan-template T of object|array
+ * @phpstan-template T of object
  */
 interface DirectoryNamerInterface
 {

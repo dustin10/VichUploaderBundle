@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -27,7 +27,7 @@ class VichImageType extends VichFileType
 
     public function __construct(
         StorageInterface $storage,
-        UploadHandlerInterface $handler,
+        UploadHandler $handler,
         PropertyMappingFactory $factory,
         ?PropertyAccessorInterface $propertyAccessor = null,
         private readonly ?CacheManager $cacheManager = null
