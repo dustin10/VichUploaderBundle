@@ -16,7 +16,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class UploadHandler extends AbstractHandler implements UploadHandlerInterface
+final class UploadHandler extends AbstractHandler
 {
     public function __construct(
         PropertyMappingFactory $factory,

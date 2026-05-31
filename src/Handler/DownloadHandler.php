@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Exception\NoFileFoundException;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class DownloadHandler extends AbstractHandler implements DownloadHandlerInterface
+final class DownloadHandler extends AbstractHandler
 {
     /**
      * Create a response object that will trigger the download of a file.
