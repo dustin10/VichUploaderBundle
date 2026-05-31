@@ -4,6 +4,8 @@ namespace Vich\UploaderBundle\Metadata\Driver;
 
 use Metadata\ClassMetadata as JMSClassMetadata;
 use Metadata\Driver\AdvancedDriverInterface;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable as UploadableAnnotation;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField as UploadableFieldAnnotation;
 use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
 use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
@@ -44,8 +46,13 @@ class AttributeDriver implements AdvancedDriverInterface
         }
 
         foreach ($properties as $property) {
+            // Support both new Attribute\ and deprecated Annotation\ namespaces
             $uploadableField = $this->reader->getPropertyAttribute($property, UploadableField::class);
-            if (!$uploadableField instanceof UploadableField) {
+            if (null === $uploadableField) {
+                // Fallback to deprecated Annotation namespace
+                $uploadableField = $this->reader->getPropertyAttribute($property, UploadableFieldAnnotation::class);
+            }
+            if (!$uploadableField instanceof UploadableField && !$uploadableField instanceof UploadableFieldAnnotation) {
                 continue;
             }
             // TODO: try automatically determinate target fields if embeddable used
@@ -93,6 +100,13 @@ class AttributeDriver implements AdvancedDriverInterface
 
     protected function isUploadable(\ReflectionClass $class): bool
     {
-        return null !== $this->reader->getClassAttribute($class, Uploadable::class);
+        // Support both new Attribute\ and deprecated Annotation\ namespaces
+        $uploadable = $this->reader->getClassAttribute($class, Uploadable::class);
+        if (null === $uploadable) {
+            // Fallback to deprecated Annotation namespace
+            $uploadable = $this->reader->getClassAttribute($class, UploadableAnnotation::class);
+        }
+
+        return null !== $uploadable;
     }
 }

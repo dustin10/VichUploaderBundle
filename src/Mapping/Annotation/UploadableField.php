@@ -2,10 +2,17 @@
 
 namespace Vich\UploaderBundle\Mapping\Annotation;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Vich\UploaderBundle\Mapping\AnnotationInterface;
 
 /**
- * @deprecated since 2.9, use Vich\UploaderBundle\Mapping\Attribute\UploadableField instead.
+ * @Annotation
+ * @Target({"PROPERTY"})
+ * @NamedArgumentConstructor
+ *
+ * @deprecated since 2.9, use Vich\UploaderBundle\Mapping\Attribute\UploadableField instead
+ *
+ * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class UploadableField implements AnnotationInterface
@@ -18,6 +25,7 @@ final class UploadableField implements AnnotationInterface
         private readonly ?string $originalName = null,
         private readonly ?string $dimensions = null
     ) {
+        trigger_deprecation('vich/uploader-bundle', '2.9', 'The "Vich\UploaderBundle\Mapping\Annotation\UploadableField" class is deprecated, use "Vich\UploaderBundle\Mapping\Attribute\UploadableField" instead.');
     }
 
     public function getMapping(): string

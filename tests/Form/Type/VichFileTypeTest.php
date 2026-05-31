@@ -16,7 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
-use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -32,7 +32,7 @@ final class VichFileTypeTest extends TypeTestCase
     protected FormInterface|MockObject $parentForm;
     protected FormConfigInterface|MockObject $config;
     protected FormInterface|MockObject $form;
-    protected UploadHandlerInterface|MockObject $uploadHandler;
+    protected UploadHandler|MockObject $uploadHandler;
     protected PropertyMappingFactory|MockObject $propertyMappingFactory;
     protected PropertyAccessorInterface|MockObject $propertyAccessor;
     protected PropertyMapping|MockObject $mapping;

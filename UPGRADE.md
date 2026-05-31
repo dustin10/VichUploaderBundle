@@ -13,7 +13,7 @@
 
 # Upgrading from v2.7 to v2.8
 
-* Namers are not public anymore. If you uses a custom namer, you can now make it private.
+* Namers are not public anymore. If you use a custom namer, you can now make it private.
 
 # Upgrading from v2.6 to v2.7
 
