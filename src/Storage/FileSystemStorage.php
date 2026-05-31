@@ -4,7 +4,7 @@ namespace Vich\UploaderBundle\Storage;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 /**
  * FileSystemStorage.
@@ -13,14 +13,12 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
  */
 final class FileSystemStorage extends AbstractStorage
 {
-    protected function doUpload(PropertyMappingInterface $mapping, File $file, ?string $dir, string $name): ?File
+    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): ?File
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
 
-        if (!\file_exists($uploadDir)) {
-            if (!\mkdir($uploadDir, recursive: true)) {
-                throw new \Exception('Could not create directory "'.$uploadDir.'"');
-            }
+        if (!\file_exists($uploadDir) && !@\mkdir($uploadDir, recursive: true) && !\is_dir($uploadDir)) {
+            throw new \Exception('Could not create directory "'.$uploadDir.'"');
         }
         if (!\is_dir($uploadDir)) {
             throw new \Exception('Tried to move file to directory "'.$uploadDir.'" but it is a file');
@@ -37,7 +35,7 @@ final class FileSystemStorage extends AbstractStorage
         return new File($targetPathname);
     }
 
-    protected function doRemove(PropertyMappingInterface $mapping, ?string $dir, string $name): ?bool
+    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $file = $this->doResolvePath($mapping, $dir, $name);
 
@@ -49,7 +47,7 @@ final class FileSystemStorage extends AbstractStorage
     }
 
     protected function doResolvePath(
-        PropertyMappingInterface $mapping,
+        PropertyMapping $mapping,
         ?string $dir,
         string $name,
         ?bool $relative = false
@@ -83,7 +81,7 @@ final class FileSystemStorage extends AbstractStorage
         return \str_replace('\\', '/', $string);
     }
 
-    public function listFiles(PropertyMappingInterface $mapping): iterable
+    public function listFiles(PropertyMapping $mapping): iterable
     {
         $uploadDestination = $mapping->getUploadDestination();
 

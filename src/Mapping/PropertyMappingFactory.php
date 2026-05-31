@@ -5,7 +5,7 @@ namespace Vich\UploaderBundle\Mapping;
 use Doctrine\Persistence\Proxy;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NotUploadableException;
-use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
@@ -13,11 +13,11 @@ use Vich\UploaderBundle\Util\ClassUtils;
  *
  * @internal
  */
-final readonly class PropertyMappingFactory implements PropertyMappingFactoryInterface
+final class PropertyMappingFactory
 {
     public function __construct(
-        private MetadataReaderInterface $metadata,
-        private PropertyMappingResolverInterface $resolver,
+        private readonly MetadataReader $metadata,
+        private readonly PropertyMappingResolverInterface $resolver,
     ) {
     }
 
@@ -70,7 +70,7 @@ final readonly class PropertyMappingFactory implements PropertyMappingFactoryInt
      * @throws MappingNotFoundException
      * @throws NotUploadableException
      */
-    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMappingInterface
+    public function fromField(object|array $obj, string $field, ?string $className = null): ?PropertyMapping
     {
         if ($obj instanceof Proxy) {
             $obj->__load();
@@ -87,7 +87,7 @@ final readonly class PropertyMappingFactory implements PropertyMappingFactoryInt
         return $this->resolver->resolve($obj, $field, $mappingData);
     }
 
-    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMappingInterface
+    public function fromFirstField(object|array $obj, ?string $className = null): ?PropertyMapping
     {
         if ($obj instanceof Proxy) {
             $obj->__load();

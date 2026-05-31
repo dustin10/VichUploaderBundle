@@ -37,7 +37,7 @@ WORKDIR /srv/vich-uploader
 COPY . ./
 
 RUN set -eux; \
-	composer update --prefer-dist --ignore-platform-reqs; \
+	composer update --prefer-dist --ignore-platform-req=ext-sqlite3; \
 	composer clear-cache
 
 CMD ["/init"]

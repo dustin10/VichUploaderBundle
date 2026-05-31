@@ -31,6 +31,9 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$reader', service('vich_uploader.metadata.reader'))
         ->arg('$managerRegistryList', null); // replaced by compiler pass
 
+    $services->alias('vich_uploader.metadata_driver.annotation', 'vich_uploader.metadata_driver.attribute')
+        ->deprecate('vich/uploader-bundle', '2.9', 'The "%alias_id%" alias is deprecated, use "vich_uploader.metadata_driver.attribute" instead.');
+
     $services->set('vich_uploader.metadata_driver.xml', XmlDriver::class)
         ->args([
             service('vich_uploader.metadata.file_locator'),

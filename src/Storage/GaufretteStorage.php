@@ -6,8 +6,8 @@ use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\FilesystemInterface;
 use Gaufrette\FilesystemMapInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * GaufretteStorage.
@@ -19,16 +19,16 @@ final class GaufretteStorage extends AbstractStorage
     /**
      * Constructs a new instance of FileSystemStorage.
      *
-     * @param PropertyMappingFactoryInterface $factory       The factory
-     * @param FilesystemMapInterface          $filesystemMap Gaufrette filesystem factory
-     * @param string                          $protocol      Gaufrette stream wrapper protocol
+     * @param PropertyMappingFactory $factory       The factory
+     * @param FilesystemMapInterface $filesystemMap Gaufrette filesystem factory
+     * @param string                 $protocol      Gaufrette stream wrapper protocol
      */
-    public function __construct(PropertyMappingFactoryInterface $factory, protected FilesystemMapInterface $filesystemMap, protected string $protocol = 'gaufrette')
+    public function __construct(PropertyMappingFactory $factory, protected FilesystemMapInterface $filesystemMap, protected string $protocol = 'gaufrette')
     {
         parent::__construct($factory);
     }
 
-    protected function doUpload(PropertyMappingInterface $mapping, File $file, ?string $dir, string $name): void
+    protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): void
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
@@ -45,7 +45,7 @@ final class GaufretteStorage extends AbstractStorage
         }
     }
 
-    protected function doRemove(PropertyMappingInterface $mapping, ?string $dir, string $name): ?bool
+    protected function doRemove(PropertyMapping $mapping, ?string $dir, string $name): ?bool
     {
         $filesystem = $this->getFilesystem($mapping);
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
@@ -53,7 +53,7 @@ final class GaufretteStorage extends AbstractStorage
         return $filesystem->delete($path);
     }
 
-    protected function doResolvePath(PropertyMappingInterface $mapping, ?string $dir, string $name, ?bool $relative = false): string
+    protected function doResolvePath(PropertyMapping $mapping, ?string $dir, string $name, ?bool $relative = false): string
     {
         $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$name : $name;
 
@@ -67,12 +67,12 @@ final class GaufretteStorage extends AbstractStorage
     /**
      * Get filesystem adapter from the property mapping.
      */
-    protected function getFilesystem(PropertyMappingInterface $mapping): FilesystemInterface
+    protected function getFilesystem(PropertyMapping $mapping): FilesystemInterface
     {
         return $this->filesystemMap->get($mapping->getUploadDestination());
     }
 
-    public function listFiles(PropertyMappingInterface $mapping): iterable
+    public function listFiles(PropertyMapping $mapping): iterable
     {
         $filesystem = $this->getFilesystem($mapping);
 

@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Util\PropertyPathUtils;
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-final class PropertyMapping implements PropertyMappingInterface
+final class PropertyMapping
 {
     private ?NamerInterface $namer = null;
 
@@ -50,26 +50,69 @@ final class PropertyMapping implements PropertyMappingInterface
         );
     }
 
+    /**
+     * Get the file property value for the given object.
+     *
+     * @param object $obj The object
+     *
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|\Vich\UploaderBundle\FileAbstraction\ReplacingFile|null The file
+     *
+     * @throws \InvalidArgumentException
+     */
     public function getFile(object $obj): ?File
     {
         return $this->readProperty($obj, 'file');
     }
 
+    /**
+     * Modify the file property value for the given object.
+     *
+     * @param object $obj  The object
+     * @param File   $file The new file
+     *
+     * @throws \InvalidArgumentException
+     * @throws \TypeError
+     */
     public function setFile(object $obj, File $file): void
     {
         $this->writeProperty($obj, 'file', $file);
     }
 
+    /**
+     * Get the fileName property of the given object.
+     *
+     * @param object|array $obj The object or array
+     *
+     * @return string|null The filename
+     *
+     * @throws \InvalidArgumentException
+     */
     public function getFileName(object|array $obj): ?string
     {
         return $this->readProperty($obj, 'name');
     }
 
+    /**
+     * Modify the fileName property of the given object.
+     *
+     * @param object $obj The object
+     *
+     * @throws \InvalidArgumentException
+     * @throws \TypeError
+     */
     public function setFileName(object $obj, string $value): void
     {
         $this->writeProperty($obj, 'name', $value);
     }
 
+    /**
+     * Remove value for each file-related property of the given object.
+     *
+     * @param object $obj The object
+     *
+     * @throws \InvalidArgumentException
+     * @throws \TypeError
+     */
     public function erase(object $obj): void
     {
         if (\is_array($this->mapping) && isset($this->mapping['erase_fields']) && false === $this->mapping['erase_fields']) {
@@ -81,6 +124,16 @@ final class PropertyMapping implements PropertyMappingInterface
         }
     }
 
+    /**
+     * Read property of the given object.
+     *
+     * @internal
+     *
+     * @param object|array $obj      The object or array from which read
+     * @param string       $property The property to read
+     *
+     * @throws \InvalidArgumentException
+     */
     public function readProperty(object|array $obj, string $property): mixed
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
@@ -97,6 +150,18 @@ final class PropertyMapping implements PropertyMappingInterface
         return $this->getAccessor()->getValue($obj, $propertyPath);
     }
 
+    /**
+     * Modify property of the given object.
+     *
+     * @param object $obj      The object to which write
+     * @param string $property The property to write
+     * @param mixed  $value    The value which should be written
+     *
+     * @throws \InvalidArgumentException
+     * @throws \TypeError
+     *
+     * @internal
+     */
     public function writeProperty(object $obj, string $property, mixed $value): void
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
@@ -112,11 +177,21 @@ final class PropertyMapping implements PropertyMappingInterface
         $this->getAccessor()->setValue($obj, $propertyPath, $value);
     }
 
+    /**
+     * Get the configured file property name.
+     *
+     * @return string The name
+     */
     public function getFilePropertyName(): string
     {
         return $this->propertyPaths['file'];
     }
 
+    /**
+     * Get the configured filename property name.
+     *
+     * @return string The name
+     */
     public function getFileNamePropertyName(): string
     {
         return $this->propertyPaths['name'];
@@ -180,6 +255,9 @@ final class PropertyMapping implements PropertyMappingInterface
         $this->mapping = $mapping;
     }
 
+    /**
+     * Get the configured configuration mapping name.
+     */
     public function getMappingName(): string
     {
         return $this->mappingName;
@@ -193,11 +271,25 @@ final class PropertyMapping implements PropertyMappingInterface
         $this->mappingName = $mappingName;
     }
 
+    /**
+     * Get the upload name for a given file (uses The file namers).
+     *
+     * @return string The upload name
+     */
     public function getUploadName(object $obj): string
     {
+        if (!$this->hasNamer()) {
+            throw new \RuntimeException('A namer must be configured.');
+        }
+
         return $this->getNamer()->name($obj, $this);
     }
 
+    /**
+     * Get the upload directory for a given file (uses the directory namers).
+     *
+     * @return string|null The upload directory
+     */
     public function getUploadDir(object|array $obj): ?string
     {
         if (!$this->hasDirectoryNamer()) {
@@ -210,11 +302,19 @@ final class PropertyMapping implements PropertyMappingInterface
         return $dir ? \rtrim($dir, '/\\') : $dir;
     }
 
+    /**
+     * Get the base upload directory.
+     *
+     * @return string The configured upload directory
+     */
     public function getUploadDestination(): string
     {
         return $this->mapping['upload_destination'];
     }
 
+    /**
+     * Get uri prefix.
+     */
     public function getUriPrefix(): string
     {
         return $this->mapping['uri_prefix'];

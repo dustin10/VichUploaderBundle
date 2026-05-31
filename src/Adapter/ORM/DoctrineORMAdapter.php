@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Adapter\AdapterInterface;
  *
  * @internal
  */
-final readonly class DoctrineORMAdapter implements AdapterInterface
+final class DoctrineORMAdapter implements AdapterInterface
 {
     public function recomputeChangeSet(LifecycleEventArgs $event): void
     {

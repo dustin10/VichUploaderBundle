@@ -7,9 +7,9 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 /**
  * @internal
  */
-final readonly class CacheWarmer implements CacheWarmerInterface
+final class CacheWarmer implements CacheWarmerInterface
 {
-    public function __construct(private string $dir, private MetadataReaderInterface $metadataReader)
+    public function __construct(private string $dir, private MetadataReader $metadataReader)
     {
     }
 

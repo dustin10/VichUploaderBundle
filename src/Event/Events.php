@@ -7,7 +7,7 @@ namespace Vich\UploaderBundle\Event;
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final readonly class Events
+final class Events
 {
     /**
      * Triggered before a file upload is handled.

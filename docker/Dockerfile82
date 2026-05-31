@@ -1,6 +1,6 @@
-FROM php:8.3-alpine
+FROM php:8.2-alpine
 
-ARG MONGODB_VERSION=1.17.0
+ARG MONGODB_VERSION=1.14.0
 
 # Install mongo
 RUN set -eux; \
@@ -34,6 +34,7 @@ WORKDIR /srv/vich-uploader
 
 # prevent the reinstallation of vendors at every changes in the source code
 
+#COPY ./docker/script/runTests.sh ./runTests.sh
 COPY . ./
 
 RUN set -eux; \

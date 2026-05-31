@@ -167,4 +167,11 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasService('vich_uploader.metadata.reader', AttributeReader::class);
     }
+
+    public function testDeprecatedMetadataDriverAliasStillExists(): void
+    {
+        $this->load([]);
+
+        $this->assertContainerBuilderHasAlias('vich_uploader.metadata_driver.annotation', 'vich_uploader.metadata_driver.attribute');
+    }
 }

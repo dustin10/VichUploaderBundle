@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Storage;
 
 use Vich\UploaderBundle\Mapping\PropertyMapping;
-use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
@@ -14,21 +13,21 @@ interface StorageInterface
      * Upload the file in the uploadable field of the specified object
      * according to the property configuration.
      *
-     * @param object                   $obj     The object
-     * @param PropertyMappingInterface $mapping The mapping representing the field to upload
+     * @param object          $obj     The object
+     * @param PropertyMapping $mapping The mapping representing the field to upload
      */
-    public function upload(object $obj, PropertyMappingInterface $mapping): void;
+    public function upload(object $obj, PropertyMapping $mapping): void;
 
     /**
      * Remove the files associated with the given mapping.
      *
-     * @param object                   $obj     The object
-     * @param PropertyMappingInterface $mapping The mapping representing the field to remove
-     * @param string|null              $dir     Optional directory path to use instead of calling getUploadDir()
+     * @param object          $obj     The object
+     * @param PropertyMapping $mapping The mapping representing the field to remove
+     * @param string|null     $dir     Optional directory path to use instead of calling getUploadDir()
      *
      * @throw \Exception      Throws an exception
      */
-    public function remove(object $obj, PropertyMappingInterface $mapping, ?string $dir = null): ?bool;
+    public function remove(object $obj, PropertyMapping $mapping, ?string $dir = null): ?bool;
 
     /**
      * Resolve the path for a file based on the specified object
@@ -76,9 +75,9 @@ interface StorageInterface
      * The modification time, when available, MUST be a Unix timestamp in seconds (UTC).
      * If it cannot be determined, it MUST be null.
      *
-     * @param PropertyMappingInterface $mapping The mapping to list files for
+     * @param PropertyMapping $mapping The mapping to list files for
      *
      * @return iterable<StoredFile> StoredFile objects with path and optional modification time (?int seconds)
      */
-    public function listFiles(PropertyMappingInterface $mapping): iterable;
+    public function listFiles(PropertyMapping $mapping): iterable;
 }
