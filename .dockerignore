@@ -1,0 +1,11 @@
+# Keep the build context small and avoid shipping host-built artifacts.
+.git
+.github
+.idea
+.DS_Store
+.*.cache
+.phpunit.result.cache
+vendor/
+composer.lock
+coverage/
+docs/
