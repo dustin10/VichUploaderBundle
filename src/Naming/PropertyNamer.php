@@ -58,7 +58,7 @@ final class PropertyNamer implements NamerInterface, ConfigurableInterface
             throw new NameGenerationException(\sprintf('File name could not be generated: property %s does not exist.', $this->propertyPath), $e->getCode(), $e);
         }
 
-        if (empty($name)) {
+        if (null === $name || '' === $name) {
             throw new NameGenerationException(\sprintf('File name could not be generated: property %s is empty.', $this->propertyPath));
         }
 

@@ -59,6 +59,31 @@ class PropertyNamerTest extends TestCase
         self::assertSame($expectedFileName, $namer->name($entity, $mapping));
     }
 
+    public function testNameAcceptsZeroAsName(): void
+    {
+        $entity = new DummyEntity();
+        $entity->someProperty = '0';
+
+        $file = $this->getUploadedFileMock();
+        $file
+            ->method('getClientOriginalName')
+            ->willReturn('some-file-name');
+        $file
+            ->method('guessExtension')
+            ->willReturn(null);
+
+        $mapping = $this->getPropertyMappingMock();
+        $mapping->expects(self::once())
+            ->method('getFile')
+            ->with($entity)
+            ->willReturn($file);
+
+        $namer = new PropertyNamer($this->getTransliterator());
+        $namer->configure(['property' => 'someProperty']);
+
+        self::assertSame('0', $namer->name($entity, $mapping));
+    }
+
     public function testNameFailsIfThePropertyDoesNotExist(): void
     {
         $this->expectException(NameGenerationException::class);
