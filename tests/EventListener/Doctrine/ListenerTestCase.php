@@ -12,6 +12,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
+ * Doctrine listener test case.
+ *
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
  * @template T of BaseListener
@@ -35,6 +37,9 @@ abstract class ListenerTestCase extends TestCase
     /** @var T */
     protected BaseListener $listener;
 
+    /**
+     * Sets up the test.
+     */
     protected function setUp(): void
     {
         $this->adapter = $this->createMock(AdapterInterface::class);
@@ -53,12 +58,20 @@ abstract class ListenerTestCase extends TestCase
         return $this->createMock(AdapterInterface::class);
     }
 
-    protected function getMetadataReaderMock(): MetadataReader|MockObject
+    /**
+     * @return MetadataReader&MockObject
+     */
+    protected function getMetadataReaderMock(): MetadataReader
     {
-        return $this->createMock(MetadataReader::class);
+        return $this->getMockBuilder(MetadataReader::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
-    protected function getHandlerMock(): UploadHandler|MockObject
+    /**
+     * @return UploadHandler&MockObject
+     */
+    protected function getHandlerMock(): UploadHandler
     {
         return $this->getMockBuilder(UploadHandler::class)
             ->disableOriginalConstructor()

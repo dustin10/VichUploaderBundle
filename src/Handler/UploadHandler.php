@@ -14,6 +14,8 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
+ * Upload handler.
+ *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class UploadHandler extends AbstractHandler
@@ -28,7 +30,7 @@ final class UploadHandler extends AbstractHandler
     }
 
     /**
-     * Check for file to upload.
+     * Checks for file to upload.
      *
      * @param object $obj       The object
      * @param string $fieldName The name of the field containing the upload (has to be mapped)

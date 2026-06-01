@@ -11,6 +11,8 @@ use Vich\UploaderBundle\Adapter\ODM\MongoDB\MongoDBAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
+ * MongoDBAdapterTest.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class MongoDBAdapterTest extends TestCase
@@ -33,7 +35,7 @@ final class MongoDBAdapterTest extends TestCase
         $uow = $this->createMock(UnitOfWork::class);
         $dm->method('getUnitOfWork')->willReturn($uow);
         $uow->persist($entity);
-        $uow->expects($this->once())->method('recomputeSingleDocumentChangeSet')->with($metadata, $entity);
+        $uow->expects(self::once())->method('recomputeSingleDocumentChangeSet')->with($metadata, $entity);
         $adapter->recomputeChangeSet($event);
     }
 }

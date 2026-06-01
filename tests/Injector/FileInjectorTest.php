@@ -4,20 +4,22 @@ namespace Vich\UploaderBundle\Tests\Injector;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Injector\FileInjector;
-use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Storage\GaufretteStorage;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 /**
+ * FileInjectorTest.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class FileInjectorTest extends TestCase
 {
-    protected StorageInterface|MockObject $storage;
+    protected GaufretteStorage|MockObject $storage;
 
     protected function setUp(): void
     {
-        $this->storage = $this->createMock(StorageInterface::class);
+        $this->storage = $this->createMock(GaufretteStorage::class);
     }
 
     /**
@@ -29,15 +31,15 @@ final class FileInjectorTest extends TestCase
 
         $fileMapping = $this->getPropertyMappingMock();
         $fileMapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFilePropertyName')
             ->willReturn('file_field');
         $fileMapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setFile');
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolvePath')
             ->with($obj, 'file_field')
             ->willReturn('/uploadDir/file.txt');
@@ -57,7 +59,7 @@ final class FileInjectorTest extends TestCase
         $fileMapping = $this->getPropertyMappingMock();
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolvePath')
             ->willReturn(null);
 

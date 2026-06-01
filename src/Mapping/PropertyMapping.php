@@ -10,6 +10,8 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Util\PropertyPathUtils;
 
 /**
+ * PropertyMapping.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class PropertyMapping
@@ -51,7 +53,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the file property value for the given object.
+     * Gets the file property value for the given object.
      *
      * @param object $obj The object
      *
@@ -65,7 +67,7 @@ final class PropertyMapping
     }
 
     /**
-     * Modify the file property value for the given object.
+     * Modifies the file property value for the given object.
      *
      * @param object $obj  The object
      * @param File   $file The new file
@@ -79,7 +81,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the fileName property of the given object.
+     * Gets the fileName property of the given object.
      *
      * @param object|array $obj The object or array
      *
@@ -93,7 +95,7 @@ final class PropertyMapping
     }
 
     /**
-     * Modify the fileName property of the given object.
+     * Modifies the fileName property of the given object.
      *
      * @param object $obj The object
      *
@@ -106,7 +108,7 @@ final class PropertyMapping
     }
 
     /**
-     * Remove value for each file-related property of the given object.
+     * Removes value for each file-related property of the given object.
      *
      * @param object $obj The object
      *
@@ -125,7 +127,7 @@ final class PropertyMapping
     }
 
     /**
-     * Read property of the given object.
+     * Reads property of the given object.
      *
      * @internal
      *
@@ -151,7 +153,7 @@ final class PropertyMapping
     }
 
     /**
-     * Modify property of the given object.
+     * Modifies property of the given object.
      *
      * @param object $obj      The object to which write
      * @param string $property The property to write
@@ -178,7 +180,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the configured file property name.
+     * Gets the configured file property name.
      *
      * @return string The name
      */
@@ -188,7 +190,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the configured filename property name.
+     * Gets the configured filename property name.
      *
      * @return string The name
      */
@@ -198,15 +200,15 @@ final class PropertyMapping
     }
 
     /**
-     * Get the configured namer.
+     * Gets the configured namer.
      */
-    public function getNamer(): NamerInterface
+    public function getNamer(): ?NamerInterface
     {
-        return $this->namer ?? throw new \UnexpectedValueException('No namer has been configured.');
+        return $this->namer;
     }
 
     /**
-     * Set the namer.
+     * Sets the namer.
      */
     public function setNamer(NamerInterface $namer): void
     {
@@ -214,7 +216,7 @@ final class PropertyMapping
     }
 
     /**
-     * Determine if the mapping has a custom namer configured.
+     * Determines if the mapping has a custom namer configured.
      */
     public function hasNamer(): bool
     {
@@ -222,7 +224,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the configured directory namer.
+     * Gets the configured directory namer.
      */
     public function getDirectoryNamer(): ?DirectoryNamerInterface
     {
@@ -230,7 +232,7 @@ final class PropertyMapping
     }
 
     /**
-     * Set the directory namer.
+     * Sets the directory namer.
      */
     public function setDirectoryNamer(DirectoryNamerInterface $directoryNamer): void
     {
@@ -238,7 +240,7 @@ final class PropertyMapping
     }
 
     /**
-     * Determine if the mapping has a custom directory namer configured.
+     * Determines if the mapping has a custom directory namer configured.
      */
     public function hasDirectoryNamer(): bool
     {
@@ -246,7 +248,7 @@ final class PropertyMapping
     }
 
     /**
-     * Set the configured configuration mapping.
+     * Sets the configured configuration mapping.
      *
      * @param array $mapping The mapping;
      */
@@ -256,7 +258,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the configured configuration mapping name.
+     * Gets the configured configuration mapping name.
      */
     public function getMappingName(): string
     {
@@ -264,7 +266,7 @@ final class PropertyMapping
     }
 
     /**
-     * Set the configured configuration mapping name.
+     * Sets the configured configuration mapping name.
      */
     public function setMappingName(string $mappingName): void
     {
@@ -272,7 +274,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the upload name for a given file (uses The file namers).
+     * Gets the upload name for a given file (uses The file namers).
      *
      * @return string The upload name
      */
@@ -286,7 +288,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the upload directory for a given file (uses the directory namers).
+     * Gets the upload directory for a given file (uses the directory namers).
      *
      * @return string|null The upload directory
      */
@@ -303,7 +305,7 @@ final class PropertyMapping
     }
 
     /**
-     * Get the base upload directory.
+     * Gets the base upload directory.
      *
      * @return string The configured upload directory
      */

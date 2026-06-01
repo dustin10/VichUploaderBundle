@@ -6,7 +6,9 @@ use Metadata\AdvancedMetadataFactoryInterface;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
 /**
- * Expose a simple interface to read objects metadata.
+ * MetadataReader.
+ *
+ * Exposes a simple interface to read objects metadata.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
@@ -24,7 +26,7 @@ final class MetadataReader
     }
 
     /**
-     * Tell if the given class is uploadable.
+     * Tells if the given class is uploadable.
      *
      * @param string      $class   The class name to test (FQCN)
      * @param string|null $mapping If given, also checks that the object has the given mapping
@@ -65,7 +67,7 @@ final class MetadataReader
     }
 
     /**
-     * Attempt to read the uploadable fields.
+     * Attempts to read the uploadable fields.
      *
      * @param string      $class   The class name to test (FQCN)
      * @param string|null $mapping If given, also checks that the object has the given mapping
@@ -94,7 +96,7 @@ final class MetadataReader
     }
 
     /**
-     * Attempt to read the mapping of a specified property.
+     * Attempts to read the mapping of a specified property.
      *
      * @param string $class The class name to test (FQCN)
      * @param string $field The field

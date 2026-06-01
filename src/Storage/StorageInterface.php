@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 interface StorageInterface
 {
     /**
-     * Upload the file in the uploadable field of the specified object
+     * Uploads the file in the uploadable field of the specified object
      * according to the property configuration.
      *
      * @param object          $obj     The object
@@ -19,18 +19,17 @@ interface StorageInterface
     public function upload(object $obj, PropertyMapping $mapping): void;
 
     /**
-     * Remove the files associated with the given mapping.
+     * Removes the files associated with the given mapping.
      *
      * @param object          $obj     The object
      * @param PropertyMapping $mapping The mapping representing the field to remove
-     * @param string|null     $dir     Optional directory path to use instead of calling getUploadDir()
      *
      * @throw \Exception      Throws an exception
      */
-    public function remove(object $obj, PropertyMapping $mapping, ?string $dir = null): ?bool;
+    public function remove(object $obj, PropertyMapping $mapping): ?bool;
 
     /**
-     * Resolve the path for a file based on the specified object
+     * Resolves the path for a file based on the specified object
      * and mapping name.
      *
      * @param object|array $obj       The object
@@ -45,7 +44,7 @@ interface StorageInterface
     // TODO: inconsistency - use PropertyMapping instead of fieldName+className
 
     /**
-     * Resolve the uri based on the specified object and mapping name.
+     * Resolves the uri based on the specified object and mapping name.
      *
      * @param object|array $obj       The object
      * @param string|null  $fieldName The field to use
@@ -56,7 +55,7 @@ interface StorageInterface
     public function resolveUri(object|array $obj, ?string $fieldName = null, ?string $className = null): ?string;
 
     /**
-     * Return a read-only stream based on the specified object and mapping name.
+     * Returns a read-only stream based on the specified object and mapping name.
      *
      * @param object|array $obj       The object
      * @param string|null  $fieldName The field to use
@@ -65,19 +64,4 @@ interface StorageInterface
      * @return resource|null The resolved resource or null if file not stored
      */
     public function resolveStream(object|array $obj, ?string $fieldName = null, ?string $className = null);
-
-    /**
-     * List all files in the storage for a given mapping.
-     *
-     * Implementations MUST return an empty iterable if the root directory/storage
-     * for the mapping does not exist or cannot be read. Do not throw for missing roots.
-     *
-     * The modification time, when available, MUST be a Unix timestamp in seconds (UTC).
-     * If it cannot be determined, it MUST be null.
-     *
-     * @param PropertyMapping $mapping The mapping to list files for
-     *
-     * @return iterable<StoredFile> StoredFile objects with path and optional modification time (?int seconds)
-     */
-    public function listFiles(PropertyMapping $mapping): iterable;
 }

@@ -8,6 +8,8 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
+ * BaseListener.
+ *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
 abstract class BaseListener
@@ -21,7 +23,7 @@ abstract class BaseListener
     }
 
     /**
-     * Check if the given object is uploadable using the current mapping.
+     * Checks if the given object is uploadable using the current mapping.
      *
      * @param object $object The object to test
      */
@@ -31,7 +33,7 @@ abstract class BaseListener
     }
 
     /**
-     * Return a list of uploadable fields for the given object and mapping.
+     * Returns a list of uploadable fields for the given object and mapping.
      *
      * @param object $object The object to use
      *

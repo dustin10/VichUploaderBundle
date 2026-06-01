@@ -11,6 +11,8 @@ use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
+ * DoctrineORMAdapterTest.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 final class DoctrineORMAdapterTest extends TestCase

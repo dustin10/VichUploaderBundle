@@ -11,17 +11,7 @@
     "authors": [
         {
             "name": "Dustin Dobervich",
-            "email": "ddobervich@gmail.com",
-            "role": "Author"
-        },
-        {
-            "name": "Massimiliano Arione",
-            "email": "garakkio@gmail.com",
-            "role": "Maintainer"
-        },
-        {
-            "name": "The Symfony Community",
-            "homepage": "https://github.com/dustin10/VichUploaderBundle/contributors"
+            "email": "ddobervich@gmail.com"
         }
     ],
     "require": {
@@ -59,7 +49,7 @@
         "symfony/dom-crawler": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/form": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-        "symfony/phpunit-bridge": "^7.4",
+        "symfony/phpunit-bridge": "^7.3",
         "symfony/security-csrf": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/translation": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/twig-bridge": "^5.4 || ^6.0 || ^7.0 || ^8.0",
@@ -93,7 +83,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "2.x-dev"
         }
     },
     "autoload": {

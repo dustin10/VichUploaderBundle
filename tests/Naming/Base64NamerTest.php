@@ -34,7 +34,7 @@ class Base64NamerTest extends TestCase
     {
         $file = $this->getUploadedFileMock();
 
-        $file->expects($this->once())
+        $file->expects(self::once())
             ->method('guessExtension')
             ->willReturn($extension);
 
@@ -42,7 +42,7 @@ class Base64NamerTest extends TestCase
         $entity->setFile($file);
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);

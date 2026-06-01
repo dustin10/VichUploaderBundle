@@ -2,7 +2,6 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Vich\UploaderBundle\Command\CleanupCommand;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
 use Vich\UploaderBundle\Command\MappingDebugCommand;
 use Vich\UploaderBundle\Command\MappingListClassesCommand;
@@ -27,14 +26,4 @@ return static function (ContainerConfigurator $container): void {
             service('vich_uploader.metadata_reader'),
         ])
         ->tag('console.command', ['command' => 'vich:mapping:list-classes']);
-
-    $services->set('vich_uploader.command.cleanup', CleanupCommand::class)
-        ->args([
-            service('vich_uploader.storage'),
-            service('vich_uploader.property_mapping_factory'),
-            service('vich_uploader.metadata_reader'),
-            [], // manager registries, filled by compiler pass
-            param('vich_uploader.mappings'),
-        ])
-        ->tag('console.command', ['command' => 'vich:cleanup']);
 };

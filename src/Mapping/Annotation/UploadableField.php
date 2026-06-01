@@ -6,6 +6,8 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Vich\UploaderBundle\Mapping\AnnotationInterface;
 
 /**
+ * UploadableField.
+ *
  * @Annotation
  * @Target({"PROPERTY"})
  * @NamedArgumentConstructor
@@ -28,11 +30,21 @@ final class UploadableField implements AnnotationInterface
         trigger_deprecation('vich/uploader-bundle', '2.9', 'The "Vich\UploaderBundle\Mapping\Annotation\UploadableField" class is deprecated, use "Vich\UploaderBundle\Mapping\Attribute\UploadableField" instead.');
     }
 
+    /**
+     * Gets the mapping name.
+     *
+     * @return string The mapping name
+     */
     public function getMapping(): string
     {
         return $this->mapping;
     }
 
+    /**
+     * Gets the file name property.
+     *
+     * @return string|null The file name property
+     */
     public function getFileNameProperty(): ?string
     {
         return $this->fileNameProperty;
