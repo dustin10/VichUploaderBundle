@@ -30,13 +30,13 @@ class CleanListenerTest extends ListenerTestCase
     public function testPreUpdate(): void
     {
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(true);
 
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadableFields')
             ->with(DummyEntity::class, self::MAPPING_NAME)
             ->willReturn([
@@ -44,12 +44,12 @@ class CleanListenerTest extends ListenerTestCase
             ]);
 
         $this->handler
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('clean')
             ->with($this->object, 'field_name');
 
         $this->adapter
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('recomputeChangeSet')
             ->with($this->event);
 
@@ -62,7 +62,7 @@ class CleanListenerTest extends ListenerTestCase
     public function testPreUpdateSkipsNonUploadable(): void
     {
         $this->metadata
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isUploadable')
             ->with(DummyEntity::class)
             ->willReturn(false);

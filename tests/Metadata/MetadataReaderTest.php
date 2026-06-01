@@ -23,7 +23,7 @@ final class MetadataReaderTest extends TestCase
     public function testIsUploadable(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn('something not null');
@@ -51,7 +51,7 @@ final class MetadataReaderTest extends TestCase
     public function testIsUploadableForNotUploadable(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn(null);
@@ -62,7 +62,7 @@ final class MetadataReaderTest extends TestCase
     public function testGetUploadableClassesForwardsCallsToTheFactory(): void
     {
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAllClassNames');
 
         $this->reader->getUploadableClasses();
@@ -105,7 +105,7 @@ final class MetadataReaderTest extends TestCase
         ];
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('SubClassName')
             ->willReturn($metadata);
@@ -122,7 +122,7 @@ final class MetadataReaderTest extends TestCase
         $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn($metadata);

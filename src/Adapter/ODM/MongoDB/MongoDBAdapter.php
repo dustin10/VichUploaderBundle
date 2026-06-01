@@ -7,6 +7,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs as BaseLifecycleEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
+ * MongoDBAdapter.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *
  * @internal

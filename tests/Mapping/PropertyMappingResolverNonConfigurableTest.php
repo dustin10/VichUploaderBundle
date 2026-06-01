@@ -85,6 +85,7 @@ final class PropertyMappingResolverNonConfigurableTest extends TestCase
 
         $mapping = $resolver->resolve($object, 'file', $mappingData);
 
+        self::assertInstanceOf(PropertyMapping::class, $mapping);
         self::assertTrue($mapping->hasNamer());
     }
 }

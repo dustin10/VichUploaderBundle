@@ -43,13 +43,11 @@ final class MappingCollector extends DataCollector
 
     public function getMappingsCount(): int
     {
-        $mappings = $this->data['mappings'] ?? [];
-
-        return \is_countable($mappings) ? \count($mappings) : 0;
+        return \is_countable($this->data['mappings']) ? \count($this->data['mappings']) : 0;
     }
 
     public function getMappings(): array
     {
-        return $this->data['mappings'] ?? [];
+        return $this->data['mappings'];
     }
 }

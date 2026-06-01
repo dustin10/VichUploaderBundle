@@ -39,7 +39,7 @@ final class UniqidNamerTest extends TestCase
         $entity = new \DateTime();
 
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects($this->once())
+        $mapping->expects(self::once())
             ->method('getFile')
             ->with($entity)
             ->willReturn($file);

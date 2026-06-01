@@ -2,11 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
-use League\Flysystem\DirectoryListing;
-use League\Flysystem\FileAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
@@ -60,28 +57,28 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $file = $this->getUploadedFileMock();
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getRealPath')
             ->willReturn($this->root->url().\DIRECTORY_SEPARATOR.'uploads'.\DIRECTORY_SEPARATOR.'test.txt');
 
         $file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getClientOriginalName')
             ->willReturn('originalName.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->willReturn($file);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('originalName.txt');
 
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('writeStream')
             ->with(
                 'originalName.txt',
@@ -95,12 +92,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     public function testRemove(): void
     {
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('delete')
             ->with('test.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('test.txt');
 
@@ -110,13 +107,13 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     public function testRemoveOnNonExistentFile(): void
     {
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('delete')
             ->with('not_found.txt')
             ->will($this->throwException(new UnableToDeleteFile('dummy path')));
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('not_found.txt');
 
@@ -129,17 +126,17 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->willReturn($uploadDir);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -165,17 +162,17 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     public function testResolveUri(): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -188,22 +185,22 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     public function testResolveUriWithZeroDirectory(): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->willReturn('0');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -219,7 +216,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->useFlysystemToResolveUri = true;
 
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('publicUrl')
             ->with('file.txt', [
                 'object' => $this->object,
@@ -230,7 +227,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->willReturn('example.com/file.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
@@ -251,7 +248,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->useFlysystemToResolveUri = true;
 
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('publicUrl')
             ->with('0/file.txt', [
                 'object' => $this->object,
@@ -262,12 +259,12 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->willReturn('example.com/0/file.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUploadDir')
             ->willReturn('0');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
@@ -288,23 +285,23 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->useFlysystemToResolveUri = true;
 
         $this->filesystem
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('publicUrl')
             ->with('file.txt')
             ->will($this->throwException(new UndefinedMethodError('Undefined method', new \Error('An error occurred'))));
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->factory
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -312,114 +309,5 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $path = $this->getStorage()->resolveUri($this->object, 'file_field');
 
         self::assertEquals('/uploads/file.txt', $path);
-    }
-
-    public function testListFiles(): void
-    {
-        // Create FileAttributes with timestamps (2 hours old to pass min-age filter)
-        $timestamp = \time() - 7200;
-        $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
-        $file2 = new FileAttributes('file2.txt', null, null, $timestamp);
-        $file3 = new FileAttributes('subdir/file3.txt', null, null, $timestamp);
-
-        $this->filesystem
-            ->expects($this->once())
-            ->method('listContents')
-            ->with('/', true)
-            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $file2, $file3])));
-
-        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
-
-        self::assertCount(3, $files);
-
-        // Extract paths from StoredFile objects
-        $paths = \array_map(static fn ($file) => $file->path, $files);
-        self::assertContains('file1.txt', $paths);
-        self::assertContains('file2.txt', $paths);
-        self::assertContains('subdir/file3.txt', $paths);
-
-        // Verify that all files have timestamps
-        foreach ($files as $file) {
-            self::assertNotNull($file->lastModifiedAt);
-            self::assertIsInt($file->lastModifiedAt);
-            self::assertEquals($timestamp, $file->lastModifiedAt);
-        }
-    }
-
-    public function testListFilesWithEmptyListing(): void
-    {
-        $this->filesystem
-            ->expects($this->once())
-            ->method('listContents')
-            ->with('/', true)
-            ->willReturn(new DirectoryListing(new \ArrayIterator([])));
-
-        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
-
-        self::assertCount(0, $files);
-    }
-
-    public function testListFilesWithFilesystemException(): void
-    {
-        $this->filesystem
-            ->expects($this->once())
-            ->method('listContents')
-            ->with('/', true)
-            ->will($this->throwException($this->createMock(FilesystemException::class)));
-
-        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
-
-        self::assertCount(0, $files);
-    }
-
-    public function testListFilesWithNullTimestamps(): void
-    {
-        // Create FileAttributes without timestamps
-        $file1 = new FileAttributes('file1.txt', null, null, null);
-        $file2 = new FileAttributes('file2.txt', null, null, null);
-
-        $this->filesystem
-            ->expects($this->once())
-            ->method('listContents')
-            ->with('/', true)
-            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $file2])));
-
-        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
-
-        self::assertCount(2, $files);
-
-        // Verify that files have null timestamps
-        foreach ($files as $file) {
-            self::assertNull($file->lastModifiedAt);
-        }
-    }
-
-    public function testListFilesSkipsDirectories(): void
-    {
-        $timestamp = \time() - 7200;
-        $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
-
-        // Create a DirectoryAttributes mock
-        $dir = $this->createMock(\League\Flysystem\DirectoryAttributes::class);
-        $dir->method('isFile')->willReturn(false);
-        $dir->method('path')->willReturn('subdir');
-
-        $file2 = new FileAttributes('file2.txt', null, null, $timestamp);
-
-        $this->filesystem
-            ->expects($this->once())
-            ->method('listContents')
-            ->with('/', true)
-            ->willReturn(new DirectoryListing(new \ArrayIterator([$file1, $dir, $file2])));
-
-        $files = \iterator_to_array($this->storage->listFiles($this->mapping));
-
-        // Should only have 2 files, directory should be skipped
-        self::assertCount(2, $files);
-
-        $paths = \array_map(static fn ($file) => $file->path, $files);
-        self::assertContains('file1.txt', $paths);
-        self::assertContains('file2.txt', $paths);
-        self::assertNotContains('subdir', $paths);
     }
 }

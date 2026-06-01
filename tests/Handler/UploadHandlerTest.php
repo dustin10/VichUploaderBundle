@@ -58,18 +58,18 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_UPLOAD, Events::POST_UPLOAD]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($this->getUploadedFileMock());
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('upload')
             ->with($this->object, $this->mapping);
 
         $this->injector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
@@ -119,7 +119,7 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_INJECT, Events::POST_INJECT]);
 
         $this->injector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('injectFile')
             ->with($this->object, $this->mapping);
 
@@ -131,19 +131,19 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($this->getUploadedFileMock());
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('remove')
             ->with($this->object, $this->mapping);
 
@@ -173,18 +173,18 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('erase')
             ->with($this->object);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('remove')
             ->with($this->object, $this->mapping);
 
@@ -196,18 +196,18 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_REMOVE, Events::REMOVE_ERROR, Events::POST_REMOVE]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('erase')
             ->with($this->object);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('remove')
             ->with($this->object, $this->mapping)
             ->willThrowException(new \RuntimeException('Test exception'))
@@ -223,13 +223,13 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_UPLOAD, Events::UPLOAD_ERROR]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFile')
             ->with($this->object)
             ->willReturn($this->getUploadedFileMock());
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('upload')
             ->with($this->object, $this->mapping)
             ->willThrowException(new \RuntimeException('This is a test'));
@@ -245,18 +245,18 @@ final class UploadHandlerTest extends TestCase
     public function testremoveFailsWithCannotWriteException(): void
     {
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('erase')
             ->with($this->object);
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('remove')
             ->with($this->object, $this->mapping)
             ->willThrowException(new CannotWriteFileException('this is a test'));
@@ -269,7 +269,7 @@ final class UploadHandlerTest extends TestCase
         $this->expectEvents([Events::PRE_REMOVE]);
 
         $this->mapping
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFileName')
             ->with($this->object)
             ->willReturn('something not null');

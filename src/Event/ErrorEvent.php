@@ -6,9 +6,12 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 
 class ErrorEvent extends Event
 {
-    public function __construct(object $object, PropertyMapping $mapping, private readonly \Throwable $throwable)
+    private \Throwable $throwable;
+
+    public function __construct(object $object, PropertyMapping $mapping, \Throwable $throwable)
     {
         parent::__construct($object, $mapping);
+        $this->throwable = $throwable;
     }
 
     public function getThrowable(): \Throwable

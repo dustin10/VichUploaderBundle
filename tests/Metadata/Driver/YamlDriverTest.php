@@ -20,7 +20,7 @@ final class YamlDriverTest extends FileDriverTestCase
 
         $fileLocator = $this->createMock(FileLocatorInterface::class);
         $fileLocator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findFileForClass')
             ->with(self::equalTo($rClass), self::equalTo('yaml'))
             ->willReturn('something not null');

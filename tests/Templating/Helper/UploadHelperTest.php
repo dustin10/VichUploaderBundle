@@ -32,7 +32,7 @@ final class UploadHelperTest extends TestCase
         $obj = new \stdClass();
 
         $this->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('resolveUri')
             ->with($obj, 'file');
 

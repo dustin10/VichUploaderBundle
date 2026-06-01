@@ -9,6 +9,8 @@ use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Util\ClassUtils;
 
 /**
+ * PropertyMappingFactory.
+ *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *
  * @internal
@@ -22,8 +24,9 @@ final class PropertyMappingFactory
     }
 
     /**
-     * Create an array of PropertyMapping objects which contain the
-     * configuration for the uploadable fields in the specified object.
+     * Creates an array of PropertyMapping objects which contain the
+     * configuration for the uploadable fields in the specified
+     * object.
      *
      * @param object|array $obj         The object
      * @param string|null  $className   The object's class. Mandatory if $obj can't be used to determine it
@@ -57,7 +60,7 @@ final class PropertyMappingFactory
     }
 
     /**
-     * Create a property mapping object which contains the
+     * Creates a property mapping object which contains the
      * configuration for the specified uploadable field.
      *
      * @param object|array $obj       The object
@@ -105,7 +108,7 @@ final class PropertyMappingFactory
     }
 
     /**
-     * Check to see if the class is uploadable.
+     * Checks to see if the class is uploadable.
      *
      * @param string $class The class name (FQCN)
      *
@@ -119,7 +122,7 @@ final class PropertyMappingFactory
     }
 
     /**
-     * Return the className of the given object.
+     * Returns the className of the given object.
      *
      * @param object|array $object    The object to inspect
      * @param string|null  $className User specified className
