@@ -50,7 +50,7 @@ trait FileExtensionTrait
             return $this->getOriginalExtension($file);
         }
 
-        if ('' !== ($extension = $file->guessExtension())) {
+        if (null !== ($extension = $file->guessExtension()) && '' !== $extension) {
             if (isset(self::$keep[$extension])) {
                 $originalExtension = \pathinfo($file->getClientOriginalName(), \PATHINFO_EXTENSION);
                 if (\in_array($originalExtension, self::$keep[$extension], true)) {
