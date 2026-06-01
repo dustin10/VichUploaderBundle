@@ -44,6 +44,19 @@ class PropertyDirectoryNamerTest extends TestCase
         self::assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
     }
 
+    public function testDirectoryNameAcceptsZeroAsName(): void
+    {
+        $entity = new DummyEntity();
+        $entity->someProperty = '0';
+
+        $mapping = $this->getPropertyMappingMock();
+
+        $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
+        $namer->configure(['property' => 'someProperty']);
+
+        self::assertSame('0', $namer->directoryName($entity, $mapping));
+    }
+
     public function testNameFailsIfThePropertyDoesNotExist(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
