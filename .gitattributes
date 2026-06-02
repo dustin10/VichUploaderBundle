@@ -1,3 +1,4 @@
+/.dockerfile*     export-ignore
 /.git*            export-ignore
 /.php-cs-fixer*   export-ignore
 /CONTRIBUTING.md  export-ignore

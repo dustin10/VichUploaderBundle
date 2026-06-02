@@ -1,43 +1,20 @@
 FROM php:8.3-alpine
 
-ARG MONGODB_VERSION=1.17.0
+ARG MONGODB_VERSION=2.3.3
 
-# Install mongo
-RUN set -eux; \
-	apk add --no-cache --virtual .build-deps \
-		$PHPIZE_DEPS \
-    	openssl-dev \
-	; \
-	pecl install \
-	    mongodb-${MONGODB_VERSION} \
-    ; \
-	docker-php-ext-enable \
-	    mongodb \
-	; \
-	pecl clear-cache; \
-	\
-	runDeps="$( \
-    scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
-      | tr ',' '\n' \
-      | sort -u \
-      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)"; \
-	apk add --no-cache --virtual .api-add-phpexts-rundeps $runDeps \
-	curl \
-	;
-
-RUN curl -s https://getcomposer.org/installer | php
-
-RUN mv composer.phar /usr/local/bin/composer
+# Install the mongodb extension and Composer.
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions; \
+	install-php-extensions mongodb-${MONGODB_VERSION} @composer
 
 WORKDIR /srv/vich-uploader
 
-# prevent the reinstallation of vendors at every changes in the source code
-
 COPY . ./
 
-RUN set -eux; \
-	composer update --prefer-dist --ignore-platform-reqs; \
-	composer clear-cache
+# No lock file is committed, so dependencies are resolved on every build and the
+# suite always runs against the latest compatible versions. A BuildKit cache mount
+# keeps Composer's download cache across builds to make this fast.
+RUN --mount=type=cache,target=/tmp/composer-cache \
+	COMPOSER_CACHE_DIR=/tmp/composer-cache composer update --prefer-dist
 
 CMD ["/init"]
