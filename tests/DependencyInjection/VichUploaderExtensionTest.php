@@ -3,8 +3,11 @@
 namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
+use Symfony\Component\DependencyInjection\Reference;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
+use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 use Vich\UploaderBundle\Twig\Extension\UploaderExtension;
@@ -166,5 +169,30 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasService('vich_uploader.metadata.reader', AttributeReader::class);
+    }
+
+    #[DataProvider('cacheWarmerArgumentsProvider')]
+    public function testMetadataCacheWarmerArguments(
+        string $cache,
+        string $expectedCacheDir,
+        Reference $expectedMetadataReader
+    ): void {
+        $this->load([
+            'metadata' => [
+                'cache' => $cache,
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(CacheWarmer::class, 0, $expectedCacheDir);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(CacheWarmer::class, 1, $expectedMetadataReader);
+    }
+
+    public static function cacheWarmerArgumentsProvider(): \Generator
+    {
+        $metadataReader = new Reference('vich_uploader.metadata_reader');
+
+        yield 'no cache' => ['none', '', $metadataReader];
+        yield 'filesystem cache' => ['file', '%kernel.cache_dir%/vich_uploader', $metadataReader];
+        yield 'custom cache service' => ['service_id', '', $metadataReader];
     }
 }

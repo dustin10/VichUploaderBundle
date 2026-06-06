@@ -79,7 +79,7 @@ return static function (ContainerConfigurator $container): void {
     // cache warmer
     $services->set(CacheWarmer::class)
         ->args([
-            null, // cache directory, injected by extension
+            '', // cache directory, injected by extension
             service('vich_uploader.metadata_reader'),
         ])
         ->tag('kernel.cache_warmer');
