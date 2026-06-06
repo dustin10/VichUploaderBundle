@@ -20,6 +20,19 @@ vich_uploader:
             directory_namer: my.directory_namer.product
 ```
 
+For Symfony 8.1+, if you configure a custom directory namer by service id, index the tagged
+service explicitly so it can be resolved by that id:
+
+```php
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+
+#[AsTaggedItem(index: 'my.directory_namer.product')]
+final class ProductDirectoryNamer implements DirectoryNamerInterface
+{
+    // ...
+}
+```
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the

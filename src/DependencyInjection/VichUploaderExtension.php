@@ -225,6 +225,9 @@ final class VichUploaderExtension extends Extension
             if (!empty($mapping['namer']['service'])) {
                 $config['mappings'][$name] = $this->createNamerService($container, $name, $mapping);
             }
+            if (!empty($config['mappings'][$name]['directory_namer']['service'])) {
+                $config['mappings'][$name] = $this->createDirectoryNamerService($container, $name, $config['mappings'][$name]);
+            }
         }
 
         return $config;
@@ -236,6 +239,16 @@ final class VichUploaderExtension extends Extension
         $container->setDefinition($serviceId, new ChildDefinition($mapping['namer']['service']));
 
         $mapping['namer']['service'] = $serviceId;
+
+        return $mapping;
+    }
+
+    protected function createDirectoryNamerService(ContainerBuilder $container, string $mappingName, array $mapping): array
+    {
+        $serviceId = \sprintf('%s.%s', $mapping['directory_namer']['service'], $mappingName);
+        $container->setDefinition($serviceId, new ChildDefinition($mapping['directory_namer']['service']));
+
+        $mapping['directory_namer']['service'] = $serviceId;
 
         return $mapping;
     }

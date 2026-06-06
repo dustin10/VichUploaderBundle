@@ -60,7 +60,7 @@ final class VichFileTypeTest extends TestCase
         $config = $this->createMock(FormConfigInterface::class);
         $config
             ->method('getOption')
-            ->willReturnCallback(fn (string $key) => $options[$key] ?? null);
+            ->willReturnCallback(static fn (string $key) => $options[$key] ?? null);
 
         $form = $this->createMock(FormInterface::class);
         $form

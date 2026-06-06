@@ -86,6 +86,12 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer # or any other namer listed above
 ```
 
+> [!NOTE]
+> On Symfony 8.1+, if you configure `namer` or `directory_namer` using a custom service id
+> (instead of the class name), make sure that service is indexed in tagged iterators.
+> You can do this with `#[AsTaggedItem(index: 'your.service_id')]` on the class, or by setting
+> the `index` in the service tag definition.
+
 ### Extension Handling
 
 By default, namers use smart extension logic that preserves specific file extensions (like `.csv`, `.gpx`, `.xlsb`)
@@ -238,7 +244,7 @@ vich_uploader:
         products:
             upload_destination: products
             directory_namer:
-                service: vich_uploader.namer_directory_configurable
+                service: Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer
                 options:
                     directory_path: 'folder/subfolder/subsubfolder'
 ```
