@@ -53,13 +53,12 @@ final readonly class AttributeReader
 
         foreach ($attributes as $attribute) {
             $attributeName = $attribute->getName();
-            $instance = $attribute->newInstance();
 
-            if (!$instance instanceof AttributeInterface) {
+            if (!\is_a($attributeName, AttributeInterface::class, true)) {
                 continue;
             }
 
-            $instances[$attributeName] = $instance;
+            $instances[$attributeName] = $attribute->newInstance();
         }
 
         return $instances;

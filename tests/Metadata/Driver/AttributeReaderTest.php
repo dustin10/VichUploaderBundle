@@ -68,4 +68,30 @@ final class AttributeReaderTest extends TestCase
             )
         );
     }
+
+    public function testDoesNotInstantiateUnrelatedAttributes(): void
+    {
+        $reader = new AttributeReader();
+        $class = new \ReflectionClass(EntityWithUnrelatedAttribute::class);
+
+        $this->assertEquals(
+            [Uploadable::class => new Uploadable()],
+            $reader->getClassAttributes($class)
+        );
+    }
+}
+
+#[Uploadable]
+#[UnrelatedAttribute]
+final class EntityWithUnrelatedAttribute
+{
+}
+
+#[\Attribute]
+final class UnrelatedAttribute
+{
+    public function __construct()
+    {
+        throw new \LogicException();
+    }
 }
