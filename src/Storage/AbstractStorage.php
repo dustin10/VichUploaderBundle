@@ -17,6 +17,8 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
  */
 abstract class AbstractStorage implements StorageInterface
 {
+    private const URI_SEPARATOR = '/';
+
     public function __construct(protected readonly PropertyMappingFactoryInterface $factory)
     {
     }
@@ -116,9 +118,10 @@ abstract class AbstractStorage implements StorageInterface
         }
 
         $dir = $mapping->getUploadDir($obj);
-        $path = (\is_string($dir) && '' !== $dir) ? $dir.'/'.$filename : $filename;
+        $dir = \is_string($dir) ? \trim($dir, self::URI_SEPARATOR) : $dir;
+        $path = (\is_string($dir) && '' !== $dir) ? $dir.self::URI_SEPARATOR.$filename : $filename;
 
-        return $mapping->getUriPrefix().'/'.$path;
+        return \rtrim($mapping->getUriPrefix(), self::URI_SEPARATOR).self::URI_SEPARATOR.$path;
     }
 
     public function resolveStream(object|array $obj, ?string $fieldName = null, ?string $className = null)
