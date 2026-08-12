@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Mapping;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Util\PropertyPathUtils;
@@ -14,6 +15,12 @@ use Vich\UploaderBundle\Util\PropertyPathUtils;
  */
 final class PropertyMapping implements PropertyMappingInterface
 {
+    private const UNKNOWN_PROPERTY_MESSAGE = 'Unknown property %s';
+    private const SETTER_PREFIX = 'set';
+    private const PROPERTY_WORD_SEPARATORS = ['_', '-'];
+    private const PROPERTY_WORD_SEPARATOR = ' ';
+    private const EMPTY_STRING = '';
+
     private ?NamerInterface $namer = null;
 
     private ?DirectoryNamerInterface $directoryNamer = null;
@@ -77,14 +84,90 @@ final class PropertyMapping implements PropertyMappingInterface
         }
 
         foreach (['name', 'size', 'mimeType', 'originalName', 'dimensions'] as $property) {
-            $this->writeProperty($obj, $property, null);
+            // Only null out properties that actually accept null. A non-nullable typed
+            // property (or setter) would raise a \TypeError here, e.g. when the whole
+            // entity is being removed (see #1117).
+            if ($this->isNullable($obj, $property)) {
+                $this->writeProperty($obj, $property, null);
+            }
         }
+    }
+
+    /**
+     * Tells whether the mapped property can be set to null, i.e. whether erasing it is safe.
+     *
+     * A property is considered non-nullable when the write path used by the property
+     * accessor (a typed setter, or the typed property itself) does not allow null.
+     * Unconfigured, dynamic or non-introspectable targets are treated as nullable so the
+     * previous behavior is preserved.
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function isNullable(object $obj, string $property): bool
+    {
+        if (!\array_key_exists($property, $this->propertyPaths)) {
+            throw new \InvalidArgumentException(\sprintf(self::UNKNOWN_PROPERTY_MESSAGE, $property));
+        }
+
+        if (!$this->propertyPaths[$property]) {
+            // not configured: writeProperty() is a no-op
+            return true;
+        }
+
+        $propertyPath = new PropertyPath(PropertyPathUtils::fixPropertyPath($obj, $this->propertyPaths[$property]));
+        $lastIndex = $propertyPath->getLength() - 1;
+
+        if ($propertyPath->isIndex($lastIndex)) {
+            // writing into an array offset: no scalar type to violate
+            return true;
+        }
+
+        $target = $obj;
+        if ($lastIndex > 0) {
+            $target = $this->getAccessor()->getValue($obj, $propertyPath->getParent());
+        }
+
+        if (!\is_object($target)) {
+            return true;
+        }
+
+        return $this->acceptsNull($target, (string) $propertyPath->getElement($lastIndex));
+    }
+
+    private function acceptsNull(object $target, string $name): bool
+    {
+        // Mirror the property accessor write path: a public camelized setter first,
+        // then a public property. Anything else (magic __set, dynamic property) has no
+        // static type constraint to violate.
+        $setter = self::SETTER_PREFIX.self::camelize($name);
+        if (\method_exists($target, $setter) && ($method = new \ReflectionMethod($target, $setter))->isPublic()) {
+            $type = ($method->getParameters()[0] ?? null)?->getType();
+
+            return null === $type || $type->allowsNull();
+        }
+
+        if (\property_exists($target, $name) && ($property = new \ReflectionProperty($target, $name))->isPublic()) {
+            $type = $property->getType();
+
+            return null === $type || $type->allowsNull();
+        }
+
+        return true;
+    }
+
+    private static function camelize(string $string): string
+    {
+        return \str_replace(
+            self::PROPERTY_WORD_SEPARATOR,
+            self::EMPTY_STRING,
+            \ucwords(\str_replace(self::PROPERTY_WORD_SEPARATORS, self::PROPERTY_WORD_SEPARATOR, $string))
+        );
     }
 
     public function readProperty(object|array $obj, string $property): mixed
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
-            throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
+            throw new \InvalidArgumentException(\sprintf(self::UNKNOWN_PROPERTY_MESSAGE, $property));
         }
 
         if (!$this->propertyPaths[$property]) {
@@ -100,7 +183,7 @@ final class PropertyMapping implements PropertyMappingInterface
     public function writeProperty(object $obj, string $property, mixed $value): void
     {
         if (!\array_key_exists($property, $this->propertyPaths)) {
-            throw new \InvalidArgumentException(\sprintf('Unknown property %s', $property));
+            throw new \InvalidArgumentException(\sprintf(self::UNKNOWN_PROPERTY_MESSAGE, $property));
         }
 
         if (!$this->propertyPaths[$property]) {

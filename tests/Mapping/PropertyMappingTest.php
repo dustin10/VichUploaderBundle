@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\TestBundle\Entity\Article;
+use Vich\TestBundle\Entity\NotNullableArticle;
 use Vich\TestBundle\Naming\DummyNamer;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer;
@@ -157,6 +158,74 @@ class PropertyMappingTest extends TestCase
         self::assertNull($object->getOriginalNameField());
         self::assertNull($object->getMimeTypeField());
         self::assertNull($object->getSizeField());
+    }
+
+    public function testEraseKeepsNonNullableProperties(): void
+    {
+        $object = new NotNullableArticle();
+        $object->setImageName('generated.jpeg');
+        $object->setSizeField('100');
+
+        $prop = new PropertyMapping('image', 'imageName', ['size' => 'sizeField']);
+
+        // The file name property is non-nullable: erasing must skip it (would raise a
+        // \TypeError otherwise, see #1117) while still erasing the nullable size property.
+        $prop->erase($object);
+
+        self::assertSame('generated.jpeg', $object->getImageName());
+        self::assertNull($object->getSizeField());
+    }
+
+    public function testIsNullable(): void
+    {
+        $prop = new PropertyMapping('image', 'imageName', ['size' => 'sizeField']);
+
+        // Nullable setter/property on Article.
+        self::assertTrue($prop->isNullable(new Article(), 'name'));
+        self::assertTrue($prop->isNullable(new Article(), 'size'));
+
+        // Non-nullable file name, nullable size on NotNullableArticle.
+        self::assertFalse($prop->isNullable(new NotNullableArticle(), 'name'));
+        self::assertTrue($prop->isNullable(new NotNullableArticle(), 'size'));
+
+        // Unconfigured property path is treated as nullable (write is a no-op).
+        self::assertTrue($prop->isNullable(new Article(), 'mimeType'));
+    }
+
+    public function testIsNullableMatchesTheAccessorWritePath(): void
+    {
+        // Snake_case path: the accessor camelizes it to setImageName(string), non-nullable.
+        $snakeCased = new PropertyMapping('image', 'image_name');
+        self::assertFalse($snakeCased->isNullable(new NotNullableArticle(), 'name'));
+
+        // Non-nullable public property written directly (no setter).
+        $publicProperty = new PropertyMapping('image', 'imageName', ['size' => 'publicSize']);
+        self::assertFalse($publicProperty->isNullable(new NotNullableArticle(), 'size'));
+    }
+
+    public function testIsNullableRejectsUnknownMappingProperty(): void
+    {
+        $prop = new PropertyMapping('image', 'imageName');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown property unused');
+
+        $prop->isNullable(new Article(), 'unused');
+    }
+
+    public function testIsNullableTreatsNonTypedWriteTargetsAsNullable(): void
+    {
+        $arrayOffset = new PropertyMapping('image', '[imageName]');
+        self::assertTrue($arrayOffset->isNullable(new \ArrayObject(), 'name'));
+
+        $nestedTarget = new class {
+            public ?object $metadata = null;
+        };
+        $nestedProperty = new PropertyMapping('image', 'metadata.imageName');
+        self::assertTrue($nestedProperty->isNullable($nestedTarget, 'name'));
+
+        $dynamicProperty = new PropertyMapping('image', 'imageName');
+        self::assertTrue($dynamicProperty->isNullable(new \stdClass(), 'name'));
     }
 
     public function testWithArray(): void
