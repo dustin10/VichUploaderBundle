@@ -218,7 +218,7 @@ class PropertyMappingTest extends TestCase
         $arrayOffset = new PropertyMapping('image', '[imageName]');
         self::assertTrue($arrayOffset->isNullable(new \ArrayObject(), 'name'));
 
-        $nestedTarget = new class {
+        $nestedTarget = new class() {
             public ?object $metadata = null;
         };
         $nestedProperty = new PropertyMapping('image', 'metadata.imageName');
