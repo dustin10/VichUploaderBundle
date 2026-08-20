@@ -23,6 +23,8 @@ final class FileInjector implements FileInjectorInterface
 
         if (null !== $path) {
             $mapping->setFile($obj, new File($path, false));
+        } else {
+            $mapping->setFile($obj, null);
         }
     }
 }

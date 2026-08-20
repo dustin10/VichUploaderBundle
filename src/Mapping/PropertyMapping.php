@@ -76,13 +76,13 @@ final class PropertyMapping
     /**
      * Modifies the file property value for the given object.
      *
-     * @param object $obj  The object
-     * @param File   $file The new file
+     * @param object    $obj  The object
+     * @param File|null $file The new file
      *
      * @throws \InvalidArgumentException
      * @throws \TypeError
      */
-    public function setFile(object $obj, File $file): void
+    public function setFile(object $obj, ?File $file): void
     {
         $this->writeProperty($obj, 'file', $file);
     }
