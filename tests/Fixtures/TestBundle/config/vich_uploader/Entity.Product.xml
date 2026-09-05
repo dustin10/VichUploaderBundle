@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<vich_uploader class="Vich\TestBundle\Entity\Product">
+<vich_uploader xmlns="https://vich-uploader-bundle/schema/"
+               class="Vich\TestBundle\Entity\Product">
     <field mapping="product_image" name="image" filename_property="imageName"
            size="imageSize" mime_type="imageMimeType" original_name="imageOriginalName" />
 </vich_uploader>

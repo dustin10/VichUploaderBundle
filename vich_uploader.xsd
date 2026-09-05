@@ -8,7 +8,7 @@
 
             <xs:sequence>
 
-                <xs:element name="field">
+                <xs:element name="field" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
