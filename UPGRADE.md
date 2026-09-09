@@ -1,3 +1,10 @@
+# Upgrading from v3.0 to v3.1
+
+## Deprecations
+
+* `ConfigurableInterface` is deprecated in favor of `ImmutableConfigurableInterface`, which declares `withOptions(array $options): static` instead of `configure(array $options): void`. Namer services are shared, so configuring one in place makes every mapping observe the options of the last one resolved. `withOptions()` must return a new instance with independent mutable configuration, preserving service defaults; it is called for every configurable namer, including those inside chains and mappings without options. `ConfigurableNamerTrait` implements it when a shallow clone is enough; see the [custom namer guide](docs/file_namer/howto/create_a_custom_file_namer.md#configurable-custom-namer).
+* Namers implementing only `ConfigurableInterface` keep working, without configuration isolation, until its removal in 4.0. A `configure()` method is still usable for service-level defaults.
+
 # Upgrading from v2.9 to v3.0
 
 ## Breaking Changes

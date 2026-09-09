@@ -20,6 +20,12 @@ vich_uploader:
             directory_namer: my.directory_namer.product
 ```
 
+## Configurable directory namers
+
+To accept mapping options, also implement `ImmutableConfigurableInterface`. Directory namers use the
+same [`withOptions()` contract and trait](../../file_namer/howto/create_a_custom_file_namer.md#configurable-custom-namer)
+as file namers. This also applies when your namer is used inside a `ChainDirectoryNamer`.
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the

@@ -7,8 +7,10 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 /**
  * Directory namer that can create subfolder which path is given in the directory namer's options.
  */
-class ConfigurableDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+class ConfigurableDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     private string $directoryPath = '';
 
     /**

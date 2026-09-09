@@ -14,8 +14,10 @@ use Vich\UploaderBundle\Util\Transliterator;
  *
  * @author Raynald Coupé <raynald@easi-services.fr>
  */
-final class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+final class PropertyDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     private ?string $propertyPath = null;
 
     private bool $transliterate = false;

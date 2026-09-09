@@ -8,6 +8,9 @@ namespace Vich\UploaderBundle\Naming;
  * Allows namers to receive configuration options.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
+ *
+ * @deprecated since 3.1, use {@see ImmutableConfigurableInterface} instead: configuring a shared
+ *             namer service in place gives every mapping the options of the last one resolved.
  */
 interface ConfigurableInterface
 {

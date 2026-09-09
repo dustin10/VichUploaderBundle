@@ -10,8 +10,10 @@ use Vich\UploaderBundle\Util\Transliterator;
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
-final class SlugNamer implements NamerInterface, ConfigurableInterface
+final class SlugNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private bool $keepExtension = false;

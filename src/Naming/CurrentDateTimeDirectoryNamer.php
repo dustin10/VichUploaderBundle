@@ -11,8 +11,10 @@ use Vich\UploaderBundle\Util\PropertyPathUtils;
  *
  * @author Vyacheslav Startsev <vyacheslav.startsev@gmail.com>
  */
-final class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+final class CurrentDateTimeDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     private string $dateTimeFormat = 'Y/m/d';
 
     private ?string $dateTimeProperty = null;

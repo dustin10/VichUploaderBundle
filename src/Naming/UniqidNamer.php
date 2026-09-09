@@ -7,8 +7,10 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 /**
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-final class UniqidNamer implements NamerInterface, ConfigurableInterface
+final class UniqidNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private bool $keepExtension = false;

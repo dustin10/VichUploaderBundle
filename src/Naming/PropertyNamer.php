@@ -11,8 +11,10 @@ use Vich\UploaderBundle\Util\Transliterator;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class PropertyNamer implements NamerInterface, ConfigurableInterface
+final class PropertyNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private string $propertyPath;

@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Naming;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Vich\UploaderBundle\Naming\ChainDirectoryNamer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
+use Vich\UploaderBundle\Naming\SubdirDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -13,6 +14,30 @@ use Vich\UploaderBundle\Tests\TestCase;
  */
 final class ChainDirectoryNamerTest extends TestCase
 {
+    /**
+     * withOptions() is public API: the children it receives may well be shared services, so the
+     * chain has to copy them whether they come from the resolver or from a direct call.
+     */
+    public function testChildrenGivenToWithOptionsAreCopied(): void
+    {
+        $child = new SubdirDirectoryNamer();
+        $child->configure(['dirs' => 1]);
+
+        $chain = new ChainDirectoryNamer();
+        $first = $chain->withOptions(['namers' => [$child]]);
+        $second = $chain->withOptions(['namers' => [$child]]);
+
+        $child->configure(['dirs' => 3]);
+
+        $entity = new DummyEntity();
+        $entity->setFileName('0123456789.jpg');
+        $mapping = $this->getPropertyMappingMock();
+        $mapping->expects(self::any())->method('getFileName')->willReturn('0123456789.jpg');
+
+        self::assertSame('01', $first->directoryName($entity, $mapping));
+        self::assertSame('01', $second->directoryName($entity, $mapping));
+    }
+
     public static function chainDataProvider(): array
     {
         return [

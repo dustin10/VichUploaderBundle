@@ -270,6 +270,10 @@ vich_uploader:
                     separator: '/'  # optional, defaults to '/'
 ```
 
+Entries can be chains themselves, and the same service can appear several times with different
+options: each entry keeps its own options and children. An explicit `namers: []` creates an
+empty chain; omitting `namers` keeps the children configured on the service.
+
 This configuration will create directories like `2024/01/electronics` for a product in the
 "electronics" category uploaded in January 2024.
 
@@ -283,6 +287,17 @@ the `upload_destination` configuration option.
 ### How-tos
 
 * [Writing a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
+
+## Configuration isolation
+
+Namers implementing `ImmutableConfigurableInterface` get their own configured copy per mapping,
+built-in and custom alike, including entries in a chain and mappings without options. Reusing
+such a service with different options leaves the other mappings untouched, whatever the
+resolution order. See the
+[`withOptions()` contract](file_namer/howto/create_a_custom_file_namer.md#configurable-custom-namer).
+
+Namers implementing only the deprecated `ConfigurableInterface` are still configured in place:
+every mapping using the service gets the options of the last one resolved.
 
 ## That was it!
 

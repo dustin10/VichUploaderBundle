@@ -10,8 +10,10 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
  *
  * @author Keleti Márton <tejes@hac.hu>
  */
-class Base64Namer implements NamerInterface, ConfigurableInterface
+class Base64Namer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     protected const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';

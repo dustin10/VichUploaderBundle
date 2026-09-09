@@ -9,8 +9,10 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
  *
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
-final class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface
+final class SubdirDirectoryNamer implements DirectoryNamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     private int $charsPerDir = 2;
 
     private int $dirs = 1;

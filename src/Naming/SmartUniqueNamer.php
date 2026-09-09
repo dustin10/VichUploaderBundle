@@ -11,8 +11,10 @@ use Vich\UploaderBundle\Util\Transliterator;
  *
  * @author Massimiliano Arione <garakkio@gmail.com>
  */
-final class SmartUniqueNamer implements NamerInterface, ConfigurableInterface
+final class SmartUniqueNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private bool $keepExtension = false;

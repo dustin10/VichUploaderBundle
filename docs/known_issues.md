@@ -149,7 +149,7 @@ $uploadedFile = new \Symfony\Component\HttpFoundation\File\UploadedFile($filePat
 $entity->setFile( $uploadedFile );
 ```
 
-Be aware that these files will be _moved_ to the designated location by VichUploader, so if you want to keep the
+Be aware that these files will be *moved* to the designated location by VichUploader, so if you want to keep the
 original files intact, copy them to a temporary location first. If you plan to upload the same file multiple times,
 you will need multiple different locations, otherwise the handler on the first VichUploader field will move the file
 and accessing that file will fail on subsequent tries.

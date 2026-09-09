@@ -10,8 +10,10 @@ use Vich\UploaderBundle\Util\Transliterator;
 /**
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-final class OrignameNamer implements NamerInterface, ConfigurableInterface
+final class OrignameNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private bool $transliterate = false;

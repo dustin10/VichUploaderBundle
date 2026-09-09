@@ -44,7 +44,7 @@ final class PropertyMappingResolverNonConfigurableTest extends TestCase
         ];
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Namer non_configurable_namer does not implement ConfigurableInterface but namer_keep_extension option is set to true in mapping "test_mapping"');
+        $this->expectExceptionMessage('Namer non_configurable_namer does not implement ImmutableConfigurableInterface but namer_keep_extension option is set to true in mapping "test_mapping"');
 
         $resolver->resolve($object, 'file', $mappingData);
     }

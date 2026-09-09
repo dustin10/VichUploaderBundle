@@ -39,7 +39,7 @@ class MyNamer implements NamerInterface
 ## Configurable Custom Namer
 
 If you want your namer to support configuration options (including the `namer_keep_extension` option),
-implement the `Vich\UploaderBundle\Naming\ConfigurableInterface`:
+implement the `Vich\UploaderBundle\Naming\ImmutableConfigurableInterface`:
 
 ```php
 <?php
@@ -47,11 +47,12 @@ implement the `Vich\UploaderBundle\Naming\ConfigurableInterface`:
 namespace App\Naming;
 
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
-use Vich\UploaderBundle\Naming\ConfigurableInterface;
+use Vich\UploaderBundle\Naming\ImmutableConfigurableInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 
-class MyConfigurableNamer implements NamerInterface, ConfigurableInterface
+class MyConfigurableNamer implements NamerInterface, ImmutableConfigurableInterface
 {
+    use \Vich\UploaderBundle\Naming\ConfigurableNamerTrait;
     use \Vich\UploaderBundle\Naming\Polyfill\FileExtensionTrait;
 
     private bool $keepExtension = false;
@@ -74,6 +75,23 @@ class MyConfigurableNamer implements NamerInterface, ConfigurableInterface
     }
 }
 ```
+
+`withOptions()` is the only method the interface declares. The bundle calls it for each mapping,
+including mappings without options, to get a separate configured instance. `ConfigurableNamerTrait`
+implements it by cloning the service and calling `configure()` on the copy; that method is no
+longer required, but stays useful for service-level defaults.
+
+The trait fits this example's scalar properties. Copy mutable configuration objects in
+`__clone()`, or implement `withOptions()` yourself — note that a `readonly` property does not make
+its contents immutable, and a service that cannot be cloned can build a new instance instead.
+Decorators must also copy the inner namer, e.g. `$this->inner->withOptions($options)`. Always
+return a new instance, leaving the source and earlier copies untouched: returning `$this` throws
+a `LogicException`.
+
+The older `ConfigurableInterface`, declaring `configure(array $options): void`, is deprecated
+since 3.1 and will be removed in 4.0. Namers implementing only that interface still get their
+options, but the bundle configures the shared service itself, so every mapping using it ends up
+with the options of the last one resolved.
 
 With a configurable namer, you can use options in your configuration:
 

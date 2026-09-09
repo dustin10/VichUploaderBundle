@@ -9,8 +9,10 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
  *
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  */
-class HashNamer implements NamerInterface, ConfigurableInterface
+class HashNamer implements NamerInterface, ConfigurableInterface, ImmutableConfigurableInterface
 {
+    use ConfigurableNamerTrait;
+
     use Polyfill\FileExtensionTrait;
 
     private static ?\Random\Randomizer $randomizer = null;
