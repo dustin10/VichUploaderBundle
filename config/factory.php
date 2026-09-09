@@ -12,8 +12,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('vich_uploader.property_mapping_resolver', PropertyMappingResolver::class)
         ->args([
-            tagged_iterator('vich_uploader.namer', defaultIndexMethod: 'getId'),
-            tagged_iterator('vich_uploader.dir_namer', defaultIndexMethod: 'getId'),
+            tagged_iterator('vich_uploader.namer', 'index'),
+            tagged_iterator('vich_uploader.dir_namer', 'index'),
             param('vich_uploader.mappings'),
             param('vich_uploader.default_filename_attribute_suffix'),
         ]);

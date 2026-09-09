@@ -2,20 +2,17 @@
 
 namespace Vich\UploaderBundle\Tests\Fixtures;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\ImmutableConfigurableInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
 
+#[AsTaggedItem(index: 'custom')]
 final class IsolatedNamer implements NamerInterface, DirectoryNamerInterface, ImmutableConfigurableInterface
 {
     public function __construct(private \stdClass $configuration = new \stdClass())
     {
-    }
-
-    public static function getId(): string
-    {
-        return 'custom';
     }
 
     private function __clone()
