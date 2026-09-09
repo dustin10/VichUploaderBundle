@@ -249,6 +249,26 @@ the `upload_destination` configuration option.
 
 * [Writing a custom directory namer](directory_namer/howto/create_a_custom_directory_namer.md)
 
+### Configuration isolation
+
+The built-in file and directory namers are copied for each resolved mapping before
+mapping options are applied. Their service configuration is preserved as the starting
+point, and configuring one mapping does not change another mapping or the base service.
+Mappings without options also receive a copy. Namers are not cached by mapping name.
+
+This isolation applies to the concrete built-in classes only. Custom namers, subclasses
+and decorators retain their existing behavior in 2.x: they are configured on the service
+returned by the container, and are never implicitly cloned. Their factory, sharing and
+configuration semantics are unchanged. If they keep mutable configuration, applications
+must provide independent instances and configuration state for mappings that need
+isolation. A factory returning a singleton or shared mutable dependencies can still leak
+options between those mappings. No new interface is required in 2.10.x.
+
+For compatibility, `namer_keep_extension: true` overrides the namer's
+`keep_extension` option. The default `false` leaves explicit namer options and
+service configuration intact; it does not force an already configured service to
+stop keeping extensions.
+
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
