@@ -13,6 +13,21 @@ format and comes with the following syntax to declare your uploadable fields:
 </vich_uploader>
 ```
 
+An entity may declare as many `field` elements as it has uploadable properties.
+
+The bundle ships the schema these mappings follow, so an editor can validate and complete them.
+Point `xsi:schemaLocation` at the copy installed in the vendor directory:
+
+```xml
+<!-- config/vich_uploader/Entity.Product.xml -->
+<vich_uploader xmlns="https://vich-uploader-bundle/schema/"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="https://vich-uploader-bundle/schema/ ../../vendor/vich/uploader-bundle/vich_uploader.xsd"
+               class="Acme\DemoBundle\Entity\Product">
+    <field mapping="products" name="imageFile" filename_property="imageName" />
+</vich_uploader>
+```
+
 To be automatically found, the mapping configuration MUST be in the `config/vich_uploader` directory
 of your symfony application, and the root namespace MUST be the de-facto standard `App` namespace.
 Third-party bundles providing configuration must follow the same rule in their own directory.
