@@ -2,12 +2,17 @@
 
 ## Changes
 
-* The namer iterators no longer index services through a `getId()` method. Symfony deprecated the
-  `defaultIndexMethod` argument of tagged iterators in 8.1, so a namer that wants to be referenced
-  by something other than its service id must now carry
-  `#[\Symfony\Component\DependencyInjection\Attribute\AsTaggedItem(index: 'my-namer')]`. Namers
-  without that attribute keep being indexed by their service id, which is what mappings reference
-  in practice, so nothing changes for them.
+* Namers and directory namers are no longer indexed through a `getId()` method. Symfony deprecated
+  the `defaultIndexMethod` argument of tagged iterators in 8.1, so a namer or a directory namer that
+  wants to be referenced by something other than its service id must now carry
+  `#[\Symfony\Component\DependencyInjection\Attribute\AsTaggedItem(index: 'my-namer')]`. Services
+  without that attribute keep being indexed by their service id, which is what `namer` and
+  `directory_namer` reference in practice, so nothing changes for them.
+
+  One difference with `getId()` is worth knowing: Symfony only reads `#[AsTaggedItem]` on
+  autoconfigured definitions. A namer registered with `autoconfigure: false`, or declared in a
+  bundle's own service file where autoconfiguration is off, is indexed by its service id even when
+  it carries the attribute. `getId()` used to apply either way.
 
 ## Deprecations
 
