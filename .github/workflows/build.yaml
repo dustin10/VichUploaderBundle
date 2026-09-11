@@ -15,7 +15,7 @@ jobs:
         name: PHPStan
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
@@ -29,7 +29,7 @@ jobs:
         name: PHP-CS-Fixer
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
             - name: Fix CS
               uses: docker://oskarstark/php-cs-fixer-ga
               with:
@@ -39,9 +39,14 @@ jobs:
         name: Twig-CS-Fixer
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mongodb-stable
             - name: Require the vendor
-              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^3.11
+              run: composer require --dev --no-update vincentlanglet/twig-cs-fixer ^4.1
             - name: Update
               run: composer update --no-interaction --no-progress
             - name: Run
@@ -50,7 +55,7 @@ jobs:
         runs-on: ubuntu-24.04
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
             - name: Validate
               uses: avto-dev/markdown-lint@v1
               with:
@@ -95,9 +100,9 @@ jobs:
         name: PHP ${{ matrix.php }} with Symfony ${{ matrix.symfony }} tests with ${{ matrix.dependencies }} dependencies
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
             - name: Cache
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.composer/cache/files
                   key: ${{ matrix.php }}-${{ matrix.symfony }}-${{ matrix.dependencies }}
@@ -123,7 +128,7 @@ jobs:
             - run: composer remove --no-update --dev knplabs/knp-gaufrette-bundle
               if: ${{ !matrix.with_gaufrette}}
             - name: Update project dependencies
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v4
               with:
                 dependency-versions: ${{ matrix.dependencies }}
             - name: Run tests
