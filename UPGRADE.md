@@ -1,5 +1,19 @@
 # Upgrading from v3.0 to v3.1
 
+## Changes
+
+* Namers and directory namers are no longer indexed through a `getId()` method. Symfony deprecated
+  the `defaultIndexMethod` argument of tagged iterators in 8.1, so a namer or a directory namer that
+  wants to be referenced by something other than its service id must now carry
+  `#[\Symfony\Component\DependencyInjection\Attribute\AsTaggedItem(index: 'my-namer')]`. Services
+  without that attribute keep being indexed by their service id, which is what `namer` and
+  `directory_namer` reference in practice, so nothing changes for them.
+
+  One difference with `getId()` is worth knowing: Symfony only reads `#[AsTaggedItem]` on
+  autoconfigured definitions. A namer registered with `autoconfigure: false`, or declared in a
+  bundle's own service file where autoconfiguration is off, is indexed by its service id even when
+  it carries the attribute. `getId()` used to apply either way.
+
 ## Deprecations
 
 * `ConfigurableInterface` is deprecated in favor of `ImmutableConfigurableInterface`, which declares `withOptions(array $options): static` instead of `configure(array $options): void`. Namer services are shared, so configuring one in place makes every mapping observe the options of the last one resolved. `withOptions()` must return a new instance with independent mutable configuration, preserving service defaults; it is called for every configurable namer, including those inside chains and mappings without options. `ConfigurableNamerTrait` implements it when a shallow clone is enough; see the [custom namer guide](docs/file_namer/howto/create_a_custom_file_namer.md#configurable-custom-namer).
