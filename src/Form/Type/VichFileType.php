@@ -64,6 +64,9 @@ class VichFileType extends AbstractType
             'label' => $options['label'],
             'attr' => $options['attr'],
             'translation_domain' => $options['translation_domain'],
+            // upload errors (too big file, partial upload, ...) are added by FileType on this child,
+            // where no theme renders them: bubble them up to the vich field, which does render them
+            'error_bubbling' => true,
         ]);
 
         $builder->addModelTransformer(new FileTransformer());

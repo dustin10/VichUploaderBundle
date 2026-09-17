@@ -5,15 +5,21 @@ namespace Vich\UploaderBundle\Tests\Form\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Validation;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
@@ -323,6 +329,7 @@ final class VichFileTypeTest extends TypeTestCase
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([$type], []),
+            new HttpFoundationExtension(),
         ];
     }
 
@@ -362,5 +369,60 @@ final class VichFileTypeTest extends TypeTestCase
             self::assertArrayHasKey($key, $deleteFieldView->vars);
             self::assertEquals($var, $deleteFieldView->vars[$key]);
         }
+    }
+
+    #[DataProvider('uploadErrorProvider')]
+    public function testUploadErrorBubblesToTheVichField(int $errorCode, string $expectedMessage): void
+    {
+        $field = 'image';
+
+        $form = $this->factory->createBuilder(FormType::class, new Product())
+            ->add($field, self::TESTED_TYPE, ['allow_delete' => false])
+            ->getForm();
+
+        $form->submit([$field => ['file' => new UploadedFile(__FILE__, 'test.php', null, $errorCode, true)]]);
+
+        // the error is added by FileType on the inner "file" child, which no theme renders
+        self::assertCount(0, $form[$field]['file']->getErrors());
+
+        $errors = $form[$field]->getErrors();
+        self::assertCount(1, $errors);
+        self::assertSame($expectedMessage, $errors[0]->getMessageTemplate());
+    }
+
+    public static function uploadErrorProvider(): array
+    {
+        return [
+            [\UPLOAD_ERR_INI_SIZE, 'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.'],
+            [\UPLOAD_ERR_PARTIAL, 'The file could not be uploaded.'],
+        ];
+    }
+
+    /**
+     * An oversized upload also triggers a File constraint violation. ViolationMapper drops the
+     * bubbled FileUploadError in that case, so only the constraint message must remain.
+     */
+    public function testUploadErrorIsNotDuplicatedByTheFileConstraint(): void
+    {
+        $field = 'image';
+
+        $factory = Forms::createFormFactoryBuilder()
+            ->addExtensions($this->getExtensions())
+            ->addExtension(new ValidatorExtension(Validation::createValidator()))
+            ->getFormFactory();
+
+        $form = $factory->createBuilder(FormType::class, new Product())
+            ->add($field, self::TESTED_TYPE, [
+                'allow_delete' => false,
+                'constraints' => [new File(maxSize: '1k')],
+            ])
+            ->getForm();
+
+        $form->submit([$field => ['file' => new UploadedFile(__FILE__, 'test.php', null, \UPLOAD_ERR_INI_SIZE, true)]]);
+
+        $errors = $form->getErrors(true);
+        self::assertCount(1, $errors);
+        self::assertSame('The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.', $errors[0]->getMessageTemplate());
+        self::assertSame($field, $errors[0]->getOrigin()->getName());
     }
 }
