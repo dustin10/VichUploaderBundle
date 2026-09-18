@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
@@ -92,7 +93,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
     }
 
     #[DataProvider('namerProvider')]
-    public function testNamerOptionsAreNotLeakedToAMappingSharingTheSameNamer(NamerInterface $namer, array $configuredOptions, array $plainOptions, string $expectedName): void
+    #[Test]
+    public function namerOptionsAreNotLeakedToAMappingSharingTheSameNamer(NamerInterface $namer, array $configuredOptions, array $plainOptions, string $expectedName): void
     {
         $resolver = $this->createNamerResolver($namer, $configuredOptions, $plainOptions);
         $object = self::createObject();
@@ -139,7 +141,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
     }
 
     #[DataProvider('directoryNamerProvider')]
-    public function testDirectoryNamerOptionsAreNotLeakedToAMappingSharingTheSameNamer(DirectoryNamerInterface $namer, array $configuredOptions, array $plainOptions, string $expectedName): void
+    #[Test]
+    public function directoryNamerOptionsAreNotLeakedToAMappingSharingTheSameNamer(DirectoryNamerInterface $namer, array $configuredOptions, array $plainOptions, string $expectedName): void
     {
         $resolver = $this->createDirectoryNamerResolver($namer, $configuredOptions, $plainOptions);
         $object = self::createObject();
@@ -155,7 +158,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
      * the same way: a mapping which does not enable it kept the extension declared by the client
      * instead of the guessed one.
      */
-    public function testKeepExtensionIsNotLeakedToAMappingSharingTheSameNamer(): void
+    #[Test]
+    public function keepExtensionIsNotLeakedToAMappingSharingTheSameNamer(): void
     {
         $namer = new SmartUniqueNamer($this->getTransliterator());
         $resolver = $this->createNamerResolver($namer, [], [], true);
@@ -171,7 +175,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
      * The options belong to the mapping, so they are applied to a copy of the namer: the service
      * itself keeps its default configuration, whoever else uses it.
      */
-    public function testTheSharedNamerServiceIsNotConfigured(): void
+    #[Test]
+    public function theSharedNamerServiceIsNotConfigured(): void
     {
         $namer = new HashNamer();
         $resolver = $this->createNamerResolver($namer, ['algorithm' => 'md5', 'length' => 8], []);
@@ -183,7 +188,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
         self::assertMatchesRegularExpression('/^[[:xdigit:]]{40}\.txt$/', $namer->name($object, $this->createFileMapping()));
     }
 
-    public function testRetainedMappingsKeepTheirOptionsInBothResolutionOrders(): void
+    #[Test]
+    public function retainedMappingsKeepTheirOptionsInBothResolutionOrders(): void
     {
         $resolver = $this->createNamerResolver(new SmartUniqueNamer($this->getTransliterator()), [], [], true);
         $object = self::createObject();
@@ -197,7 +203,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
         self::assertStringEndsWith('.txt', $plainAgain->getNamer()->name($object, $fileMapping));
     }
 
-    public function testExplicitKeepExtensionOptionIsPreserved(): void
+    #[Test]
+    public function explicitKeepExtensionOptionIsPreserved(): void
     {
         $resolver = $this->createNamerResolver(new SmartUniqueNamer($this->getTransliterator()), ['keep_extension' => true], []);
         $object = self::createObject();
@@ -206,7 +213,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
         self::assertStringEndsWith('.xyz', $mapping->getNamer()->name($object, $this->createFileMapping('test.xyz')));
     }
 
-    public function testServiceConfigurationIsPreservedWithoutMappingOptions(): void
+    #[Test]
+    public function serviceConfigurationIsPreservedWithoutMappingOptions(): void
     {
         $namer = new PropertyNamer($this->getTransliterator());
         $namer->configure(['property' => 'title']);
@@ -217,7 +225,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
         self::assertSame('Tîtle Wîth Accents.txt', $mapping->getNamer()->name($object, $this->createFileMapping('Fôo Bàr.xyz')));
     }
 
-    public function testSubclassesInheritTheConfigurationCopyContract(): void
+    #[Test]
+    public function subclassesInheritTheConfigurationCopyContract(): void
     {
         $namer = new class() extends HashNamer {};
         $resolver = $this->createNamerResolver($namer, ['length' => 8], []);
@@ -230,7 +239,8 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
         self::assertMatchesRegularExpression('/^[[:xdigit:]]{40}\.txt$/', $plain->getNamer()->name($object, $this->createFileMapping()));
     }
 
-    public function testMappingsWithoutOptionsRetainTheServiceConfigurationAtResolution(): void
+    #[Test]
+    public function mappingsWithoutOptionsRetainTheServiceConfigurationAtResolution(): void
     {
         $namer = new SmartUniqueNamer($this->getTransliterator());
         $resolver = $this->createNamerResolver($namer, [], []);

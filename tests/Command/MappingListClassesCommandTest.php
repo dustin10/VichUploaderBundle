@@ -2,12 +2,14 @@
 
 namespace Vich\UploaderBundle\Tests\Command;
 
+use PHPUnit\Framework\Attributes\Test;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingListClassesCommand;
 
 final class MappingListClassesCommandTest extends AbstractCommandTestCase
 {
-    public function testListClasses(): void
+    #[Test]
+    public function listClasses(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())->method('getUploadableClasses')->willReturn([Image::class]);

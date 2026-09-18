@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -26,7 +27,8 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
     }
 
     #[DataProvider('directoryNameDataProvider')]
-    public function testNameReturnsTheRightName(int $timestamp, ?string $dateTimeFormat, string $expectedName): void
+    #[Test]
+    public function nameReturnsTheRightName(int $timestamp, ?string $dateTimeFormat, string $expectedName): void
     {
         \date_default_timezone_set('UTC');
         $entity = new DummyEntity();
@@ -44,7 +46,8 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
         self::assertSame($expectedName, $namer->directoryName($entity, $mapping));
     }
 
-    public function testConfigurationFailsIfTheDateFormatIsEmpty(): void
+    #[Test]
+    public function configurationFailsIfTheDateFormatIsEmpty(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "date_time_format" is empty.');
@@ -57,7 +60,8 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
         $namer->directoryName(new DummyEntity(), $mapping);
     }
 
-    public function testNameReturnsObjectDate(): void
+    #[Test]
+    public function nameReturnsObjectDate(): void
     {
         $mapping = $this->getPropertyMappingMock();
         $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);

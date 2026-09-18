@@ -24,6 +24,7 @@ final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTes
 
         // TODO the getFileSystem method was removed from MountManager class in v2
         $mountManager
+            ->expects($this->once())
             ->method('getFilesystem')
             ->with(self::FS_KEY)
             ->willReturn($filesystem);

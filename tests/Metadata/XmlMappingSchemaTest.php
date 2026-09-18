@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Metadata;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +14,8 @@ class XmlMappingSchemaTest extends TestCase
     private const SCHEMA = __DIR__.'/../../vich_uploader.xsd';
 
     #[DataProvider('provideMappingFiles')]
-    public function testShippedMappingsValidateAgainstTheSchema(string $file): void
+    #[Test]
+    public function shippedMappingsValidateAgainstTheSchema(string $file): void
     {
         $this->assertValidatesAgainstSchema(\file_get_contents($file), $file);
     }
@@ -25,7 +27,8 @@ class XmlMappingSchemaTest extends TestCase
         }
     }
 
-    public function testSeveralFieldsAreAllowed(): void
+    #[Test]
+    public function severalFieldsAreAllowed(): void
     {
         $this->assertValidatesAgainstSchema(<<<'XML'
             <?xml version="1.0" encoding="UTF-8" ?>
@@ -37,7 +40,8 @@ class XmlMappingSchemaTest extends TestCase
             XML);
     }
 
-    public function testTheRequiredAttributesAreEnforced(): void
+    #[Test]
+    public function theRequiredAttributesAreEnforced(): void
     {
         $previous = \libxml_use_internal_errors(true);
 

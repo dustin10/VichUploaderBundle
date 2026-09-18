@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
@@ -49,11 +50,11 @@ final class UploadHandlerTest extends TestCase
         $this->handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
         $this->factory
             ->method('fromField')
-            ->with($this->object, self::FILE_FIELD)
-            ->willReturn($this->mapping);
+            ->willReturnMap([[$this->object, self::FILE_FIELD, null, $this->mapping]]);
     }
 
-    public function testUpload(): void
+    #[Test]
+    public function upload(): void
     {
         $this->expectEvents([Events::PRE_UPLOAD, Events::POST_UPLOAD]);
 
@@ -77,7 +78,8 @@ final class UploadHandlerTest extends TestCase
     }
 
     #[DataProvider('methodProvider')]
-    public function testAnExceptionIsThrownIfMappingIsntFound(string $method): void
+    #[Test]
+    public function anExceptionIsThrownIfMappingIsntFound(string $method): void
     {
         $this->expectException(MappingNotFoundException::class);
 
@@ -97,7 +99,8 @@ final class UploadHandlerTest extends TestCase
         ];
     }
 
-    public function testUploadSkipsEmptyObjects(): void
+    #[Test]
+    public function uploadSkipsEmptyObjects(): void
     {
         $this->dispatcher
             ->expects($this->never())
@@ -114,7 +117,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
-    public function testInject(): void
+    #[Test]
+    public function inject(): void
     {
         $this->expectEvents([Events::PRE_INJECT, Events::POST_INJECT]);
 
@@ -126,7 +130,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->inject($this->object, self::FILE_FIELD);
     }
 
-    public function testClean(): void
+    #[Test]
+    public function clean(): void
     {
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
@@ -150,12 +155,12 @@ final class UploadHandlerTest extends TestCase
         $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
-    public function testCleanSkipsEmptyObjects(): void
+    #[Test]
+    public function cleanSkipsEmptyObjects(): void
     {
         $this->mapping
-            ->method('getFileName')
-            ->with($this->object)
-            ->willReturn('something not null');
+            ->expects($this->never())
+            ->method('getFileName');
 
         $this->dispatcher
             ->expects($this->never())
@@ -168,7 +173,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
-    public function testRemove(): void
+    #[Test]
+    public function remove(): void
     {
         $this->expectEvents([Events::PRE_REMOVE, Events::POST_REMOVE]);
 
@@ -191,7 +197,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testRemoveFailsInStorageDriverEmitsEvent(): void
+    #[Test]
+    public function removeFailsInStorageDriverEmitsEvent(): void
     {
         $this->expectEvents([Events::PRE_REMOVE, Events::REMOVE_ERROR, Events::POST_REMOVE]);
 
@@ -216,7 +223,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testUploadFailsEmitsEventAndException(): void
+    #[Test]
+    public function uploadFailsEmitsEventAndException(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -264,7 +272,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testRemoveIfEventIsCanceled(): void
+    #[Test]
+    public function removeIfEventIsCanceled(): void
     {
         $this->expectEvents([Events::PRE_REMOVE]);
 
@@ -293,7 +302,8 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    public function testRemoveWithEmptyObject(): void
+    #[Test]
+    public function removeWithEmptyObject(): void
     {
         $this->dispatcher
             ->expects($this->never())

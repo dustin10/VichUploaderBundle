@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Naming\PropertyDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -30,7 +31,8 @@ class PropertyDirectoryNamerTest extends TestCase
     }
 
     #[DataProvider('fileDataProvider')]
-    public function testNameReturnsTheRightName(
+    #[Test]
+    public function nameReturnsTheRightName(
         string $expectedDirectoryName,
         object $entity,
         string $propertyName,
@@ -44,7 +46,8 @@ class PropertyDirectoryNamerTest extends TestCase
         self::assertSame($expectedDirectoryName, $namer->directoryName($entity, $mapping));
     }
 
-    public function testDirectoryNameAcceptsZeroAsName(): void
+    #[Test]
+    public function directoryNameAcceptsZeroAsName(): void
     {
         $entity = new DummyEntity();
         $entity->someProperty = '0';
@@ -57,7 +60,8 @@ class PropertyDirectoryNamerTest extends TestCase
         self::assertSame('0', $namer->directoryName($entity, $mapping));
     }
 
-    public function testNameFailsIfThePropertyDoesNotExist(): void
+    #[Test]
+    public function nameFailsIfThePropertyDoesNotExist(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
 
@@ -70,7 +74,8 @@ class PropertyDirectoryNamerTest extends TestCase
         $namer->directoryName($entity, $mapping);
     }
 
-    public function testNameFailsIfThePropertyIsEmpty(): void
+    #[Test]
+    public function nameFailsIfThePropertyIsEmpty(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
 
@@ -82,7 +87,8 @@ class PropertyDirectoryNamerTest extends TestCase
         $namer->directoryName(new DummyEntity(), $mapping);
     }
 
-    public function testNamerNeedsToBeConfigured(): void
+    #[Test]
+    public function namerNeedsToBeConfigured(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The property to use can not be determined. Did you call the configure() method?');
@@ -93,7 +99,8 @@ class PropertyDirectoryNamerTest extends TestCase
         $namer->directoryName(new DummyEntity(), $mapping);
     }
 
-    public function testConfigurationFailsIfThePropertyIsntSpecified(): void
+    #[Test]
+    public function configurationFailsIfThePropertyIsntSpecified(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "property" is missing or empty.');

@@ -3,11 +3,13 @@
 namespace Vich\UploaderBundle\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 final class UploadTest extends WebTestCase
 {
     #[DataProvider('uploadTypeDataProvider')]
-    public function testFileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
+    #[Test]
+    public function fileIsUploadedWithFileType(string $uploadType, string $imageFieldName): void
     {
         if (\headers_sent()) {
             self::markTestSkipped();
@@ -50,7 +52,8 @@ final class UploadTest extends WebTestCase
     }
 
     #[DataProvider('uploadTypeDataProvider')]
-    public function testFileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
+    #[Test]
+    public function fileIsUploadedWithImageType(string $uploadType, string $imageFieldName): void
     {
         if (\headers_sent()) {
             self::markTestSkipped();

@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Handler;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
@@ -39,8 +40,7 @@ final class DownloadHandlerTest extends TestCase
         $this->handler = new DownloadHandler($this->factory, $this->storage);
         $this->factory
             ->method('fromField')
-            ->with($this->object, 'file_field')
-            ->willReturn($this->mapping);
+            ->willReturnMap([[$this->object, 'file_field', null, $this->mapping]]);
     }
 
     public static function filenamesProvider(): array
@@ -55,7 +55,8 @@ final class DownloadHandlerTest extends TestCase
     }
 
     #[DataProvider('filenamesProvider')]
-    public function testDownloadObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
+    #[Test]
+    public function downloadObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -92,7 +93,8 @@ final class DownloadHandlerTest extends TestCase
     }
 
     #[DataProvider('filenamesProvider')]
-    public function testDisplayObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
+    #[Test]
+    public function displayObject(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -129,7 +131,8 @@ final class DownloadHandlerTest extends TestCase
     }
 
     #[DataProvider('filenamesProvider')]
-    public function testDownloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
+    #[Test]
+    public function downloadObjectWithoutFile(string $fileName, string $expectedFileName, ?string $expectedFallbackFilename): void
     {
         $this->mapping
             ->expects($this->once())
@@ -158,7 +161,8 @@ final class DownloadHandlerTest extends TestCase
         );
     }
 
-    public function testDownloadObjectCallOriginalName(): void
+    #[Test]
+    public function downloadObjectCallOriginalName(): void
     {
         $this->object->setImageOriginalName('original-name.jpeg');
 
@@ -198,7 +202,8 @@ final class DownloadHandlerTest extends TestCase
         );
     }
 
-    public function testAnExceptionIsThrownIfMappingIsNotFound(): void
+    #[Test]
+    public function anExceptionIsThrownIfMappingIsNotFound(): void
     {
         $this->expectException(MappingNotFoundException::class);
 
@@ -208,7 +213,8 @@ final class DownloadHandlerTest extends TestCase
         $this->handler->downloadObject($this->object, 'file_field');
     }
 
-    public function testAnExceptionIsThrownIfNoFileIsFound(): void
+    #[Test]
+    public function anExceptionIsThrownIfNoFileIsFound(): void
     {
         $this->expectException(NoFileFoundException::class);
 

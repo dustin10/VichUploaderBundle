@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
 use League\Flysystem\FilesystemOperator;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -10,7 +11,8 @@ use Psr\Container\ContainerInterface;
  */
 final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTestCase
 {
-    public function testResolveUriWithAbsoluteDirectory(): void
+    #[Test]
+    public function resolveUriWithAbsoluteDirectory(): void
     {
         $this->mapping
             ->expects(self::once())
@@ -44,8 +46,7 @@ final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTes
 
         $locator
             ->method('get')
-            ->with(self::FS_KEY)
-            ->willReturn($filesystem);
+            ->willReturnMap([[self::FS_KEY, $filesystem]]);
 
         return $locator;
     }

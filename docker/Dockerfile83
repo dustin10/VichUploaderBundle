@@ -1,6 +1,6 @@
 FROM php:8.3-alpine
 
-ARG MONGODB_VERSION=2.3.3
+ARG MONGODB_VERSION=2.4.0
 
 # Install the mongodb extension and Composer.
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/

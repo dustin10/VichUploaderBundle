@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Naming\ChainDirectoryNamer;
@@ -14,7 +15,8 @@ use Vich\UploaderBundle\Tests\TestCase;
 
 final class PropertyMappingResolverChainTest extends TestCase
 {
-    public function testRepeatedServicesHaveIndependentOptionsInsideAChain(): void
+    #[Test]
+    public function repeatedServicesHaveIndependentOptionsInsideAChain(): void
     {
         $shared = new IsolatedNamer();
         $resolver = $this->resolver([
@@ -39,7 +41,8 @@ final class PropertyMappingResolverChainTest extends TestCase
     }
 
     #[DataProvider('resolutionOrders')]
-    public function testChainsKeepTheirChildrenAndSeparatorsAcrossMappings(bool $reverse): void
+    #[Test]
+    public function chainsKeepTheirChildrenAndSeparatorsAcrossMappings(bool $reverse): void
     {
         $resolver = $this->resolver([
             'first' => self::chain([self::directoryConfig('one'), self::directoryConfig('two')], '-'),
@@ -59,7 +62,8 @@ final class PropertyMappingResolverChainTest extends TestCase
         self::assertNotSame($mappings['first']->getDirectoryNamer(), $again->getDirectoryNamer());
     }
 
-    public function testNestedChainsResolveRecursivelyEvenWhenTheyUseTheSameService(): void
+    #[Test]
+    public function nestedChainsResolveRecursivelyEvenWhenTheyUseTheSameService(): void
     {
         $resolver = $this->resolver([
             'nested' => self::chain([
@@ -72,7 +76,8 @@ final class PropertyMappingResolverChainTest extends TestCase
         self::assertSame('root/year_month', self::directory($mapping));
     }
 
-    public function testPresetChildrenAreCopiedAndAnExplicitEmptyListClearsThem(): void
+    #[Test]
+    public function presetChildrenAreCopiedAndAnExplicitEmptyListClearsThem(): void
     {
         $child = new IsolatedNamer();
         $child->configure(['prefix' => 'preset']);
@@ -91,7 +96,8 @@ final class PropertyMappingResolverChainTest extends TestCase
         self::assertSame('changed', $chain->directoryName(new \stdClass(), $defaults));
     }
 
-    public function testOptionsOnANonConfigurableNestedNamerAreRejected(): void
+    #[Test]
+    public function optionsOnANonConfigurableNestedNamerAreRejected(): void
     {
         $plain = new class() implements DirectoryNamerInterface {
             public function directoryName(object|array $object, PropertyMappingInterface $mapping): string
@@ -108,7 +114,8 @@ final class PropertyMappingResolverChainTest extends TestCase
         $resolver->resolve(new \stdClass(), 'file', ['mapping' => 'invalid']);
     }
 
-    public function testReturningTheSharedInstanceViolatesTheContract(): void
+    #[Test]
+    public function returningTheSharedInstanceViolatesTheContract(): void
     {
         $broken = new class() implements DirectoryNamerInterface, ImmutableConfigurableInterface {
             public function withOptions(array $options): static
@@ -136,7 +143,8 @@ final class PropertyMappingResolverChainTest extends TestCase
     }
 
     #[DataProvider('malformedChildren')]
-    public function testMalformedChainConfigurationFailsClearly(mixed $children): void
+    #[Test]
+    public function malformedChainConfigurationFailsClearly(mixed $children): void
     {
         $resolver = $this->resolver(['invalid' => ['service' => 'chain', 'options' => ['namers' => $children]]]);
         $this->expectException(\InvalidArgumentException::class);

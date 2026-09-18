@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -27,7 +28,8 @@ final class NamerIsolationTest extends TestCase
     }
 
     #[DataProvider('serviceKinds')]
-    public function testCustomServicesWithNestedStateRemainIndependent(string $kind): void
+    #[Test]
+    public function customServicesWithNestedStateRemainIndependent(string $kind): void
     {
         $builder = $this->builder([
             'configured' => ['namer' => ['service' => 'custom', 'options' => ['prefix' => 'configured']]],
@@ -60,7 +62,8 @@ final class NamerIsolationTest extends TestCase
         self::assertSame($prefix.'service-default', $container->get('custom')->name($object, $plain));
     }
 
-    public function testLazyServiceConfigurationRemainsIndependent(): void
+    #[Test]
+    public function lazyServiceConfigurationRemainsIndependent(): void
     {
         $builder = $this->builder([
             'configured' => ['namer' => ['service' => 'hash', 'options' => ['length' => 8]]],
@@ -78,7 +81,8 @@ final class NamerIsolationTest extends TestCase
         self::assertMatchesRegularExpression('/^[a-f0-9]{40}\\.png$/', $plain->getUploadName($object));
     }
 
-    public function testFileDirectoryAndNestedChainRolesDoNotShareOptions(): void
+    #[Test]
+    public function fileDirectoryAndNestedChainRolesDoNotShareOptions(): void
     {
         $builder = $this->builder([
             'product.photos' => [
@@ -108,7 +112,8 @@ final class NamerIsolationTest extends TestCase
         self::assertSame('default', $plain->getDirectoryNamer()->directoryName($object, $plain));
     }
 
-    public function testNonSharedServicesAreStillResolvedOnEveryCall(): void
+    #[Test]
+    public function nonSharedServicesAreStillResolvedOnEveryCall(): void
     {
         $builder = $this->builder(['products' => ['namer' => 'custom']]);
         $builder->register('source', IsolatedNamer::class);

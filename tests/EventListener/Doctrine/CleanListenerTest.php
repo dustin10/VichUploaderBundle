@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -27,7 +28,8 @@ class CleanListenerTest extends ListenerTestCase
     /**
      * Test the preUpdate method.
      */
-    public function testPreUpdate(): void
+    #[Test]
+    public function preUpdate(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -59,7 +61,8 @@ class CleanListenerTest extends ListenerTestCase
     /**
      * Test that preUpdate skips non uploadable entity.
      */
-    public function testPreUpdateSkipsNonUploadable(): void
+    #[Test]
+    public function preUpdateSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())

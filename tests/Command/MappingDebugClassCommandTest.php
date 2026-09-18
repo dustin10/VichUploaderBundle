@@ -3,13 +3,15 @@
 namespace Vich\UploaderBundle\Tests\Command;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\TestBundle\Entity\Image;
 use Vich\UploaderBundle\Command\MappingDebugClassCommand;
 
 final class MappingDebugClassCommandTest extends AbstractCommandTestCase
 {
-    public function testNotUploadableClass(): void
+    #[Test]
+    public function notUploadableClass(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())->method('isUploadable')->willReturn(false);
@@ -18,7 +20,8 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('is not uploadable', $output);
     }
 
-    public function testUploadableClass(): void
+    #[Test]
+    public function uploadableClass(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())->method('isUploadable')->willReturn(true);
@@ -28,7 +31,8 @@ final class MappingDebugClassCommandTest extends AbstractCommandTestCase
     }
 
     #[DataProvider('provideCompletionSuggestions')]
-    public function testComplete(array $input, array $expectedSuggestions): void
+    #[Test]
+    public function complete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {
             self::markTestSkipped('Test command completion requires symfony/console 5.4+.');

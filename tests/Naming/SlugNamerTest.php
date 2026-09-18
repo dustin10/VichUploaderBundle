@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Naming\SlugNamer;
 use Vich\UploaderBundle\Tests\SluggableEntityRepository;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -20,7 +21,8 @@ final class SlugNamerTest extends TestCase
     }
 
     #[DataProvider('fileDataProvider')]
-    public function testNameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
+    #[Test]
+    public function nameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
         $file = $this->getUploadedFileMock();
         $file

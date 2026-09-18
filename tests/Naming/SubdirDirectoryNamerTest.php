@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Naming\SubdirDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -24,7 +25,8 @@ final class SubdirDirectoryNamerTest extends TestCase
     }
 
     #[DataProvider('fileDataProvider')]
-    public function testNameReturnsTheRightName(string $fileName, string $expectedFileName, int $charsPerDir, int $dirs): void
+    #[Test]
+    public function nameReturnsTheRightName(string $fileName, string $expectedFileName, int $charsPerDir, int $dirs): void
     {
         $entity = new DummyEntity();
         $entity->setFileName($fileName);

@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Command\CleanupCommand;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
@@ -19,7 +20,8 @@ use Vich\UploaderBundle\Tests\Stub\TestRepositoryInterface;
 
 final class CleanupCommandTest extends AbstractCommandTestCase
 {
-    public function testCommandWithNoUploadableClasses(): void
+    #[Test]
+    public function commandWithNoUploadableClasses(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -42,7 +44,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('No uploadable classes found', $output);
     }
 
-    public function testCommandWithInvalidMapping(): void
+    #[Test]
+    public function commandWithInvalidMapping(): void
     {
         $reader = $this->mockMetadataReader();
         $storage = self::createStub(StorageInterface::class);
@@ -61,7 +64,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Mapping "invalid_mapping" does not exist', $output);
     }
 
-    public function testDryRunMode(): void
+    #[Test]
+    public function dryRunMode(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -85,7 +89,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('No files will be deleted', $output);
     }
 
-    public function testCommandWithSpecificMapping(): void
+    #[Test]
+    public function commandWithSpecificMapping(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -114,7 +119,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Processing mapping: product_image', $output);
     }
 
-    public function testCommandWithNoObjectManager(): void
+    #[Test]
+    public function commandWithNoObjectManager(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -155,7 +161,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('No object manager found for class "App\\Entity\\Product"', $output);
     }
 
-    public function testCommandWithRepositoryWithoutQueryBuilder(): void
+    #[Test]
+    public function commandWithRepositoryWithoutQueryBuilder(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -216,7 +223,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Could not create instance', $output);
     }
 
-    public function testCommandWithCustomBatchSize(): void
+    #[Test]
+    public function commandWithCustomBatchSize(): void
     {
         $reader = $this->mockMetadataReader();
         $reader->expects($this->once())
@@ -239,7 +247,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringNotContainsString('error', \strtolower($output));
     }
 
-    public function testCommandDetectsOrphanedFiles(): void
+    #[Test]
+    public function commandDetectsOrphanedFiles(): void
     {
         // This test verifies the scenario where storage has MORE files than referenced in database
         // Expected: orphaned files should be reported/deleted
@@ -320,7 +329,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Found 1 orphaned file(s)', $output);
     }
 
-    public function testCommandWithNoOrphanedFiles(): void
+    #[Test]
+    public function commandWithNoOrphanedFiles(): void
     {
         // This test verifies the scenario where all files in storage are referenced in database
         // Expected: no orphaned files should be reported
@@ -394,7 +404,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Found 0 orphaned file(s)', $output);
     }
 
-    public function testCommandWithMissingFiles(): void
+    #[Test]
+    public function commandWithMissingFiles(): void
     {
         // This test verifies the scenario where database references MORE files than exist in storage
         // Expected: command should not fail, just report fewer files in storage
@@ -468,7 +479,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('Found 0 orphaned file(s)', $output);
     }
 
-    public function testCommandDeletesOrphanedFilesInRealMode(): void
+    #[Test]
+    public function commandDeletesOrphanedFilesInRealMode(): void
     {
         // This test verifies the complete happy path: orphaned file is detected AND deleted
         // Expected: storage->remove() is called with correct parameters
@@ -563,7 +575,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         self::assertStringNotContainsString('dry-run', \strtolower($output));
     }
 
-    public function testMinAgeSkipsRecentFiles(): void
+    #[Test]
+    public function minAgeSkipsRecentFiles(): void
     {
         // This test verifies that --min-age properly skips files newer than the cutoff
         // and only counts/deletes files that are old enough.

@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
@@ -65,7 +66,8 @@ final class VichFileTypeTest extends TypeTestCase
         parent::setUp();
     }
 
-    public function testEmptyDownloadLinkDoNotThrowsDeprecation(): void
+    #[Test]
+    public function emptyDownloadLinkDoNotThrowsDeprecation(): void
     {
         $optionsResolver = new OptionsResolver();
 
@@ -82,14 +84,14 @@ final class VichFileTypeTest extends TypeTestCase
     }
 
     #[DataProvider('buildViewDataProvider')]
-    public function testBuildView(?Product $object, array $options, array $vars): void
+    #[Test]
+    public function buildView(?Product $object, array $options, array $vars): void
     {
         $field = 'image';
 
         $this->storage
             ->method('resolveUri')
-            ->with($object, $field)
-            ->willReturn('resolved-uri');
+            ->willReturnMap([[$object, $field, null, 'resolved-uri']]);
 
         $this->parentForm
             ->method('getData')
@@ -333,7 +335,8 @@ final class VichFileTypeTest extends TypeTestCase
         ];
     }
 
-    public function testWithDeleteField(): void
+    #[Test]
+    public function withDeleteField(): void
     {
         $field = 'image';
 
@@ -342,6 +345,7 @@ final class VichFileTypeTest extends TypeTestCase
         $object->setTitle('Product1');
 
         $this->storage
+            ->expects($this->atLeastOnce())
             ->method('resolveUri')
             ->with($object, $field)
             ->willReturn('resolved-uri');
@@ -372,7 +376,8 @@ final class VichFileTypeTest extends TypeTestCase
     }
 
     #[DataProvider('uploadErrorProvider')]
-    public function testUploadErrorBubblesToTheVichField(int $errorCode, string $expectedMessage): void
+    #[Test]
+    public function uploadErrorBubblesToTheVichField(int $errorCode, string $expectedMessage): void
     {
         $field = 'image';
 
@@ -402,7 +407,8 @@ final class VichFileTypeTest extends TypeTestCase
      * An oversized upload also triggers a File constraint violation. ViolationMapper drops the
      * bubbled FileUploadError in that case, so only the constraint message must remain.
      */
-    public function testUploadErrorIsNotDuplicatedByTheFileConstraint(): void
+    #[Test]
+    public function uploadErrorIsNotDuplicatedByTheFileConstraint(): void
     {
         $field = 'image';
 

@@ -12,6 +12,7 @@ use League\Flysystem\MountManager;
 use League\Flysystem\UnableToDeleteFile;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresMethod;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use Psr\Container\ContainerInterface;
@@ -56,7 +57,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->willReturn(self::FS_KEY);
     }
 
-    public function testUpload(): void
+    #[Test]
+    public function upload(): void
     {
         $file = $this->getUploadedFileMock();
 
@@ -93,7 +95,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->storage->upload($this->object, $this->mapping);
     }
 
-    public function testRemove(): void
+    #[Test]
+    public function remove(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -108,7 +111,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    public function testRemoveOnNonExistentFile(): void
+    #[Test]
+    public function removeOnNonExistentFile(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -127,7 +131,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     }
 
     #[DataProvider('pathProvider')]
-    public function testResolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
+    #[Test]
+    public function resolvePath(?string $uploadDir, string $expectedPath, bool $relative): void
     {
         $this->mapping
             ->expects($this->once())
@@ -163,7 +168,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         ];
     }
 
-    public function testResolveUri(): void
+    #[Test]
+    public function resolveUri(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -186,7 +192,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
-    public function testResolveUriWithZeroDirectory(): void
+    #[Test]
+    public function resolveUriWithZeroDirectory(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -215,7 +222,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     }
 
     #[RequiresMethod(Filesystem::class, 'publicUrl')]
-    public function testResolveUriThroughFlysystem(): void
+    #[Test]
+    public function resolveUriThroughFlysystem(): void
     {
         $this->useFlysystemToResolveUri = true;
 
@@ -247,7 +255,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     }
 
     #[RequiresMethod(Filesystem::class, 'publicUrl')]
-    public function testResolveUriThroughFlysystemWithZeroDirectory(): void
+    #[Test]
+    public function resolveUriThroughFlysystemWithZeroDirectory(): void
     {
         $this->useFlysystemToResolveUri = true;
 
@@ -284,7 +293,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
     }
 
     #[RequiresMethod(Filesystem::class, 'publicUrl')]
-    public function testResolveUriHandlesUndefinedMethodError(): void
+    #[Test]
+    public function resolveUriHandlesUndefinedMethodError(): void
     {
         $this->useFlysystemToResolveUri = true;
 
@@ -315,7 +325,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertEquals('/uploads/file.txt', $path);
     }
 
-    public function testListFiles(): void
+    #[Test]
+    public function listFiles(): void
     {
         // Create FileAttributes with timestamps (2 hours old to pass min-age filter)
         $timestamp = \time() - 7200;
@@ -347,7 +358,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         }
     }
 
-    public function testListFilesWithEmptyListing(): void
+    #[Test]
+    public function listFilesWithEmptyListing(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -360,7 +372,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertCount(0, $files);
     }
 
-    public function testListFilesWithFilesystemException(): void
+    #[Test]
+    public function listFilesWithFilesystemException(): void
     {
         $this->filesystem
             ->expects($this->once())
@@ -373,7 +386,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         self::assertCount(0, $files);
     }
 
-    public function testListFilesWithNullTimestamps(): void
+    #[Test]
+    public function listFilesWithNullTimestamps(): void
     {
         // Create FileAttributes without timestamps
         $file1 = new FileAttributes('file1.txt', null, null, null);
@@ -395,7 +409,8 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         }
     }
 
-    public function testListFilesSkipsDirectories(): void
+    #[Test]
+    public function listFilesSkipsDirectories(): void
     {
         $timestamp = \time() - 7200;
         $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
