@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
 use Vich\UploaderBundle\Naming\ConfigurableInterface;
@@ -24,7 +25,8 @@ final class PropertyMappingResolverLegacyConfigurableTest extends TestCase
     private const DEPRECATION = 'Since vich/uploader-bundle 3.1: Configuring namer "namer_service" through "Vich\UploaderBundle\Naming\ConfigurableInterface" is deprecated, implement "Vich\UploaderBundle\Naming\ImmutableConfigurableInterface" instead.';
 
     #[IgnoreDeprecations]
-    public function testTheSharedServiceIsConfiguredInPlace(): void
+    #[Test]
+    public function theSharedServiceIsConfiguredInPlace(): void
     {
         $this->expectUserDeprecationMessage(self::DEPRECATION);
 
@@ -38,7 +40,8 @@ final class PropertyMappingResolverLegacyConfigurableTest extends TestCase
         self::assertSame('configured', $mapping->getNamer()->name($object, $this->createFileMapping()));
     }
 
-    public function testAMappingWithoutOptionsDoesNotConfigureTheNamer(): void
+    #[Test]
+    public function aMappingWithoutOptionsDoesNotConfigureTheNamer(): void
     {
         $namer = self::createLegacyNamer();
         $namer->configure(['prefix' => 'service']);
@@ -52,7 +55,8 @@ final class PropertyMappingResolverLegacyConfigurableTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-    public function testKeepExtensionIsStillAcceptedByLegacyNamers(): void
+    #[Test]
+    public function keepExtensionIsStillAcceptedByLegacyNamers(): void
     {
         $this->expectUserDeprecationMessage(self::DEPRECATION);
 
@@ -65,7 +69,8 @@ final class PropertyMappingResolverLegacyConfigurableTest extends TestCase
         self::assertSame('keeping', $mapping->getNamer()->name($object, $this->createFileMapping()));
     }
 
-    public function testANamerImplementingNeitherInterfaceCanNotReceiveOptions(): void
+    #[Test]
+    public function aNamerImplementingNeitherInterfaceCanNotReceiveOptions(): void
     {
         $namer = new class() implements NamerInterface {
             public function name(object|array $object, PropertyMappingInterface $mapping): string

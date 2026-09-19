@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\Reference;
 use Vich\UploaderBundle\DependencyInjection\VichUploaderExtension;
@@ -41,7 +42,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.debug', true);
     }
 
-    public function testStorageServiceParameterIsSet(): void
+    #[Test]
+    public function storageServiceParameterIsSet(): void
     {
         $this->load([
             'storage' => 'gaufrette',
@@ -50,7 +52,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'vich_uploader.storage.gaufrette');
     }
 
-    public function testStorageServiceCustom(): void
+    #[Test]
+    public function storageServiceCustom(): void
     {
         $this->load([
             'storage' => '@acme.storage',
@@ -59,7 +62,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('vich_uploader.storage', 'acme.storage');
     }
 
-    public function testExtraServiceFilesAreLoaded(): void
+    #[Test]
+    public function extraServiceFilesAreLoaded(): void
     {
         $this->load([
             'twig' => true,
@@ -70,7 +74,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService(UploaderExtension::class);
     }
 
-    public function testMappingsServiceParameterIsSet(): void
+    #[Test]
+    public function mappingsServiceParameterIsSet(): void
     {
         $this->load([
             'mappings' => $mappings = [
@@ -94,7 +99,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
-    public function testDbDriverIsNotOverridden(): void
+    #[Test]
+    public function dbDriverIsNotOverridden(): void
     {
         $this->load([
             'db_driver' => 'orm',
@@ -117,7 +123,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('vich_uploader.mappings', $mappings);
     }
 
-    public function testListenersCreation(): void
+    #[Test]
+    public function listenersCreation(): void
     {
         $this->load([
             'db_driver' => 'mongodb',
@@ -140,7 +147,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('vich_uploader.listener.remove.profile_common_avatar');
     }
 
-    public function testFormThemeCorrectlyOverridden(): void
+    #[Test]
+    public function formThemeCorrectlyOverridden(): void
     {
         $vichUploaderExtension = new VichUploaderExtension();
         $this->container->registerExtension($vichUploaderExtension);
@@ -160,7 +168,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testMetadataAttribute(): void
+    #[Test]
+    public function metadataAttribute(): void
     {
         $this->load([
             'metadata' => [
@@ -172,7 +181,8 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
     }
 
     #[DataProvider('cacheWarmerArgumentsProvider')]
-    public function testMetadataCacheWarmerArguments(
+    #[Test]
+    public function metadataCacheWarmerArguments(
         string $cache,
         string $expectedCacheDir,
         Reference $expectedMetadataReader

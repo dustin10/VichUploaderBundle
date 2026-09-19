@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Doctrine\Persistence\Proxy;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vich\UploaderBundle\Exception\NotUploadableException;
@@ -33,7 +34,8 @@ final class PropertyMappingFactoryTest extends TestCase
      * Tests that an exception is thrown if a non uploadable
      * object is passed in.
      */
-    public function testFromObjectThrowsExceptionIfNotUploadable(): void
+    #[Test]
+    public function fromObjectThrowsExceptionIfNotUploadable(): void
     {
         $this->expectException(NotUploadableException::class);
 
@@ -51,7 +53,8 @@ final class PropertyMappingFactoryTest extends TestCase
      * Test the fromObject method with one uploadable field.
      */
     #[DataProvider('fromObjectProvider')]
-    public function testFromObjectOneField(object|array $object, ?string $givenClassName, string $expectedClassName): void
+    #[Test]
+    public function fromObjectOneField(object|array $object, ?string $givenClassName, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -107,7 +110,8 @@ final class PropertyMappingFactoryTest extends TestCase
         ];
     }
 
-    public function testMappingCreationFailsIfTheClassNameCannotBeDetermined(): void
+    #[Test]
+    public function mappingCreationFailsIfTheClassNameCannotBeDetermined(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -116,7 +120,8 @@ final class PropertyMappingFactoryTest extends TestCase
         $factory->fromObject([]);
     }
 
-    public function testFromObjectOneFieldWithNoExplicitFilenameProperty(): void
+    #[Test]
+    public function fromObjectOneFieldWithNoExplicitFilenameProperty(): void
     {
         $obj = new DummyEntity();
 
@@ -161,7 +166,8 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertEquals('file_name', $mapping->getFileNamePropertyName());
     }
 
-    public function testFromObjectWithExplicitMapping(): void
+    #[Test]
+    public function fromObjectWithExplicitMapping(): void
     {
         $mappings = [
             'dummy_mapping' => [
@@ -219,7 +225,8 @@ final class PropertyMappingFactoryTest extends TestCase
      * Test that an exception is thrown when an invalid mapping name
      * is specified.
      */
-    public function testThrowsExceptionOnInvalidMappingName(): void
+    #[Test]
+    public function throwsExceptionOnInvalidMappingName(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
 
@@ -250,7 +257,8 @@ final class PropertyMappingFactoryTest extends TestCase
     }
 
     #[DataProvider('fromFieldProvider')]
-    public function testFromField(object|array $object, ?string $className, string $expectedClassName): void
+    #[Test]
+    public function fromField(object|array $object, ?string $className, string $expectedClassName): void
     {
         $mappings = [
             'dummy_file' => [
@@ -302,7 +310,8 @@ final class PropertyMappingFactoryTest extends TestCase
      * Test that the fromField method returns null when an invalid
      * field name is specified.
      */
-    public function testFromFieldReturnsNullOnInvalidFieldName(): void
+    #[Test]
+    public function fromFieldReturnsNullOnInvalidFieldName(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -323,7 +332,8 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertNull($mapping);
     }
 
-    public function testCustomFileNameProperty(): void
+    #[Test]
+    public function customFileNameProperty(): void
     {
         $mappings = [
             'dummy_file' => [
@@ -351,7 +361,8 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertEquals('file_suffix', $mapping->getFileNamePropertyName());
     }
 
-    public function testConfiguredNamersAreRetrievedFromContainer(): void
+    #[Test]
+    public function configuredNamersAreRetrievedFromContainer(): void
     {
         $namer = $this->createStub(NamerInterface::class);
         $directoryNamer = $this->createStub(DirectoryNamerInterface::class);

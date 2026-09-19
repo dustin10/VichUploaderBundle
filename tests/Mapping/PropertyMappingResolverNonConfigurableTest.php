@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Mapping;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingResolver;
@@ -9,7 +10,8 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 
 final class PropertyMappingResolverNonConfigurableTest extends TestCase
 {
-    public function testNonConfigurableNamerWithKeepExtensionThrowsException(): void
+    #[Test]
+    public function nonConfigurableNamerWithKeepExtensionThrowsException(): void
     {
         $nonConfigurableNamer = new class() implements NamerInterface {
             public function name(object|array $object, PropertyMappingInterface $mapping): string
@@ -49,7 +51,8 @@ final class PropertyMappingResolverNonConfigurableTest extends TestCase
         $resolver->resolve($object, 'file', $mappingData);
     }
 
-    public function testNonConfigurableNamerWithKeepExtensionFalseWorksNormally(): void
+    #[Test]
+    public function nonConfigurableNamerWithKeepExtensionFalseWorksNormally(): void
     {
         $nonConfigurableNamer = new class() implements NamerInterface {
             public function name(object|array $object, PropertyMappingInterface $mapping): string

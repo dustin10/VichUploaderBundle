@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Metadata;
 
 use Metadata\AdvancedMetadataFactoryInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -20,7 +21,8 @@ final class MetadataReaderTest extends TestCase
         $this->reader = new MetadataReader($this->factory);
     }
 
-    public function testIsUploadable(): void
+    #[Test]
+    public function isUploadable(): void
     {
         $this->factory
             ->expects($this->once())
@@ -31,7 +33,8 @@ final class MetadataReaderTest extends TestCase
         self::assertTrue($this->reader->isUploadable('ClassName'));
     }
 
-    public function testIsUploadableWithGivenMapping(): void
+    #[Test]
+    public function isUploadableWithGivenMapping(): void
     {
         $fields = ['field' => ['mapping' => 'joe']];
         $classMetadata = new \stdClass();
@@ -40,6 +43,7 @@ final class MetadataReaderTest extends TestCase
         $metadata->classMetadata = ['ClassName' => $classMetadata];
 
         $this->factory
+            ->expects($this->atLeastOnce())
             ->method('getMetadataForClass')
             ->with('ClassName')
             ->willReturn($metadata);
@@ -48,7 +52,8 @@ final class MetadataReaderTest extends TestCase
         self::assertFalse($this->reader->isUploadable('ClassName', 'foo'));
     }
 
-    public function testIsUploadableForNotUploadable(): void
+    #[Test]
+    public function isUploadableForNotUploadable(): void
     {
         $this->factory
             ->expects($this->once())
@@ -59,7 +64,8 @@ final class MetadataReaderTest extends TestCase
         self::assertFalse($this->reader->isUploadable('ClassName'));
     }
 
-    public function testGetUploadableClassesForwardsCallsToTheFactory(): void
+    #[Test]
+    public function getUploadableClassesForwardsCallsToTheFactory(): void
     {
         $this->factory
             ->expects($this->once())
@@ -68,7 +74,8 @@ final class MetadataReaderTest extends TestCase
         $this->reader->getUploadableClasses();
     }
 
-    public function testGetUploadableFields(): void
+    #[Test]
+    public function getUploadableFields(): void
     {
         $fields = [
             'foo' => ['mapping' => 'foo_mapping'],
@@ -92,7 +99,8 @@ final class MetadataReaderTest extends TestCase
         self::assertSame($barFields, $this->reader->getUploadableFields('ClassName', 'bar_mapping'));
     }
 
-    public function testGetUploadableFieldsWithInheritance(): void
+    #[Test]
+    public function getUploadableFieldsWithInheritance(): void
     {
         $classMetadata = new \stdClass();
         $classMetadata->fields = ['bar', 'baz'];
@@ -114,7 +122,8 @@ final class MetadataReaderTest extends TestCase
     }
 
     #[DataProvider('fieldsMetadataProvider')]
-    public function testGetUploadableField(array $fields, ?string $expectedMetadata): void
+    #[Test]
+    public function getUploadableField(array $fields, ?string $expectedMetadata): void
     {
         $classMetadata = new \stdClass();
         $classMetadata->fields = $fields;
@@ -130,7 +139,8 @@ final class MetadataReaderTest extends TestCase
         self::assertSame($expectedMetadata, $this->reader->getUploadableField('ClassName', 'field'));
     }
 
-    public function testGetUploadableFieldWithInvalidClass(): void
+    #[Test]
+    public function getUploadableFieldWithInvalidClass(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
         $this->expectExceptionMessage('Mapping not found. The configuration for the class "InvalidClassName" is probably incorrect.');
@@ -138,7 +148,8 @@ final class MetadataReaderTest extends TestCase
         $this->reader->getUploadableFields('InvalidClassName');
     }
 
-    public function testGetUploadableFieldWithInvalidClassMapping(): void
+    #[Test]
+    public function getUploadableFieldWithInvalidClassMapping(): void
     {
         $this->expectException(\Vich\UploaderBundle\Exception\MappingNotFoundException::class);
         $this->expectExceptionMessage('Mapping "foo_mapping" does not exist. The configuration for the class "InvalidClassName" is probably incorrect.');

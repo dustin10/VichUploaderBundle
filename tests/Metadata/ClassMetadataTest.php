@@ -2,12 +2,14 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\ClassMetadata;
 
 class ClassMetadataTest extends TestCase
 {
-    public function testFieldsAreSerialized(): void
+    #[Test]
+    public function fieldsAreSerialized(): void
     {
         $fields = ['foo', 'bar', 'baz'];
         $metadata = new ClassMetadata(\DateTime::class);

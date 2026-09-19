@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\EventListener\Doctrine\InjectListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
@@ -27,7 +28,8 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Test the postLoad method.
      */
-    public function testPostLoad(): void
+    #[Test]
+    public function postLoad(): void
     {
         $this->metadata
             ->expects($this->once())
@@ -54,7 +56,8 @@ class InjectListenerTest extends ListenerTestCase
     /**
      * Test that postLoad skips non uploadable entity.
      */
-    public function testPostLoadSkipsNonUploadable(): void
+    #[Test]
+    public function postLoadSkipsNonUploadable(): void
     {
         $this->metadata
             ->expects($this->once())

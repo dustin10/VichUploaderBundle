@@ -2,13 +2,15 @@
 
 namespace Vich\UploaderBundle\Tests\Naming;
 
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
 final class ConfigurableDirectoryNamerTest extends TestCase
 {
-    public function testNameReturnsTheRightName(): void
+    #[Test]
+    public function nameReturnsTheRightName(): void
     {
         $entity = new DummyEntity();
         $entity->setFileName('file name');
@@ -20,7 +22,8 @@ final class ConfigurableDirectoryNamerTest extends TestCase
         self::assertSame('folder/subfolder/subsubfolder', $namer->directoryName($entity, $mapping));
     }
 
-    public function testConfigurationFailsIfTheDirectoryPathIsntSpecified(): void
+    #[Test]
+    public function configurationFailsIfTheDirectoryPathIsntSpecified(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "directory_path" is missing.');

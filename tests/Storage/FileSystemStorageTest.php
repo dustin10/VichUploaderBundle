@@ -4,6 +4,7 @@ namespace Vich\UploaderBundle\Tests\Storage;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -22,7 +23,8 @@ final class FileSystemStorageTest extends StorageTestCase
      * property value returns null.
      */
     #[DataProvider('emptyFilenameProvider')]
-    public function testRemoveSkipsEmptyFilenameProperties(?string $propertyValue): void
+    #[Test]
+    public function removeSkipsEmptyFilenameProperties(?string $propertyValue): void
     {
         $this->mapping
             ->expects($this->once())
@@ -39,7 +41,8 @@ final class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the remove method skips trying to remove a file that no longer exists.
      */
-    public function testRemoveSkipsNonExistingFile(): void
+    #[Test]
+    public function removeSkipsNonExistingFile(): void
     {
         $this->expectException(\Exception::class);
 
@@ -56,7 +59,8 @@ final class FileSystemStorageTest extends StorageTestCase
         $this->storage->remove($this->object, $this->mapping);
     }
 
-    public function testRemove(): void
+    #[Test]
+    public function remove(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -76,7 +80,8 @@ final class FileSystemStorageTest extends StorageTestCase
      * Test remove with explicit directory parameter (bypassing DirectoryNamer).
      * This is useful for cleanup operations where the entity no longer exists.
      */
-    public function testRemoveWithExplicitDirectory(): void
+    #[Test]
+    public function removeWithExplicitDirectory(): void
     {
         // Create a file in a subdirectory
         $subdir = $this->getValidUploadDir().\DIRECTORY_SEPARATOR.'user_123';
@@ -107,7 +112,8 @@ final class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the resolve path method.
      */
-    public function testResolvePath(): void
+    #[Test]
+    public function resolvePath(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -138,7 +144,8 @@ final class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the resolve path method without passing field name.
      */
-    public function testResolvePathWithoutFieldName(): void
+    #[Test]
+    public function resolvePathWithoutFieldName(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -169,7 +176,8 @@ final class FileSystemStorageTest extends StorageTestCase
     /**
      * Test the resolve path method.
      */
-    public function testResolveRelativePath(): void
+    #[Test]
+    public function resolveRelativePath(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -192,7 +200,8 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertEquals(\sprintf('upload_dir%sfile.txt', \DIRECTORY_SEPARATOR), $path);
     }
 
-    public function testResolveUriReturnsNullIfNoFile(): void
+    #[Test]
+    public function resolveUriReturnsNullIfNoFile(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -209,7 +218,8 @@ final class FileSystemStorageTest extends StorageTestCase
     }
 
     #[DataProvider('resolveUriDataProvider')]
-    public function testResolveUri(string $uploadDir, string $uri): void
+    #[Test]
+    public function resolveUri(string $uploadDir, string $uri): void
     {
         $this->mapping
             ->expects($this->once())
@@ -237,7 +247,8 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertEquals($uri, $path);
     }
 
-    public function testResolveStream(): void
+    #[Test]
+    public function resolveStream(): void
     {
         $this->mapping
             ->expects($this->once())
@@ -297,7 +308,8 @@ final class FileSystemStorageTest extends StorageTestCase
 
     #[DataProvider('filenameWithDirectoriesDataProvider')]
     #[Group('upload')]
-    public function testUploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
+    #[Test]
+    public function uploadedFileIsCorrectlyMoved(string $uploadDir, string $dir, string $expectedDir): void
     {
         $uploadDir = $this->root->url().\DIRECTORY_SEPARATOR.$uploadDir;
         $expectedDir = $this->root->url().\DIRECTORY_SEPARATOR.$expectedDir;
@@ -339,7 +351,8 @@ final class FileSystemStorageTest extends StorageTestCase
     }
 
     #[Group('upload')]
-    public function testReplacingFileIsCorrectlyUploaded(): void
+    #[Test]
+    public function replacingFileIsCorrectlyUploaded(): void
     {
         $file = $this->getReplacingFileMock();
         $file
@@ -376,7 +389,8 @@ final class FileSystemStorageTest extends StorageTestCase
     }
 
     #[Group('upload')]
-    public function testReplacingFileWithDirectoryNamerIsCorrectlyUploaded(): void
+    #[Test]
+    public function replacingFileWithDirectoryNamerIsCorrectlyUploaded(): void
     {
         $file = $this->getReplacingFileMock();
         $file
@@ -434,7 +448,8 @@ final class FileSystemStorageTest extends StorageTestCase
         ];
     }
 
-    public function testListFiles(): void
+    #[Test]
+    public function listFiles(): void
     {
         // Create a new test directory separate from the default uploads
         $uploadDir = $this->root->url().'/test_list_files';
@@ -466,7 +481,8 @@ final class FileSystemStorageTest extends StorageTestCase
         }
     }
 
-    public function testListFilesWithEmptyDirectory(): void
+    #[Test]
+    public function listFilesWithEmptyDirectory(): void
     {
         // Create a new empty directory
         $uploadDir = $this->root->url().'/test_empty_dir';
@@ -482,7 +498,8 @@ final class FileSystemStorageTest extends StorageTestCase
         self::assertCount(0, $files);
     }
 
-    public function testListFilesWithNonExistentDirectory(): void
+    #[Test]
+    public function listFilesWithNonExistentDirectory(): void
     {
         $this->mapping
             ->expects($this->once())

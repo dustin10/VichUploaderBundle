@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Functional;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,7 +18,8 @@ use Vich\TestBundle\Entity\Image;
  */
 final class CleanupCommandTest extends WebTestCase
 {
-    public function testCleanupCommandRemovesOrphanedFilesInRealScenario(): void
+    #[Test]
+    public function cleanupCommandRemovesOrphanedFilesInRealScenario(): void
     {
         if (\headers_sent()) {
             self::markTestSkipped('Headers already sent');
@@ -138,7 +140,8 @@ final class CleanupCommandTest extends WebTestCase
         }
     }
 
-    public function testCleanupCommandDryRunDoesNotDeleteFiles(): void
+    #[Test]
+    public function cleanupCommandDryRunDoesNotDeleteFiles(): void
     {
         if (\headers_sent()) {
             self::markTestSkipped('Headers already sent');
@@ -228,7 +231,8 @@ final class CleanupCommandTest extends WebTestCase
         }
     }
 
-    public function testCleanupCommandRespectsMinAgeFilter(): void
+    #[Test]
+    public function cleanupCommandRespectsMinAgeFilter(): void
     {
         if (\headers_sent()) {
             self::markTestSkipped('Headers already sent');

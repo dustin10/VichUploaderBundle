@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\TestBundle\Entity\Article;
 use Vich\TestBundle\Entity\NotNullableArticle;
 use Vich\TestBundle\Naming\DummyNamer;
@@ -24,7 +25,8 @@ class PropertyMappingTest extends TestCase
      * Test that the configured mappings are accessed
      * correctly.
      */
-    public function testConfiguredMappingAccess(): void
+    #[Test]
+    public function configuredMappingAccess(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -40,7 +42,8 @@ class PropertyMappingTest extends TestCase
     }
 
     #[DataProvider('directoryProvider')]
-    public function testDirectoryNamerIsCalled(string $dir, string $expectedDir): void
+    #[Test]
+    public function directoryNamerIsCalled(string $dir, string $expectedDir): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -62,7 +65,8 @@ class PropertyMappingTest extends TestCase
         self::assertEquals('/tmp', $prop->getUploadDestination());
     }
 
-    public function testReadProperty(): void
+    #[Test]
+    public function readProperty(): void
     {
         $object = new DummyEntity();
         $object->setSize(100);
@@ -72,7 +76,8 @@ class PropertyMappingTest extends TestCase
         self::assertEquals(100, $prop->readProperty($object, 'size'));
     }
 
-    public function testReadUnknownProperty(): void
+    #[Test]
+    public function readUnknownProperty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -83,7 +88,8 @@ class PropertyMappingTest extends TestCase
         $prop->readProperty($object, 'unused');
     }
 
-    public function testWriteProperty(): void
+    #[Test]
+    public function writeProperty(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName', ['size' => 'size']);
@@ -93,7 +99,8 @@ class PropertyMappingTest extends TestCase
         self::assertEquals(100, $object->getSize());
     }
 
-    public function testWriteUnknownProperty(): void
+    #[Test]
+    public function writeUnknownProperty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -104,7 +111,8 @@ class PropertyMappingTest extends TestCase
         $prop->writeProperty($object, 'unused', null);
     }
 
-    public function testGetUploadNameWithNamer(): void
+    #[Test]
+    public function getUploadNameWithNamer(): void
     {
         $object = new DummyEntity();
         $prop = new PropertyMapping('file', 'fileName');
@@ -132,7 +140,8 @@ class PropertyMappingTest extends TestCase
         ];
     }
 
-    public function testErase(): void
+    #[Test]
+    public function erase(): void
     {
         $object = new Article();
 
@@ -160,7 +169,8 @@ class PropertyMappingTest extends TestCase
         self::assertNull($object->getSizeField());
     }
 
-    public function testEraseKeepsNonNullableProperties(): void
+    #[Test]
+    public function eraseKeepsNonNullableProperties(): void
     {
         $object = new NotNullableArticle();
         $object->setImageName('generated.jpeg');
@@ -176,7 +186,8 @@ class PropertyMappingTest extends TestCase
         self::assertNull($object->getSizeField());
     }
 
-    public function testIsNullable(): void
+    #[Test]
+    public function isNullable(): void
     {
         $prop = new PropertyMapping('image', 'imageName', ['size' => 'sizeField']);
 
@@ -192,7 +203,8 @@ class PropertyMappingTest extends TestCase
         self::assertTrue($prop->isNullable(new Article(), 'mimeType'));
     }
 
-    public function testIsNullableMatchesTheAccessorWritePath(): void
+    #[Test]
+    public function isNullableMatchesTheAccessorWritePath(): void
     {
         // Snake_case path: the accessor camelizes it to setImageName(string), non-nullable.
         $snakeCased = new PropertyMapping('image', 'image_name');
@@ -203,7 +215,8 @@ class PropertyMappingTest extends TestCase
         self::assertFalse($publicProperty->isNullable(new NotNullableArticle(), 'size'));
     }
 
-    public function testIsNullableRejectsUnknownMappingProperty(): void
+    #[Test]
+    public function isNullableRejectsUnknownMappingProperty(): void
     {
         $prop = new PropertyMapping('image', 'imageName');
 
@@ -213,7 +226,8 @@ class PropertyMappingTest extends TestCase
         $prop->isNullable(new Article(), 'unused');
     }
 
-    public function testIsNullableTreatsNonTypedWriteTargetsAsNullable(): void
+    #[Test]
+    public function isNullableTreatsNonTypedWriteTargetsAsNullable(): void
     {
         $arrayOffset = new PropertyMapping('image', '[imageName]');
         self::assertTrue($arrayOffset->isNullable(new \ArrayObject(), 'name'));
@@ -228,7 +242,8 @@ class PropertyMappingTest extends TestCase
         self::assertTrue($dynamicProperty->isNullable(new \stdClass(), 'name'));
     }
 
-    public function testWithArray(): void
+    #[Test]
+    public function withArray(): void
     {
         $prop = new PropertyMapping(
             'image',

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Templating\Helper;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -22,12 +23,14 @@ final class UploadHelperTest extends TestCase
         $this->helper = new UploaderHelper($this->storage);
     }
 
-    public function testGetName(): void
+    #[Test]
+    public function getName(): void
     {
         self::assertSame('vich_uploader', $this->helper->getName());
     }
 
-    public function testAssetForwardsCallsToTheStorage(): void
+    #[Test]
+    public function assetForwardsCallsToTheStorage(): void
     {
         $obj = new \stdClass();
 

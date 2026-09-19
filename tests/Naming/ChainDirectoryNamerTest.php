@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Naming;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\Naming\ChainDirectoryNamer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\SubdirDirectoryNamer;
@@ -18,7 +19,8 @@ final class ChainDirectoryNamerTest extends TestCase
      * withOptions() is public API: the children it receives may well be shared services, so the
      * chain has to copy them whether they come from the resolver or from a direct call.
      */
-    public function testChildrenGivenToWithOptionsAreCopied(): void
+    #[Test]
+    public function childrenGivenToWithOptionsAreCopied(): void
     {
         $child = new SubdirDirectoryNamer();
         $child->configure(['dirs' => 1]);
@@ -32,7 +34,7 @@ final class ChainDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->setFileName('0123456789.jpg');
         $mapping = $this->getPropertyMappingMock();
-        $mapping->expects(self::any())->method('getFileName')->willReturn('0123456789.jpg');
+        $mapping->method('getFileName')->willReturn('0123456789.jpg');
 
         self::assertSame('01', $first->directoryName($entity, $mapping));
         self::assertSame('01', $second->directoryName($entity, $mapping));
@@ -51,7 +53,8 @@ final class ChainDirectoryNamerTest extends TestCase
     }
 
     #[DataProvider('chainDataProvider')]
-    public function testDirectoryNameChainsNamers(array $namerResults, string $separator, string $expected): void
+    #[Test]
+    public function directoryNameChainsNamers(array $namerResults, string $separator, string $expected): void
     {
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
@@ -73,7 +76,8 @@ final class ChainDirectoryNamerTest extends TestCase
         self::assertSame($expected, $chainNamer->directoryName($entity, $mapping));
     }
 
-    public function testDefaultSeparatorIsSlash(): void
+    #[Test]
+    public function defaultSeparatorIsSlash(): void
     {
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
@@ -90,7 +94,8 @@ final class ChainDirectoryNamerTest extends TestCase
         self::assertSame('a/b', $chainNamer->directoryName($entity, $mapping));
     }
 
-    public function testConfigureWithoutSeparatorKeepsDefault(): void
+    #[Test]
+    public function configureWithoutSeparatorKeepsDefault(): void
     {
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();
@@ -108,7 +113,8 @@ final class ChainDirectoryNamerTest extends TestCase
         self::assertSame('a/b', $chainNamer->directoryName($entity, $mapping));
     }
 
-    public function testEmptyStringFromNamerIsFiltered(): void
+    #[Test]
+    public function emptyStringFromNamerIsFiltered(): void
     {
         $entity = new DummyEntity();
         $mapping = $this->getPropertyMappingMock();

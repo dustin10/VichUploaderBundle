@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\Proxy\Proxy;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -26,7 +27,8 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener = new RemoveListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $this->handler);
     }
 
-    public function testPreRemove(): void
+    #[Test]
+    public function preRemove(): void
     {
         $this->object = $this->getEntityProxyMock('One');
 
@@ -46,7 +48,8 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
     }
 
-    public function testPreRemoveSkipNonUploadable(): void
+    #[Test]
+    public function preRemoveSkipNonUploadable(): void
     {
         $this->object = $this->getEntityProxyMock('Two');
         $this->object
@@ -65,7 +68,8 @@ final class RemoveListenerTest extends ListenerTestCase
         $this->listener->preRemove($this->event);
     }
 
-    public function testPostFlush(): void
+    #[Test]
+    public function postFlush(): void
     {
         // isUploadable
         $this->metadata
@@ -95,7 +99,8 @@ final class RemoveListenerTest extends ListenerTestCase
     /**
      * Test that postRemove skips non uploadable entity.
      */
-    public function testPostFlushSkipsNonUploadable(): void
+    #[Test]
+    public function postFlushSkipsNonUploadable(): void
     {
         // isUploadable
         $this->metadata

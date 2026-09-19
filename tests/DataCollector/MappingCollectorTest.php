@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\DataCollector;
 
 use Metadata\AdvancedMetadataFactoryInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\DataCollector\MappingCollector;
 use Vich\UploaderBundle\Metadata\MetadataReader;
@@ -10,7 +11,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
 
 final class MappingCollectorTest extends TestCase
 {
-    public function testResetClearsCollectedMappings(): void
+    #[Test]
+    public function resetClearsCollectedMappings(): void
     {
         $metadataReader = new MetadataReader($this->createStub(AdvancedMetadataFactoryInterface::class));
 

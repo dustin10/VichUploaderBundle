@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Injector;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\Injector\FileInjector;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -23,7 +24,8 @@ final class FileInjectorTest extends TestCase
     /**
      * Test inject one file.
      */
-    public function testInjectsOneFile(): void
+    #[Test]
+    public function injectsOneFile(): void
     {
         $obj = $this->createMock(DummyEntity::class);
 
@@ -50,7 +52,8 @@ final class FileInjectorTest extends TestCase
      * Test that if the file name property returns a null value
      * then no file is injected.
      */
-    public function testPropertyIsNullWhenFileNamePropertyIsNull(): void
+    #[Test]
+    public function propertyIsNullWhenFileNamePropertyIsNull(): void
     {
         $obj = $this->createMock(DummyEntity::class);
 

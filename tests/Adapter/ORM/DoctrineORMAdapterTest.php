@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Adapter\ORM;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Adapter\ORM\DoctrineORMAdapter;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -14,7 +15,8 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  */
 final class DoctrineORMAdapterTest extends TestCase
 {
-    public function testRecomputeChangeSet(): void
+    #[Test]
+    public function recomputeChangeSet(): void
     {
         $entity = new DummyEntity();
         $changeSet = [];

@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Metadata\Driver;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Mapping\Attribute\Uploadable;
 use Vich\UploaderBundle\Mapping\Attribute\UploadableField;
@@ -10,7 +11,8 @@ use Vich\UploaderBundle\Tests\DummyAttributeEntity;
 
 final class AttributeReaderTest extends TestCase
 {
-    public function testGetClassAttributes(): void
+    #[Test]
+    public function getClassAttributes(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionClass(DummyAttributeEntity::class);
@@ -23,7 +25,8 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
-    public function testGetClassAttribute(): void
+    #[Test]
+    public function getClassAttribute(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionClass(DummyAttributeEntity::class);
@@ -38,7 +41,8 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
-    public function testGetPropertyAttributes(): void
+    #[Test]
+    public function getPropertyAttributes(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionProperty(DummyAttributeEntity::class, 'file');
@@ -51,7 +55,8 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
-    public function testGetPropertyAttribute(): void
+    #[Test]
+    public function getPropertyAttribute(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionProperty(DummyAttributeEntity::class, 'file');
@@ -69,7 +74,8 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
-    public function testDoesNotInstantiateUnrelatedAttributes(): void
+    #[Test]
+    public function doesNotInstantiateUnrelatedAttributes(): void
     {
         $reader = new AttributeReader();
         $class = new \ReflectionClass(EntityWithUnrelatedAttribute::class);

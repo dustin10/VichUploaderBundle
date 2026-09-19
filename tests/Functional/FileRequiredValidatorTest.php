@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Entity\File;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
@@ -9,7 +10,8 @@ use Vich\UploaderBundle\Tests\Validator\TestFileUploadEntity;
 
 final class FileRequiredValidatorTest extends WebTestCase
 {
-    public function testValidationFailsWhenNoFileIsProvided(): void
+    #[Test]
+    public function validationFailsWhenNoFileIsProvided(): void
     {
         $client = self::createClient();
         $container = $client->getContainer();
@@ -42,7 +44,8 @@ final class FileRequiredValidatorTest extends WebTestCase
         self::assertStringContainsString('should not be blank', $fileRequiredViolations[0]->getMessage());
     }
 
-    public function testValidationPassesWhenValidFileIsUploaded(): void
+    #[Test]
+    public function validationPassesWhenValidFileIsUploaded(): void
     {
         $client = self::createClient();
         $container = $client->getContainer();
@@ -75,7 +78,8 @@ final class FileRequiredValidatorTest extends WebTestCase
         self::assertCount(0, $fileRequiredViolations, 'FileRequired validation should pass when file is uploaded');
     }
 
-    public function testValidationPassesWhenFileExistsButNoNewUpload(): void
+    #[Test]
+    public function validationPassesWhenFileExistsButNoNewUpload(): void
     {
         $client = self::createClient();
         $container = $client->getContainer();
@@ -107,7 +111,8 @@ final class FileRequiredValidatorTest extends WebTestCase
         self::assertCount(0, $fileRequiredViolations, 'FileRequired validation should pass when existing file is present');
     }
 
-    public function testValidationWithReplacingFileSimulatesFileReplacement(): void
+    #[Test]
+    public function validationWithReplacingFileSimulatesFileReplacement(): void
     {
         $client = self::createClient();
         $container = $client->getContainer();
@@ -140,7 +145,8 @@ final class FileRequiredValidatorTest extends WebTestCase
         self::assertCount(0, $fileRequiredViolations, 'FileRequired validation should pass with ReplacingFile');
     }
 
-    public function testValidationBehaviorMatchesRealWorldScenarios(): void
+    #[Test]
+    public function validationBehaviorMatchesRealWorldScenarios(): void
     {
         $client = self::createClient();
         $container = $client->getContainer();
@@ -189,7 +195,8 @@ final class FileRequiredValidatorTest extends WebTestCase
         self::assertCount(0, $apiFileRequiredViolations, 'API upload should work with ReplacingFile');
     }
 
-    public function testFormSubmissionWithValidatorTestController(): void
+    #[Test]
+    public function formSubmissionWithValidatorTestController(): void
     {
         $client = self::createClient();
         $this->loadFixtures($client); // Create database schema

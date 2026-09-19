@@ -3,13 +3,15 @@
 namespace Vich\UploaderBundle\Tests\Command;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandCompletionTester;
 use Vich\UploaderBundle\Command\MappingDebugCommand;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 
 final class MappingDebugCommandTest extends AbstractCommandTestCase
 {
-    public function testNotExistentMapping(): void
+    #[Test]
+    public function notExistentMapping(): void
     {
         $mappings = [];
         $command = new MappingDebugCommand($mappings);
@@ -17,7 +19,8 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
         $this->executeCommand('vich:mapping:debug', $command, ['mapping' => 'foo']);
     }
 
-    public function testExistentMapping(): void
+    #[Test]
+    public function existentMapping(): void
     {
         $mappings = ['image_mapping' => []];
         $command = new MappingDebugCommand($mappings);
@@ -26,7 +29,8 @@ final class MappingDebugCommandTest extends AbstractCommandTestCase
     }
 
     #[DataProvider('provideCompletionSuggestions')]
-    public function testComplete(array $input, array $expectedSuggestions): void
+    #[Test]
+    public function complete(array $input, array $expectedSuggestions): void
     {
         if (!\class_exists(CommandCompletionTester::class)) {
             self::markTestSkipped('Test command completion requires symfony/console 5.4+.');

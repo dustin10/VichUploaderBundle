@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Form\Type;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresMethod;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -146,7 +147,8 @@ final class VichImageTypeTest extends TestCase
 
     #[DataProvider('getLiipImagineBundleIntegrationData')]
     #[RequiresMethod(CacheManager::class, '__construct')]
-    public function testLiipImagineBundleIntegration(
+    #[Test]
+    public function liipImagineBundleIntegration(
         string $field,
         Product $object,
         int $storageResolveMethod,
@@ -256,7 +258,8 @@ final class VichImageTypeTest extends TestCase
         ];
     }
 
-    public function testLiipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
+    #[Test]
+    public function liipImagineBundleIntegrationThrownExceptionIfNotAvailable(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');

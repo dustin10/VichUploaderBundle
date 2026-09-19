@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Validator;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Vich\UploaderBundle\Entity\File;
@@ -18,7 +19,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
     }
 
     #[DataProvider('getValidValues')]
-    public function testValidValues(mixed $value, ?object $entity = null): void
+    #[Test]
+    public function validValues(mixed $value, ?object $entity = null): void
     {
         $constraint = new FileRequired(target: 'image');
 
@@ -51,7 +53,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
         yield 'replacing file' => [$replacingFile, $entityWithReplace];
     }
 
-    public function testInvalidUploadedFileDoesNotSkipValidation(): void
+    #[Test]
+    public function invalidUploadedFileDoesNotSkipValidation(): void
     {
         $entity = new TestFileUploadEntity();
         $entity->image = null;
@@ -69,7 +72,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testValidateWithoutTargetFallsBackToNotBlank(): void
+    #[Test]
+    public function validateWithoutTargetFallsBackToNotBlank(): void
     {
         $constraint = new FileRequired(); // No target specified
 
@@ -82,7 +86,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testValidateWithNonNullValueWithoutTarget(): void
+    #[Test]
+    public function validateWithNonNullValueWithoutTarget(): void
     {
         $constraint = new FileRequired(); // No target specified
 
@@ -92,7 +97,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testValidateWithNullFileProperty(): void
+    #[Test]
+    public function validateWithNullFileProperty(): void
     {
         $entity = new TestFileUploadEntity();
         $entity->image = null; // Null file property
@@ -109,7 +115,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testValidateWithEmptyFileName(): void
+    #[Test]
+    public function validateWithEmptyFileName(): void
     {
         $entity = new TestFileUploadEntity();
         $file = new File();
@@ -128,7 +135,8 @@ final class FileRequiredValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testCustomMessage(): void
+    #[Test]
+    public function customMessage(): void
     {
         $message = 'Custom file required message';
         $constraint = new FileRequired(message: $message, target: 'image');
