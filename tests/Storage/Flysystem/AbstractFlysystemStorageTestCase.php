@@ -379,7 +379,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
             ->expects($this->once())
             ->method('listContents')
             ->with('/', true)
-            ->will($this->throwException($this->createMock(FilesystemException::class)));
+            ->will($this->throwException($this->createStub(FilesystemException::class)));
 
         $files = \iterator_to_array($this->storage->listFiles($this->mapping));
 
@@ -416,7 +416,7 @@ abstract class AbstractFlysystemStorageTestCase extends StorageTestCase
         $file1 = new FileAttributes('file1.txt', null, null, $timestamp);
 
         // Create a DirectoryAttributes mock
-        $dir = $this->createMock(\League\Flysystem\DirectoryAttributes::class);
+        $dir = $this->createStub(\League\Flysystem\DirectoryAttributes::class);
         $dir->method('isFile')->willReturn(false);
         $dir->method('path')->willReturn('subdir');
 

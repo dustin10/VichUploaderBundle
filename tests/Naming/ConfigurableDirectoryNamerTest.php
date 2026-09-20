@@ -14,7 +14,7 @@ final class ConfigurableDirectoryNamerTest extends TestCase
     {
         $entity = new DummyEntity();
         $entity->setFileName('file name');
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namer = new ConfigurableDirectoryNamer();
         $namer->configure(['directory_path' => 'folder/subfolder/subsubfolder']);

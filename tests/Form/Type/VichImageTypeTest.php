@@ -165,12 +165,12 @@ final class VichImageTypeTest extends TestCase
             ->with(...\array_values($storageResolveArguments))
             ->willReturn($storageResolvedPath);
 
-        $parentForm = $this->createMock(FormInterface::class);
+        $parentForm = $this->createStub(FormInterface::class);
         $parentForm
             ->method('getData')
             ->willReturn($object);
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $form
             ->method('getParent')
             ->willReturn($parentForm);
@@ -178,10 +178,10 @@ final class VichImageTypeTest extends TestCase
             ->method('getName')
             ->willReturn($field);
 
-        $uploadHandler = $this->getUploadHandlerMock();
-        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
+        $uploadHandler = $this->getUploadHandlerStub();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryStub();
 
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
+        $propertyAccessor = $this->createStub(PropertyAccessor::class);
         $cacheManager = $this->createMock(CacheManager::class);
 
         $cacheManager
@@ -268,23 +268,23 @@ final class VichImageTypeTest extends TestCase
 
         $testedType = self::TESTED_TYPE;
 
-        $storage = $this->createMock(StorageInterface::class);
-        $uploadHandler = $this->getUploadHandlerMock();
-        $propertyMappingFactory = $this->getPropertyMappingFactoryMock();
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
+        $storage = $this->createStub(StorageInterface::class);
+        $uploadHandler = $this->getUploadHandlerStub();
+        $propertyMappingFactory = $this->getPropertyMappingFactoryStub();
+        $propertyAccessor = $this->createStub(PropertyAccessor::class);
 
-        $parentForm = $this->createMock(FormInterface::class);
+        $parentForm = $this->createStub(FormInterface::class);
         $parentForm
             ->method('getData')
             ->willReturn($object);
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $form
             ->method('getParent')
             ->willReturn($parentForm);
         $form
             ->method('getConfig')
-            ->willReturn($this->createMock(FormConfigInterface::class));
+            ->willReturn($this->createStub(FormConfigInterface::class));
 
         $view = new FormView();
         $type = new $testedType($storage, $uploadHandler, $propertyMappingFactory, $propertyAccessor);

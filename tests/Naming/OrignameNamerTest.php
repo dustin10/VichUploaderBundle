@@ -28,7 +28,7 @@ final class OrignameNamerTest extends TestCase
     #[Test]
     public function nameReturnsAnUniqueName(string $name, string $ext, string $pattern, bool $transliterate): void
     {
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn($name);

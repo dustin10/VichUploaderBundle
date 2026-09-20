@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Mapping;
 
 use Doctrine\Persistence\Proxy;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,6 +20,7 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class PropertyMappingFactoryTest extends TestCase
 {
     protected ContainerInterface|MockObject $container;
@@ -91,7 +93,7 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
-        $mapping->setNamer($this->createMock(NamerInterface::class));
+        $mapping->setNamer($this->createStub(NamerInterface::class));
 
         self::assertEquals('dummy_file', $mapping->getMappingName());
         self::assertEquals('images', $mapping->getUploadDestination());
@@ -100,7 +102,7 @@ final class PropertyMappingFactoryTest extends TestCase
     public static function fromObjectProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = (new self(self::class))->createMock(Proxy::class);
+        $proxy = self::createStub(Proxy::class);
 
         return [
             [$obj, null, DummyEntity::class],
@@ -159,7 +161,7 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
-        $mapping->setNamer($this->createMock(NamerInterface::class));
+        $mapping->setNamer($this->createStub(NamerInterface::class));
 
         self::assertEquals('dummy_file', $mapping->getMappingName());
         self::assertEquals('images', $mapping->getUploadDestination());
@@ -216,7 +218,7 @@ final class PropertyMappingFactoryTest extends TestCase
         self::assertCount(1, $mappings);
 
         $mapping = \current($mappings);
-        $mapping->setNamer($this->createMock(NamerInterface::class));
+        $mapping->setNamer($this->createStub(NamerInterface::class));
 
         self::assertEquals('other_mapping', $mapping->getMappingName());
     }
@@ -296,7 +298,7 @@ final class PropertyMappingFactoryTest extends TestCase
     public static function fromFieldProvider(): array
     {
         $obj = new DummyEntity();
-        $proxy = (new self(self::class))->createMock(Proxy::class);
+        $proxy = self::createStub(Proxy::class);
 
         return [
             [$obj, null, DummyEntity::class],

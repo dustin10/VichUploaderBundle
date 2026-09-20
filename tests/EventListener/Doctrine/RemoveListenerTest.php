@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Common\Proxy\Proxy;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vich\UploaderBundle\EventListener\Doctrine\RemoveListener;
@@ -15,6 +16,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @extends ListenerTestCase<RemoveListener>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class RemoveListenerTest extends ListenerTestCase
 {
     /**
@@ -42,7 +44,7 @@ final class RemoveListenerTest extends ListenerTestCase
             ->expects($this->once())
             ->method('__load');
 
-        $this->event = $this->getEventMock();
+        $this->event = $this->getEventStub();
         $this->event->method('getObject')->willReturn($this->object);
 
         $this->listener->preRemove($this->event);
@@ -62,7 +64,7 @@ final class RemoveListenerTest extends ListenerTestCase
             ->with('VichUploaderEntityProxyTwo')
             ->willReturn(false);
 
-        $this->event = $this->getEventMock();
+        $this->event = $this->getEventStub();
         $this->event->method('getObject')->willReturn($this->object);
 
         $this->listener->preRemove($this->event);

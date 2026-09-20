@@ -3,7 +3,7 @@
 namespace Vich\UploaderBundle\Tests\Templating\Helper;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -13,13 +13,13 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  */
 final class UploadHelperTest extends TestCase
 {
-    protected StorageInterface|MockObject $storage;
+    protected StorageInterface&Stub $storage;
 
     protected UploaderHelper $helper;
 
     protected function setUp(): void
     {
-        $this->storage = $this->createMock(StorageInterface::class);
+        $this->storage = $this->createStub(StorageInterface::class);
         $this->helper = new UploaderHelper($this->storage);
     }
 
@@ -34,11 +34,12 @@ final class UploadHelperTest extends TestCase
     {
         $obj = new \stdClass();
 
-        $this->storage
+        $storage = $this->createMock(StorageInterface::class);
+        $storage
             ->expects($this->once())
             ->method('resolveUri')
             ->with($obj, 'file');
 
-        $this->helper->asset($obj, 'file');
+        (new UploaderHelper($storage))->asset($obj, 'file');
     }
 }

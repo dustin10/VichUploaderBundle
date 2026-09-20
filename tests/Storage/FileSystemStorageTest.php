@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Storage;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -11,6 +12,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class FileSystemStorageTest extends StorageTestCase
 {
     protected function getStorage(): StorageInterface
@@ -354,7 +356,7 @@ final class FileSystemStorageTest extends StorageTestCase
     #[Test]
     public function replacingFileIsCorrectlyUploaded(): void
     {
-        $file = $this->getReplacingFileMock();
+        $file = $this->getReplacingFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn('test.txt');
@@ -392,7 +394,7 @@ final class FileSystemStorageTest extends StorageTestCase
     #[Test]
     public function replacingFileWithDirectoryNamerIsCorrectlyUploaded(): void
     {
-        $file = $this->getReplacingFileMock();
+        $file = $this->getReplacingFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn('test.txt');

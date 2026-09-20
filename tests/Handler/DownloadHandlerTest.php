@@ -2,15 +2,17 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vich\TestBundle\Entity\Product;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Exception\NoFileFoundException;
 use Vich\UploaderBundle\Handler\DownloadHandler;
-use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -18,21 +20,22 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class DownloadHandlerTest extends TestCase
 {
-    protected MockObject|PropertyMappingFactory $factory;
+    protected PropertyMappingFactoryInterface&Stub $factory;
 
-    protected MockObject|StorageInterface $storage;
+    protected StorageInterface&MockObject $storage;
 
     protected Product $object;
 
     protected DownloadHandler $handler;
 
-    protected MockObject|PropertyMappingInterface $mapping;
+    protected PropertyMappingInterface&MockObject $mapping;
 
     protected function setUp(): void
     {
-        $this->factory = $this->getPropertyMappingFactoryMock();
+        $this->factory = $this->getPropertyMappingFactoryStub();
         $this->storage = $this->createMock(StorageInterface::class);
         $this->mapping = $this->getPropertyMappingMock();
         $this->object = new Product();
@@ -207,7 +210,7 @@ final class DownloadHandlerTest extends TestCase
     {
         $this->expectException(MappingNotFoundException::class);
 
-        $this->factory = $this->getPropertyMappingFactoryMock();
+        $this->factory = $this->getPropertyMappingFactoryStub();
         $this->handler = new DownloadHandler($this->factory, $this->storage);
 
         $this->handler->downloadObject($this->object, 'file_field');

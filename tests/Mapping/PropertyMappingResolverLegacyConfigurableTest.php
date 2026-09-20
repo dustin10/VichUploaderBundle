@@ -143,11 +143,11 @@ final class PropertyMappingResolverLegacyConfigurableTest extends TestCase
 
     private function createFileMapping(): PropertyMappingInterface
     {
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file->method('getClientOriginalName')->willReturn('Fôo Bàr.txt');
         $file->method('guessExtension')->willReturn('txt');
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $mapping->method('getFile')->willReturn($file);
 
         return $mapping;

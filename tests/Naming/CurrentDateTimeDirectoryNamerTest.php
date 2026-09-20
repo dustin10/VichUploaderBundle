@@ -32,8 +32,8 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
     {
         \date_default_timezone_set('UTC');
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
-        $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
+        $mapping = $this->getPropertyMappingStub();
+        $propertyAccessor = $this->createStub(PropertyAccessorInterface::class);
         $propertyAccessor->method('getValue')->willReturn(new \DateTime(\date('Y-m-d H:i:s', $timestamp)));
 
         $namer = new CurrentDateTimeDirectoryNamer($propertyAccessor);
@@ -52,7 +52,7 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Option "date_time_format" is empty.');
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $namer = new CurrentDateTimeDirectoryNamer(null);
 
         $namer->configure(['date_time_format' => '']);
@@ -63,7 +63,7 @@ final class CurrentDateTimeDirectoryNamerTest extends TestCase
     #[Test]
     public function nameReturnsObjectDate(): void
     {
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
         $propertyAccessor->expects($this->once())->method('getValue')->willReturn(new \DateTime('2018/12/01'));
 

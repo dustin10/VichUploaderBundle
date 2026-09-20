@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
@@ -14,28 +15,41 @@ use Vich\UploaderBundle\Util\Transliterator;
 
 trait TestCaseTrait
 {
-    protected function getUploadedFileMock(): UploadedFile|MockObject
+    protected function getUploadedFileMock(): UploadedFile&MockObject
     {
         return $this->getMockBuilder(UploadedFile::class)
             ->setConstructorArgs(['lala', 'lala', null, 9, true])
             ->getMock();
     }
 
-    protected function getReplacingFileMock(): ReplacingFile|MockObject
+    protected function getUploadedFileStub(): UploadedFile&Stub
     {
-        return $this->getMockBuilder(ReplacingFile::class)
-            ->setConstructorArgs(['lala', false])
-            ->getMock();
+        return $this->createStub(UploadedFile::class);
     }
 
-    protected function getPropertyMappingMock(): PropertyMappingInterface|MockObject
+    protected function getReplacingFileStub(): ReplacingFile&Stub
+    {
+        return $this->createStub(ReplacingFile::class);
+    }
+
+    protected function getPropertyMappingMock(): PropertyMappingInterface&MockObject
     {
         return $this->createMock(PropertyMappingInterface::class);
     }
 
-    protected function getPropertyMappingFactoryMock(): PropertyMappingFactoryInterface|MockObject
+    protected function getPropertyMappingStub(): PropertyMappingInterface&Stub
+    {
+        return $this->createStub(PropertyMappingInterface::class);
+    }
+
+    protected function getPropertyMappingFactoryMock(): PropertyMappingFactoryInterface&MockObject
     {
         return $this->createMock(PropertyMappingFactoryInterface::class);
+    }
+
+    protected function getPropertyMappingFactoryStub(): PropertyMappingFactoryInterface&Stub
+    {
+        return $this->createStub(PropertyMappingFactoryInterface::class);
     }
 
     protected function getTransliterator(): Transliterator
@@ -43,13 +57,13 @@ trait TestCaseTrait
         return new Transliterator(new AsciiSlugger());
     }
 
-    protected function getMetadataReaderMock(): MetadataReaderInterface|MockObject
+    protected function getMetadataReaderMock(): MetadataReaderInterface&MockObject
     {
         return $this->createMock(MetadataReaderInterface::class);
     }
 
-    protected function getUploadHandlerMock(): UploadHandlerInterface|MockObject
+    protected function getUploadHandlerStub(): UploadHandlerInterface&Stub
     {
-        return $this->createMock(UploadHandlerInterface::class);
+        return $this->createStub(UploadHandlerInterface::class);
     }
 }

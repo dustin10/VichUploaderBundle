@@ -2,9 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
@@ -29,28 +31,29 @@ use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCaseTrait;
 
+#[AllowMockObjectsWithoutExpectations]
 final class VichFileTypeTest extends TypeTestCase
 {
     use TestCaseTrait;
 
     protected const TESTED_TYPE = VichFileType::class;
 
-    protected StorageInterface|MockObject $storage;
-    protected FormInterface|MockObject $parentForm;
-    protected FormConfigInterface|MockObject $config;
-    protected FormInterface|MockObject $form;
-    protected UploadHandlerInterface|MockObject $uploadHandler;
-    protected PropertyMappingFactoryInterface|MockObject $propertyMappingFactory;
-    protected PropertyAccessorInterface|MockObject $propertyAccessor;
-    protected PropertyMappingInterface|MockObject $mapping;
+    protected StorageInterface&MockObject $storage;
+    protected FormInterface&Stub $parentForm;
+    protected FormConfigInterface&Stub $config;
+    protected FormInterface&Stub $form;
+    protected UploadHandlerInterface&Stub $uploadHandler;
+    protected PropertyMappingFactoryInterface&MockObject $propertyMappingFactory;
+    protected PropertyAccessorInterface&MockObject $propertyAccessor;
+    protected PropertyMappingInterface&MockObject $mapping;
 
     protected function setUp(): void
     {
         $this->storage = $this->createMock(StorageInterface::class);
-        $this->parentForm = $this->createMock(FormInterface::class);
-        $this->config = $this->createMock(FormConfigInterface::class);
+        $this->parentForm = $this->createStub(FormInterface::class);
+        $this->config = $this->createStub(FormConfigInterface::class);
 
-        $this->form = $this->createMock(FormInterface::class);
+        $this->form = $this->createStub(FormInterface::class);
         $this->form
             ->method('getParent')
             ->willReturn($this->parentForm);
@@ -58,7 +61,7 @@ final class VichFileTypeTest extends TypeTestCase
             ->method('getConfig')
             ->willReturn($this->config);
 
-        $this->uploadHandler = $this->getUploadHandlerMock();
+        $this->uploadHandler = $this->getUploadHandlerStub();
         $this->propertyMappingFactory = $this->getPropertyMappingFactoryMock();
         $this->propertyAccessor = $this->createMock(PropertyAccessor::class);
         $this->mapping = $this->getPropertyMappingMock();
