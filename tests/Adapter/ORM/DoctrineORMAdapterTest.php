@@ -24,7 +24,7 @@ final class DoctrineORMAdapterTest extends TestCase
         // cannot be mocked due to final class
         // $uow = $this->createMock(\Doctrine\ORM\UnitOfWork::class);
         $em = $this->createMock(EntityManager::class);
-        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata = $this->createStub(ClassMetadata::class);
 
         /*
         $em->expects($this->once())

@@ -326,11 +326,11 @@ final class PropertyMappingResolverConfigurationTest extends TestCase
      */
     private function createFileMapping(string $originalName = 'Fôo Bàr.txt'): PropertyMappingInterface
     {
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file->method('getClientOriginalName')->willReturn($originalName);
         $file->method('guessExtension')->willReturn('txt');
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $mapping->method('getFile')->willReturn($file);
         $mapping->method('getFileName')->willReturn('0123456789.jpg');
 

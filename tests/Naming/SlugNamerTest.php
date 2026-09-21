@@ -46,7 +46,7 @@ final class SlugNamerTest extends TestCase
             ->willReturn($file)
         ;
 
-        $repo = $this->createMock(SluggableEntityRepository::class);
+        $repo = $this->createStub(SluggableEntityRepository::class);
         $repo
             ->method('findOneBySlug')
             ->willReturnMap([['lala.jpeg', null], ['lala.mp3', new \stdClass()]])

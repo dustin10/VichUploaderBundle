@@ -2,9 +2,11 @@
 
 namespace Vich\UploaderBundle\Tests\Handler;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Vich\TestBundle\Entity\Article;
@@ -13,6 +15,7 @@ use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Vich\UploaderBundle\Tests\TestCase;
@@ -20,17 +23,18 @@ use Vich\UploaderBundle\Tests\TestCase;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class UploadHandlerTest extends TestCase
 {
-    protected MockObject|\Vich\UploaderBundle\Mapping\PropertyMappingFactory $factory;
+    protected PropertyMappingFactoryInterface&Stub $factory;
 
-    protected StorageInterface|MockObject $storage;
+    protected StorageInterface&MockObject $storage;
 
-    protected FileInjectorInterface|MockObject $injector;
+    protected FileInjectorInterface&MockObject $injector;
 
-    protected MockObject|EventDispatcherInterface $dispatcher;
+    protected EventDispatcherInterface&MockObject $dispatcher;
 
-    protected MockObject|PropertyMappingInterface $mapping;
+    protected PropertyMappingInterface&MockObject $mapping;
 
     protected Article $object;
 
@@ -40,7 +44,7 @@ final class UploadHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->factory = $this->getPropertyMappingFactoryMock();
+        $this->factory = $this->getPropertyMappingFactoryStub();
         $this->storage = $this->getStorageMock();
         $this->injector = $this->getInjectorMock();
         $this->dispatcher = $this->getDispatcherMock();
@@ -83,7 +87,7 @@ final class UploadHandlerTest extends TestCase
     {
         $this->expectException(MappingNotFoundException::class);
 
-        $this->factory = $this->getPropertyMappingFactoryMock();
+        $this->factory = $this->getPropertyMappingFactoryStub();
         $handler = new UploadHandler($this->factory, $this->storage, $this->injector, $this->dispatcher);
 
         $handler->$method($this->object, self::FILE_FIELD);
@@ -317,26 +321,17 @@ final class UploadHandlerTest extends TestCase
         $this->handler->remove($this->object, self::FILE_FIELD);
     }
 
-    /**
-     * @return StorageInterface&MockObject
-     */
-    protected function getStorageMock(): StorageInterface
+    protected function getStorageMock(): StorageInterface&MockObject
     {
         return $this->createMock(StorageInterface::class);
     }
 
-    /**
-     * @return FileInjectorInterface&MockObject
-     */
-    protected function getInjectorMock(): FileInjectorInterface
+    protected function getInjectorMock(): FileInjectorInterface&MockObject
     {
         return $this->createMock(FileInjectorInterface::class);
     }
 
-    /**
-     * @return EventDispatcherInterface&MockObject
-     */
-    protected function getDispatcherMock(): EventDispatcherInterface
+    protected function getDispatcherMock(): EventDispatcherInterface&MockObject
     {
         return $this->createMock(EventDispatcherInterface::class);
     }

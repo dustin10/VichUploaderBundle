@@ -4,12 +4,14 @@ namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class MountManagerFlysystemStorageTest extends AbstractFlysystemStorageTestCase
 {
     #[RequiresMethod(MountManager::class, '__construct')]

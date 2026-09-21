@@ -33,7 +33,7 @@ final class ChainDirectoryNamerTest extends TestCase
 
         $entity = new DummyEntity();
         $entity->setFileName('0123456789.jpg');
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $mapping->method('getFileName')->willReturn('0123456789.jpg');
 
         self::assertSame('01', $first->directoryName($entity, $mapping));
@@ -57,7 +57,7 @@ final class ChainDirectoryNamerTest extends TestCase
     public function directoryNameChainsNamers(array $namerResults, string $separator, string $expected): void
     {
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namers = [];
         foreach ($namerResults as $result) {
@@ -80,12 +80,12 @@ final class ChainDirectoryNamerTest extends TestCase
     public function defaultSeparatorIsSlash(): void
     {
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
-        $namer1 = $this->createMock(DirectoryNamerInterface::class);
+        $namer1 = $this->createStub(DirectoryNamerInterface::class);
         $namer1->method('directoryName')->willReturn('a');
 
-        $namer2 = $this->createMock(DirectoryNamerInterface::class);
+        $namer2 = $this->createStub(DirectoryNamerInterface::class);
         $namer2->method('directoryName')->willReturn('b');
 
         $chainNamer = new ChainDirectoryNamer();
@@ -98,12 +98,12 @@ final class ChainDirectoryNamerTest extends TestCase
     public function configureWithoutSeparatorKeepsDefault(): void
     {
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
-        $namer1 = $this->createMock(DirectoryNamerInterface::class);
+        $namer1 = $this->createStub(DirectoryNamerInterface::class);
         $namer1->method('directoryName')->willReturn('a');
 
-        $namer2 = $this->createMock(DirectoryNamerInterface::class);
+        $namer2 = $this->createStub(DirectoryNamerInterface::class);
         $namer2->method('directoryName')->willReturn('b');
 
         $chainNamer = new ChainDirectoryNamer();
@@ -117,15 +117,15 @@ final class ChainDirectoryNamerTest extends TestCase
     public function emptyStringFromNamerIsFiltered(): void
     {
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
-        $namer1 = $this->createMock(DirectoryNamerInterface::class);
+        $namer1 = $this->createStub(DirectoryNamerInterface::class);
         $namer1->method('directoryName')->willReturn('start');
 
-        $namer2 = $this->createMock(DirectoryNamerInterface::class);
+        $namer2 = $this->createStub(DirectoryNamerInterface::class);
         $namer2->method('directoryName')->willReturn('');
 
-        $namer3 = $this->createMock(DirectoryNamerInterface::class);
+        $namer3 = $this->createStub(DirectoryNamerInterface::class);
         $namer3->method('directoryName')->willReturn('end');
 
         $chainNamer = new ChainDirectoryNamer();

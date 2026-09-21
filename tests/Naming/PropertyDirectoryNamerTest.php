@@ -38,7 +38,7 @@ class PropertyDirectoryNamerTest extends TestCase
         string $propertyName,
         bool $transliterate
     ): void {
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => $propertyName, 'transliterate' => $transliterate]);
@@ -52,7 +52,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = '0';
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => 'someProperty']);
@@ -66,7 +66,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
 
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
         $namer->configure(['property' => 'nonExistentProperty']);
@@ -79,7 +79,7 @@ class PropertyDirectoryNamerTest extends TestCase
     {
         $this->expectException(\Vich\UploaderBundle\Exception\NameGenerationException::class);
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
 
         $namer->configure(['property' => 'someProperty']);
@@ -93,7 +93,7 @@ class PropertyDirectoryNamerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The property to use can not be determined. Did you call the configure() method?');
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $namer = new PropertyDirectoryNamer(null, $this->getTransliterator());
 
         $namer->directoryName(new DummyEntity(), $mapping);

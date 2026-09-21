@@ -5,6 +5,7 @@ namespace Vich\UploaderBundle\Tests\Functional;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -71,8 +72,13 @@ abstract class WebTestCase extends BaseWebTestCase
         }
     }
 
-    protected function mockMetadataReader(): MetadataReaderInterface|MockObject
+    protected function mockMetadataReader(): MetadataReaderInterface&MockObject
     {
         return $this->createMock(MetadataReaderInterface::class);
+    }
+
+    protected function stubMetadataReader(): MetadataReaderInterface&Stub
+    {
+        return $this->createStub(MetadataReaderInterface::class);
     }
 }

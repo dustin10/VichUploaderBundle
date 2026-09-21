@@ -40,7 +40,7 @@ class PropertyNamerTest extends TestCase
         string $propertyName,
         bool $transliterate
     ): void {
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn($originalFileName);
@@ -67,7 +67,7 @@ class PropertyNamerTest extends TestCase
         $entity = new DummyEntity();
         $entity->someProperty = '0';
 
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn('some-file-name');
@@ -93,7 +93,7 @@ class PropertyNamerTest extends TestCase
         $this->expectException(NameGenerationException::class);
 
         $entity = new DummyEntity();
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
 
         $namer = new PropertyNamer($this->getTransliterator());
         $namer->configure(['property' => 'nonExistentProperty']);
@@ -106,7 +106,7 @@ class PropertyNamerTest extends TestCase
     {
         $this->expectException(NameGenerationException::class);
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $namer = new PropertyNamer($this->getTransliterator());
 
         $namer->configure(['property' => 'someProperty']);
@@ -120,7 +120,7 @@ class PropertyNamerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The property to use can not be determined. Did you call the configure() method?');
 
-        $mapping = $this->getPropertyMappingMock();
+        $mapping = $this->getPropertyMappingStub();
         $namer = new PropertyNamer($this->getTransliterator());
 
         $namer->name(new DummyEntity(), $mapping);

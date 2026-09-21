@@ -30,7 +30,7 @@ final class UniqidNamerTest extends TestCase
     #[Test]
     public function nameReturnsAnUniqueName(string $originalName, ?string $guessedExtension, string $pattern): void
     {
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn($originalName);

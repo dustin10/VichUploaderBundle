@@ -3,12 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Metadata;
 
 use Metadata\AdvancedMetadataFactoryInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Vich\UploaderBundle\Metadata\MetadataReader;
 
+#[AllowMockObjectsWithoutExpectations]
 final class MetadataReaderTest extends TestCase
 {
     protected MetadataReader $reader;

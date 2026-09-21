@@ -9,6 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Vich\UploaderBundle\Command\CleanupCommand;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
@@ -47,7 +48,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     #[Test]
     public function commandWithInvalidMapping(): void
     {
-        $reader = $this->mockMetadataReader();
+        $reader = $this->stubMetadataReader();
         $storage = self::createStub(StorageInterface::class);
         $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
@@ -185,7 +186,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $mappingFactory = self::createStub(PropertyMappingFactoryInterface::class);
 
         // Create a repository without createQueryBuilder method
-        $repository = $this->createMock(ObjectRepository::class);
+        $repository = $this->createStub(ObjectRepository::class);
 
         $metadataFactory = $this->createMock(ClassMetadataFactoryInterface::class);
         $metadataFactory->expects($this->once())
@@ -292,7 +293,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createStub(PropertyMappingFactoryInterface::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -302,8 +303,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $entity2 = new \stdClass();
 
         // Create mock query builder and repository
-        $qb = $this->createQueryBuilderMock([$entity1, $entity2]);
-        $repository = $this->createRepositoryMock($qb);
+        $qb = $this->createQueryBuilderStub([$entity1, $entity2]);
+        $repository = $this->createRepositoryStub($qb);
 
         // Create mock object manager
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
@@ -371,7 +372,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createStub(PropertyMappingFactoryInterface::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -379,8 +380,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $entity1 = new \stdClass();
         $entity2 = new \stdClass();
 
-        $qb = $this->createQueryBuilderMock([$entity1, $entity2]);
-        $repository = $this->createRepositoryMock($qb);
+        $qb = $this->createQueryBuilderStub([$entity1, $entity2]);
+        $repository = $this->createRepositoryStub($qb);
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -445,7 +446,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createStub(PropertyMappingFactoryInterface::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -454,8 +455,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $entity2 = new \stdClass();
         $entity3 = new \stdClass();
 
-        $qb = $this->createQueryBuilderMock([$entity1, $entity2, $entity3]);
-        $repository = $this->createRepositoryMock($qb);
+        $qb = $this->createQueryBuilderStub([$entity1, $entity2, $entity3]);
+        $repository = $this->createRepositoryStub($qb);
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -538,7 +539,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $mapping
             ->method('setFileName'); // Called when creating temp object for deletion
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createStub(PropertyMappingFactoryInterface::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
@@ -547,8 +548,8 @@ final class CleanupCommandTest extends AbstractCommandTestCase
         $entity1 = new \stdClass();
         $entity2 = new \stdClass();
 
-        $qb = $this->createQueryBuilderMock([$entity1, $entity2]);
-        $repository = $this->createRepositoryMock($qb);
+        $qb = $this->createQueryBuilderStub([$entity1, $entity2]);
+        $repository = $this->createRepositoryStub($qb);
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -611,7 +612,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('remove');
 
         // Mapping: we don't care about DB-referenced files here because we return 0 entities below
-        $mapping = $this->createMock(PropertyMappingInterface::class);
+        $mapping = $this->createStub(PropertyMappingInterface::class);
         $mapping
             ->method('getMappingName')
             ->willReturn('test_mapping');
@@ -619,14 +620,14 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getUploadDir')
             ->willReturn('');
 
-        $mappingFactory = $this->createMock(PropertyMappingFactoryInterface::class);
+        $mappingFactory = $this->createStub(PropertyMappingFactoryInterface::class);
         $mappingFactory
             ->method('fromField')
             ->willReturn($mapping);
 
         // Doctrine mocks: repository returns 0 entities so there are no DB references
-        $qb = $this->createQueryBuilderMock([]);
-        $repository = $this->createRepositoryMock($qb);
+        $qb = $this->createQueryBuilderStub([]);
+        $repository = $this->createRepositoryStub($qb);
         $objectManager = $this->createObjectManagerMock($repository, DummyEntity::class);
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
@@ -654,11 +655,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     }
 
     /**
-     * Helper method to create a mock query builder.
+     * Helper method to create a query builder stub.
      */
-    private function createQueryBuilderMock(array $entities): MockObject
+    private function createQueryBuilderStub(array $entities): Stub
     {
-        $query = $this->createMock(TestQueryInterface::class);
+        $query = $this->createStub(TestQueryInterface::class);
         $query
             ->method('getSingleScalarResult')
             ->willReturn(\count($entities));
@@ -666,7 +667,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
             ->method('getResult')
             ->willReturn($entities);
 
-        $qb = $this->createMock(TestQueryBuilderInterface::class);
+        $qb = $this->createStub(TestQueryBuilderInterface::class);
         $qb
             ->method('select')
             ->willReturnSelf();
@@ -684,11 +685,11 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     }
 
     /**
-     * Helper method to create a mock repository.
+     * Helper method to create a repository stub.
      */
-    private function createRepositoryMock(MockObject $queryBuilder): MockObject
+    private function createRepositoryStub(Stub $queryBuilder): Stub
     {
-        $repository = $this->createMock(TestRepositoryInterface::class);
+        $repository = $this->createStub(TestRepositoryInterface::class);
         $repository
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
@@ -702,7 +703,7 @@ final class CleanupCommandTest extends AbstractCommandTestCase
     /**
      * Helper method to create a mock object manager.
      */
-    private function createObjectManagerMock(MockObject $repository, string $className): MockObject
+    private function createObjectManagerMock(Stub $repository, string $className): MockObject
     {
         $metadataFactory = $this->createMock(ClassMetadataFactory::class);
         $metadataFactory->expects($this->once())

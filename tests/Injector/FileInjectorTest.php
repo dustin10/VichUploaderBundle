@@ -27,7 +27,7 @@ final class FileInjectorTest extends TestCase
     #[Test]
     public function injectsOneFile(): void
     {
-        $obj = $this->createMock(DummyEntity::class);
+        $obj = $this->createStub(DummyEntity::class);
 
         $fileMapping = $this->getPropertyMappingMock();
         $fileMapping
@@ -55,9 +55,9 @@ final class FileInjectorTest extends TestCase
     #[Test]
     public function propertyIsNullWhenFileNamePropertyIsNull(): void
     {
-        $obj = $this->createMock(DummyEntity::class);
+        $obj = $this->createStub(DummyEntity::class);
 
-        $fileMapping = $this->getPropertyMappingMock();
+        $fileMapping = $this->getPropertyMappingStub();
 
         $this->storage
             ->expects($this->once())

@@ -12,7 +12,7 @@ final class NonConfigurableNamerTest extends TestCase
     public function nonConfigurableNamerIgnoresKeepExtensionOption(): void
     {
         $namer = new SimpleNamer();
-        $file = $this->getUploadedFileMock();
+        $file = $this->getUploadedFileStub();
         $file
             ->method('getClientOriginalName')
             ->willReturn('test.xyz')

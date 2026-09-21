@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -11,6 +12,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @extends ListenerTestCase<UploadListener>
  */
+#[AllowMockObjectsWithoutExpectations]
 class UploadListenerTest extends ListenerTestCase
 {
     /**

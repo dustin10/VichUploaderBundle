@@ -3,12 +3,14 @@
 namespace Vich\UploaderBundle\Tests\Storage\Flysystem;
 
 use League\Flysystem\FilesystemOperator;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 
 /**
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTestCase
 {
     #[Test]
@@ -42,7 +44,7 @@ final class PsrContainerFlysystemStorageTest extends AbstractFlysystemStorageTes
 
     protected function createRegistry(FilesystemOperator $filesystem): ContainerInterface
     {
-        $locator = $this->createMock(ContainerInterface::class);
+        $locator = $this->createStub(ContainerInterface::class);
 
         $locator
             ->method('get')

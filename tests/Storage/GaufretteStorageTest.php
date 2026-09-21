@@ -6,6 +6,7 @@ use Gaufrette\Adapter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,6 +16,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
+#[AllowMockObjectsWithoutExpectations]
 class GaufretteStorageTest extends StorageTestCase
 {
     protected FilesystemMap|MockObject $filesystemMap;
@@ -241,7 +243,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->createMock(Adapter::class);
+        $adapter = $this->createStub(Adapter::class);
 
         $file
             ->expects($this->once())
@@ -303,7 +305,7 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->createMock(Adapter::class);
+        $adapter = $this->createStub(Adapter::class);
 
         $file
             ->expects($this->once())
@@ -362,7 +364,7 @@ class GaufretteStorageTest extends StorageTestCase
     #[Test]
     public function uploadDoesNotSetMetadataWhenUsingNonMetadataSupporterAdapter(): void
     {
-        $adapter = $this->createMock(Adapter::class);
+        $adapter = $this->createStub(Adapter::class);
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
 
@@ -446,7 +448,7 @@ class GaufretteStorageTest extends StorageTestCase
 
         $filesystem
             ->method('get')
-            ->willReturn($this->createMock(\Gaufrette\File::class));
+            ->willReturn($this->createStub(\Gaufrette\File::class));
 
         $this->mapping
             ->expects($this->once())
@@ -549,7 +551,7 @@ class GaufretteStorageTest extends StorageTestCase
 
         $filesystem
             ->method('get')
-            ->willReturn($this->createMock(\Gaufrette\File::class));
+            ->willReturn($this->createStub(\Gaufrette\File::class));
 
         $this->mapping
             ->expects($this->once())
@@ -598,7 +600,7 @@ class GaufretteStorageTest extends StorageTestCase
         // Simulate directory detection: get() fails for trailing slash
         $filesystem
             ->method('get')
-            ->willReturn($this->createMock(\Gaufrette\File::class));
+            ->willReturn($this->createStub(\Gaufrette\File::class));
 
         $this->mapping
             ->expects($this->once())
