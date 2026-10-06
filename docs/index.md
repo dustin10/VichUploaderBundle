@@ -35,6 +35,7 @@ Don't worry, it will be quick and easy (I promise!):
 
 * [YAML](mapping/yaml.md)
 * [XML](mapping/xml.md)
+* [Uploadable fields in Doctrine embeddables](embeddables.md)
 
 ### Forms-related
 

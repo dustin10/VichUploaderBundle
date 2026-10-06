@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\DependencyInjection\Compiler;
 
+use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -42,5 +43,11 @@ final class RegisterMappingDriversPass implements CompilerPassInterface
         $container
             ->getDefinition('vich_uploader.metadata_driver.chain')
             ->replaceArgument(0, $drivers);
+
+        if ($container->hasDefinition('doctrine') && \class_exists(OrmClassMetadata::class)) {
+            $container
+                ->getDefinition('vich_uploader.metadata_driver.doctrine_embedded')
+                ->replaceArgument(1, [new Reference('doctrine')]);
+        }
     }
 }

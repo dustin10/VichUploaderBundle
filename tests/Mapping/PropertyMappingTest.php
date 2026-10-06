@@ -11,6 +11,7 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\ConfigurableDirectoryNamer;
 use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 use Vich\UploaderBundle\Naming\NamerInterface;
+use Vich\UploaderBundle\Tests\DummyEmbeddable;
 use Vich\UploaderBundle\Tests\DummyEntity;
 use Vich\UploaderBundle\Tests\TestCase;
 
@@ -97,6 +98,34 @@ class PropertyMappingTest extends TestCase
         $prop->writeProperty($object, 'size', 100);
 
         self::assertEquals(100, $object->getSize());
+    }
+
+    #[Test]
+    public function readPropertyThroughNullEmbeddable(): void
+    {
+        $object = new class() {
+            public ?DummyEmbeddable $meta = null;
+        };
+        $prop = new PropertyMapping('meta.file', 'meta.fileName');
+        $prop->setMapping(['namer' => DummyNamer::class]);
+
+        self::assertNull($prop->getFile($object));
+        self::assertNull($prop->getFileName($object));
+    }
+
+    #[Test]
+    public function writePropertyThroughNullEmbeddable(): void
+    {
+        $object = new class() {
+            public ?DummyEmbeddable $meta = null;
+        };
+        $prop = new PropertyMapping('meta.file', 'meta.fileName');
+        $prop->setMapping(['namer' => DummyNamer::class]);
+
+        $prop->setFileName($object, 'file.txt');
+        $prop->erase($object);
+
+        self::assertNull($object->meta);
     }
 
     #[Test]

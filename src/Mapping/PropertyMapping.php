@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Mapping;
 
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -124,7 +125,11 @@ final class PropertyMapping implements PropertyMappingInterface
 
         $target = $obj;
         if ($lastIndex > 0) {
-            $target = $this->getAccessor()->getValue($obj, $propertyPath->getParent());
+            try {
+                $target = $this->getAccessor()->getValue($obj, $propertyPath->getParent());
+            } catch (UnexpectedTypeException) {
+                return true;
+            }
         }
 
         if (!\is_object($target)) {
@@ -177,7 +182,11 @@ final class PropertyMapping implements PropertyMappingInterface
 
         $propertyPath = PropertyPathUtils::fixPropertyPath($obj, $this->propertyPaths[$property]);
 
-        return $this->getAccessor()->getValue($obj, $propertyPath);
+        try {
+            return $this->getAccessor()->getValue($obj, $propertyPath);
+        } catch (UnexpectedTypeException) {
+            return null;
+        }
     }
 
     public function writeProperty(object $obj, string $property, mixed $value): void
@@ -192,7 +201,11 @@ final class PropertyMapping implements PropertyMappingInterface
         }
 
         $propertyPath = PropertyPathUtils::fixPropertyPath($obj, $this->propertyPaths[$property]);
-        $this->getAccessor()->setValue($obj, $propertyPath, $value);
+
+        try {
+            $this->getAccessor()->setValue($obj, $propertyPath, $value);
+        } catch (UnexpectedTypeException) {
+        }
     }
 
     public function getFilePropertyName(): string
