@@ -34,6 +34,7 @@ final class DoctrineEmbeddedDriverTest extends TestCase
     {
         $config = ORMSetup::createConfiguration(true);
         $config->setMetadataDriverImpl($this->createOrmMappingDriver());
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
         if (\PHP_VERSION_ID >= 80400 && \method_exists($config, 'enableNativeLazyObjects')) {
             $config->enableNativeLazyObjects(true);
         }
