@@ -62,7 +62,7 @@ final class PropertyMapping implements PropertyMappingInterface
         return $this->readProperty($obj, 'file');
     }
 
-    public function setFile(object $obj, File $file): void
+    public function setFile(object $obj, ?File $file): void
     {
         $this->writeProperty($obj, 'file', $file);
     }
