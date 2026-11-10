@@ -22,6 +22,23 @@ use Vich\UploaderBundle\Util\Transliterator;
 #[AllowMockObjectsWithoutExpectations]
 final class NamerIsolationTest extends TestCase
 {
+    public function testCustomNamersWithGetIdAreIndexedByTheirServiceIds(): void
+    {
+        $container = $this->createContainer([
+            'products' => [
+                'namer' => ['service' => 'legacy_namer', 'options' => ['prefix' => 'file']],
+                'directory_namer' => ['service' => 'legacy_directory_namer', 'options' => ['prefix' => 'directory']],
+            ],
+        ]);
+        $container->register('legacy_namer', NonCloneableNamer::class)->addTag('vich_uploader.namer');
+        $container->register('legacy_directory_namer', NonCloneableNamer::class)->addTag('vich_uploader.dir_namer');
+        $resolver = $this->compileResolver($container);
+        $mapping = $resolver->resolve(new \stdClass(), 'file', ['mapping' => 'products']);
+
+        self::assertSame('file', $mapping->getUploadName(new \stdClass()));
+        self::assertSame('directory', $mapping->getDirectoryNamer()->directoryName(new \stdClass(), $mapping));
+    }
+
     public function testContainerServicesKeepMappingConfigurationAfterOtherResolutions(): void
     {
         $container = $this->createContainer([

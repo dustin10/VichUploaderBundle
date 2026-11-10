@@ -6,6 +6,13 @@
   The old namespace will be removed in version 3.0.
 * `AttributeReader` methods: replace `*Annotation()` with `*Attribute()` (e.g., `getClassAnnotation()` → `getClassAttribute()`).
 
+## Tagged namer indexes
+
+* The default index of namers and directory namers is now their service ID.
+  If a custom namer or directory namer relied on a static `getId()` method
+  to define its tagged iterator index, replace it with Symfony's
+  `#[AsTaggedItem(index: 'your-index')]` attribute.
+
 ## New Features
 
 * New `namer_keep_extension` configuration option to force namers to preserve original file extension.
@@ -18,7 +25,7 @@
 # Upgrading from v2.6 to v2.7
 
 * Now the original extension '.xlsb' is retained even if the mime type is guessed as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.
-  
+
 # Upgrading from v2.4 to v2.5
 
 * To address the question raised in the previous version, now the original extension '.csv' is retained
@@ -32,7 +39,7 @@
 
 # Upgrading from v2.1 to v2.2
 
-* The signature of `StorageInterface::resolveStream` method was changed. The $fieldName parameter is now nullable. 
+* The signature of `StorageInterface::resolveStream` method was changed. The $fieldName parameter is now nullable.
 * the `AdapterInterface` no longer requires `getObjectFromArgs` method.
 * the `AdapterInterface::recomputeChangeSet()` accepts `Doctrine\Persistence\Event\LifecycleEventArgs` as argument.
 
