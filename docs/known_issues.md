@@ -39,6 +39,31 @@ class Product
 
 See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
 
+Since doctrine/orm 3.8, this workaround is not enough when `updatedAt` already holds a value
+written in the same second, for instance when the entity is persisted and flushed to get an
+identifier, then the file is attached and the entity flushed again in the same request. Doctrine
+now compares the database values of object fields, and `datetime` and `datetime_immutable` columns
+are stored to the second: the new `updatedAt` is not seen as a change, `preUpdate` is not fired,
+and the file is silently not uploaded.
+
+In that case, handle the upload before flushing, so that the file name itself changes:
+
+```php
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
+
+// $uploadHandler is the UploadHandlerInterface service
+$product->setImageFile($uploadedFile);
+$uploadHandler->clean($product, 'imageFile');
+$uploadHandler->upload($product, 'imageFile');
+$entityManager->flush();
+```
+
+Call `clean()` only if `delete_on_update` is enabled for the mapping (the default), and always
+before `upload()`: it removes the previous file, and does nothing once `upload()` has replaced the
+uploaded file.
+
+See issue [GH-1619](https://github.com/dustin10/VichUploaderBundle/issues/1619)
+
 ## Uploading files does not trigger Gedmo/DoctrineExtensions events
 
 Similar to the issue above, because VichUploaderBundle relies on Doctrine's `prePersist` and
