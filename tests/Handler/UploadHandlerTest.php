@@ -81,6 +81,59 @@ final class UploadHandlerTest extends TestCase
         $this->handler->upload($this->object, self::FILE_FIELD);
     }
 
+    #[Test]
+    public function uploadSkipsAFileAlreadyUploaded(): void
+    {
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->never())
+            ->method('upload');
+
+        $this->handler->upload($this->object, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function uploadTheSameFileForAnotherObject(): void
+    {
+        $file = $this->getUploadedFileMock();
+        $otherObject = new Article();
+        $mapping = $this->getPropertyMappingStub();
+        $mapping->method('getFile')->willReturn($file);
+        $factory = $this->getPropertyMappingFactoryStub();
+        $factory->method('fromField')->willReturn($mapping);
+        $handler = new UploadHandler($factory, $this->storage, $this->injector, $this->dispatcher);
+        $handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->once())
+            ->method('upload')
+            ->with($otherObject, $mapping);
+
+        $handler->upload($otherObject, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function cleanSkipsAFileAlreadyUploaded(): void
+    {
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('new.png');
+        $this->handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $this->handler->clean($this->object, self::FILE_FIELD);
+    }
+
     #[DataProvider('methodProvider')]
     #[Test]
     public function anExceptionIsThrownIfMappingIsntFound(string $method): void
