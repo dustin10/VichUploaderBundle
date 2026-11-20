@@ -3,9 +3,15 @@
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
 use Doctrine\Persistence\Event\ManagerEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
+use Vich\UploaderBundle\Handler\DeferredCleanHandlerInterface;
+use Vich\UploaderBundle\Handler\PendingClean;
+use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Tests\DummyEntity;
 
 /**
@@ -132,5 +138,96 @@ class CleanListenerTest extends ListenerTestCase
             ->method('clean');
 
         $this->listener->preFlush($event);
+    }
+
+    #[Test]
+    public function preFlushDefersCleanToPostFlush(): void
+    {
+        $event = $this->createManagerEventStub();
+        $pendingClean = new PendingClean($this->object, $this->getPropertyMappingStub(), 'old.png', null);
+        $handler = $this->createDeferredCleanHandlerMock();
+        $handler
+            ->expects($this->once())
+            ->method('prepareClean')
+            ->with($this->object, 'field_name')
+            ->willReturn($pendingClean);
+        $listener = $this->createListenerWithPendingUpload($handler);
+
+        $handler
+            ->expects($this->never())
+            ->method('clean');
+        $handler
+            ->expects($this->once())
+            ->method('completeClean')
+            ->with($pendingClean);
+
+        $listener->preFlush($event);
+        $listener->postFlush($event);
+    }
+
+    #[Test]
+    public function failedFlushDoesNotCleanOnNextPostFlush(): void
+    {
+        $event = $this->createManagerEventStub();
+        $handler = $this->createDeferredCleanHandlerMock();
+        $handler
+            ->method('prepareClean')
+            ->willReturn(new PendingClean($this->object, $this->getPropertyMappingStub(), 'old.png', null));
+        $listener = $this->createListenerWithPendingUpload($handler);
+        $listener->preFlush($event);
+
+        $handler
+            ->expects($this->never())
+            ->method('completeClean');
+
+        $listener->preFlush($event);
+        $listener->postFlush($event);
+    }
+
+    #[Test]
+    public function postFlushWithoutPreFlushCleansNothing(): void
+    {
+        $event = $this->createManagerEventStub();
+        $handler = $this->createDeferredCleanHandlerMock();
+        $listener = new CleanListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $handler);
+
+        $handler
+            ->expects($this->never())
+            ->method('completeClean');
+
+        $listener->postFlush($event);
+    }
+
+    private function createManagerEventStub(): ManagerEventArgs&Stub
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $event->method('getObjectManager')->willReturn($this->createStub(ObjectManager::class));
+
+        return $event;
+    }
+
+    private function createDeferredCleanHandlerMock(): UploadHandlerInterface&DeferredCleanHandlerInterface&MockObject
+    {
+        /** @var UploadHandlerInterface&DeferredCleanHandlerInterface&MockObject $handler */
+        $handler = $this->createMockForIntersectionOfInterfaces([UploadHandlerInterface::class, DeferredCleanHandlerInterface::class]);
+
+        return $handler;
+    }
+
+    private function createListenerWithPendingUpload(UploadHandlerInterface $handler): CleanListener
+    {
+        $this->adapter
+            ->method('getObjectsToFlush')
+            ->willReturnOnConsecutiveCalls([$this->object], []);
+        $this->metadata
+            ->method('isUploadable')
+            ->willReturn(true);
+        $this->metadata
+            ->method('getUploadableFields')
+            ->willReturn([
+                ['propertyName' => 'field_name'],
+            ]);
+
+        return new CleanListener(self::MAPPING_NAME, $this->adapter, $this->metadata, $handler);
     }
 }

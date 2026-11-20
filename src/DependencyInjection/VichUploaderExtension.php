@@ -215,6 +215,7 @@ final class VichUploaderExtension extends Extension
                 $eventPriorities = [];
                 if ('orm' === $driver && 'clean' === $service['name']) {
                     $events[] = 'preFlush';
+                    $events[] = 'postFlush';
                     // right before the upload listener (priority 0), so no other preFlush listener can set a file between both
                     $eventPriorities['preFlush'] = 1;
                 }

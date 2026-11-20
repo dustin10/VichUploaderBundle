@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\FixedFileNamePropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -17,7 +18,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class UploadHandler extends AbstractHandler implements UploadHandlerInterface
+final class UploadHandler extends AbstractHandler implements UploadHandlerInterface, DeferredCleanHandlerInterface
 {
     /** @var \WeakMap<object, array<string, File>> */
     private \WeakMap $uploadedFiles;
@@ -109,6 +110,49 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
             $this->dispatch(Events::REMOVE_ERROR, new ErrorEvent($obj, $mapping, $exception));
         }
         $mapping->erase($obj);
+
+        $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
+    }
+
+    public function prepareClean(object $obj, string $fieldName): ?PendingClean
+    {
+        $mapping = $this->getMapping($obj, $fieldName);
+        $fileName = $mapping->getFileName($obj);
+
+        if (empty($fileName) || !$this->hasUploadedFile($obj, $mapping)) {
+            return null;
+        }
+
+        $preEvent = new Event($obj, $mapping);
+
+        $this->dispatch(Events::PRE_REMOVE, $preEvent);
+
+        if ($preEvent->isCanceled()) {
+            return null;
+        }
+
+        $pendingClean = new PendingClean($obj, $mapping, $fileName, $mapping->getUploadDir($obj));
+        $mapping->erase($obj);
+
+        return $pendingClean;
+    }
+
+    public function completeClean(PendingClean $pendingClean): void
+    {
+        $obj = $pendingClean->object;
+        $mapping = new FixedFileNamePropertyMapping($pendingClean->mapping, $pendingClean->fileName);
+
+        // a namer that gave the new file the previous name: removing that name would remove the new file
+        $replacedInPlace = $pendingClean->fileName === $pendingClean->mapping->getFileName($obj)
+            && $pendingClean->uploadDir === $pendingClean->mapping->getUploadDir($obj);
+
+        if (!$replacedInPlace) {
+            try {
+                $this->storage->remove($obj, $mapping, $pendingClean->uploadDir);
+            } catch (\Throwable $exception) {
+                $this->dispatch(Events::REMOVE_ERROR, new ErrorEvent($obj, $mapping, $exception));
+            }
+        }
 
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
     }

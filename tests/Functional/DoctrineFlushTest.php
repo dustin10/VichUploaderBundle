@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\Functional;
 
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -89,6 +90,48 @@ final class DoctrineFlushTest extends WebTestCase
 
         self::assertFileExists($this->getUploadsDir($client).'/flush_original.png');
         self::assertFileExists($this->getUploadsDir($client).'/flush_copy.png');
+    }
+
+    #[Test]
+    public function fileReplacedUnderTheSameNameIsKept(): void
+    {
+        $client = self::createClient();
+        $this->loadFixtures($client);
+        $em = $this->getEntityManager($client);
+        $image = new Image();
+        $image->setTitle('Test image');
+        $image->setImageFile($this->createUploadedFile($client, 'flush_same_name.png'));
+        $em->persist($image);
+        $em->flush();
+        $image->setImageFile($this->createUploadedFile($client, 'flush_same_name.png'));
+
+        $em->flush();
+
+        self::assertSame('flush_same_name.png', $image->getImageName());
+        self::assertFileExists($this->getUploadsDir($client).'/flush_same_name.png');
+    }
+
+    #[Test]
+    public function previousFileIsKeptWhenTheFlushFails(): void
+    {
+        $client = self::createClient();
+        $this->loadFixtures($client);
+        $em = $this->getEntityManager($client);
+        $image = new Image();
+        $image->setTitle('Test image');
+        $image->setImageFile($this->createUploadedFile($client, 'flush_kept.png'));
+        $em->persist($image);
+        $em->flush();
+        $image->setImageFile($this->createUploadedFile($client, 'flush_rolled_back.png'));
+        $image->setTitle(null);
+
+        try {
+            $em->flush();
+            self::fail('The flush should fail on the null title.');
+        } catch (NotNullConstraintViolationException) {
+        }
+
+        self::assertFileExists($this->getUploadsDir($client).'/flush_kept.png');
     }
 
     #[Test]

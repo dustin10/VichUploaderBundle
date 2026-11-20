@@ -162,6 +162,7 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.upload.foo', 'doctrine.event_listener', ['event' => 'preFlush', 'priority' => 0]);
         $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.clean.foo', 'doctrine.event_listener', ['event' => 'preFlush', 'priority' => 1]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.clean.foo', 'doctrine.event_listener', ['event' => 'postFlush', 'priority' => 50]);
     }
 
     #[Test]
