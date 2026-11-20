@@ -66,7 +66,8 @@ class VichImageType extends VichFileType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
+        [$object, $fieldName] = $this->resolveUploadableField($form);
+
         $view->vars['object'] = $object;
         $view->vars['image_uri'] = null;
         $view->vars['download_uri'] = null;
@@ -76,7 +77,7 @@ class VichImageType extends VichFileType
                 if (null === $this->cacheManager) {
                     throw new \RuntimeException('LiipImagineBundle must be installed and configured for using "imagine_pattern" option.');
                 }
-                $path = $this->resolvePath($options['storage_resolve_method'], $object, $form);
+                $path = $this->resolvePath($options['storage_resolve_method'], $object, $fieldName);
                 if (null !== $path) {
                     $view->vars['image_uri'] = $this->cacheManager->getBrowserPath($path, $options['imagine_pattern']);
                 }
@@ -99,16 +100,16 @@ class VichImageType extends VichFileType
         return 'vich_image';
     }
 
-    private function resolvePath(int $storageResolveMethod, object $object, FormInterface $form): ?string
+    private function resolvePath(int $storageResolveMethod, object $object, string $fieldName): ?string
     {
         if (self::STORAGE_RESOLVE_URI === $storageResolveMethod) {
-            return $this->storage->resolveUri($object, $this->getFieldName($form));
+            return $this->storage->resolveUri($object, $fieldName);
         }
         if (self::STORAGE_RESOLVE_PATH_ABSOLUTE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $this->getFieldName($form));
+            return $this->storage->resolvePath($object, $fieldName);
         }
         if (self::STORAGE_RESOLVE_PATH_RELATIVE === $storageResolveMethod) {
-            return $this->storage->resolvePath($object, $this->getFieldName($form), null, true);
+            return $this->storage->resolvePath($object, $fieldName, null, true);
         }
 
         return null;

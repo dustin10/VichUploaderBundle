@@ -9,6 +9,7 @@ use Metadata\MetadataFactory;
 use Vich\UploaderBundle\Metadata\CacheWarmer;
 use Vich\UploaderBundle\Metadata\Driver\AttributeDriver;
 use Vich\UploaderBundle\Metadata\Driver\AttributeReader;
+use Vich\UploaderBundle\Metadata\Driver\DoctrineEmbeddedDriver;
 use Vich\UploaderBundle\Metadata\Driver\XmlDriver;
 use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 use Vich\UploaderBundle\Metadata\Driver\YmlDriver;
@@ -51,7 +52,13 @@ return static function (ContainerConfigurator $container): void {
             null, // injected by compiler pass
         ]);
 
-    $services->alias('vich_uploader.metadata_driver', 'vich_uploader.metadata_driver.chain');
+    $services->set('vich_uploader.metadata_driver.doctrine_embedded', DoctrineEmbeddedDriver::class)
+        ->args([
+            service('vich_uploader.metadata_driver.chain'),
+            [],
+        ]);
+
+    $services->alias('vich_uploader.metadata_driver', 'vich_uploader.metadata_driver.doctrine_embedded');
 
     // metadata services
     $services->set('vich_uploader.metadata.cache.file_cache', FileCache::class)

@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormConfigInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormView;
@@ -29,6 +30,8 @@ use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Vich\UploaderBundle\Tests\DummyEmbeddable;
+use Vich\UploaderBundle\Tests\DummyEmbeddingEntity;
 use Vich\UploaderBundle\Tests\TestCaseTrait;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -123,7 +126,7 @@ final class VichFileTypeTest extends TypeTestCase
                     ->willReturn($object->getImageOriginalName());
 
                 $this->propertyMappingFactory
-                    ->expects(self::once())
+                    ->expects(self::atLeastOnce())
                     ->method('fromField')
                     ->with($object, $field)
                     ->willReturn($this->mapping);
@@ -376,6 +379,109 @@ final class VichFileTypeTest extends TypeTestCase
             self::assertArrayHasKey($key, $deleteFieldView->vars);
             self::assertEquals($var, $deleteFieldView->vars[$key]);
         }
+    }
+
+    #[Test]
+    public function embeddedFieldResolvesAgainstTheRootEntity(): void
+    {
+        $entity = $this->createEmbeddingEntity();
+
+        $this->storage
+            ->expects($this->atLeastOnce())
+            ->method('resolveUri')
+            ->with($entity, 'meta.file')
+            ->willReturn('resolved-uri');
+
+        $view = $this->createEmbeddingForm($this->factory, $entity)->createView();
+
+        self::assertSame($entity, $view['meta']['file']->vars['object']);
+        self::assertSame('resolved-uri', $view['meta']['file']->vars['download_uri']);
+        self::assertArrayHasKey('delete', $view['meta']['file']->children);
+    }
+
+    #[Test]
+    public function embeddedFieldReadsTheDownloadLabelFromTheRootEntity(): void
+    {
+        $entity = $this->createEmbeddingEntity();
+
+        $this->storage
+            ->method('resolveUri')
+            ->willReturn('resolved-uri');
+
+        $this->mapping
+            ->expects(self::once())
+            ->method('readProperty')
+            ->with($entity, 'originalName')
+            ->willReturn('original.png');
+
+        $view = $this->createEmbeddingForm($this->factory, $entity, ['download_label' => true])->createView();
+
+        self::assertSame('original.png', $view['meta']['file']->vars['download_label']);
+    }
+
+    #[Test]
+    public function embeddedFieldDeleteRemovesFromTheRootEntity(): void
+    {
+        $entity = $this->createEmbeddingEntity();
+
+        $this->storage
+            ->method('resolveUri')
+            ->willReturn('resolved-uri');
+
+        $uploadHandler = $this->createMock(UploadHandlerInterface::class);
+        $uploadHandler
+            ->expects(self::once())
+            ->method('remove')
+            ->with($entity, 'meta.file');
+
+        $factory = Forms::createFormFactoryBuilder()
+            ->addExtension(new PreloadedExtension([new VichFileType($this->storage, $uploadHandler, $this->propertyMappingFactory, $this->propertyAccessor)], []))
+            ->addExtension(new HttpFoundationExtension())
+            ->getFormFactory();
+
+        $this->createEmbeddingForm($factory, $entity)->submit(['meta' => ['file' => ['delete' => '1']]]);
+    }
+
+    #[Test]
+    public function fieldWithoutUploadableAncestorResolvesAgainstItsParentData(): void
+    {
+        $embeddable = new DummyEmbeddable();
+
+        $this->storage
+            ->expects($this->atLeastOnce())
+            ->method('resolveUri')
+            ->with($embeddable, 'file')
+            ->willReturn('resolved-uri');
+
+        $view = $this->factory->createBuilder(FormType::class, $embeddable)
+            ->add('file', VichFileType::class)
+            ->getForm()
+            ->createView();
+
+        self::assertSame($embeddable, $view['file']->vars['object']);
+        self::assertSame('resolved-uri', $view['file']->vars['download_uri']);
+    }
+
+    private function createEmbeddingEntity(): DummyEmbeddingEntity
+    {
+        $entity = new DummyEmbeddingEntity();
+        $entity->meta->fileName = 'file.txt';
+
+        $this->propertyMappingFactory
+            ->method('fromField')
+            ->willReturnCallback(fn (object $object, string $field): ?PropertyMappingInterface => $object === $entity && 'meta.file' === $field ? $this->mapping : null);
+
+        return $entity;
+    }
+
+    private function createEmbeddingForm(FormFactoryInterface $factory, DummyEmbeddingEntity $entity, array $options = []): FormInterface
+    {
+        return $factory->createBuilder(FormType::class, $entity)
+            ->add('meta', FormType::class, ['data_class' => DummyEmbeddable::class])
+            ->getForm()
+            ->get('meta')
+            ->add('file', VichFileType::class, ['allow_delete' => true, ...$options])
+            ->getRoot();
     }
 
     #[DataProvider('uploadErrorProvider')]

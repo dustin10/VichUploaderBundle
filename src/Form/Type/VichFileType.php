@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
+use Vich\UploaderBundle\Exception\NotUploadableException;
 use Vich\UploaderBundle\Form\DataTransformer\FileTransformer;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
@@ -80,20 +81,14 @@ class VichFileType extends AbstractType
     {
         // add delete only if there is a file
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $form = $event->getForm();
-            $parent = $form->getParent();
-            // no object: no delete button
-            if (null === $parent) {
-                return;
-            }
-            $object = $parent->getData();
+            [$object, $fieldName] = $this->resolveUploadableField($event->getForm());
 
             // no object or no uploaded file: no delete button
-            if (null === $object || null === $this->storage->resolveUri($object, $this->getFieldName($form))) {
+            if (null === $object || null === $this->storage->resolveUri($object, $fieldName)) {
                 return;
             }
 
-            $form->add('delete', Type\CheckboxType::class, [
+            $event->getForm()->add('delete', Type\CheckboxType::class, [
                 'label' => $options['delete_label'],
                 'mapped' => false,
                 'translation_domain' => $options['delete_label_translation_domain'] ?? $options['translation_domain'],
@@ -104,22 +99,22 @@ class VichFileType extends AbstractType
         // delete file if needed
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
-            $object = $form->getParent()->getData();
             $delete = $form->has('delete') ? $form->get('delete')->getData() : false;
 
             if (!$delete) {
                 return;
             }
 
-            $this->handler->remove($object, $this->getFieldName($form));
+            [$object, $fieldName] = $this->resolveUploadableField($form);
+            $this->handler->remove($object, $fieldName);
         });
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $object = $form->getParent()->getData();
-        $view->vars['object'] = $object;
+        [$object, $fieldName] = $this->resolveUploadableField($form);
 
+        $view->vars['object'] = $object;
         $view->vars['download_uri'] = null;
         if ($options['download_uri'] && $object) {
             $view->vars['download_uri'] = $this->resolveUriOption($options['download_uri'], $object, $form);
@@ -140,17 +135,17 @@ class VichFileType extends AbstractType
 
     final protected function getFieldName(FormInterface $form): string
     {
-        return $form->getConfig()->getOption('property_path') ?? $form->getName();
+        return (string) ($form->getConfig()->getOption('property_path') ?? $form->getName());
     }
 
     protected function resolveUriOption(mixed $uriOption, object $object, FormInterface $form): string|bool|null
     {
         if (true === $uriOption) {
-            return $this->storage->resolveUri($object, $this->getFieldName($form));
+            return $this->storage->resolveUri($object, $this->resolveUploadableField($form)[1]);
         }
 
         if (\is_callable($uriOption)) {
-            return $uriOption($object, $this->storage->resolveUri($object, $this->getFieldName($form)));
+            return $uriOption($object, $this->storage->resolveUri($object, $this->resolveUploadableField($form)[1]));
         }
 
         return $uriOption;
@@ -159,7 +154,7 @@ class VichFileType extends AbstractType
     protected function resolveDownloadLabel(mixed $downloadLabel, object $object, FormInterface $form, array $options): array
     {
         if (true === $downloadLabel) {
-            $fieldName = $this->getFieldName($form);
+            $fieldName = $this->resolveUploadableField($form)[1];
             $mapping = $this->factory->fromField($object, $fieldName);
             if (null === $mapping) {
                 throw new \UnexpectedValueException(\sprintf('Cannot find mapping for "%s" field', $fieldName));
@@ -192,5 +187,36 @@ class VichFileType extends AbstractType
                 ?? $options['translation_domain']
                 ?? null,
         ];
+    }
+
+    /**
+     * @return array{?object, string}
+     */
+    protected function resolveUploadableField(FormInterface $form): array
+    {
+        $fieldName = $this->getFieldName($form);
+        $path = $fieldName;
+
+        for ($parent = $form->getParent(); null !== $parent; $parent = $parent->getParent()) {
+            $data = $parent->getData();
+            if (\is_object($data) && $this->hasUploadableField($data, $path)) {
+                return [$data, $path];
+            }
+
+            $path = $this->getFieldName($parent).'.'.$path;
+        }
+
+        $data = $form->getParent()?->getData();
+
+        return [\is_object($data) ? $data : null, $fieldName];
+    }
+
+    private function hasUploadableField(object $object, string $field): bool
+    {
+        try {
+            return null !== $this->factory->fromField($object, $field);
+        } catch (NotUploadableException) {
+            return false;
+        }
     }
 }
