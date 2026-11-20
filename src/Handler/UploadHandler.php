@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Handler;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Event\ErrorEvent;
@@ -9,6 +10,7 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
+use Vich\UploaderBundle\Mapping\FixedFileNamePropertyMapping;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -16,8 +18,11 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-final class UploadHandler extends AbstractHandler implements UploadHandlerInterface
+final class UploadHandler extends AbstractHandler implements UploadHandlerInterface, DeferredCleanHandlerInterface
 {
+    /** @var \WeakMap<object, array<string, File>> */
+    private \WeakMap $uploadedFiles;
+
     public function __construct(
         PropertyMappingFactoryInterface $factory,
         StorageInterface $storage,
@@ -25,6 +30,7 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
         protected readonly EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($factory, $storage);
+        $this->uploadedFiles = new \WeakMap();
     }
 
     /**
@@ -38,9 +44,10 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
     public function upload(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
+        $file = $this->getFileToUpload($obj, $mapping);
 
         // nothing to upload
-        if (!$this->hasUploadedFile($obj, $mapping)) {
+        if (null === $file) {
             return;
         }
 
@@ -51,6 +58,7 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
             $this->dispatch(Events::UPLOAD_ERROR, new ErrorEvent($obj, $mapping, $exception));
             throw $exception;
         }
+        $this->uploadedFiles[$obj] = [...$this->uploadedFiles[$obj] ?? [], $mapping->getFilePropertyName() => $file];
         $this->injector->injectFile($obj, $mapping);
 
         $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
@@ -106,6 +114,49 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
         $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
     }
 
+    public function prepareClean(object $obj, string $fieldName): ?PendingClean
+    {
+        $mapping = $this->getMapping($obj, $fieldName);
+        $fileName = $mapping->getFileName($obj);
+
+        if (empty($fileName) || !$this->hasUploadedFile($obj, $mapping)) {
+            return null;
+        }
+
+        $preEvent = new Event($obj, $mapping);
+
+        $this->dispatch(Events::PRE_REMOVE, $preEvent);
+
+        if ($preEvent->isCanceled()) {
+            return null;
+        }
+
+        $pendingClean = new PendingClean($obj, $mapping, $fileName, $mapping->getUploadDir($obj));
+        $mapping->erase($obj);
+
+        return $pendingClean;
+    }
+
+    public function completeClean(PendingClean $pendingClean): void
+    {
+        $obj = $pendingClean->object;
+        $mapping = new FixedFileNamePropertyMapping($pendingClean->mapping, $pendingClean->fileName);
+
+        // a namer that gave the new file the previous name: removing that name would remove the new file
+        $replacedInPlace = $pendingClean->fileName === $pendingClean->mapping->getFileName($obj)
+            && $pendingClean->uploadDir === $pendingClean->mapping->getUploadDir($obj);
+
+        if (!$replacedInPlace) {
+            try {
+                $this->storage->remove($obj, $mapping, $pendingClean->uploadDir);
+            } catch (\Throwable $exception) {
+                $this->dispatch(Events::REMOVE_ERROR, new ErrorEvent($obj, $mapping, $exception));
+            }
+        }
+
+        $this->dispatch(Events::POST_REMOVE, new Event($obj, $mapping));
+    }
+
     protected function dispatch(string $eventName, Event $event): void
     {
         $this->dispatcher->dispatch($event, $eventName);
@@ -113,8 +164,22 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
 
     protected function hasUploadedFile(object $obj, PropertyMappingInterface $mapping): bool
     {
+        return null !== $this->getFileToUpload($obj, $mapping);
+    }
+
+    private function getFileToUpload(object $obj, PropertyMappingInterface $mapping): ?File
+    {
         $file = $mapping->getFile($obj);
 
-        return $file instanceof UploadedFile || $file instanceof ReplacingFile;
+        if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
+            return null;
+        }
+
+        // already uploaded, the injector left it on the object
+        if (($this->uploadedFiles[$obj][$mapping->getFilePropertyName()] ?? null) === $file) {
+            return null;
+        }
+
+        return $file;
     }
 }

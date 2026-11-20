@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
+use Doctrine\Persistence\Event\ManagerEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 use Vich\UploaderBundle\Handler\UploadHandlerInterface;
 use Vich\UploaderBundle\Metadata\MetadataReaderInterface;
@@ -44,5 +45,21 @@ abstract class BaseListener
         $fields = $this->metadata->getUploadableFields(ClassUtils::getClass($object), $this->mapping);
 
         return \array_map(static fn (array $data): string => $data['propertyName'], $fields);
+    }
+
+    /**
+     * @return iterable<object>
+     */
+    protected function getUploadableObjectsToFlush(ManagerEventArgs $event, bool $includeInsertions): iterable
+    {
+        $uploadableClasses = [];
+
+        foreach ($this->adapter->getObjectsToFlush($event, $includeInsertions) as $object) {
+            $class = ClassUtils::getClass($object);
+
+            if ($uploadableClasses[$class] ??= $this->metadata->isUploadable($class, $this->mapping)) {
+                yield $object;
+            }
+        }
     }
 }

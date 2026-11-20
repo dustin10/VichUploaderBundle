@@ -125,7 +125,7 @@ class Product
         $this->imageFile = $imageFile;
 
         if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
+            // Required with Doctrine MongoDB ODM or PHPCR ODM: at least one field must change,
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
@@ -205,7 +205,7 @@ class Product
         $this->imageFile = $imageFile;
 
         if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
+            // Required with Doctrine MongoDB ODM or PHPCR ODM: at least one field must change,
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
@@ -229,8 +229,8 @@ class Product
 ```
 
 > [!IMPORTANT]
-> If you use Doctrine, you need to pay attention to the comment on `setImageFile` method in the above example.
-> If you miss that, you won't be able to update your file.
+> If you use Doctrine MongoDB ODM or PHPCR ODM, you need to pay attention to the comment on `setImageFile` method in the above example.
+> If you miss that, you won't be able to update your file. With Doctrine ORM, see the [known issues](known_issues.md) for the remaining cases.
 
 ## Step 3: configure the lifecycle events (optional step)
 
