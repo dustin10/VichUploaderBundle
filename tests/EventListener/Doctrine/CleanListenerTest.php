@@ -2,6 +2,8 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Persistence\Event\ManagerEventArgs;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\EventListener\Doctrine\CleanListener;
 use Vich\UploaderBundle\Tests\DummyEntity;
@@ -13,6 +15,7 @@ use Vich\UploaderBundle\Tests\DummyEntity;
  *
  * @extends ListenerTestCase<CleanListener>
  */
+#[AllowMockObjectsWithoutExpectations]
 class CleanListenerTest extends ListenerTestCase
 {
     /**
@@ -79,5 +82,55 @@ class CleanListenerTest extends ListenerTestCase
             ->method('recomputeChangeSet');
 
         $this->listener->preUpdate($this->event);
+    }
+
+    #[Test]
+    public function preFlush(): void
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $this->adapter
+            ->expects($this->once())
+            ->method('getObjectsToFlush')
+            ->with($event, false)
+            ->willReturn([$this->object]);
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with(DummyEntity::class)
+            ->willReturn(true);
+        $this->metadata
+            ->expects($this->once())
+            ->method('getUploadableFields')
+            ->with(DummyEntity::class, self::MAPPING_NAME)
+            ->willReturn([
+                ['propertyName' => 'field_name'],
+            ]);
+
+        $this->handler
+            ->expects($this->once())
+            ->method('clean')
+            ->with($this->object, 'field_name');
+
+        $this->listener->preFlush($event);
+    }
+
+    #[Test]
+    public function preFlushSkipsNonUploadable(): void
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $this->adapter
+            ->method('getObjectsToFlush')
+            ->willReturn([$this->object]);
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with(DummyEntity::class)
+            ->willReturn(false);
+
+        $this->handler
+            ->expects($this->never())
+            ->method('clean');
+
+        $this->listener->preFlush($event);
     }
 }

@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\EventListener\Doctrine;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\ManagerEventArgs;
 
 /**
  * UploadListener.
@@ -49,5 +50,14 @@ class UploadListener extends BaseListener
         }
 
         $this->adapter->recomputeChangeSet($event);
+    }
+
+    public function preFlush(ManagerEventArgs $event): void
+    {
+        foreach ($this->getUploadableObjectsToFlush($event, true) as $object) {
+            foreach ($this->getUploadableFields($object) as $field) {
+                $this->handler->upload($object, $field);
+            }
+        }
     }
 }

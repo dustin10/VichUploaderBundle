@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Tests\EventListener\Doctrine;
 
+use Doctrine\Persistence\Event\ManagerEventArgs;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use Vich\UploaderBundle\EventListener\Doctrine\UploadListener;
@@ -126,5 +127,81 @@ class UploadListenerTest extends ListenerTestCase
             ->method('upload');
 
         $this->listener->preUpdate($this->event);
+    }
+
+    #[Test]
+    public function preFlush(): void
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $this->adapter
+            ->expects($this->once())
+            ->method('getObjectsToFlush')
+            ->with($event, true)
+            ->willReturn([$this->object]);
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with(DummyEntity::class)
+            ->willReturn(true);
+        $this->metadata
+            ->expects($this->once())
+            ->method('getUploadableFields')
+            ->with(DummyEntity::class, self::MAPPING_NAME)
+            ->willReturn([
+                ['propertyName' => 'field_name'],
+            ]);
+
+        $this->handler
+            ->expects($this->once())
+            ->method('upload')
+            ->with($this->object, 'field_name');
+
+        $this->listener->preFlush($event);
+    }
+
+    #[Test]
+    public function preFlushSkipsNonUploadable(): void
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $this->adapter
+            ->method('getObjectsToFlush')
+            ->willReturn([$this->object]);
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with(DummyEntity::class)
+            ->willReturn(false);
+
+        $this->handler
+            ->expects($this->never())
+            ->method('upload');
+
+        $this->listener->preFlush($event);
+    }
+
+    #[Test]
+    public function preFlushChecksEachClassOnce(): void
+    {
+        $event = $this->createStub(ManagerEventArgs::class);
+        $otherObject = new DummyEntity();
+        $this->adapter
+            ->method('getObjectsToFlush')
+            ->willReturn([$this->object, $otherObject]);
+        $this->metadata
+            ->expects($this->once())
+            ->method('isUploadable')
+            ->with(DummyEntity::class)
+            ->willReturn(true);
+        $this->metadata
+            ->method('getUploadableFields')
+            ->willReturn([
+                ['propertyName' => 'field_name'],
+            ]);
+
+        $this->handler
+            ->expects($this->exactly(2))
+            ->method('upload');
+
+        $this->listener->preFlush($event);
     }
 }

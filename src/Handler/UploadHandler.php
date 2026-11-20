@@ -2,6 +2,7 @@
 
 namespace Vich\UploaderBundle\Handler;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Event\ErrorEvent;
@@ -18,6 +19,9 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 final class UploadHandler extends AbstractHandler implements UploadHandlerInterface
 {
+    /** @var \WeakMap<object, array<string, File>> */
+    private \WeakMap $uploadedFiles;
+
     public function __construct(
         PropertyMappingFactoryInterface $factory,
         StorageInterface $storage,
@@ -25,6 +29,7 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
         protected readonly EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($factory, $storage);
+        $this->uploadedFiles = new \WeakMap();
     }
 
     /**
@@ -38,9 +43,10 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
     public function upload(object $obj, string $fieldName): void
     {
         $mapping = $this->getMapping($obj, $fieldName);
+        $file = $this->getFileToUpload($obj, $mapping);
 
         // nothing to upload
-        if (!$this->hasUploadedFile($obj, $mapping)) {
+        if (null === $file) {
             return;
         }
 
@@ -51,6 +57,7 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
             $this->dispatch(Events::UPLOAD_ERROR, new ErrorEvent($obj, $mapping, $exception));
             throw $exception;
         }
+        $this->uploadedFiles[$obj] = [...$this->uploadedFiles[$obj] ?? [], $mapping->getFilePropertyName() => $file];
         $this->injector->injectFile($obj, $mapping);
 
         $this->dispatch(Events::POST_UPLOAD, new Event($obj, $mapping));
@@ -113,8 +120,22 @@ final class UploadHandler extends AbstractHandler implements UploadHandlerInterf
 
     protected function hasUploadedFile(object $obj, PropertyMappingInterface $mapping): bool
     {
+        return null !== $this->getFileToUpload($obj, $mapping);
+    }
+
+    private function getFileToUpload(object $obj, PropertyMappingInterface $mapping): ?File
+    {
         $file = $mapping->getFile($obj);
 
-        return $file instanceof UploadedFile || $file instanceof ReplacingFile;
+        if (!$file instanceof UploadedFile && !$file instanceof ReplacingFile) {
+            return null;
+        }
+
+        // already uploaded, the injector left it on the object
+        if (($this->uploadedFiles[$obj][$mapping->getFilePropertyName()] ?? null) === $file) {
+            return null;
+        }
+
+        return $file;
     }
 }
