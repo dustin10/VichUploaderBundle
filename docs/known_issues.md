@@ -6,6 +6,12 @@ As the bundle is listening to Doctrine `prePersist` and `preUpdate` events, whic
 when there is no change on field mapped by Doctrine, the file upload is not handled if the image field
 is the only updated.
 
+This only applies to MongoDB ODM and PHPCR ODM. With Doctrine ORM, the bundle handles uploaded files on `preFlush`, before Doctrine computes the changes, so the new file name is the change (see [GH-1619](https://github.com/dustin10/VichUploaderBundle/issues/1619)).
+
+Files set after that listener runs still need the workaround: in an entity `#[ORM\PreFlush]` lifecycle callback, or in a `preFlush` listener with a priority lower than 0.
+
+With doctrine/orm 2.x, avoid `flush($entity)`: the bundle also uploads the files of the other managed entities and removes their previous files, but that flush does not save their new file names.
+
 A workaround to solve this issue is to manually generate a change:
 
 ```php
@@ -39,39 +45,17 @@ class Product
 
 See issue [GH-123](https://github.com/dustin10/VichUploaderBundle/issues/123)
 
-Since doctrine/orm 3.8, this workaround is not enough when `updatedAt` already holds a value
-written in the same second, for instance when the entity is persisted and flushed to get an
-identifier, then the file is attached and the entity flushed again in the same request. Doctrine
-now compares the database values of object fields, and `datetime` and `datetime_immutable` columns
-are stored to the second: the new `updatedAt` is not seen as a change, `preUpdate` is not fired,
-and the file is silently not uploaded.
-
-In that case, handle the upload before flushing, so that the file name itself changes:
-
-```php
-use Vich\UploaderBundle\Handler\UploadHandlerInterface;
-
-// $uploadHandler is the UploadHandlerInterface service
-$product->setImageFile($uploadedFile);
-$uploadHandler->clean($product, 'imageFile');
-$uploadHandler->upload($product, 'imageFile');
-$entityManager->flush();
-```
-
-Call `clean()` only if `delete_on_update` is enabled for the mapping (the default), and always
-before `upload()`: it removes the previous file, and does nothing once `upload()` has replaced the
-uploaded file.
-
-See issue [GH-1619](https://github.com/dustin10/VichUploaderBundle/issues/1619)
-
 ## Uploading files does not trigger Gedmo/DoctrineExtensions events
 
-Similar to the issue above, because VichUploaderBundle relies on Doctrine's `prePersist` and
-`preUpdate` events which occur _after_ Gedmo's use of the `preFlush` event to execute it's own
-handlers, it is not possible to use Gedmo's handlers to track changes for uploaded files. To be
-more specific, you cannot use `Gedmo\Timestampable` to track when a file is uploaded or changed.
-One solution for this is to update your timestamp property in your setters of the file and field
-properties; updating both is necessary to track delete and change actions.
+With Doctrine ORM, the bundle handles uploaded files on `preFlush`, before Gedmo reads the changes on `onFlush`, so `Gedmo\Timestampable` can track when the file name changes:
+
+```php
+    #[ORM\Column(nullable: true)]
+    #[Gedmo\Timestampable(on: 'change', field: 'imageName')]
+    private ?\DateTimeImmutable $imageChangedAt = null;
+```
+
+With MongoDB ODM and PHPCR ODM, the bundle relies on Doctrine's `prePersist` and `preUpdate` events, which occur _after_ Gedmo's `onFlush` handler, so it is not possible to use Gedmo's handlers to track changes for uploaded files. One solution for this is to update your timestamp property in your setters of the file and field properties; updating both is necessary to track delete and change actions.
 
 ```php
     #[Vich\UploadableField(mapping: 'custom_file', fileNameProperty: 'myField')]

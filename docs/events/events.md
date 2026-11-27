@@ -19,6 +19,8 @@ The following is a list of events you can listen to:
 The `vich_uploader.pre_remove` event is cancelable, that means that the actual remove request will not take place,
 and you have to take action.
 
+With Doctrine ORM, when an uploaded file replaces a previous one, `vich_uploader.pre_remove` is dispatched before the flush, while the previous file is only removed, and `vich_uploader.post_remove` dispatched, once the flush succeeded.
+
 ## Example
 
 Create a listener class:

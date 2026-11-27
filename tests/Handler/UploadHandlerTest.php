@@ -13,6 +13,7 @@ use Vich\TestBundle\Entity\Article;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
+use Vich\UploaderBundle\Handler\PendingClean;
 use Vich\UploaderBundle\Handler\UploadHandler;
 use Vich\UploaderBundle\Injector\FileInjectorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactoryInterface;
@@ -79,6 +80,59 @@ final class UploadHandlerTest extends TestCase
             ->with($this->object, $this->mapping);
 
         $this->handler->upload($this->object, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function uploadSkipsAFileAlreadyUploaded(): void
+    {
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->never())
+            ->method('upload');
+
+        $this->handler->upload($this->object, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function uploadTheSameFileForAnotherObject(): void
+    {
+        $file = $this->getUploadedFileMock();
+        $otherObject = new Article();
+        $mapping = $this->getPropertyMappingStub();
+        $mapping->method('getFile')->willReturn($file);
+        $factory = $this->getPropertyMappingFactoryStub();
+        $factory->method('fromField')->willReturn($mapping);
+        $handler = new UploadHandler($factory, $this->storage, $this->injector, $this->dispatcher);
+        $handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->once())
+            ->method('upload')
+            ->with($otherObject, $mapping);
+
+        $handler->upload($otherObject, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function cleanSkipsAFileAlreadyUploaded(): void
+    {
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('new.png');
+        $this->handler->upload($this->object, self::FILE_FIELD);
+
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $this->handler->clean($this->object, self::FILE_FIELD);
     }
 
     #[DataProvider('methodProvider')]
@@ -319,6 +373,152 @@ final class UploadHandlerTest extends TestCase
             ->with($this->object, $this->mapping);
 
         $this->handler->remove($this->object, self::FILE_FIELD);
+    }
+
+    #[Test]
+    public function prepareCleanErasesFieldsButKeepsTheFile(): void
+    {
+        $this->expectEvents([Events::PRE_REMOVE]);
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('old.png');
+        $this->mapping
+            ->method('getUploadDir')
+            ->willReturn('old_dir');
+
+        $this->mapping
+            ->expects($this->once())
+            ->method('erase')
+            ->with($this->object);
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $pendingClean = $this->handler->prepareClean($this->object, self::FILE_FIELD);
+
+        self::assertEquals(new PendingClean($this->object, $this->mapping, 'old.png', 'old_dir'), $pendingClean);
+    }
+
+    #[Test]
+    public function prepareCleanSkipsObjectsWithoutUploadedFile(): void
+    {
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('old.png');
+
+        $this->dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+        $this->mapping
+            ->expects($this->never())
+            ->method('erase');
+
+        $pendingClean = $this->handler->prepareClean($this->object, self::FILE_FIELD);
+
+        self::assertNull($pendingClean);
+    }
+
+    #[Test]
+    public function prepareCleanIfEventIsCanceled(): void
+    {
+        $this->mapping
+            ->method('getFile')
+            ->willReturn($this->getUploadedFileMock());
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('old.png');
+        $this->dispatcher
+            ->method('dispatch')
+            ->willReturnCallback(static function (Event $event): Event {
+                $event->cancel();
+
+                return $event;
+            });
+
+        $this->mapping
+            ->expects($this->never())
+            ->method('erase');
+
+        $pendingClean = $this->handler->prepareClean($this->object, self::FILE_FIELD);
+
+        self::assertNull($pendingClean);
+    }
+
+    #[Test]
+    public function completeCleanRemovesThePreviousFile(): void
+    {
+        $pendingClean = new PendingClean($this->object, $this->mapping, 'old.png', 'old_dir');
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('new.png');
+
+        $this->expectEvents([Events::POST_REMOVE]);
+        $this->storage
+            ->expects($this->once())
+            ->method('remove')
+            ->with(
+                $this->object,
+                $this->callback(static fn (PropertyMappingInterface $mapping): bool => 'old.png' === $mapping->getFileName(new Article())),
+                'old_dir',
+            );
+
+        $this->handler->completeClean($pendingClean);
+    }
+
+    #[Test]
+    public function completeCleanFailsInStorageDriverEmitsEvent(): void
+    {
+        $pendingClean = new PendingClean($this->object, $this->mapping, 'old.png', 'old_dir');
+        $this->storage
+            ->method('remove')
+            ->willThrowException(new \RuntimeException('Test exception'));
+
+        $this->expectEvents([Events::REMOVE_ERROR, Events::POST_REMOVE]);
+
+        $this->handler->completeClean($pendingClean);
+    }
+
+    #[Test]
+    public function completeCleanKeepsAFileReplacedUnderTheSameName(): void
+    {
+        $pendingClean = new PendingClean($this->object, $this->mapping, 'same.png', 'dir');
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('same.png');
+        $this->mapping
+            ->method('getUploadDir')
+            ->willReturn('dir');
+
+        $this->expectEvents([Events::POST_REMOVE]);
+        $this->storage
+            ->expects($this->never())
+            ->method('remove');
+
+        $this->handler->completeClean($pendingClean);
+    }
+
+    #[Test]
+    public function completeCleanEventsSeeTheRemovedFileName(): void
+    {
+        $pendingClean = new PendingClean($this->object, $this->mapping, 'old.png', 'old_dir');
+        $this->mapping
+            ->method('getFileName')
+            ->willReturn('new.png');
+        $eventFileNames = [];
+        $this->dispatcher
+            ->method('dispatch')
+            ->willReturnCallback(static function (Event $event) use (&$eventFileNames): Event {
+                $eventFileNames[] = $event->getMapping()->getFileName($event->getObject());
+
+                return $event;
+            });
+
+        $this->handler->completeClean($pendingClean);
+
+        self::assertSame(['old.png'], $eventFileNames);
     }
 
     protected function getStorageMock(): StorageInterface&MockObject

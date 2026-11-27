@@ -3,6 +3,7 @@
 namespace Vich\UploaderBundle\Adapter\PHPCR;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\ManagerEventArgs;
 use Vich\UploaderBundle\Adapter\AdapterInterface;
 
 /**
@@ -19,5 +20,10 @@ final readonly class PHPCRAdapter implements AdapterInterface
         $objectManager = $event->getObjectManager();
         $uow = $objectManager->getUnitOfWork();
         $uow->computeSingleDocumentChangeSet($object);
+    }
+
+    public function getObjectsToFlush(ManagerEventArgs $event, bool $includeInsertions): iterable
+    {
+        return [];
     }
 }

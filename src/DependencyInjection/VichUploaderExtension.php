@@ -211,11 +211,26 @@ final class VichUploaderExtension extends Extension
                     continue;
                 }
 
-                $this->createListener($container, $name, $service['name'], $driver, $service['events'], $service['priority']);
+                $events = $service['events'];
+                $eventPriorities = [];
+                if ('orm' === $driver && 'clean' === $service['name']) {
+                    $events[] = 'preFlush';
+                    $events[] = 'postFlush';
+                    // right before the upload listener (priority 0), so no other preFlush listener can set a file between both
+                    $eventPriorities['preFlush'] = 1;
+                }
+
+                $this->createListener($container, $name, $service['name'], $driver, $events, $service['priority'], $eventPriorities);
             }
 
             // the upload listener is mandatory
-            $this->createListener($container, $name, 'upload', $driver, ['prePersist', 'preUpdate']);
+            $events = ['prePersist', 'preUpdate'];
+            if ('orm' === $driver) {
+                // handle files before Doctrine computes the change sets, see https://github.com/dustin10/VichUploaderBundle/issues/1619
+                $events[] = 'preFlush';
+            }
+
+            $this->createListener($container, $name, 'upload', $driver, $events);
         }
     }
 
@@ -246,7 +261,8 @@ final class VichUploaderExtension extends Extension
         string $type,
         string $driver,
         array $events,
-        int $priority = 0
+        int $priority = 0,
+        array $eventPriorities = [],
     ): void {
         $definition = $container
             ->setDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $name), new ChildDefinition(\sprintf('vich_uploader.listener.%s.%s', $type, $driver)))
@@ -255,7 +271,7 @@ final class VichUploaderExtension extends Extension
 
         if (isset($this->tagMap[$driver])) {
             foreach ($events as $event) {
-                $definition->addTag($this->tagMap[$driver], ['event' => $event, 'priority' => $priority]);
+                $definition->addTag($this->tagMap[$driver], ['event' => $event, 'priority' => $eventPriorities[$event] ?? $priority]);
             }
         }
     }

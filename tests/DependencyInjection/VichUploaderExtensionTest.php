@@ -148,6 +148,45 @@ class VichUploaderExtensionTest extends AbstractExtensionTestCase
     }
 
     #[Test]
+    public function ormListenersHandleFilesOnPreFlush(): void
+    {
+        $this->load([
+            'db_driver' => 'orm',
+            'mappings' => [
+                'foo' => [
+                    'upload_destination' => 'web/',
+                    'delete_on_update' => true,
+                ],
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.upload.foo', 'doctrine.event_listener', ['event' => 'preFlush', 'priority' => 0]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.clean.foo', 'doctrine.event_listener', ['event' => 'preFlush', 'priority' => 1]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag('vich_uploader.listener.clean.foo', 'doctrine.event_listener', ['event' => 'postFlush', 'priority' => 50]);
+    }
+
+    #[Test]
+    public function mongodbListenersDoNotListenToPreFlush(): void
+    {
+        $this->load([
+            'db_driver' => 'mongodb',
+            'mappings' => [
+                'foo' => [
+                    'upload_destination' => 'web/',
+                    'delete_on_update' => true,
+                ],
+            ],
+        ]);
+
+        $events = \array_column([
+            ...$this->container->getDefinition('vich_uploader.listener.upload.foo')->getTag('doctrine_mongodb.odm.event_listener'),
+            ...$this->container->getDefinition('vich_uploader.listener.clean.foo')->getTag('doctrine_mongodb.odm.event_listener'),
+        ], 'event');
+
+        self::assertNotContains('preFlush', $events);
+    }
+
+    #[Test]
     public function formThemeCorrectlyOverridden(): void
     {
         $vichUploaderExtension = new VichUploaderExtension();
