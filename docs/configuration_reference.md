@@ -30,3 +30,53 @@ vich_uploader:
 ```
 
 The reference can be dumped using the following command: `php bin/console debug:config vich_uploader`
+
+## Metadata cache
+
+`metadata.cache` controls how the bundle caches the mapping metadata it reads from your
+entities. It is not related to Symfony's `framework.cache` configuration, so pointing your
+application's cache pools at Redis/Valkey (or anything else) has no effect on it by itself.
+It accepts one of the following values:
+
+* `file` (the default): metadata is cached on disk, in the directory configured via
+  `metadata.file_cache.dir` (see below).
+* `none`: metadata caching is disabled.
+* a service id: any service implementing `Metadata\Cache\CacheInterface` can be used instead,
+  for example to store the metadata in one of your application's own cache pools.
+
+### `metadata.file_cache.dir`
+
+Only used when `metadata.cache` is set to `file`. It is the directory the metadata cache files
+are written to, and defaults to `%kernel.cache_dir%/vich_uploader`:
+
+``` yaml
+vich_uploader:
+    metadata:
+        cache: file
+        file_cache:
+            dir: '%kernel.cache_dir%/vich_uploader'
+```
+
+### Using a PSR-6 cache pool (e.g. Redis/Valkey)
+
+To have the metadata cache stored in a PSR-6 cache pool, such as a Redis/Valkey-backed
+`framework.cache` pool, wrap that pool with `Metadata\Cache\PsrCacheAdapter` and point
+`metadata.cache` at the resulting service:
+
+``` yaml
+# config/services.yaml
+services:
+    app.vich_metadata_cache:
+        class: Metadata\Cache\PsrCacheAdapter
+        arguments:
+            - 'vich_' # cache key prefix
+            - '@cache.app' # any PSR-6 cache pool
+
+# config/packages/vich_uploader.yaml
+vich_uploader:
+    metadata:
+        cache: app.vich_metadata_cache
+```
+
+With this configuration, nothing is written to `metadata.file_cache.dir` any more; the
+metadata is stored in the `cache.app` pool instead.
